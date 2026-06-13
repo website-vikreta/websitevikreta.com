@@ -113,7 +113,25 @@
 
 ---
 
-## Do Not
+## Accent Color Usage — `#FFD600`
+**Budget: max 10% of total visual surface across the entire website.**
+Everything else is black, white, or greys. No exceptions.
+
+**Where yellow belongs (pick sparingly):**
+- One CTA button per page (primary action only)
+- A single highlighted word or stat in a hero headline
+- Active nav indicator or underline
+- A border-left on a blockquote or key callout
+- Hover state on a primary interactive element
+
+**Where yellow never goes:**
+- Backgrounds of full sections or large areas
+- Body text or paragraph copy
+- Cards, borders, dividers at scale
+- Decorative elements or patterns
+- More than one instance per page on mobile
+
+**The test:** Screenshot the page in greyscale. Convert back. If yellow appears more than ~3 times on a single page, it's too much.
 - No box shadows
 - No color gradients
 - No border-radius > 4px on containers

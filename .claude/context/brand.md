@@ -9,7 +9,7 @@
 | Neutral | `#111111` | Card backgrounds, subtle separation |
 | Muted | `#444444` | Secondary text, metadata |
 
-**Rule:** Accent `#FFD600` is rare. Use it like punctuation. Once per section max.
+**Rule:** Accent `#FFD600` is used sparingly across the **entire website — maximum 10% of total visual surface**. The remaining 90%+ is strictly black, white, and greys. Yellow should feel like a surprise, not a pattern. When in doubt, don't use it.
 **Rule:** No gradients unless they are black-to-black with opacity. No color gradients.
 **Rule:** White space is aggressive. Let it breathe.
 

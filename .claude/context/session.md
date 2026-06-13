@@ -37,7 +37,7 @@ _None yet_
 
 ## Known Constraints
 - No color gradients
-- Accent used max once per section
+- Accent `#FFD600` max 10% of total visual surface across entire site. Rest is black/white/grey only.
 - Every page must have schema markup
 - All images need alt text + next/image optimization
 - No layout shift (CLS must be < 0.1)
