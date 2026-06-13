@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useRef, useEffect } from 'react'
-import Link from 'next/link'
 import { gsap } from '@/lib/gsap'
+import { Button } from '@/components/ui/Button'
+import { DotGrid } from '@/components/ui/DotGrid'
 
 const HEADLINE = 'We Build. We Automate. We Grow.'
 const WORDS = HEADLINE.split(' ')
@@ -27,34 +28,39 @@ export function HeroSection() {
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
         gsap.set(
-          [labelRef.current, subheadRef.current, ctaRef.current, scrollIndRef.current],
+          [
+            labelRef.current,
+            subheadRef.current,
+            ctaRef.current,
+            scrollIndRef.current,
+          ],
           { opacity: 1 },
         )
         gsap.set(wordEls, { y: '0%' })
         return
       }
 
-      // Set explicit initial states before animation (prevents flash)
-      gsap.set(labelRef.current, { opacity: 0, y: 12 })
+      // Set initial states synchronously before first paint
+      gsap.set(labelRef.current, { opacity: 0, y: 14 })
       gsap.set(wordEls, { y: '110%' })
       gsap.set([subheadRef.current, ctaRef.current, scrollIndRef.current], {
         opacity: 0,
-        y: 16,
+        y: 18,
       })
 
-      const tl = gsap.timeline({ delay: 0.15 })
+      const tl = gsap.timeline({ delay: 0.1 })
 
       tl.to(labelRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.5,
+        duration: 0.55,
         ease: 'power2.out',
       })
         .to(
           wordEls,
           {
             y: '0%',
-            duration: 0.9,
+            duration: 0.95,
             ease: 'expo.out',
             stagger: 0.07,
           },
@@ -68,14 +74,14 @@ export function HeroSection() {
             duration: 0.65,
             ease: 'power2.out',
           },
-          '-=0.35',
+          '-=0.4',
         )
         .to(
           ctaRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.5,
+            duration: 0.55,
             ease: 'power2.out',
           },
           '-=0.35',
@@ -88,7 +94,7 @@ export function HeroSection() {
             duration: 0.4,
             ease: 'power2.out',
           },
-          '-=0.1',
+          '-=0.15',
         )
     }, sectionRef)
 
@@ -99,22 +105,30 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="main-content"
-      className="relative flex flex-col justify-center min-h-svh overflow-hidden"
+      className="relative flex flex-col justify-center min-h-svh overflow-hidden bg-white"
       aria-label="Hero — Website Vikreta"
     >
-      <div className="container pt-28 pb-24">
-        {/* Label */}
+      {/* ── Dot grid background ─────────────────────────────── */}
+      <DotGrid />
+
+
+      {/* ── Content ──────────────────────────────────────────── */}
+      <div className="container relative z-10 pt-36 pb-28">
+        {/* Label badge */}
         <span
           ref={labelRef}
           data-hero-anim
-          className="block font-mono text-meta-label tracking-[var(--tracking-meta)] text-[var(--color-accent)] uppercase mb-8"
+          className="inline-flex items-center gap-2 mb-9"
         >
-          AI-First Digital Agency
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
+          <span className="font-mono text-meta-label tracking-[var(--tracking-meta)] text-[var(--color-text-muted)] uppercase">
+            AI-First Digital Agency
+          </span>
         </span>
 
         {/* Headline */}
         <h1
-          className="text-display font-bold text-white mb-8 font-sans"
+          className="text-display font-bold text-[var(--color-text)] mb-9 font-sans"
           aria-label={HEADLINE}
         >
           {WORDS.map((word, i) => (
@@ -138,7 +152,7 @@ export function HeroSection() {
         <p
           ref={subheadRef}
           data-hero-anim
-          className="text-body-lg text-[var(--color-text-muted)] max-w-xl mb-12"
+          className="text-body-lg text-[var(--color-text-muted)] max-w-lg mb-12 leading-relaxed"
         >
           You&rsquo;re losing hours every week to work a system could do.
           We build the systems.
@@ -148,26 +162,26 @@ export function HeroSection() {
         <div
           ref={ctaRef}
           data-hero-anim
-          className="flex flex-wrap gap-4"
+          className="flex flex-wrap gap-4 items-center"
         >
-          <Link href="/work" className="btn btn-primary">
+          <Button href="/work" variant="primary" size="lg" showArrow>
             See Our Work
-          </Link>
-          <Link href="/contact" className="btn btn-ghost">
+          </Button>
+          <Button href="/contact" variant="ghost" size="lg" showArrow>
             Talk to Us
-          </Link>
+          </Button>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll indicator ─────────────────────────────────── */}
       <div
         ref={scrollIndRef}
         data-hero-anim
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5"
         aria-hidden="true"
       >
-        <div className="w-px h-10 bg-white/[0.15]" />
-        <span className="font-mono text-[10px] text-[var(--color-text-faint)] tracking-[0.2em] uppercase">
+        <div className="w-px h-9 bg-black/[0.12]" />
+        <span className="font-mono text-[9px] text-[var(--color-text-faint)] tracking-[0.22em] uppercase">
           Scroll
         </span>
       </div>

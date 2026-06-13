@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/Button'
 
 interface DropdownItem {
   label: string
@@ -62,9 +64,9 @@ export function Navbar() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
@@ -74,11 +76,7 @@ export function Navbar() {
   }, [pathname])
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
@@ -91,38 +89,43 @@ export function Navbar() {
 
   return (
     <>
+      {/* Skip link */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] btn btn-primary"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] btn btn-primary btn-sm"
       >
         Skip to content
       </a>
 
+      {/* Header */}
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-black/85 backdrop-blur-[20px] border-b border-white/[0.08]'
+            ? 'bg-white/92 backdrop-blur-[20px] border-b border-black/[0.08]'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
         <nav
-          className="container flex items-center justify-between h-20"
+          className="container flex items-center justify-between h-24"
           aria-label="Main navigation"
         >
           {/* Logo */}
           <Link
             href="/"
-            className="flex-shrink-0 text-white font-semibold text-[1.0625rem] tracking-tight transition-colors duration-200 hover:text-[var(--color-accent)]"
+            className="flex-shrink-0 flex items-center"
             aria-label="Website Vikreta — Home"
           >
-            Website Vikreta
+            <Image
+              src="/logo/websitevikreta-logo-horizontal.svg"
+              alt="Website Vikreta"
+              width={200}
+              height={60}
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
-          <ul
-            className="hidden lg:flex items-center gap-8 list-none"
-            role="list"
-          >
+          <ul className="hidden lg:flex items-center gap-12 list-none" role="list">
             {NAV_ITEMS.map((item) => (
               <li
                 key={item.label}
@@ -168,7 +171,9 @@ export function Navbar() {
                     </button>
 
                     <div
-                      className={`dropdown-panel${activeDropdown === item.label ? ' open' : ''}`}
+                      className={`dropdown-panel${
+                        activeDropdown === item.label ? ' open' : ''
+                      }`}
                       role="menu"
                     >
                       <ul className="list-none" role="list">
@@ -176,7 +181,7 @@ export function Navbar() {
                           <li key={dropItem.href} role="none">
                             <Link
                               href={dropItem.href}
-                              className="block px-3 py-2.5 text-sm text-[var(--color-text-muted)] rounded-sm transition-colors duration-150 hover:text-white hover:bg-white/[0.05]"
+                              className="block px-3 py-2.5 text-sm text-[var(--color-text-muted)] rounded-[3px] transition-colors duration-150 hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]"
                               role="menuitem"
                               onClick={() => setActiveDropdown(null)}
                             >
@@ -200,35 +205,35 @@ export function Navbar() {
           </ul>
 
           {/* Desktop CTAs */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Link href="/work" className="btn btn-ghost text-sm py-[0.5rem] px-[1.125rem]">
+          <div className="hidden lg:flex items-center gap-4">
+            <Button href="/work" variant="ghost" size="sm">
               Our Work
-            </Link>
-            <Link href="/contact" className="btn btn-primary text-sm py-[0.5rem] px-[1.125rem]">
+            </Button>
+            <Button href="/contact" variant="primary" size="sm" showArrow>
               Get a Quote
-            </Link>
+            </Button>
           </div>
 
           {/* Hamburger */}
           <button
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] -mr-2"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-drawer"
           >
             <span
-              className={`block w-[22px] h-px bg-white origin-center transition-all duration-300 ${
+              className={`block w-[22px] h-px bg-[var(--color-text)] origin-center transition-all duration-300 ${
                 mobileOpen ? 'rotate-45 translate-y-[6px]' : ''
               }`}
             />
             <span
-              className={`block h-px bg-white transition-all duration-300 ${
+              className={`block h-px bg-[var(--color-text)] transition-all duration-300 ${
                 mobileOpen ? 'opacity-0 w-0' : 'w-[22px]'
               }`}
             />
             <span
-              className={`block w-[22px] h-px bg-white origin-center transition-all duration-300 ${
+              className={`block w-[22px] h-px bg-[var(--color-text)] origin-center transition-all duration-300 ${
                 mobileOpen ? '-rotate-45 -translate-y-[6px]' : ''
               }`}
             />
@@ -238,7 +243,7 @@ export function Navbar() {
 
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-[45] bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[45] bg-black/30 backdrop-blur-[2px] lg:hidden transition-opacity duration-300 ${
           mobileOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
@@ -250,7 +255,7 @@ export function Navbar() {
       {/* Mobile drawer */}
       <div
         id="mobile-drawer"
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-sm bg-black border-l border-white/[0.08] flex flex-col lg:hidden transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[340px] bg-white border-l border-black/[0.06] flex flex-col lg:hidden transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           mobileOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="dialog"
@@ -258,22 +263,24 @@ export function Navbar() {
         aria-label="Navigation menu"
       >
         {/* Drawer header */}
-        <div className="flex items-center justify-between h-20 px-6 border-b border-white/[0.08] flex-shrink-0">
-          <Link
-            href="/"
-            className="text-white font-semibold text-[1.0625rem] tracking-tight"
-            onClick={closeMobileMenu}
-          >
-            Website Vikreta
+        <div className="flex items-center justify-between h-24 px-6 border-b border-black/[0.06] flex-shrink-0">
+          <Link href="/" onClick={closeMobileMenu} className="flex items-center">
+            <Image
+              src="/logo/websitevikreta-logo-horizontal.svg"
+              alt="Website Vikreta"
+              width={130}
+              height={29}
+              priority
+            />
           </Link>
           <button
-            className="flex items-center justify-center w-10 h-10 text-[var(--color-text-muted)] hover:text-white transition-colors duration-200"
+            className="flex items-center justify-center w-10 h-10 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-200"
             onClick={closeMobileMenu}
-            aria-label="Close navigation menu"
+            aria-label="Close navigation"
           >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <path
-                d="M4 4l12 12M16 4L4 16"
+                d="M3 3l12 12M15 3L3 15"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
@@ -283,17 +290,14 @@ export function Navbar() {
         </div>
 
         {/* Nav links */}
-        <nav
-          className="flex-1 overflow-y-auto px-6 py-6"
-          aria-label="Mobile navigation"
-        >
-          <ul className="list-none space-y-1">
+        <nav className="flex-1 overflow-y-auto px-6 py-5" aria-label="Mobile navigation">
+          <ul className="list-none space-y-0.5">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
                 {item.dropdown ? (
                   <div>
                     <button
-                      className="flex items-center justify-between w-full py-3 text-left text-base text-[var(--color-text-muted)] hover:text-white transition-colors duration-150"
+                      className="flex items-center justify-between w-full py-3 text-left text-[0.9375rem] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-150"
                       onClick={() =>
                         setMobileExpanded(
                           mobileExpanded === item.label ? null : item.label,
@@ -303,9 +307,9 @@ export function Navbar() {
                     >
                       {item.label}
                       <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
+                        width="13"
+                        height="13"
+                        viewBox="0 0 13 13"
                         fill="none"
                         aria-hidden="true"
                         className={`transition-transform duration-200 ${
@@ -313,7 +317,7 @@ export function Navbar() {
                         }`}
                       >
                         <path
-                          d="M2 5l5 5 5-5"
+                          d="M2 4.5l4.5 4.5 4.5-4.5"
                           stroke="currentColor"
                           strokeWidth="1.5"
                           strokeLinecap="round"
@@ -321,10 +325,11 @@ export function Navbar() {
                         />
                       </svg>
                     </button>
+
                     <ul
                       className={`list-none overflow-hidden transition-all duration-300 ${
                         mobileExpanded === item.label
-                          ? 'max-h-64 opacity-100'
+                          ? 'max-h-72 opacity-100 pb-1'
                           : 'max-h-0 opacity-0'
                       }`}
                     >
@@ -332,7 +337,7 @@ export function Navbar() {
                         <li key={dropItem.href}>
                           <Link
                             href={dropItem.href}
-                            className="block py-2.5 pl-4 text-sm text-[var(--color-text-faint)] border-l border-white/[0.08] hover:text-white hover:border-white/[0.24] transition-all duration-150"
+                            className="block py-2.5 pl-4 text-sm text-[var(--color-text-faint)] border-l border-black/[0.08] hover:text-[var(--color-text)] hover:border-black/[0.2] transition-all duration-150"
                             onClick={closeMobileMenu}
                           >
                             {dropItem.label}
@@ -344,7 +349,7 @@ export function Navbar() {
                 ) : (
                   <Link
                     href={item.href!}
-                    className="block py-3 text-base text-[var(--color-text-muted)] hover:text-white transition-colors duration-150"
+                    className="block py-3 text-[0.9375rem] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-150"
                     onClick={closeMobileMenu}
                   >
                     {item.label}
@@ -356,21 +361,13 @@ export function Navbar() {
         </nav>
 
         {/* Drawer CTAs */}
-        <div className="flex flex-col gap-3 px-6 py-6 border-t border-white/[0.08] flex-shrink-0">
-          <Link
-            href="/work"
-            className="btn btn-ghost w-full justify-center"
-            onClick={closeMobileMenu}
-          >
+        <div className="flex flex-col gap-3 px-6 py-6 border-t border-black/[0.06] flex-shrink-0">
+          <Button href="/work" variant="ghost" className="w-full justify-center">
             Our Work
-          </Link>
-          <Link
-            href="/contact"
-            className="btn btn-primary w-full justify-center"
-            onClick={closeMobileMenu}
-          >
+          </Button>
+          <Button href="/contact" variant="primary" className="w-full justify-center" showArrow>
             Get a Quote
-          </Link>
+          </Button>
         </div>
       </div>
     </>
