@@ -6,7 +6,7 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-_Not started_
+Homepage — Navbar + HeroSection done. Next: remaining homepage sections.
 
 ## Locked Decisions
 <!-- Things decided and not up for debate again -->
@@ -22,9 +22,7 @@ _None_
 
 ## Open Questions
 <!-- Things that need answers before proceeding -->
-- Final font pairing?
-- Homepage hero copy (headline)?
-- Navigation structure finalized?
+- Font pairing: Geist Sans + Geist Mono locked (from code standards)
 - CMS choice for blog (Contentful / Sanity / MDX)?
 
 ## Pages Completed
@@ -33,7 +31,8 @@ _None yet_
 
 ## Components Locked
 <!-- Reusable components finalized and not to be changed -->
-_None yet_
+- `components/ui/Navbar.tsx` — fixed nav, dropdown on hover, mobile drawer slide-in
+- `components/sections/HeroSection.tsx` — full-vh, GSAP word-by-word reveal, no ScrollTrigger
 
 ## Known Constraints
 - No color gradients
@@ -43,4 +42,4 @@ _None yet_
 - No layout shift (CLS must be < 0.1)
 
 ## Last Updated
-_Never_
+2026-06-13 — Navbar + HeroSection built, GSAP installed, design tokens in globals.css

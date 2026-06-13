@@ -1,26 +1,227 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg:           #000000;
+  --color-bg-subtle:    #111111;
+  --color-bg-muted:     #1A1A1A;
+  --color-text:         #FFFFFF;
+  --color-text-muted:   #888888;
+  --color-text-faint:   #444444;
+  --color-accent:       #FFD600;
+  --color-border:       rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  --text-display:      clamp(3.5rem, 10vw, 9rem);
+  --leading-display:   0.92;
+  --tracking-display:  -0.03em;
+  --text-h1:           clamp(2.5rem, 6vw, 5rem);
+  --leading-h1:        1.0;
+  --text-h2:           clamp(1.75rem, 4vw, 3rem);
+  --leading-h2:        1.1;
+  --text-h3:           clamp(1.25rem, 2.5vw, 1.75rem);
+  --text-body:         1rem;
+  --text-body-lg:      1.125rem;
+  --leading-body:      1.6;
+  --text-meta:         0.75rem;
+  --tracking-meta:     0.12em;
+
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --section-y: clamp(4rem, 10vw, 8rem);
+  --section-x: clamp(1.5rem, 5vw, 6rem);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--section-x);
+}
+
+/* Typography scale classes */
+.text-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.text-h1 {
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+}
+
+.text-h2 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+}
+
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body);
+}
+
+.text-meta-label {
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-meta);
+}
+
+/* Word-by-word reveal — headline clips words during animation */
+.word-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  vertical-align: bottom;
+}
+
+.word-inner {
+  display: inline-block;
+  transform: translateY(110%);
+}
+
+/* Pre-hide hero-animated elements before GSAP runs */
+[data-hero-anim] {
+  opacity: 0;
+}
+
+/* Dropdown panel */
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: -12px;
+  min-width: 220px;
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 6px;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+  z-index: 10;
+}
+
+.dropdown-panel.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.375rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #fff;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #000;
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .btn-ghost:hover {
+    background-color: #fff;
+    border-color: #fff;
+    color: #000;
+  }
+
+  /* Nav link with animated underline on hover */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-accent);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: #fff;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
 }
