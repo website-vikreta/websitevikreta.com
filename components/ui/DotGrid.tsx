@@ -2,15 +2,29 @@
 
 import { useRef, useEffect } from 'react'
 
-const SPACING    = 20   // grid density
-const BASE_R     = 1  // dot radius
-const NEAR_R     = 1.8  // dot radius when close to cursor
-const INFLUENCE  = 130  // repel radius px
-const MAX_SHIFT  = 14   // max repel displacement px
-const SPARKLE_MS = 120  // how often a random dot lights up
-const SPARKLE_HOLD = 380 // how long sparkle stays
+const SPACING  = 20
+const BASE_R   = 1
+const NEAR_R   = 1.8
+const INFLUENCE = 200
+const MAX_SHIFT = 14
 
-interface Sparkle { col: number; row: number; born: number }
+// Cursor-zone accent flashes
+const CURSOR_INTERVAL = 500   // ms between batches
+const CURSOR_HOLD     = 1400  // lifetime per sparkle
+const CURSOR_COUNT    = 3     // dots lit per batch
+
+// Ambient whole-grid flashes (very rare, very subtle)
+const AMBIENT_INTERVAL = 2000
+const AMBIENT_HOLD     = 1400
+
+const SPARKLE_R = 2.5  // peak radius for yellow cursor dots
+
+interface Sparkle {
+  col:  number
+  row:  number
+  born: number
+  type: 'cursor' | 'ambient'
+}
 
 export function DotGrid() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -25,7 +39,8 @@ export function DotGrid() {
     let mouseX = -9999
     let mouseY = -9999
     const sparkles: Sparkle[] = []
-    let lastSparkle = 0
+    let lastCursorSpawn  = 0
+    let lastAmbientSpawn = 0
 
     function resize() {
       if (!canvas) return
@@ -33,17 +48,41 @@ export function DotGrid() {
       canvas.height = canvas.offsetHeight
     }
 
-    function spawnSparkle(cols: number, rows: number, now: number) {
-      if (now - lastSparkle < SPARKLE_MS) return
-      lastSparkle = now
+    function spawnCursorSparkles(cols: number, rows: number, now: number) {
+      if (mouseX === -9999) return
+      if (now - lastCursorSpawn < CURSOR_INTERVAL) return
+      lastCursorSpawn = now
+      let count = 0
+      let tries = 0
+      while (count < CURSOR_COUNT && tries < 50) {
+        tries++
+        const angle = Math.random() * Math.PI * 2
+        const r     = Math.random() * INFLUENCE * 0.85
+        const col   = Math.round((mouseX + Math.cos(angle) * r) / SPACING)
+        const row   = Math.round((mouseY + Math.sin(angle) * r) / SPACING)
+        if (col >= 0 && col < cols && row >= 0 && row < rows) {
+          sparkles.push({ col, row, born: now, type: 'cursor' })
+          count++
+        }
+      }
+    }
+
+    function spawnAmbientSparkle(cols: number, rows: number, now: number) {
+      if (now - lastAmbientSpawn < AMBIENT_INTERVAL) return
+      lastAmbientSpawn = now
       sparkles.push({
-        col: Math.floor(Math.random() * cols),
-        row: Math.floor(Math.random() * rows),
+        col:  Math.floor(Math.random() * cols),
+        row:  Math.floor(Math.random() * rows),
         born: now,
+        type: 'ambient',
       })
-      // clean expired
-      const cutoff = now - SPARKLE_HOLD
-      while (sparkles.length > 0 && sparkles[0].born < cutoff) sparkles.shift()
+    }
+
+    function pruneSparkles(now: number) {
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const hold = sparkles[i].type === 'cursor' ? CURSOR_HOLD : AMBIENT_HOLD
+        if (now - sparkles[i].born > hold) sparkles.splice(i, 1)
+      }
     }
 
     function draw(now: number) {
@@ -53,13 +92,21 @@ export function DotGrid() {
       const cols = Math.ceil(canvas.width  / SPACING) + 2
       const rows = Math.ceil(canvas.height / SPACING) + 2
 
-      spawnSparkle(cols, rows, now)
+      spawnCursorSparkles(cols, rows, now)
+      spawnAmbientSparkle(cols, rows, now)
+      pruneSparkles(now)
 
-      // build sparkle lookup
-      const sparkleSet = new Set(sparkles.map(s => `${s.col},${s.row}`))
-      const sparkleAge = new Map<string, number>()
+      // Build per-cell sparkle state (keep highest intensity)
+      const sparkleMap = new Map<string, { intensity: number; type: 'cursor' | 'ambient' }>()
       for (const s of sparkles) {
-        sparkleAge.set(`${s.col},${s.row}`, (now - s.born) / SPARKLE_HOLD)
+        const hold      = s.type === 'cursor' ? CURSOR_HOLD : AMBIENT_HOLD
+        const age       = (now - s.born) / hold
+        const intensity = Math.sin(age * Math.PI)  // smooth 0→peak→0
+        const key       = `${s.col},${s.row}`
+        const prev      = sparkleMap.get(key)
+        if (!prev || intensity > prev.intensity) {
+          sparkleMap.set(key, { intensity, type: s.type })
+        }
       }
 
       for (let row = 0; row < rows; row++) {
@@ -85,27 +132,46 @@ export function DotGrid() {
           const x = baseX + shiftX
           const y = baseY + shiftY
 
-          // Sparkle check
-          const key = `${col},${row}`
-          const isSparkling = sparkleSet.has(key)
-          const age = sparkleAge.get(key) ?? 0
-          // arc: rises then fades
-          const sparkIntensity = isSparkling
-            ? Math.sin(age * Math.PI)
-            : 0
+          const sp             = sparkleMap.get(`${col},${row}`)
+          const sparkIntensity = sp?.intensity ?? 0
+          const isCursor       = sp?.type === 'cursor'
 
-          // Color blend: dark dot → warm gold near cursor + sparkle
-          const goldBlend = proximity * 0.7 + sparkIntensity * 0.9
-          const r = Math.round(10  + goldBlend * 215)  // 10 → 225
-          const g = Math.round(10  + goldBlend * 175)  // 10 → 185
-          const b = Math.round(10  + goldBlend * -10)  // 10 → 0
-          const a = 0.1 + proximity * 0.18 + sparkIntensity * 0.5
+          // Base: very dark subtle dot
+          let r = 10, g = 10, b = 10
+          let alpha  = 0.09
+          let radius = BASE_R
 
-          const radius = BASE_R + proximity * (NEAR_R - BASE_R) + sparkIntensity * 0.6
+          // Cursor proximity — grow + warm very slightly
+          if (proximity > 0) {
+            alpha  += proximity * 0.16
+            radius  = BASE_R + proximity * (NEAR_R - BASE_R)
+            r = Math.round(10 + proximity * 25)
+            g = Math.round(10 + proximity * 18)
+          }
+
+          // Sparkle overlay
+          if (sparkIntensity > 0) {
+            if (isCursor) {
+              // Brand yellow #FFD600 = (255, 214, 0)
+              const blend = sparkIntensity * 0.9
+              r = Math.round(r + blend * (255 - r))
+              g = Math.round(g + blend * (214 - g))
+              b = Math.round(b + blend * (0   - b))
+              alpha  = sparkIntensity
+              radius = BASE_R + sparkIntensity * (SPARKLE_R - BASE_R)
+            } else {
+              // Ambient: near-white faint pulse
+              r = Math.round(r + sparkIntensity * 55)
+              g = Math.round(g + sparkIntensity * 50)
+              b = Math.round(b + sparkIntensity * 40)
+              alpha  += sparkIntensity * 0.12
+              radius += sparkIntensity * 0.3
+            }
+          }
 
           ctx.beginPath()
-          ctx.arc(x, y, radius, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(${r},${g},${b},${a})`
+          ctx.arc(x, y, Math.max(0.5, radius), 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`
           ctx.fill()
         }
       }
