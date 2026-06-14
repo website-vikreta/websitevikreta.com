@@ -96,13 +96,13 @@ const ThreeScene = dynamic(() => import('@/components/ThreeScene'), {
   <BlogList />
 </Suspense>
 
-// Font loading — Geist
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
+// Font loading — Epilogue only
+import { Epilogue } from 'next/font/google'
+const epilogue = Epilogue({ variable: '--font-epilogue', subsets: ['latin'] })
 
 // In layout.tsx
-<html className={`${GeistSans.variable} ${GeistMono.variable}`}>
-// Use var(--font-geist-sans) and var(--font-geist-mono) in CSS
+<html className={epilogue.variable}>
+// Use font-sans Tailwind class or var(--font-epilogue) in CSS
 ```
 
 ## State Management

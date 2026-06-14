@@ -102,7 +102,7 @@ export function StatsCounters() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-[var(--section-y)] bg-white overflow-hidden"
+      className="relative py-[var(--section-y)] bg-(--color-bg) overflow-hidden"
       aria-label="Impact Statistics"
     >
       {/* Decorative background geometry */}

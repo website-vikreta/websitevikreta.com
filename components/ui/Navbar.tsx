@@ -101,7 +101,7 @@ export function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/92 backdrop-blur-[20px] border-b border-black/[0.08]'
+            ? 'bg-[#FAFAF7]/92 backdrop-blur-[20px] border-b border-black/[0.08]'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
@@ -255,7 +255,7 @@ export function Navbar() {
       {/* Mobile drawer */}
       <div
         id="mobile-drawer"
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[340px] bg-white border-l border-black/[0.06] flex flex-col lg:hidden transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[340px] bg-(--color-bg) border-l border-black/[0.06] flex flex-col lg:hidden transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
           mobileOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="dialog"

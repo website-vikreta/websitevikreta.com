@@ -17,7 +17,7 @@
 - [ ] Hover state follows standards
 - [ ] Keyboard accessible (interactive elements)
 - [ ] `next/image` if images present
-- [ ] Fonts reference `--font-geist-sans` or `--font-geist-mono` CSS variables
+- [ ] Font uses `font-sans` Tailwind class or `var(--font-epilogue)` — no hardcoded font families
 - [ ] GSAP has cleanup if animations present
 - [ ] `prefers-reduced-motion` respected
 

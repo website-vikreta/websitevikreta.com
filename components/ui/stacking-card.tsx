@@ -46,14 +46,14 @@ export function StackingCard({
         }}
         className={`flex flex-col relative -top-[25%] h-[450px] w-[70%] rounded-lg p-10 origin-top ${borderClass}`}
       >
-        <h2 className={`font-[family-name:var(--font-geist-sans)] text-3xl md:text-4xl text-center font-semibold ${textColor}`}>
+        <h2 className={`font-sans text-3xl md:text-4xl text-center font-semibold ${textColor}`}>
           {title}
         </h2>
 
         <div className="flex h-full mt-5 gap-10">
           {/* Description (left side) */}
           <div className="w-[40%] relative top-[10%]">
-            <p className={`font-[family-name:var(--font-geist-mono)] text-sm md:text-base leading-relaxed ${textColor}`}>
+            <p className={`font-sans text-sm md:text-base leading-relaxed ${textColor}`}>
               {description}
             </p>
           </div>

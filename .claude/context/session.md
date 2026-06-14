@@ -10,10 +10,10 @@ Homepage — Navbar + HeroSection + Button component done. Next: remaining homep
 
 ## Locked Decisions
 <!-- Things decided and not up for debate again -->
-- Palette: **Light theme** — White bg + Black text + `#FFD600` accent (overrides original dark-bg spec)
+- Palette: **Light theme** — Warm off-white bg (`#FAFAF7`) + near-black text (`#121212`) + `#FFD600` accent. Surface white is `#FFFFFF` (elevated only). Border: `#E8E8E8`. (overrides original dark-bg spec)
 - Framework: Next.js (App Router)
 - Animation: GSAP (ScrollTrigger registered in lib/gsap/index.ts)
-- Font: Geist Sans + Geist Mono (locked)
+- Font: Epilogue only — all type (display, body, UI, labels)
 - Target emotion: Relieved
 - Button: arrow-dots interaction with variants (primary/ghost/accent, sizes sm/md/lg)
 
@@ -23,7 +23,7 @@ _None_
 
 ## Open Questions
 <!-- Things that need answers before proceeding -->
-- Font pairing: Geist Sans + Geist Mono locked (from code standards)
+- Font: Epilogue (locked — single typeface, all weights)
 - CMS choice for blog (Contentful / Sanity / MDX)?
 
 ## Pages Completed

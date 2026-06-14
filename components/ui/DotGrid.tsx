@@ -2,22 +2,22 @@
 
 import { useRef, useEffect } from 'react'
 
-const SPACING  = 20
+const SPACING  = 14
 const BASE_R   = 1
 const NEAR_R   = 1.8
 const INFLUENCE = 200
 const MAX_SHIFT = 14
 
-// Cursor-zone accent flashes
-const CURSOR_INTERVAL = 500   // ms between batches
-const CURSOR_HOLD     = 1400  // lifetime per sparkle
-const CURSOR_COUNT    = 3     // dots lit per batch
+// Cursor sparkles — random dots turn full yellow every cycle
+const CURSOR_INTERVAL = 800    // ms between batches
+const CURSOR_HOLD     = 1000   // lifetime — cycles cleanly with interval
+const CURSOR_COUNT    = 20     // dots per batch — dense yellow field
 
-// Ambient whole-grid flashes (very rare, very subtle)
+const SPARKLE_R = 3.5          // larger = sharper, more prominent dot
+
+// Ambient whole-grid twinkles
 const AMBIENT_INTERVAL = 2000
 const AMBIENT_HOLD     = 1400
-
-const SPARKLE_R = 2.5  // peak radius for yellow cursor dots
 
 interface Sparkle {
   col:  number
@@ -54,10 +54,10 @@ export function DotGrid() {
       lastCursorSpawn = now
       let count = 0
       let tries = 0
-      while (count < CURSOR_COUNT && tries < 50) {
+      while (count < CURSOR_COUNT && tries < 100) {
         tries++
         const angle = Math.random() * Math.PI * 2
-        const r     = Math.random() * INFLUENCE * 0.85
+        const r     = Math.random() * INFLUENCE          // full influence zone
         const col   = Math.round((mouseX + Math.cos(angle) * r) / SPACING)
         const row   = Math.round((mouseY + Math.sin(angle) * r) / SPACING)
         if (col >= 0 && col < cols && row >= 0 && row < rows) {
@@ -96,12 +96,12 @@ export function DotGrid() {
       spawnAmbientSparkle(cols, rows, now)
       pruneSparkles(now)
 
-      // Build per-cell sparkle state (keep highest intensity)
+      // Build per-cell sparkle state (highest intensity wins)
       const sparkleMap = new Map<string, { intensity: number; type: 'cursor' | 'ambient' }>()
       for (const s of sparkles) {
         const hold      = s.type === 'cursor' ? CURSOR_HOLD : AMBIENT_HOLD
         const age       = (now - s.born) / hold
-        const intensity = Math.sin(age * Math.PI)  // smooth 0→peak→0
+        const intensity = Math.sin(age * Math.PI)   // 0 → 1 → 0
         const key       = `${s.col},${s.row}`
         const prev      = sparkleMap.get(key)
         if (!prev || intensity > prev.intensity) {
@@ -136,12 +136,11 @@ export function DotGrid() {
           const sparkIntensity = sp?.intensity ?? 0
           const isCursor       = sp?.type === 'cursor'
 
-          // Base: very dark subtle dot
           let r = 10, g = 10, b = 10
           let alpha  = 0.09
           let radius = BASE_R
 
-          // Cursor proximity — grow + warm very slightly
+          // Proximity — subtle warm grow
           if (proximity > 0) {
             alpha  += proximity * 0.16
             radius  = BASE_R + proximity * (NEAR_R - BASE_R)
@@ -152,15 +151,14 @@ export function DotGrid() {
           // Sparkle overlay
           if (sparkIntensity > 0) {
             if (isCursor) {
-              // Brand yellow #FFD600 = (255, 214, 0)
-              const blend = sparkIntensity * 0.9
-              r = Math.round(r + blend * (255 - r))
-              g = Math.round(g + blend * (214 - g))
-              b = Math.round(b + blend * (0   - b))
-              alpha  = sparkIntensity
-              radius = BASE_R + sparkIntensity * (SPARKLE_R - BASE_R)
+              // Pure #FFD600 — full opacity, sharp, prominent
+              r      = 255
+              g      = 214
+              b      = 0
+              alpha  = sparkIntensity          // peaks at 1.0
+              radius = SPARKLE_R               // fixed large radius — no blur scaling
             } else {
-              // Ambient: near-white faint pulse
+              // Ambient: faint near-white pulse
               r = Math.round(r + sparkIntensity * 55)
               g = Math.round(g + sparkIntensity * 50)
               b = Math.round(b + sparkIntensity * 40)

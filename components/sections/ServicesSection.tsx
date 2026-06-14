@@ -16,13 +16,13 @@ export function ServicesSection() {
 
   return (
     <ReactLenis root>
-      <div ref={container} className="relative bg-white">
+      <div ref={container} className="relative bg-(--color-bg)">
         {/* Section Header — outside sticky scroll, above cards */}
         <div className="relative z-10 py-20 md:py-32 flex flex-col items-center justify-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 font-[family-name:var(--font-geist-mono)] mb-4">
+          <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 font-sans mb-4">
             Services
           </p>
-          <h2 className="font-[family-name:var(--font-geist-sans)] font-semibold text-4xl md:text-6xl text-center text-neutral-900">
+          <h2 className="font-sans font-semibold text-4xl md:text-6xl text-center text-neutral-900">
             What we build for you
           </h2>
         </div>
@@ -44,8 +44,8 @@ export function ServicesSection() {
         })}
 
         {/* CTA — after cards, inside same container */}
-        <div className="relative z-10 py-24 flex flex-col items-center justify-center gap-8 bg-white">
-          <h3 className="font-[family-name:var(--font-geist-sans)] font-semibold text-3xl md:text-4xl text-center text-neutral-900">
+        <div className="relative z-10 py-24 flex flex-col items-center justify-center gap-8 bg-(--color-bg)">
+          <h3 className="font-sans font-semibold text-3xl md:text-4xl text-center text-neutral-900">
             Ready to transform your business?
           </h3>
           <ArrowDotsButton

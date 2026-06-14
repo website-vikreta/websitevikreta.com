@@ -1,17 +1,22 @@
 # Brand — Website Vikreta
 
 ## Palette
-| Role | Value | Usage |
-|------|-------|-------|
-| Primary | `#000000` | Backgrounds, dominant surfaces |
-| Primary text | `#FFFFFF` | Headlines, body on dark |
-| Accent | `#FFD600` | Highlights, hover states, key moments |
-| Neutral | `#111111` | Card backgrounds, subtle separation |
-| Muted | `#444444` | Secondary text, metadata |
+| Role | Token | Value | Usage |
+|------|-------|-------|-------|
+| Background | `--color-bg` | `#FAFAF7` | Page background — warm off-white |
+| Surface | `--color-surface` | `#FFFFFF` | Cards, elevated containers |
+| Text primary | `--color-text` | `#121212` | Headlines, body copy |
+| Text secondary | `--color-text-muted` | `#525252` | Subheads, descriptions |
+| Text faint | `--color-text-faint` | `#A0A0A0` | Metadata, placeholders |
+| Accent | `--color-accent` | `#FFD600` | Highlights, hover states, key moments |
+| Accent hover | `--color-accent-dark` | `#F3CB00` | Accent on hover / pressed |
+| Border | `--color-border` | `#E8E8E8` | Default borders, dividers |
+| Border strong | `--color-border-strong` | `#D4D4D4` | Focused, elevated borders |
 
-**Rule:** Accent `#FFD600` is used sparingly across the **entire website — maximum 10% of total visual surface**. The remaining 90%+ is strictly black, white, and greys. Yellow should feel like a surprise, not a pattern. When in doubt, don't use it.
-**Rule:** No gradients unless they are black-to-black with opacity. No color gradients.
+**Rule:** Accent `#FFD600` is used sparingly across the **entire website — maximum 10% of total visual surface**. Yellow should feel like a surprise, not a pattern. When in doubt, don't use it.
+**Rule:** No gradients unless they are black-to-transparent. No color gradients.
 **Rule:** White space is aggressive. Let it breathe.
+**Rule:** Background is warm `#FAFAF7`, not pure white. Pure white (`#FFFFFF`) is reserved for elevated surfaces only.
 
 ---
 
@@ -20,7 +25,7 @@
 - **Reveal behavior:** Text earns its place. Nothing appears without motion.
 - **Hierarchy:** Size contrast is extreme. H1 vs body should feel like different worlds.
 - **Font mood:** Modern grotesque. Clean. Editorial. Not playful.
-- **Font:** Geist (body + UI) and Geist Mono (code, labels, metadata). Both by Vercel. No other typefaces.
+- **Font:** Epilogue only. All type — display, body, UI, labels, metadata. No other typefaces.
 
 ---
 

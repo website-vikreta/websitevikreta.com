@@ -6,7 +6,7 @@ import { RollingTextList } from '@/components/ui/rolling-list'
 export function ProcessSection() {
   return (
     <section
-      className="relative py-[var(--section-y)] bg-white overflow-hidden"
+      className="relative py-[var(--section-y)] bg-(--color-bg) overflow-hidden"
       aria-label="Process"
     >
       {/* Decorative background geometry */}

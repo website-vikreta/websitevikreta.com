@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-epilogue);
+  --font-mono: var(--font-epilogue);
 }
 
 /* ─── Reset ───────────────────────────────────────────────────── */
@@ -16,17 +16,18 @@
 
 /* ─── Design Tokens ───────────────────────────────────────────── */
 :root {
-  /* Light theme */
-  --color-bg:            #FFFFFF;
-  --color-bg-subtle:     #F7F7F7;
-  --color-bg-muted:      #EFEFEF;
-  --color-text:          #0A0A0A;
-  --color-text-muted:    #5C5C5C;
+  /* Light theme — warm off-white palette */
+  --color-bg:            #FAFAF7;
+  --color-surface:       #FFFFFF;
+  --color-bg-subtle:     #FFFFFF;
+  --color-bg-muted:      #F0F0ED;
+  --color-text:          #121212;
+  --color-text-muted:    #525252;
   --color-text-faint:    #A0A0A0;
   --color-accent:        #FFD600;
-  --color-accent-dark:   #C4A600;
-  --color-border:        rgba(0, 0, 0, 0.08);
-  --color-border-strong: rgba(0, 0, 0, 0.16);
+  --color-accent-dark:   #F3CB00;
+  --color-border:        #E8E8E8;
+  --color-border-strong: #D4D4D4;
 
   /* Typography */
   --text-display:     clamp(3.25rem, 9vw, 8.5rem);
@@ -108,8 +109,10 @@ body {
 .word-wrapper {
   display: inline-block;
   overflow: hidden;
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-top: 0.08em;
+  margin-top: -0.08em;
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
   vertical-align: bottom;
 }
 

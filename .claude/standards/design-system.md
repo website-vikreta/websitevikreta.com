@@ -3,20 +3,23 @@
 ## Color Tokens
 ```css
 :root {
-  --color-bg:         #000000;
-  --color-bg-subtle:  #111111;
-  --color-bg-muted:   #1A1A1A;
-  --color-text:       #FFFFFF;
-  --color-text-muted: #888888;
-  --color-text-faint: #444444;
-  --color-accent:     #FFD600;
-  --color-border:     rgba(255,255,255,0.08);
-  --color-border-strong: rgba(255,255,255,0.16);
+  /* Light theme — warm off-white palette */
+  --color-bg:            #FAFAF7;   /* page background */
+  --color-surface:       #FFFFFF;   /* cards, elevated containers */
+  --color-bg-subtle:     #FFFFFF;   /* same as surface */
+  --color-bg-muted:      #F0F0ED;   /* muted warm neutral */
+  --color-text:          #121212;   /* primary text */
+  --color-text-muted:    #525252;   /* secondary text */
+  --color-text-faint:    #A0A0A0;   /* metadata, placeholders */
+  --color-accent:        #FFD600;   /* yellow — use sparingly */
+  --color-accent-dark:   #F3CB00;   /* yellow on hover */
+  --color-border:        #E8E8E8;   /* default borders */
+  --color-border-strong: #D4D4D4;   /* focused/elevated borders */
 }
 ```
 
 ## Typography Scale
-> Font: **Geist** (sans) for all UI and body. **Geist Mono** for code snippets, labels, metadata tags. Install via `npm i geist`. Both are variable fonts — no extra weight loading needed.
+> Font: **Epilogue** only. All type — display headlines, body, UI, labels, metadata. Loaded via `next/font/google`. Single typeface, all weights 100–900.
 ```css
 :root {
   /* Display — Hero headlines only */
