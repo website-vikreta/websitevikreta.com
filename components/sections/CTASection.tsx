@@ -1,82 +1,70 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'motion/react'
-import { DotGrid } from '@/components/ui/DotGrid'
-import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
+import { DotGrid } from '@/components/ui/DotGrid'
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
-  },
+interface CTAProps {
+  badge?: {
+    text: string
+  }
+  title: string
+  description?: string
+  action: {
+    text: string
+    href: string
+  }
+  withGlow?: boolean
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut',
-    },
-  },
-}
-
-export function CTASection() {
+export function CTASection({
+  badge,
+  title,
+  description,
+  action,
+  withGlow = true,
+}: CTAProps) {
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white py-20 md:py-32">
+    <section className="relative overflow-hidden bg-white pt-0 md:pt-0">
       {/* DotGrid background */}
       <div className="absolute inset-0">
         <DotGrid />
       </div>
 
       {/* Content */}
-      <motion.div
-        className="relative z-10 w-full max-w-2xl mx-auto px-4 flex flex-col items-center text-center"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
+      <div className="relative z-10 mx-auto flex w-full max-w-container flex-col items-center gap-6 px-8 py-8 text-center sm:gap-6 md:py-12">
         {/* Badge */}
-        <motion.div variants={itemVariants}>
-          <Badge text="Ready when you are" />
-        </motion.div>
+        {badge && (
+          <Badge text={badge.text} />
+        )}
 
         {/* Title */}
-        <motion.h2
-          className="text-4xl md:text-5xl font-bold mt-6 mb-4 text-neutral-900"
-          variants={itemVariants}
-        >
-          Let's build something intelligent together
-        </motion.h2>
+        <h2 className="text-3xl font-semibold sm:text-5xl">
+          {title}
+        </h2>
 
         {/* Description */}
-        <motion.p
-          className="text-lg text-neutral-600 mb-8 leading-relaxed"
-          variants={itemVariants}
-        >
-          Tell us what you're working on — we'll show you how AI-first development can get you there faster.
-        </motion.p>
+        {description && (
+          <p className="text-muted-foreground">
+            {description}
+          </p>
+        )}
 
-        {/* CTA Button */}
-        <motion.div variants={itemVariants}>
-          <Button
-            href="/contact"
-            variant="accent"
-            size="lg"
-          >
-            Book a Call
-          </Button>
-        </motion.div>
-      </motion.div>
+        {/* Action Button */}
+        <Button
+          href={action.href}
+          variant="accent"
+          size="lg"
+        >
+          {action.text}
+        </Button>
+
+        {/* Glow Effect */}
+        {withGlow && (
+          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-b from-yellow-400/20 to-transparent opacity-50" />
+        )}
+      </div>
     </section>
   )
 }

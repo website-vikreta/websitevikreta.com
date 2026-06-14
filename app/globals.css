@@ -23,6 +23,10 @@
   --color-border:        rgba(0, 0, 0, 0.08);
   --color-border-strong: rgba(0, 0, 0, 0.16);
 
+  /* Brand colors as HSL triplets for gradient/glow effects */
+  --brand: 48 100% 50%;
+  --brand-foreground: 48 100% 65%;
+
   /* Typography */
   --text-display:     clamp(3.25rem, 9vw, 8.5rem);
   --leading-display:  0.92;

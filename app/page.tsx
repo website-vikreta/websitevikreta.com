@@ -15,7 +15,16 @@ export default function Home() {
       <ServicesSection />
       <FeaturedWorkSection />
       <TechnologiesSection />
-      <CTASection />
+      <CTASection
+        badge={{ text: "Ready when you are" }}
+        title="Let's build something intelligent together"
+        description="Tell us what you're working on — we'll show you how AI-first development can get you there faster."
+        action={{
+          text: "Book a Call",
+          href: "/contact"
+        }}
+        withGlow={true}
+      />
     </main>
   )
 }
