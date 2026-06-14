@@ -20,7 +20,6 @@ export function HeroSection() {
   const wordInnerRefs = useRef<(HTMLSpanElement | null)[]>([])
   const subheadRef   = useRef<HTMLParagraphElement>(null)
   const ctaRef       = useRef<HTMLDivElement>(null)
-  const scrollIndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -34,7 +33,7 @@ export function HeroSection() {
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
         gsap.set(
-          [labelRef.current, subheadRef.current, ctaRef.current, scrollIndRef.current],
+          [labelRef.current, subheadRef.current, ctaRef.current],
           { opacity: 1 },
         )
         gsap.set(wordEls, { y: '0%' })
@@ -44,7 +43,7 @@ export function HeroSection() {
       // Initial states — set before first paint to avoid flash
       gsap.set(labelRef.current, { opacity: 0, y: 14 })
       gsap.set(wordEls, { y: '110%' })
-      gsap.set([subheadRef.current, ctaRef.current, scrollIndRef.current], {
+      gsap.set([subheadRef.current, ctaRef.current], {
         opacity: 0,
         y: 18,
       })
@@ -91,17 +90,6 @@ export function HeroSection() {
           },
           '-=0.45',
         )
-      // 5. Scroll indicator last
-        .to(
-          scrollIndRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            ease: 'power2.out',
-          },
-          '-=0.2',
-        )
     }, sectionRef)
 
     return () => ctx.revert()
@@ -124,7 +112,7 @@ export function HeroSection() {
         <span
           ref={labelRef}
           data-hero-anim
-          className="inline-flex items-center gap-2 border border-(--color-border) px-3 py-1.5 rounded-sm mb-6"
+          className="inline-flex items-center gap-2 border border-(--color-border) bg-white px-3 py-1.5 rounded-sm mb-6"
         >
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-(--color-accent)" />
           <span className="font-mono text-meta-label tracking-(--tracking-meta) text-(--color-text) uppercase">
@@ -134,7 +122,7 @@ export function HeroSection() {
 
         {/* Headline — display scale, word-masked reveal */}
         <h1
-          className="text-display font-bold text-(--color-text) font-sans mb-12 lg:mb-14"
+          className="text-display font-semibold text-(--color-text) font-sans mb-12 lg:mb-14"
           aria-label={HEADLINE}
         >
           {WORDS.map((word, i) => (
@@ -160,7 +148,8 @@ export function HeroSection() {
           data-hero-anim
           className="text-body-lg text-(--color-text-muted) max-w-lg leading-relaxed mb-10 lg:mb-12"
         >
-          Website Vikreta is a premium AI agency that listens first, then builds — websites, apps, and the smart systems that make everything work faster.
+          Website Vikreta is a premium AI agency that listens first, 
+          then builds websites, apps, and the smart systems that make everything work faster.
         </p>
 
         {/* CTAs */}
@@ -178,18 +167,6 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* ── Scroll indicator ─────────────────────────────────── */}
-      <div
-        ref={scrollIndRef}
-        data-hero-anim
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5"
-        aria-hidden="true"
-      >
-        <div className="w-px h-9 bg-black/12" />
-        <span className="font-mono text-[9px] text-(--color-text-faint) tracking-[0.22em] uppercase">
-          Scroll
-        </span>
-      </div>
     </section>
   )
 }

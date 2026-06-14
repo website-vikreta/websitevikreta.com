@@ -28,22 +28,9 @@ const NAV_ITEMS: NavItem[] = [
       { label: 'AI & Automation', href: '/services/ai-automation' },
     ],
   },
-  {
-    label: 'Work',
-    dropdown: [
-      { label: 'Case Studies', href: '/work/case-studies' },
-      { label: 'Industries', href: '/work/industries' },
-    ],
-  },
-  {
-    label: 'About',
-    dropdown: [
-      { label: 'Our Story', href: '/about' },
-      { label: 'Team', href: '/about/team' },
-    ],
-  },
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
 ]
 
 function isItemActive(item: NavItem, pathname: string): boolean {
@@ -51,7 +38,7 @@ function isItemActive(item: NavItem, pathname: string): boolean {
     return item.dropdown.some((d) => pathname.startsWith(d.href))
   }
   if (item.href) {
-    return pathname === item.href
+    return pathname === item.href || pathname.startsWith(item.href + '/')
   }
   return false
 }
@@ -89,7 +76,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* Skip link */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] btn btn-primary btn-sm"
@@ -97,7 +83,6 @@ export function Navbar() {
         Skip to content
       </a>
 
-      {/* Header */}
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
@@ -106,7 +91,9 @@ export function Navbar() {
         }`}
       >
         <nav
-          className="container flex items-center justify-between h-24"
+          className={`container flex items-center justify-between transition-all duration-300 ${
+            scrolled ? 'h-14' : 'h-20'
+          }`}
           aria-label="Main navigation"
         >
           {/* Logo */}
@@ -118,14 +105,21 @@ export function Navbar() {
             <Image
               src="/logo/websitevikreta-logo-horizontal.svg"
               alt="Website Vikreta"
-              width={200}
-              height={60}
+              width={180}
+              height={54}
               priority
             />
           </Link>
 
-          {/* Desktop nav */}
-          <ul className="hidden lg:flex items-center gap-12 list-none" role="list">
+          {/* Desktop nav — hidden at top, visible on scroll */}
+          <ul
+            className={`hidden lg:flex items-center gap-10 list-none transition-all duration-300 ${
+              scrolled
+                ? 'opacity-100 pointer-events-auto translate-y-0'
+                : 'opacity-0 pointer-events-none -translate-y-1'
+            }`}
+            role="list"
+          >
             {NAV_ITEMS.map((item) => (
               <li
                 key={item.label}
@@ -204,11 +198,8 @@ export function Navbar() {
             ))}
           </ul>
 
-          {/* Desktop CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Button href="/work" variant="ghost" size="sm">
-              Our Work
-            </Button>
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center">
             <Button href="/contact" variant="primary" size="sm" showArrow>
               Get a Quote
             </Button>
@@ -262,8 +253,7 @@ export function Navbar() {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        {/* Drawer header */}
-        <div className="flex items-center justify-between h-24 px-6 border-b border-black/[0.06] flex-shrink-0">
+        <div className="flex items-center justify-between h-20 px-6 border-b border-black/[0.06] flex-shrink-0">
           <Link href="/" onClick={closeMobileMenu} className="flex items-center">
             <Image
               src="/logo/websitevikreta-logo-horizontal.svg"
@@ -289,7 +279,6 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Nav links */}
         <nav className="flex-1 overflow-y-auto px-6 py-5" aria-label="Mobile navigation">
           <ul className="list-none space-y-0.5">
             {NAV_ITEMS.map((item) => (
@@ -360,11 +349,7 @@ export function Navbar() {
           </ul>
         </nav>
 
-        {/* Drawer CTAs */}
         <div className="flex flex-col gap-3 px-6 py-6 border-t border-black/[0.06] flex-shrink-0">
-          <Button href="/work" variant="ghost" className="w-full justify-center">
-            Our Work
-          </Button>
           <Button href="/contact" variant="primary" className="w-full justify-center" showArrow>
             Get a Quote
           </Button>

@@ -56,6 +56,7 @@ export function CTASection({
           href={action.href}
           variant="accent"
           size="lg"
+          showArrow
         >
           {action.text}
         </Button>

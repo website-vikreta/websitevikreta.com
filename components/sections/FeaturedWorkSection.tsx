@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'motion/react'
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ExpandingCards } from '@/components/ui/expanding-cards'
-import { ArrowDotsButton } from '@/components/ui/arrow-dots-button'
+import { Button } from '@/components/ui/Button'
 import { FEATURED_WORK } from '@/config/featured-work'
 
 const headingVariants = {
@@ -58,10 +58,9 @@ export function FeaturedWorkSection() {
           variants={buttonVariants}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
         >
-          <ArrowDotsButton
-            label="Explore More"
-            onClick={() => (window.location.href = '/work')}
-          />
+          <Button href="/work" variant="primary" size="lg" showArrow>
+            Explore More
+          </Button>
         </motion.div>
       </div>
     </section>

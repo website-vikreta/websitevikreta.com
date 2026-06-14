@@ -1,98 +1,100 @@
 'use client'
 
-import React, { useRef, useEffect, useState } from 'react'
-import { NetworkGeometry } from '@/components/ui/NetworkGeometry'
-import { formatLargeNumber } from '@/lib/utils/formatNumber'
+import { useRef, useEffect, useState } from 'react'
+import { Infinity as InfinityIcon } from 'lucide-react'
+import { DotGrid } from '@/components/ui/DotGrid'
 import { gsap } from '@/lib/gsap'
 
 interface StatItem {
   id: number
-  value: number
+  value: number | null
   suffix: string
   label: string
+  isInfinity?: boolean
 }
 
 const STATS: StatItem[] = [
-  { id: 1, value: 12000, suffix: '+', label: 'Agents Deployed' },
-  { id: 2, value: 4800000, suffix: '+', label: 'Tasks Automated' },
-  { id: 3, value: 250000, suffix: '+', label: 'Hours Saved' },
-  { id: 4, value: 300, suffix: '+', label: 'Enterprise Customers' },
+  { id: 1, value: 5,    suffix: '+',  label: 'Years building for businesses across the globe' },
+  { id: 2, value: 68,   suffix: '+',  label: 'Projects delivered — Web, apps, automation' },
+  { id: 3, value: 6360,    suffix: 'hrs', label: 'Since we went AI-first and haven\'t looked back' },
+  { id: 4, value: null, suffix: '',   label: 'Tools we can use — no limitation, only solutions', isInfinity: true },
 ]
 
-interface CounterState {
-  [key: number]: number
-}
-
 export function StatsCounters() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const counterRefs = useRef<(HTMLDivElement | null)[]>([])
-  const labelRefs = useRef<(HTMLParagraphElement | null)[]>([])
-  const [counters, setCounters] = useState<CounterState>(
-    STATS.reduce((acc, stat) => ({ ...acc, [stat.id]: 0 }), {}),
+  const sectionRef  = useRef<HTMLElement>(null)
+  const headingRef  = useRef<HTMLDivElement>(null)
+  const cardRefs    = useRef<(HTMLDivElement | null)[]>([])
+
+  const [counters, setCounters] = useState<Record<number, number>>(
+    STATS.reduce((acc, s) => ({ ...acc, [s.id]: 0 }), {}),
   )
 
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const ctx = gsap.context(() => {
-      // Initialize states
-      labelRefs.current.forEach((el) => {
-        if (el) gsap.set(el, { opacity: 0, y: 12 })
-      })
-
       if (prefersReducedMotion) {
-        labelRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { opacity: 1, y: 0 })
-        })
-        STATS.forEach((stat, idx) => {
-          setCounters((prev) => ({ ...prev, [stat.id]: stat.value }))
+        STATS.forEach((s) => {
+          if (!s.isInfinity) setCounters((p) => ({ ...p, [s.id]: s.value ?? 0 }))
         })
         return
       }
 
-      // Create timeline for counter animations
+      // Initial hidden state
+      gsap.set(headingRef.current, { opacity: 0, y: 20 })
+      gsap.set(cardRefs.current, { opacity: 0, y: 24 })
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top 75%',
+          start: 'top 72%',
           once: true,
         },
       })
 
-      // Animate each counter
+      // 1. Heading reveals
+      tl.to(headingRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+      })
+
+      // 2. Cards reveal with stagger — all overlap, don't wait for prev to finish
+      const CARDS_START = 0.45  // offset from timeline start (heading takes 0.6s)
+      const STAGGER     = 0.15  // gap between each card start
+
       STATS.forEach((stat, idx) => {
-        tl.to(
-          counterRefs.current[idx],
-          {
-            duration: 1.5,
-            ease: 'power2.out',
-            onUpdate: function () {
-              const progress = this.progress()
-              const current = Math.floor(stat.value * progress)
-              setCounters((prev) => ({
-                ...prev,
-                [stat.id]: current,
-              }))
-            },
-          },
-          idx === 0 ? 0 : '-=1.2',
-        )
+        const cardEl  = cardRefs.current[idx]
+        const startAt = CARDS_START + idx * STAGGER
 
         tl.to(
-          labelRefs.current[idx],
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-          },
-          '-=0.5',
+          cardEl,
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          startAt,
         )
+
+        if (!stat.isInfinity && stat.value !== null) {
+          const proxy = { val: 0 }
+          tl.to(
+            proxy,
+            {
+              val: stat.value,
+              duration: 1.4,
+              ease: 'power2.out',
+              onUpdate() {
+                setCounters((p) => ({ ...p, [stat.id]: Math.floor(proxy.val) }))
+              },
+              onComplete() {
+                setCounters((p) => ({ ...p, [stat.id]: stat.value! }))
+              },
+            },
+            startAt, // counter starts exactly when its card reveals
+          )
+        }
       })
     }, section)
 
@@ -102,50 +104,45 @@ export function StatsCounters() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-[var(--section-y)] bg-(--color-bg) overflow-hidden"
+      className="relative pt-8 pb-16 md:pt-12 md:pb-20 bg-(--color-bg) overflow-hidden"
       aria-label="Impact Statistics"
     >
-      {/* Decorative background geometry */}
-      <NetworkGeometry />
+      <DotGrid />
 
-      {/* Content */}
       <div className="container relative z-10">
-        {/* Section header – optional, can be removed or styled */}
-        <div className="mb-16 md:mb-20">
+        <div ref={headingRef} className="mb-10 md:mb-12">
           <h2 className="text-h2 font-bold text-[var(--color-text)]">
             The Impact We&rsquo;ve Delivered
           </h2>
         </div>
 
-        {/* Stats grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
           {STATS.map((stat, idx) => (
             <div
               key={stat.id}
-              className="flex flex-col items-start"
+              ref={(el) => { cardRefs.current[idx] = el }}
+              className="flex flex-col border-l border-[var(--color-border)] pl-5 pr-8 py-2"
               role="region"
-              aria-label={`${stat.label}: ${counters[stat.id] || 0}${stat.suffix}`}
+              aria-label={stat.isInfinity ? `${stat.label}: unlimited` : `${stat.label}: ${stat.value}${stat.suffix}`}
             >
-              {/* Counter value */}
-              <div
-                ref={(el) => {
-                  counterRefs.current[idx] = el
-                }}
-                className="text-5xl md:text-6xl font-bold text-[var(--color-text)] font-mono leading-none mb-1"
-              >
-                {formatLargeNumber(counters[stat.id])}
-                <span className="text-3xl md:text-4xl ml-1 inline-block">
-                  {stat.suffix}
-                </span>
+              {/* Value */}
+              <div className="font-bold text-[var(--color-text)] font-mono leading-none mb-2 flex items-center h-12 md:h-[3.75rem]">
+                {stat.isInfinity ? (
+                  <InfinityIcon
+                    className="w-12 h-12 md:w-[3.75rem] md:h-[3.75rem] text-[var(--color-text)]"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <span className="text-5xl md:text-6xl">
+                    {counters[stat.id]}
+                    <span className="text-3xl md:text-4xl ml-1">{stat.suffix}</span>
+                  </span>
+                )}
               </div>
 
               {/* Label */}
-              <p
-                ref={(el) => {
-                  labelRefs.current[idx] = el
-                }}
-                className="text-[var(--color-text-muted)] text-sm md:text-base leading-relaxed max-w-xs"
-              >
+              <p className="text-[var(--color-text-muted)] text-sm md:text-base leading-relaxed">
                 {stat.label}
               </p>
             </div>

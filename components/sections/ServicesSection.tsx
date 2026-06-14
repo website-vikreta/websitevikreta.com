@@ -4,7 +4,7 @@ import React, { useRef } from 'react'
 import { useScroll } from 'motion/react'
 import { ReactLenis } from 'lenis/react'
 import { StackingCard } from '@/components/ui/stacking-card'
-import { ArrowDotsButton } from '@/components/ui/arrow-dots-button'
+import { Button } from '@/components/ui/Button'
 import { SERVICES } from '@/config/services'
 
 export function ServicesSection() {
@@ -48,10 +48,9 @@ export function ServicesSection() {
           <h3 className="font-sans font-semibold text-3xl md:text-4xl text-center text-neutral-900">
             Ready to transform your business?
           </h3>
-          <ArrowDotsButton
-            label="Book a Call"
-            onClick={() => (window.location.href = '/contact')}
-          />
+          <Button href="/contact" variant="primary" size="lg" showArrow>
+            Book a Call
+          </Button>
         </div>
       </div>
     </ReactLenis>

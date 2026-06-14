@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-epilogue);
-  --font-mono: var(--font-epilogue);
+  --font-sans: var(--font-utile);
+  --font-mono: var(--font-utile);
 }
 
 /* ─── Reset ───────────────────────────────────────────────────── */
@@ -68,7 +68,7 @@ html { scroll-behavior: smooth; }
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-utile), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -163,6 +163,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0;
+    /* gap handled by .btn-icon margin-left */
     font-size: 0.9375rem;
     font-weight: 500;
     line-height: 1;
@@ -174,7 +175,6 @@ body {
     border: 1px solid transparent;
     transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     position: relative;
-    overflow: hidden;
   }
 
   /* Sizes — padding lives in Button.tsx as Tailwind utilities (layer: utilities > components)
@@ -214,63 +214,43 @@ body {
     color: #ffffff;
   }
 
-  /* ── Arrow-Dots interaction ──────────────────────────── */
-  .btn-arrow-dots {
-    gap: 0;
+  /* ── Slot-machine char animation ────────────────────── */
+  @keyframes slot-char-up {
+    0%   { transform: translateY(0); }
+    42%  { transform: translateY(-115%); }
+    43%  { transform: translateY(115%); }
+    100% { transform: translateY(0); }
   }
 
-  .btn-arrow-label {
-    display: inline-block;
-  }
-
-  .btn-arrow-wrap {
+  .slot-char-wrap {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
-    margin-left: 8px;
-    flex-shrink: 0;
+    overflow: hidden;
+    height: 1.05em;
   }
 
-  .btn-arrow-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
-  }
-
-  .btn-arrow-dots:hover .btn-arrow-icon {
-    transform: translateX(4px);
-  }
-
-  .btn-dots {
-    display: inline-flex;
-    gap: 2.5px;
-    align-items: center;
-    opacity: 0;
-    transform: translateX(-8px);
-    transition: opacity 0.22s ease 0.06s, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1) 0.06s;
-  }
-
-  .btn-arrow-dots:hover .btn-dots {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .btn-dot {
+  .slot-char {
     display: block;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: currentColor;
     flex-shrink: 0;
+    will-change: transform;
   }
 
-  .btn-dot:nth-child(1) { opacity: 1; }
-  .btn-dot:nth-child(2) { opacity: 0.5; }
-  .btn-dot:nth-child(3) { opacity: 0.22; }
+  .btn:hover .slot-char {
+    animation: slot-char-up 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--char-i) * 0.025s);
+  }
+
+  /* ── Button label + icon ────────────────────────────── */
+  .btn-label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .btn-icon {
+    display: block;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
 
   /* ── Nav Link ─────────────────────────────────────────── */
   .nav-link {

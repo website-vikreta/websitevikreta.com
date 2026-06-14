@@ -2,29 +2,11 @@
 
 import { useRef, useEffect } from 'react'
 
-const SPACING  = 14
-const BASE_R   = 1
-const NEAR_R   = 1.8
-const INFLUENCE = 200
-const MAX_SHIFT = 14
-
-// Cursor sparkles — random dots turn full yellow every cycle
-const CURSOR_INTERVAL = 800    // ms between batches
-const CURSOR_HOLD     = 1000   // lifetime — cycles cleanly with interval
-const CURSOR_COUNT    = 20     // dots per batch — dense yellow field
-
-const SPARKLE_R = 3.5          // larger = sharper, more prominent dot
-
-// Ambient whole-grid twinkles
-const AMBIENT_INTERVAL = 2000
-const AMBIENT_HOLD     = 1400
-
-interface Sparkle {
-  col:  number
-  row:  number
-  born: number
-  type: 'cursor' | 'ambient'
-}
+const SPACING       = 15
+const BASE_R        = 1
+const PAINT_R       = 20
+const HOLD_TIME     = 0
+const FADE_DURATION = 2500
 
 export function DotGrid() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -36,11 +18,12 @@ export function DotGrid() {
     if (!ctx) return
 
     let animFrame: number
-    let mouseX = -9999
-    let mouseY = -9999
-    const sparkles: Sparkle[] = []
-    let lastCursorSpawn  = 0
-    let lastAmbientSpawn = 0
+    let lastX = -9999
+    let lastY = -9999
+
+    // Paint trail: "col,row" → timestamp last touched
+    const painted = new Map<string, number>()
+    let lastPrune = 0
 
     function resize() {
       if (!canvas) return
@@ -48,40 +31,42 @@ export function DotGrid() {
       canvas.height = canvas.offsetHeight
     }
 
-    function spawnCursorSparkles(cols: number, rows: number, now: number) {
-      if (mouseX === -9999) return
-      if (now - lastCursorSpawn < CURSOR_INTERVAL) return
-      lastCursorSpawn = now
-      let count = 0
-      let tries = 0
-      while (count < CURSOR_COUNT && tries < 100) {
-        tries++
-        const angle = Math.random() * Math.PI * 2
-        const r     = Math.random() * INFLUENCE          // full influence zone
-        const col   = Math.round((mouseX + Math.cos(angle) * r) / SPACING)
-        const row   = Math.round((mouseY + Math.sin(angle) * r) / SPACING)
-        if (col >= 0 && col < cols && row >= 0 && row < rows) {
-          sparkles.push({ col, row, born: now, type: 'cursor' })
-          count++
+    // Interpolate along cursor path so fast moves leave no gaps
+    function paintSegment(x0: number, y0: number, x1: number, y1: number, now: number) {
+      if (!canvas) return
+      const cols = Math.ceil(canvas.width  / SPACING) + 2
+      const rows = Math.ceil(canvas.height / SPACING) + 2
+      const dx  = x1 - x0
+      const dy  = y1 - y0
+      const len = Math.sqrt(dx * dx + dy * dy)
+      // Step at half-brush intervals — guarantees full coverage at any speed
+      const steps = Math.max(1, Math.ceil(len / (PAINT_R * 0.5)))
+      const r2    = PAINT_R * PAINT_R
+
+      for (let s = 0; s <= steps; s++) {
+        const t  = s / steps
+        const cx = x0 + dx * t
+        const cy = y0 + dy * t
+        const c0 = Math.max(0, Math.floor((cx - PAINT_R) / SPACING))
+        const c1 = Math.min(cols - 1, Math.ceil((cx + PAINT_R) / SPACING))
+        const r0 = Math.max(0, Math.floor((cy - PAINT_R) / SPACING))
+        const r1 = Math.min(rows - 1, Math.ceil((cy + PAINT_R) / SPACING))
+        for (let r = r0; r <= r1; r++) {
+          for (let c = c0; c <= c1; c++) {
+            const ddx = c * SPACING - cx
+            const ddy = r * SPACING - cy
+            if (ddx * ddx + ddy * ddy <= r2) painted.set(`${c},${r}`, now)
+          }
         }
       }
     }
 
-    function spawnAmbientSparkle(cols: number, rows: number, now: number) {
-      if (now - lastAmbientSpawn < AMBIENT_INTERVAL) return
-      lastAmbientSpawn = now
-      sparkles.push({
-        col:  Math.floor(Math.random() * cols),
-        row:  Math.floor(Math.random() * rows),
-        born: now,
-        type: 'ambient',
-      })
-    }
-
-    function pruneSparkles(now: number) {
-      for (let i = sparkles.length - 1; i >= 0; i--) {
-        const hold = sparkles[i].type === 'cursor' ? CURSOR_HOLD : AMBIENT_HOLD
-        if (now - sparkles[i].born > hold) sparkles.splice(i, 1)
+    function prunePainted(now: number) {
+      if (now - lastPrune < 500) return
+      lastPrune = now
+      const expire = HOLD_TIME + FADE_DURATION
+      for (const [key, t] of painted) {
+        if (now - t > expire) painted.delete(key)
       }
     }
 
@@ -92,80 +77,32 @@ export function DotGrid() {
       const cols = Math.ceil(canvas.width  / SPACING) + 2
       const rows = Math.ceil(canvas.height / SPACING) + 2
 
-      spawnCursorSparkles(cols, rows, now)
-      spawnAmbientSparkle(cols, rows, now)
-      pruneSparkles(now)
-
-      // Build per-cell sparkle state (highest intensity wins)
-      const sparkleMap = new Map<string, { intensity: number; type: 'cursor' | 'ambient' }>()
-      for (const s of sparkles) {
-        const hold      = s.type === 'cursor' ? CURSOR_HOLD : AMBIENT_HOLD
-        const age       = (now - s.born) / hold
-        const intensity = Math.sin(age * Math.PI)   // 0 → 1 → 0
-        const key       = `${s.col},${s.row}`
-        const prev      = sparkleMap.get(key)
-        if (!prev || intensity > prev.intensity) {
-          sparkleMap.set(key, { intensity, type: s.type })
-        }
-      }
+      prunePainted(now)
 
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-          const baseX = col * SPACING
-          const baseY = row * SPACING
+          const x = col * SPACING
+          const y = row * SPACING
 
-          const dx   = baseX - mouseX
-          const dy   = baseY - mouseY
-          const dist = Math.sqrt(dx * dx + dy * dy)
+          const paintTime = painted.get(`${col},${row}`)
+          let yellowness  = 0
 
-          let shiftX = 0
-          let shiftY = 0
-          let proximity = 0
-
-          if (dist < INFLUENCE && dist > 0) {
-            proximity = 1 - dist / INFLUENCE
-            const force = proximity * MAX_SHIFT
-            shiftX = -(dx / dist) * force
-            shiftY = -(dy / dist) * force
-          }
-
-          const x = baseX + shiftX
-          const y = baseY + shiftY
-
-          const sp             = sparkleMap.get(`${col},${row}`)
-          const sparkIntensity = sp?.intensity ?? 0
-          const isCursor       = sp?.type === 'cursor'
-
-          let r = 10, g = 10, b = 10
-          let alpha  = 0.09
-          let radius = BASE_R
-
-          // Proximity — subtle warm grow
-          if (proximity > 0) {
-            alpha  += proximity * 0.16
-            radius  = BASE_R + proximity * (NEAR_R - BASE_R)
-            r = Math.round(10 + proximity * 25)
-            g = Math.round(10 + proximity * 18)
-          }
-
-          // Sparkle overlay
-          if (sparkIntensity > 0) {
-            if (isCursor) {
-              // Pure #FFD600 — full opacity, sharp, prominent
-              r      = 255
-              g      = 214
-              b      = 0
-              alpha  = sparkIntensity          // peaks at 1.0
-              radius = SPARKLE_R               // fixed large radius — no blur scaling
+          if (paintTime !== undefined) {
+            const age = now - paintTime
+            if (age <= HOLD_TIME) {
+              yellowness = 1.0
             } else {
-              // Ambient: faint near-white pulse
-              r = Math.round(r + sparkIntensity * 55)
-              g = Math.round(g + sparkIntensity * 50)
-              b = Math.round(b + sparkIntensity * 40)
-              alpha  += sparkIntensity * 0.12
-              radius += sparkIntensity * 0.3
+              yellowness = Math.max(0, 1.0 - (age - HOLD_TIME) / FADE_DURATION)
             }
           }
+
+          // Size shrinks over full FADE_DURATION while color stays yellow
+          // When size reaches BASE_R (yellowness=0), color snaps back instantly
+          const r      = yellowness > 0 ? 255 : 10
+          const g      = yellowness > 0 ? 214 : 10
+          const b      = 0
+          const alpha  = yellowness > 0 ? 0.92 : 0.09
+          const radius = BASE_R + yellowness * 1
 
           ctx.beginPath()
           ctx.arc(x, y, Math.max(0.5, radius), 0, Math.PI * 2)
@@ -180,13 +117,19 @@ export function DotGrid() {
     function handleMouseMove(e: MouseEvent) {
       if (!canvas) return
       const rect = canvas.getBoundingClientRect()
-      mouseX = e.clientX - rect.left
-      mouseY = e.clientY - rect.top
+      const nx   = e.clientX - rect.left
+      const ny   = e.clientY - rect.top
+      const now  = performance.now()
+
+      paintSegment(lastX === -9999 ? nx : lastX, lastX === -9999 ? ny : lastY, nx, ny, now)
+
+      lastX = nx
+      lastY = ny
     }
 
     function handleMouseLeave() {
-      mouseX = -9999
-      mouseY = -9999
+      lastX = -9999
+      lastY = -9999
     }
 
     const parent = canvas.parentElement

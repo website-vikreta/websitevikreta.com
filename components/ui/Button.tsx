@@ -1,4 +1,24 @@
 import Link from 'next/link'
+import React from 'react'
+import { ArrowRight } from 'lucide-react'
+
+function SlotText({ children }: { children: React.ReactNode }) {
+  if (typeof children !== 'string') return <>{children}</>
+  return (
+    <span aria-label={children}>
+      {children.split('').map((char, i) => (
+        <span
+          key={i}
+          className="slot-char-wrap"
+          style={{ '--char-i': i } as React.CSSProperties}
+          aria-hidden="true"
+        >
+          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
+        </span>
+      ))}
+    </span>
+  )
+}
 
 type Variant = 'primary' | 'ghost' | 'accent'
 type Size    = 'sm' | 'md' | 'lg'
@@ -29,41 +49,22 @@ interface ButtonAsButton extends BaseProps {
 
 type ButtonProps = ButtonAsLink | ButtonAsButton
 
-// Variants live in @layer components in globals.css
 const variantClass: Record<Variant, string> = {
   primary: 'btn-primary',
   ghost:   'btn-ghost',
   accent:  'btn-accent',
 }
 
-// Sizes use Tailwind utilities (layer: utilities > components) — guarantees padding wins
 const sizeClass: Record<Size, string> = {
   sm: 'py-2.5 px-5 text-sm',
   md: 'py-[0.8125rem] px-[1.625rem] text-[0.9375rem]',
   lg: 'py-[1.125rem] px-10 text-[1rem] tracking-[0.005em]',
 }
 
-function ArrowDots() {
-  return (
-    <span className="btn-arrow-wrap" aria-hidden="true">
-      <span className="btn-arrow-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path
-            d="M2 7h10M8 3l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-      <span className="btn-dots">
-        <span className="btn-dot" />
-        <span className="btn-dot" />
-        <span className="btn-dot" />
-      </span>
-    </span>
-  )
+const iconSize: Record<Size, number> = {
+  sm: 14,
+  md: 15,
+  lg: 16,
 }
 
 export function Button({
@@ -78,7 +79,6 @@ export function Button({
     'btn',
     variantClass[variant],
     sizeClass[size],
-    showArrow ? 'btn-arrow-dots' : '',
     className,
   ]
     .filter(Boolean)
@@ -86,8 +86,15 @@ export function Button({
 
   const inner = (
     <>
-      <span className="btn-arrow-label">{children}</span>
-      {showArrow && <ArrowDots />}
+      <span className="btn-label"><SlotText>{children}</SlotText></span>
+      {showArrow && (
+        <ArrowRight
+          size={iconSize[size]}
+          strokeWidth={1.75}
+          className="btn-icon"
+          aria-hidden="true"
+        />
+      )}
     </>
   )
 
