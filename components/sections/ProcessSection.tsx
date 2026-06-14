@@ -1,26 +1,25 @@
 'use client'
 
-import { DotGrid } from '@/components/ui/DotGrid'
+import { Button } from '@/components/ui/Button'
 import { RollingTextList } from '@/components/ui/rolling-list'
 
 export function ProcessSection() {
   return (
     <section
-      className="relative py-[var(--section-y)] bg-(--color-bg) overflow-hidden"
+      className="relative py-16 md:py-20 bg-[var(--color-bg)]"
       aria-label="Process"
     >
-      {/* Decorative background geometry */}
-      <div className="absolute inset-0">
-        <DotGrid />
-      </div>
-
-      {/* Content */}
       <div className="container relative z-10">
         {/* Section header */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-10 md:mb-12 flex items-center justify-between gap-6">
           <h2 className="text-h2 font-bold text-[var(--color-text)]">
             Our Process
           </h2>
+          <div className="hidden md:block flex-shrink-0">
+            <Button href="/work" variant="ghost" size="sm" showArrow>
+              Explore our work
+            </Button>
+          </div>
         </div>
 
         {/* Rolling text list */}

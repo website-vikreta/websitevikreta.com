@@ -3,8 +3,6 @@
 import React from 'react'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
-import { DotGrid } from '@/components/ui/DotGrid'
-
 interface CTAProps {
   badge?: {
     text: string
@@ -26,12 +24,7 @@ export function CTASection({
   withGlow = true,
 }: CTAProps) {
   return (
-    <section className="relative overflow-hidden bg-white pt-0 md:pt-0">
-      {/* DotGrid background */}
-      <div className="absolute inset-0">
-        <DotGrid />
-      </div>
-
+    <section className="relative overflow-hidden pt-0 md:pt-0">
       {/* Content */}
       <div className="relative z-10 mx-auto flex w-full max-w-container flex-col items-center gap-6 px-8 py-8 text-center sm:gap-6 md:py-12">
         {/* Badge */}

@@ -1,3 +1,4 @@
+import { DotGrid } from '@/components/ui/DotGrid'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
 import { ProcessSection } from '@/components/sections/ProcessSection'
@@ -10,6 +11,7 @@ import { FooterSection } from '@/components/sections/FooterSection'
 export default function Home() {
   return (
     <main>
+      <DotGrid global />
       <HeroSection />
       <StatsCounters />
       <ProcessSection />

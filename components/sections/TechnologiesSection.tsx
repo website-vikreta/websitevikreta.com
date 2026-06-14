@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { motion } from 'motion/react'
-import { DotGrid } from '@/components/ui/DotGrid'
 import { LogoCloud } from '@/components/ui/logo-cloud-3'
 import { StaggerTestimonials } from '@/components/ui/stagger-testimonials'
 
@@ -59,12 +58,7 @@ const TECH_LOGOS = [
 
 export function TechnologiesSection() {
   return (
-    <section className="relative min-h-screen w-full flex flex-col items-center overflow-hidden bg-white py-20 md:py-32">
-      {/* DotGrid background */}
-      <div className="absolute inset-0">
-        <DotGrid />
-      </div>
-
+    <section className="relative min-h-screen w-full flex flex-col items-center overflow-hidden py-20 md:py-32">
       {/* Content — constrained to max-width */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
         {/* Label */}

@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { Infinity as InfinityIcon } from 'lucide-react'
-import { DotGrid } from '@/components/ui/DotGrid'
 import { gsap } from '@/lib/gsap'
 
 interface StatItem {
@@ -104,11 +103,9 @@ export function StatsCounters() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-8 pb-16 md:pt-12 md:pb-20 bg-(--color-bg) overflow-hidden"
+      className="relative pt-8 pb-16 md:pt-12 md:pb-20 overflow-hidden"
       aria-label="Impact Statistics"
     >
-      <DotGrid />
-
       <div className="container relative z-10">
         <div ref={headingRef} className="mb-10 md:mb-12">
           <h2 className="text-h2 font-bold text-[var(--color-text)]">

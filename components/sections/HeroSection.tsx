@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
-import { DotGrid } from '@/components/ui/DotGrid'
 
 const HEADLINE = 'We don\'t just build your website. We think with you.'
 const WORDS = HEADLINE.split(' ')
@@ -99,12 +98,9 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="main-content"
-      className="relative flex flex-col justify-center min-h-svh overflow-hidden bg-(--color-bg)"
+      className="relative flex flex-col justify-center min-h-svh overflow-hidden"
       aria-label="Hero — Website Vikreta"
     >
-      {/* ── Dot grid background ─────────────────────────────── */}
-      <DotGrid />
-
       {/* ── Content ──────────────────────────────────────────── */}
       <div className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28">
 

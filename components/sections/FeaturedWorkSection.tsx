@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { motion } from 'motion/react'
-import { DotGrid } from '@/components/ui/DotGrid'
 import { ExpandingCards } from '@/components/ui/expanding-cards'
 import { Button } from '@/components/ui/Button'
 import { FEATURED_WORK } from '@/config/featured-work'
@@ -19,12 +18,7 @@ const buttonVariants = {
 
 export function FeaturedWorkSection() {
   return (
-    <section className="relative bg-white overflow-hidden">
-      {/* Repulsing dots background */}
-      <div className="absolute inset-0">
-        <DotGrid />
-      </div>
-
+    <section className="relative overflow-hidden">
       {/* Content */}
       <div className="relative z-10">
         {/* Heading */}
@@ -51,7 +45,7 @@ export function FeaturedWorkSection() {
 
         {/* CTA Button */}
         <motion.div
-          className="py-20 md:py-24 flex flex-col items-center justify-center gap-8 bg-white"
+          className="py-20 md:py-24 flex flex-col items-center justify-center gap-8"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, amount: 0.4 }}

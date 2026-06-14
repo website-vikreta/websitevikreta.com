@@ -8,7 +8,7 @@ const PAINT_R       = 20
 const HOLD_TIME     = 0
 const FADE_DURATION = 2500
 
-export function DotGrid() {
+export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -132,25 +132,39 @@ export function DotGrid() {
       lastY = -9999
     }
 
-    const parent = canvas.parentElement
     resize()
     window.addEventListener('resize', resize)
-    parent?.addEventListener('mousemove', handleMouseMove)
-    parent?.addEventListener('mouseleave', handleMouseLeave)
+
+    if (isGlobal) {
+      window.addEventListener('mousemove', handleMouseMove)
+    } else {
+      const parent = canvas.parentElement
+      parent?.addEventListener('mousemove', handleMouseMove)
+      parent?.addEventListener('mouseleave', handleMouseLeave)
+    }
+
     animFrame = requestAnimationFrame(draw)
 
     return () => {
       cancelAnimationFrame(animFrame)
       window.removeEventListener('resize', resize)
-      parent?.removeEventListener('mousemove', handleMouseMove)
-      parent?.removeEventListener('mouseleave', handleMouseLeave)
+      if (isGlobal) {
+        window.removeEventListener('mousemove', handleMouseMove)
+      } else {
+        const parent = canvas.parentElement
+        parent?.removeEventListener('mousemove', handleMouseMove)
+        parent?.removeEventListener('mouseleave', handleMouseLeave)
+      }
     }
-  }, [])
+  }, [isGlobal])
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
+      className={isGlobal
+        ? 'fixed inset-0 w-screen h-screen pointer-events-none -z-10'
+        : 'absolute inset-0 w-full h-full pointer-events-none'
+      }
       aria-hidden="true"
     />
   )

@@ -16,7 +16,7 @@ export function ServicesSection() {
 
   return (
     <ReactLenis root>
-      <div ref={container} className="relative bg-(--color-bg)">
+      <div ref={container} className="relative ">
         {/* Section Header — outside sticky scroll, above cards */}
         <div className="relative z-10 py-20 md:py-32 flex flex-col items-center justify-center">
           <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 font-sans mb-4">
@@ -44,7 +44,7 @@ export function ServicesSection() {
         })}
 
         {/* CTA — after cards, inside same container */}
-        <div className="relative z-10 py-24 flex flex-col items-center justify-center gap-8 bg-(--color-bg)">
+        <div className="relative z-10 py-24 flex flex-col items-center justify-center gap-8 bg-[var(--color-bg)]">
           <h3 className="font-sans font-semibold text-3xl md:text-4xl text-center text-neutral-900">
             Ready to transform your business?
           </h3>
