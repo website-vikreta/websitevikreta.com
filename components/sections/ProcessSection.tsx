@@ -1,6 +1,6 @@
 'use client'
 
-import { NetworkGeometry } from '@/components/ui/NetworkGeometry'
+import { DotGrid } from '@/components/ui/DotGrid'
 import { RollingTextList } from '@/components/ui/rolling-list'
 
 export function ProcessSection() {
@@ -10,7 +10,9 @@ export function ProcessSection() {
       aria-label="Process"
     >
       {/* Decorative background geometry */}
-      <NetworkGeometry />
+      <div className="absolute inset-0">
+        <DotGrid />
+      </div>
 
       {/* Content */}
       <div className="container relative z-10">
