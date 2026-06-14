@@ -2,17 +2,17 @@
 > websitevikreta.com-2026@0.1.0 dev
 > next dev
 
-⚠ Port 3000 is in use by process 11896, using available port 3001 instead.
+⚠ Port 3000 is in use by process 1752, using available port 3001 instead.
 ▲ Next.js 16.2.9 (Turbopack)
 - Local:         http://localhost:3001
 - Network:       http://172.20.10.3:3001
-✓ Ready in 777ms
+✓ Ready in 757ms
 ⨯ Another next dev server is already running.
 
 - Local:        http://localhost:3000
-- PID:          11896
+- PID:          1752
 - Dir:          D:\websitevikreta.com
 - Log:          .next\dev\logs\next-development.log
 
-Run taskkill /PID 11896 /F to stop it.
+Run taskkill /PID 1752 /F to stop it.
 [?25h

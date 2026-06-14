@@ -88,44 +88,47 @@ export function TechnologiesSection() {
         >
           Powered by AI. Future Tech.
         </motion.h2>
+      </div>
 
-        {/* Slider with dividers */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
-          className="w-full"
-        >
-          {/* Top divider */}
-          <div
-            className="h-px w-full bg-neutral-200"
-            style={{
-              maskImage:
-                'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
-            }}
-          />
+      {/* Slider with dividers — full width */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
+        className="relative z-10 w-full"
+      >
+        {/* Top divider */}
+        <div
+          className="h-px w-full bg-neutral-200"
+          style={{
+            maskImage:
+              'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
+          }}
+        />
 
-          {/* Logo cloud */}
-          <LogoCloud
-            logos={TECH_LOGOS}
-            gap={64}
-            duration={20}
-            durationOnHover={60}
-            reverse={true}
-            className="py-8"
-          />
+        {/* Logo cloud */}
+        <LogoCloud
+          logos={TECH_LOGOS}
+          gap={64}
+          duration={20}
+          durationOnHover={60}
+          reverse={true}
+          className="py-8"
+        />
 
-          {/* Bottom divider */}
-          <div
-            className="h-px w-full bg-neutral-200"
-            style={{
-              maskImage:
-                'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
-            }}
-          />
-        </motion.div>
+        {/* Bottom divider */}
+        <div
+          className="h-px w-full bg-neutral-200"
+          style={{
+            maskImage:
+              'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
+          }}
+        />
+      </motion.div>
 
+      {/* Testimonials heading — constrained to max-width */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
         {/* Testimonials subheading */}
         <motion.div
           className="mt-20 md:mt-32 flex flex-col items-center justify-center"
