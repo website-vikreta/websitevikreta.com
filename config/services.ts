@@ -1,32 +1,44 @@
 export interface Service {
   id: number
+  number: string
   title: string
   description: string
+  tag: string
+  isNew?: boolean
 }
 
 export const SERVICES: Service[] = [
   {
-    id: 1,
-    title: 'Custom Web Development',
+    id: 4,
+    number: '04',
+    title: 'AI Automation & Workflow Optimisation',
     description:
-      'We build intelligent, scalable web experiences from the ground up — powered by AI-first architecture that adapts, learns, and performs. Every line of code is written with automation and growth in mind.',
+      'We audit your business, find the hours your team wastes, and wire in AI systems that handle it — so your people do what only humans should.',
+    tag: 'Any tool, any stack, no limitation',
+    isNew: true,
+  },
+  {
+    id: 1,
+    number: '01',
+    title: 'UX & UI Design',
+    description:
+      "Research-led design that feels premium. We use AI to test, iterate, and personalise — so you don't get a pretty site, you get one that converts.",
+    tag: 'AI-assisted prototyping & testing',
   },
   {
     id: 2,
-    title: 'SEO & Growth',
+    number: '02',
+    title: 'Website Development',
     description:
-      'Our AI agents continuously audit, optimise, and iterate your search presence — surfacing opportunities humans miss and executing at a speed no traditional agency can match.',
+      'Fast, responsive, SEO-ready sites built in Next.js. Every line of code is written with ranking, speed, and scale in mind.',
+    tag: 'AI-powered SEO & performance optimisation',
   },
   {
     id: 3,
-    title: 'E-Commerce Platforms',
+    number: '03',
+    title: 'Web & Mobile Apps',
     description:
-      'From storefront to checkout, we deploy intelligent commerce systems that personalise in real time, reduce drop-off, and scale effortlessly with your catalogue and traffic.',
-  },
-  {
-    id: 4,
-    title: 'UI / UX Design',
-    description:
-      'We design interfaces that feel inevitable — human-centred and AI-informed. Every interaction is prototyped, tested, and refined through rapid agentic iteration cycles.',
+      "CRMs, portals, e-commerce, custom systems — built for how your business actually works, not a template of how others think it should.",
+    tag: 'AI workflows embedded from day one',
   },
 ]
