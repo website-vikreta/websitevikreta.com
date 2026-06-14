@@ -5,6 +5,7 @@ import { ServicesSection } from '@/components/sections/ServicesSection'
 import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
 import { TechnologiesSection } from '@/components/sections/TechnologiesSection'
 import { CTASection } from '@/components/sections/CTASection'
+import { FooterSection } from '@/components/sections/FooterSection'
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         }}
         withGlow={true}
       />
+      <FooterSection />
     </main>
   )
 }
