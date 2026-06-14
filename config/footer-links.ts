@@ -12,9 +12,8 @@ export const FOOTER_LINKS = {
     { label: 'UI/UX Design', href: '/services/design' },
   ],
   work: [
-    { label: 'Featured Work', href: '/work' },
     { label: 'Case Studies', href: '/work/case-studies' },
-    { label: 'View All', href: '/work' },
+    { label: 'View All Projects', href: '/work' },
   ],
   resources: [
     { label: 'Blog', href: '/blog' },
