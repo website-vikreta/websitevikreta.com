@@ -1,15 +1,10 @@
 "use client";
 
 import * as React from "react";
-import {
-  Pyramid,
-  Castle,
-  Mountain,
-  TowerControl,
-  Building,
-  Landmark,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const PLACEHOLDER =
+  "https://images.unsplash.com/photo-1551651142-2e8e62ad4d45?auto=format&fit=crop&w=1200&h=800&q=80";
 
 export interface CardItem {
   id: string | number;
@@ -49,12 +44,12 @@ export const ExpandingCards = React.forwardRef<
 
     if (isDesktop) {
       const columns = items
-        .map((_, index) => (index === activeIndex ? "5fr" : "1fr"))
+        .map((_, index) => (index === activeIndex ? "8fr" : "1fr"))
         .join(" ");
       return { gridTemplateColumns: columns };
     } else {
       const rows = items
-        .map((_, index) => (index === activeIndex ? "5fr" : "1fr"))
+        .map((_, index) => (index === activeIndex ? "8fr" : "1fr"))
         .join(" ");
       return { gridTemplateRows: rows };
     }
@@ -67,7 +62,7 @@ export const ExpandingCards = React.forwardRef<
   return (
     <ul
       className={cn(
-        "w-full max-w-6xl gap-2",
+        "w-full gap-2",
         "grid",
         "h-[600px] md:h-[500px]",
         "transition-[grid-template-columns,grid-template-rows] duration-500 ease-out",
@@ -87,7 +82,7 @@ export const ExpandingCards = React.forwardRef<
         <li
           key={item.id}
           className={cn(
-            "group relative cursor-pointer overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
+            "group relative cursor-pointer overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]",
             "md:min-w-[80px]",
             "min-h-0 min-w-0"
           )}
@@ -98,8 +93,9 @@ export const ExpandingCards = React.forwardRef<
           data-active={activeIndex === index}
         >
           <img
-            src={item.imgSrc}
+            src={item.imgSrc || PLACEHOLDER}
             alt={item.title}
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
             className="absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-out group-data-[active=true]:scale-100 group-data-[active=true]:grayscale-0 scale-110 grayscale"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />

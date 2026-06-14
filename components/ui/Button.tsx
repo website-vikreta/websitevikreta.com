@@ -20,7 +20,7 @@ function SlotText({ children }: { children: React.ReactNode }) {
   )
 }
 
-type Variant = 'primary' | 'ghost' | 'accent'
+type Variant = 'primary' | 'ghost' | 'accent' | 'light'
 type Size    = 'sm' | 'md' | 'lg'
 
 interface BaseProps {
@@ -53,6 +53,7 @@ const variantClass: Record<Variant, string> = {
   primary: 'btn-primary',
   ghost:   'btn-ghost',
   accent:  'btn-accent',
+  light:   'btn-light',
 }
 
 const sizeClass: Record<Size, string> = {

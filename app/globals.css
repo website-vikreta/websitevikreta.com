@@ -214,6 +214,17 @@ body {
     color: #ffffff;
   }
 
+  .btn-light {
+    background-color: transparent;
+    color: #ffffff !important;
+    border-color: #ffffff;
+  }
+  .btn-light:hover {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #000000 !important;
+  }
+
   /* ── Slot-machine char animation ────────────────────── */
   @keyframes slot-char-up {
     0%   { transform: translateY(0); }

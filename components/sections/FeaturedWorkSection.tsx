@@ -6,54 +6,92 @@ import { ExpandingCards } from '@/components/ui/expanding-cards'
 import { Button } from '@/components/ui/Button'
 import { FEATURED_WORK } from '@/config/featured-work'
 
-const headingVariants = {
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0 },
+const headingLines = [
+  "Your website isn't just a page. It's a system.",
+  'We build the whole thing.',
+]
+
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
 }
 
-const buttonVariants = {
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0 },
+const lineReveal = {
+  hidden: { y: '110%', opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+const fadeUp = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.65, ease: 'easeOut' },
+  },
 }
 
 export function FeaturedWorkSection() {
   return (
     <section className="relative overflow-hidden">
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Heading */}
+      <div className="container py-14 md:py-20">
+        {/* Heading — staggered line reveal */}
         <motion.div
-          className="py-20 md:py-32 flex flex-col items-center justify-center"
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={headingVariants}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="mb-10 md:mb-12 max-w-4xl"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
         >
-          <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 font-[family-name:var(--font-geist-mono)] mb-4">
-            Featured Work
-          </p>
-          <h2 className="font-[family-name:var(--font-geist-sans)] font-semibold text-4xl md:text-6xl text-center text-neutral-900">
-            Projects we're proud of
-          </h2>
+          {headingLines.map((line, i) => (
+            <div key={i} className="overflow-hidden">
+              <motion.h2
+                className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-[var(--color-text)]"
+                variants={lineReveal}
+              >
+                {line}
+              </motion.h2>
+            </div>
+          ))}
+
+          <div className="overflow-hidden mt-5">
+            <motion.p
+              className="text-base md:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed"
+              variants={fadeUp}
+            >
+              Design + development + the automation layer underneath — so your
+              site generates leads, your team handles less, and your business
+              runs cleaner. That&apos;s the WebsiteVikreta difference.
+            </motion.p>
+          </div>
         </motion.div>
 
-        {/* Expanding Cards Grid */}
-        <div className="flex w-full flex-col items-center justify-center px-4 md:px-8">
-          <ExpandingCards items={FEATURED_WORK} defaultActiveIndex={0} />
-        </div>
-
-        {/* CTA Button */}
+        {/* Project Cards */}
         <motion.div
-          className="py-20 md:py-24 flex flex-col items-center justify-center gap-8"
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={buttonVariants}
-          transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
+        >
+          <ExpandingCards items={FEATURED_WORK} defaultActiveIndex={0} />
+        </motion.div>
+
+        {/* CTAs */}
+        <motion.div
+          className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
         >
           <Button href="/work" variant="primary" size="lg" showArrow>
-            Explore More
+            See All Projects
+          </Button>
+          <Button href="/contact" variant="ghost" size="lg" showArrow>
+            Start a Project
           </Button>
         </motion.div>
       </div>
