@@ -27,7 +27,7 @@ export function ClientLogosSection() {
   })
 
   return (
-    <section className="py-16 md:py-20 overflow-hidden">
+    <section className="pt-16 pb-8 md:pt-20 md:pb-10 overflow-hidden">
 
       <div className="container mb-10 md:mb-12">
         <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-faint)] mb-2">

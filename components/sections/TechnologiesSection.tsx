@@ -1,164 +1,79 @@
 'use client'
 
-import React from 'react'
-import { motion } from 'motion/react'
-import { LogoCloud } from '@/components/ui/logo-cloud-3'
+import { useRef } from 'react'
+import { motion, useAnimationFrame, useMotionValue } from 'motion/react'
 import { StaggerTestimonials } from '@/components/ui/stagger-testimonials'
 
 const TECH_LOGOS = [
-  {
-    src: 'https://svgl.app/library/nvidia.svg',
-    alt: 'NVIDIA',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/supabase.svg',
-    alt: 'Supabase',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/openai.svg',
-    alt: 'OpenAI',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/turso.svg',
-    alt: 'Turso',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/vercel.svg',
-    alt: 'Vercel',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/github.svg',
-    alt: 'GitHub',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/claude-ai.svg',
-    alt: 'Claude AI',
-    width: 100,
-    height: 32,
-  },
-  {
-    src: 'https://svgl.app/library/clerk.svg',
-    alt: 'Clerk',
-    width: 100,
-    height: 32,
-  },
+  { src: 'https://svgl.app/library/nvidia.svg', alt: 'NVIDIA' },
+  { src: 'https://svgl.app/library/supabase.svg', alt: 'Supabase' },
+  { src: 'https://svgl.app/library/openai.svg', alt: 'OpenAI' },
+  { src: 'https://svgl.app/library/turso.svg', alt: 'Turso' },
+  { src: 'https://svgl.app/library/vercel.svg', alt: 'Vercel' },
+  { src: 'https://svgl.app/library/github.svg', alt: 'GitHub' },
+  { src: 'https://svgl.app/library/claude-ai.svg', alt: 'Claude AI' },
+  { src: 'https://svgl.app/library/clerk.svg', alt: 'Clerk' },
 ]
 
+const FAST = 70
+const SLOW = 22
+
 export function TechnologiesSection() {
+  const x = useMotionValue(0)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const isHovered = useRef(false)
+  const vel = useRef(FAST)
+
+  useAnimationFrame((_, delta) => {
+    const target = isHovered.current ? SLOW : FAST
+    vel.current += (target - vel.current) * 0.06
+    const halfW = trackRef.current ? trackRef.current.offsetWidth / 2 : 0
+    if (!halfW) return
+    const next = x.get() - (vel.current * delta) / 1000
+    x.set(next <= -halfW ? next + halfW : next)
+  })
+
   return (
-    <section className="relative min-h-screen w-full flex flex-col items-center overflow-hidden py-20 md:py-32">
-      {/* Content — constrained to max-width */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
-        {/* Label */}
-        <motion.p
-          className="text-sm font-bold uppercase tracking-widest text-neutral-500 font-[family-name:var(--font-geist-mono)] text-center mb-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          Technologies
-        </motion.p>
+    <section className="py-12 md:py-16 overflow-hidden">
 
-        {/* Main heading */}
-        <motion.h2
-          className="font-[family-name:var(--font-geist-sans)] font-semibold text-4xl md:text-6xl text-center text-neutral-900 mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.12 }}
-        >
+      <div className="container mb-8 md:mb-10">
+        <h2 className="font-sans font-bold text-3xl md:text-4xl leading-tight text-center text-[var(--color-text)]">
           Powered by AI. Future Tech.
-        </motion.h2>
+        </h2>
       </div>
 
-      {/* Slider with dividers — full width */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
-        className="relative z-10 w-full"
+      <div
+        className="relative"
+        onMouseEnter={() => { isHovered.current = true }}
+        onMouseLeave={() => { isHovered.current = false }}
       >
-        {/* Top divider */}
-        <div
-          className="h-px w-full bg-neutral-200"
-          style={{
-            maskImage:
-              'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
-          }}
-        />
-
-        {/* Logo cloud */}
-        <LogoCloud
-          logos={TECH_LOGOS}
-          gap={64}
-          duration={20}
-          durationOnHover={60}
-          reverse={true}
-          className="py-8"
-        />
-
-        {/* Bottom divider */}
-        <div
-          className="h-px w-full bg-neutral-200"
-          style={{
-            maskImage:
-              'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
-          }}
-        />
-      </motion.div>
-
-      {/* Testimonials heading — constrained to max-width */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
-        {/* Testimonials subheading */}
         <motion.div
-          className="mt-20 md:mt-32 flex flex-col items-center justify-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          ref={trackRef}
+          className="flex items-center gap-14 w-max"
+          style={{ x }}
         >
-          <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 font-[family-name:var(--font-geist-mono)] mb-4">
-            Testimonials
-          </p>
+          {[...TECH_LOGOS, ...TECH_LOGOS].map((logo, i) => (
+            <LogoSlot key={i} src={logo.src} alt={logo.alt} />
+          ))}
         </motion.div>
-        <motion.h3
-          className="font-[family-name:var(--font-geist-sans)] font-semibold text-3xl md:text-5xl text-center text-neutral-900 mb-12 md:mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
-        >
-          Hear it from our happy clients
-        </motion.h3>
+
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[var(--color-bg)] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[var(--color-bg)] to-transparent z-10" />
       </div>
-
-      {/* Testimonials carousel — full width */}
-      <motion.div
-        className="relative z-10 w-full"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
-      >
-        <StaggerTestimonials />
-      </motion.div>
-
-      {/* Bottom padding after testimonials */}
-      <div className="py-12 md:py-16" />
     </section>
+  )
+}
+
+function LogoSlot({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="flex-shrink-0 flex items-center justify-center group">
+      <img
+        src={src}
+        alt={alt}
+        width={90}
+        height={30}
+        className="h-7 w-auto object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+      />
+    </div>
   )
 }

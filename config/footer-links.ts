@@ -42,7 +42,7 @@ export const FOOTER_LINKS = {
 
 export const FOOTER_CONFIG = {
   brandName: 'Website Vikreta',
-  email: 'hello@websitevikreta.com',
-  phone: '+91 8888-888-888',
+  email: 'contact@websitevikreta.com',
+  phone: '+91 99704 45198',
   tagline: 'Designed & Developed with AI-first precision',
 }

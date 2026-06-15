@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { FEATURED_WORK } from '@/config/featured-work'
 
 const headingLines = [
-  "Your website isn't just a page. It's a system.",
-  'We build the whole thing.',
+  "Every service we offer,",
 ]
 
 const container = {
@@ -57,14 +56,21 @@ export function FeaturedWorkSection() {
             </div>
           ))}
 
+          <div className="overflow-hidden">
+            <motion.h2
+              className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-[var(--color-text)]"
+              variants={lineReveal}
+            >
+              now <span style={{ color: 'var(--color-accent)' }}>powered by AI.</span>
+            </motion.h2>
+          </div>
+
           <div className="overflow-hidden mt-5">
             <motion.p
               className="text-base md:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed"
               variants={fadeUp}
             >
-              Design + development + the automation layer underneath — so your
-              site generates leads, your team handles less, and your business
-              runs cleaner. That&apos;s the WebsiteVikreta difference.
+              We didn&apos;t slap &quot;AI&quot; onto our services as a trend. We rebuilt how we work — so every website, every app, every workflow we touch is smarter, faster, and built to compound over time.
             </motion.p>
           </div>
         </motion.div>
