@@ -34,7 +34,7 @@ export const FOOTER_LINKS = {
     },
     {
       label: 'Email',
-      href: 'mailto:hello@websitevikreta.com',
+      href: 'mailto:contact@websitevikreta.com',
       icon: 'Mail'
     },
   ],
@@ -42,7 +42,7 @@ export const FOOTER_LINKS = {
 
 export const FOOTER_CONFIG = {
   brandName: 'Website Vikreta',
-  email: 'hello@websitevikreta.com',
+  email: 'contact@websitevikreta.com',
   phone: '+91 8888-888-888',
   tagline: 'Designed & Developed with AI-first precision',
 }

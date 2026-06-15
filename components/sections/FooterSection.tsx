@@ -4,11 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'motion/react'
 import { ArrowUpRight, Mail } from 'lucide-react'
+import { Logo } from '@/components/ui/Logo'
 import { FOOTER_LINKS, FOOTER_CONFIG } from '@/config/footer-links'
 
-function InstagramIcon() {
+function InstagramIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37" />
       <circle cx="17.5" cy="6.5" r="1.5" />
@@ -16,9 +17,9 @@ function InstagramIcon() {
   )
 }
 
-function LinkedinIcon() {
+function LinkedinIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
       <rect x="2" y="9" width="4" height="12" />
       <circle cx="4" cy="4" r="2" />
@@ -29,7 +30,7 @@ function LinkedinIcon() {
 const ICON_MAP = {
   Instagram: InstagramIcon,
   Linkedin: LinkedinIcon,
-  Mail: Mail,
+  Mail,
 }
 
 export function FooterSection() {
@@ -40,6 +41,7 @@ export function FooterSection() {
 
   return (
     <motion.section
+      id="footer"
       className="relative bg-black overflow-hidden rounded-t-3xl md:rounded-t-[2rem]"
       style={{ minHeight: 'clamp(90vh, 100vh, 110vh)' }}
       initial={{ opacity: 0, y: 60 }}
@@ -59,16 +61,7 @@ export function FooterSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <Image
-              src="/logo/websitevikreta-logo-horizontal.svg"
-              alt="Website Vikreta"
-              width={180}
-              height={50}
-              className="h-12 w-auto brightness-0 invert"
-              priority
-            />
-          </Link>
+          <Logo variant="dark" />
 
           {/* Social icons */}
           <div className="flex items-center gap-4 md:gap-6">
