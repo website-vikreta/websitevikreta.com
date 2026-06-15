@@ -13,6 +13,8 @@ const grainBg = (() => {
 export function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
+  const anchorRef = useRef<HTMLDivElement>(null)
+  const [leftPad, setLeftPad] = useState<number | null>(null)
   const [maxTranslate, setMaxTranslate] = useState(0)
   const [sectionHeight, setSectionHeight] = useState<number | null>(null)
 
@@ -21,24 +23,39 @@ export function ServicesSection() {
     offset: ['start start', 'end end'],
   })
 
+  // Measure container content-left-edge so ServicesSection aligns with other sections at all viewport widths
   useEffect(() => {
-    const measure = () => {
+    const measurePad = () => {
+      if (!anchorRef.current) return
+      const rect = anchorRef.current.getBoundingClientRect()
+      const pl = parseFloat(getComputedStyle(anchorRef.current).paddingLeft)
+      setLeftPad(Math.round(rect.left + pl))
+    }
+    measurePad()
+    window.addEventListener('resize', measurePad)
+    return () => window.removeEventListener('resize', measurePad)
+  }, [])
+
+  // Re-measure scroll overflow after leftPad is applied to the DOM
+  useEffect(() => {
+    if (leftPad === null) return
+    const measureOverflow = () => {
       if (!trackRef.current) return
       const overflow = trackRef.current.scrollWidth - window.innerWidth
       const safeOverflow = Math.max(0, overflow)
       setMaxTranslate(safeOverflow)
       setSectionHeight(window.innerHeight + safeOverflow)
     }
-
-    measure()
-    const ro = new ResizeObserver(measure)
+    const id = requestAnimationFrame(measureOverflow)
+    const ro = new ResizeObserver(measureOverflow)
     if (trackRef.current) ro.observe(trackRef.current)
-    window.addEventListener('resize', measure)
+    window.addEventListener('resize', measureOverflow)
     return () => {
+      cancelAnimationFrame(id)
       ro.disconnect()
-      window.removeEventListener('resize', measure)
+      window.removeEventListener('resize', measureOverflow)
     }
-  }, [])
+  }, [leftPad])
 
   const x = useTransform(scrollYProgress, [0.05, 0.95], [0, -maxTranslate])
 
@@ -49,10 +66,12 @@ export function ServicesSection() {
       className="relative"
     >
       <div className="sticky top-0 h-screen flex items-center overflow-x-hidden overflow-y-hidden">
+        {/* Hidden container anchor — measures the left content edge so the track aligns with other sections at xl+ */}
+        <div ref={anchorRef} className="container absolute inset-0 pointer-events-none" aria-hidden />
         <motion.div
           ref={trackRef}
           className="flex gap-5 items-start"
-          style={{ x, width: 'max-content', paddingLeft: 'var(--section-x)', paddingRight: 'var(--section-x)' }}
+          style={{ x, width: 'max-content', paddingLeft: leftPad ?? 'var(--section-x)', paddingRight: 'var(--section-x)' }}
         >
           <IntroPanel />
           {SERVICES.map((service, i) => (
