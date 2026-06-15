@@ -103,7 +103,7 @@ export function StatsCounters() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-8 pb-16 md:pt-12 md:pb-20 overflow-hidden"
+      className="relative py-16 md:py-20 overflow-hidden"
       aria-label="Impact Statistics"
     >
       <div className="container relative z-10">

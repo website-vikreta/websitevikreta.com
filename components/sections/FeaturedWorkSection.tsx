@@ -36,7 +36,7 @@ const fadeUp = {
 export function FeaturedWorkSection() {
   return (
     <section className="relative overflow-hidden">
-      <div className="container py-14 md:py-20">
+      <div className="container py-16 md:py-20">
         {/* Heading — staggered line reveal */}
         <motion.div
           className="mb-10 md:mb-12 max-w-4xl"

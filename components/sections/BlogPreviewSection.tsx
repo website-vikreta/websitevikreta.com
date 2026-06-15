@@ -47,7 +47,7 @@ const cardReveal = {
 export function BlogPreviewSection() {
   return (
     <section className="relative overflow-hidden">
-      <div className="container pb-24 md:pb-32">
+      <div className="container py-16 md:py-20">
 
         {/* Heading */}
         <motion.div

@@ -23,19 +23,19 @@ export const FOOTER_LINKS = {
   ],
   social: [
     {
-      label: 'Instagram',
-      href: 'https://instagram.com/websitevikreta',
-      icon: 'Instagram'
-    },
-    {
       label: 'LinkedIn',
       href: 'https://linkedin.com/company/website-vikreta',
       icon: 'Linkedin'
     },
     {
-      label: 'Email',
-      href: 'mailto:hello@websitevikreta.com',
-      icon: 'Mail'
+      label: 'Instagram',
+      href: 'https://instagram.com/websitevikreta',
+      icon: 'Instagram'
+    },
+    {
+      label: 'WhatsApp',
+      href: 'https://wa.me/919970445198',
+      icon: 'Whatsapp'
     },
   ],
 }

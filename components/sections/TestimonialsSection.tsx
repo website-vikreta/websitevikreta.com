@@ -107,7 +107,7 @@ export function TestimonialsSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 px-6">
+    <section ref={sectionRef} className="py-16 md:py-20 px-6">
       <div className="max-w-2xl mx-auto text-center">
 
         {/* Heading — clipped line reveal */}

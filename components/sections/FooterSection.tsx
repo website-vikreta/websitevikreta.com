@@ -5,7 +5,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
+import { Linkedin, Instagram, Whatsapp } from 'react-bootstrap-icons'
 import { FOOTER_LINKS, FOOTER_CONFIG } from '@/config/footer-links'
+
+const ICON_MAP = {
+  Linkedin,
+  Instagram,
+  Whatsapp,
+}
 
 function SlotText({ children }: { children: string }) {
   return (
@@ -17,36 +24,11 @@ function SlotText({ children }: { children: string }) {
           style={{ '--char-i': i } as React.CSSProperties}
           aria-hidden="true"
         >
-          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
+          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
         </span>
       ))}
     </span>
   )
-}
-
-function InstagramIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37" />
-      <circle cx="17.5" cy="6.5" r="1.5" />
-    </svg>
-  )
-}
-
-function LinkedinIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect x="2" y="9" width="4" height="12" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
-  )
-}
-
-const ICON_MAP = {
-  Instagram: InstagramIcon,
-  Linkedin: LinkedinIcon,
 }
 
 export function FooterSection() {
@@ -59,7 +41,7 @@ export function FooterSection() {
 
   return (
     <motion.section
-      className="relative bg-white overflow-hidden rounded-t-3xl md:rounded-t-[2rem]"
+      className="relative bg-white overflow-hidden"
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -70,7 +52,7 @@ export function FooterSection() {
 
         {/* Top bar — Logo + Social */}
         <motion.div
-          className="flex items-center justify-between py-6 border-b border-black/10"
+          className="flex items-center justify-between py-10 md:py-14 border-b border-black/10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
@@ -156,7 +138,7 @@ export function FooterSection() {
             <ul className="space-y-2">
               {FOOTER_LINKS.quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-black/60 hover:text-black text-sm transition-colors duration-200">
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -169,7 +151,7 @@ export function FooterSection() {
             <ul className="space-y-2">
               {FOOTER_LINKS.services.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-black/60 hover:text-black text-sm transition-colors duration-200">
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -182,7 +164,7 @@ export function FooterSection() {
             <ul className="space-y-2">
               {FOOTER_LINKS.work.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-black/60 hover:text-black text-sm transition-colors duration-200">
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -195,7 +177,7 @@ export function FooterSection() {
             <ul className="space-y-2">
               {FOOTER_LINKS.resources.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-black/60 hover:text-black text-sm transition-colors duration-200">
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>

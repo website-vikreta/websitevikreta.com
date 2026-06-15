@@ -34,7 +34,7 @@ export function TechnologiesSection() {
   })
 
   return (
-    <section className="py-12 md:py-16 overflow-hidden">
+    <section className="py-16 md:py-20 overflow-hidden">
 
       <div className="container mb-8 md:mb-10">
         <h2 className="font-sans font-bold text-3xl md:text-4xl leading-tight text-center text-[var(--color-text)]">
