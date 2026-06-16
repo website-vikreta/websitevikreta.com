@@ -6,6 +6,8 @@ import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
 import { ServicesSection } from '@/components/sections/ServicesSection'
 import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
 import { TechnologiesSection } from '@/components/sections/TechnologiesSection'
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
+import { BlogPreviewSection } from '@/components/sections/BlogPreviewSection'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 
@@ -20,10 +22,12 @@ export default function Home() {
       <ServicesSection />
       <FeaturedWorkSection />
       <TechnologiesSection />
+      <TestimonialsSection />
+      <BlogPreviewSection />
       <CTASection
-        badge={{ text: "Ready when you are" }}
+        badge={{ text: "Let's talk" }}
         title="Let's build something intelligent together"
-        description="Tell us what you're working on — we'll show you how AI-first development can get you there faster."
+        description="Free consultation. No commitment. Whether it's a website, an app, or a full AI audit — we'll listen, map it out, and tell you exactly what we'd do."
         action={{
           text: "Book a Call",
           href: "/contact"

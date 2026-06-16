@@ -100,10 +100,10 @@ function IntroPanel() {
         <span style={{ color: 'var(--color-accent)' }}>We build systems.</span>
       </h2>
       <p
-        className="text-sm md:text-[0.9375rem] leading-relaxed max-w-[44ch]"
+        className="text-sm md:text-[0.9375rem] leading-relaxed max-w-[50ch]"
         style={{ color: 'var(--color-text-muted)' }}
       >
-        Design, development, and automation in one build — leads flow in, manual work drops out, your business runs cleaner.
+        Design + development + the automation layer underneath — so your site generates leads, your team handles less, and your business runs cleaner. That&apos;s the WebsiteVikreta difference.
       </p>
     </div>
   )
@@ -117,8 +117,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
     <motion.div
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="flex-shrink-0 rounded-3xl overflow-hidden relative cursor-pointer flex flex-row"
-      style={{ width: 'min(70vw, 900px)', height: 'clamp(400px, 60vh, 800px)', background: cardBg }}
+      className="flex-shrink-0 rounded-3xl overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-[calc(100vw_-_2rem)] md:w-[min(70vw,900px)]"
+      style={{ background: cardBg }}
     >
       {/* Grain texture */}
       <div

@@ -23,19 +23,19 @@ export const FOOTER_LINKS = {
   ],
   social: [
     {
-      label: 'Instagram',
-      href: 'https://instagram.com/websitevikreta',
-      icon: 'Instagram'
-    },
-    {
       label: 'LinkedIn',
       href: 'https://linkedin.com/company/website-vikreta',
       icon: 'Linkedin'
     },
     {
-      label: 'Email',
-      href: 'mailto:contact@websitevikreta.com',
-      icon: 'Mail'
+      label: 'Instagram',
+      href: 'https://instagram.com/websitevikreta',
+      icon: 'Instagram'
+    },
+    {
+      label: 'WhatsApp',
+      href: 'https://wa.me/919970445198',
+      icon: 'Whatsapp'
     },
   ],
 }
@@ -43,6 +43,6 @@ export const FOOTER_LINKS = {
 export const FOOTER_CONFIG = {
   brandName: 'Website Vikreta',
   email: 'contact@websitevikreta.com',
-  phone: '+91 8888-888-888',
+  phone: '+91 99704 45198',
   tagline: 'Designed & Developed with AI-first precision',
 }

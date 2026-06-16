@@ -244,9 +244,11 @@ body {
     display: block;
     flex-shrink: 0;
     will-change: transform;
+    line-height: 1;
   }
 
-  .btn:hover .slot-char {
+  .btn:hover .slot-char,
+  .footer-anim:hover .slot-char {
     animation: slot-char-up 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-delay: calc(var(--char-i) * 0.025s);
   }

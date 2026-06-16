@@ -1,70 +1,75 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'motion/react'
-import { ArrowUpRight, Mail } from 'lucide-react'
-import { Logo } from '@/components/ui/Logo'
+import { ArrowUpRight } from 'lucide-react'
+import { Linkedin, Instagram, Whatsapp } from 'react-bootstrap-icons'
 import { FOOTER_LINKS, FOOTER_CONFIG } from '@/config/footer-links'
 
-function InstagramIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37" />
-      <circle cx="17.5" cy="6.5" r="1.5" />
-    </svg>
-  )
-}
-
-function LinkedinIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect x="2" y="9" width="4" height="12" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
-  )
-}
-
 const ICON_MAP = {
-  Instagram: InstagramIcon,
-  Linkedin: LinkedinIcon,
-  Mail,
+  Linkedin,
+  Instagram,
+  Whatsapp,
+}
+
+function SlotText({ children }: { children: string }) {
+  return (
+    <span aria-label={children}>
+      {children.split('').map((char, i) => (
+        <span
+          key={i}
+          className="slot-char-wrap"
+          style={{ '--char-i': i } as React.CSSProperties}
+          aria-hidden="true"
+        >
+          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
+        </span>
+      ))}
+    </span>
+  )
 }
 
 export function FooterSection() {
-  const socialIcons = FOOTER_LINKS.social.map(item => ({
-    ...item,
-    Component: ICON_MAP[item.icon as keyof typeof ICON_MAP],
-  }))
+  const socialIcons = FOOTER_LINKS.social
+    .filter(item => item.icon in ICON_MAP)
+    .map(item => ({
+      ...item,
+      Component: ICON_MAP[item.icon as keyof typeof ICON_MAP],
+    }))
 
   return (
     <motion.section
-      id="footer"
-      className="relative bg-black overflow-hidden rounded-t-3xl md:rounded-t-[2rem]"
-      style={{ minHeight: 'clamp(90vh, 100vh, 110vh)' }}
+      className="relative bg-white overflow-hidden"
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
       aria-label="Footer"
     >
-      {/* Content wrapper */}
-      <div className="relative z-10 flex flex-col h-full">
+      <div className="container flex flex-col">
+
         {/* Top bar — Logo + Social */}
         <motion.div
-          className="flex items-center justify-between px-8 md:px-12 pt-8 md:pt-12 pb-8 md:pb-12 border-b border-white/10"
+          className="flex items-center justify-between py-10 md:py-14 border-b border-black/10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          {/* Logo */}
-          <Logo variant="dark" />
+          <Link href="/" className="flex-shrink-0">
+            <Image
+              src="/logo/websitevikreta-logo-horizontal.png"
+              alt="Website Vikreta"
+              width={180}
+              height={50}
+              className="h-9 w-auto"
+              priority
+            />
+          </Link>
 
-          {/* Social icons */}
-          <div className="flex items-center gap-4 md:gap-6">
+          <div className="flex items-center gap-4 md:gap-5">
             {socialIcons.map((item) => {
               const Icon = item.Component
               return (
@@ -73,85 +78,67 @@ export function FooterSection() {
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
                   rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="text-white/70 hover:text-white transition-colors duration-200"
+                  className="text-black/50 hover:text-black transition-colors duration-200"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label={item.label}
                 >
-                  <Icon size={20} />
+                  <Icon size={18} />
                 </motion.a>
               )
             })}
           </div>
         </motion.div>
 
-        {/* Big CTAs — Collaborate & Careers */}
+        {/* CTAs — Collaborate & Careers side by side */}
         <motion.div
-          className="flex-1 flex flex-col justify-center px-8 md:px-12"
+          className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-black/10 border-b border-black/10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {/* Collaborate */}
-          <motion.a
+          <a
             href="/contact"
-            className="group flex items-center justify-between border-t border-b border-white/10 py-8 md:py-12"
-            whileHover={{ paddingLeft: 8 }}
-            transition={{ duration: 0.3 }}
+            className="footer-anim group flex items-center justify-between py-8 md:py-10 md:pr-10"
           >
-            <span className="font-sans font-semibold text-5xl md:text-8xl tracking-tight text-white">
-              Collaborate
-            </span>
-            <motion.div
-              className="flex-shrink-0"
-              whileHover={{ x: 8, y: -8 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ArrowUpRight className="h-10 w-10 md:h-16 md:w-16 text-white" />
-            </motion.div>
-          </motion.a>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-1.5 group-hover:text-[#FFD600]/60 transition-colors duration-300">Let&apos;s work together</p>
+              <span className="text-h2 font-sans font-semibold tracking-tight text-black group-hover:text-[#FFD600] transition-colors duration-300">
+                <span className="btn-label"><SlotText>Collaborate</SlotText></span>
+              </span>
+            </div>
+            <ArrowUpRight className="flex-shrink-0 ml-4 h-7 w-7 md:h-9 md:w-9 text-black group-hover:text-[#FFD600] transition-colors duration-300" />
+          </a>
 
-          {/* Careers */}
-          <motion.a
+          <a
             href="/careers"
-            className="group flex items-center justify-between border-b border-white/10 py-8 md:py-12"
-            whileHover={{ paddingLeft: 8 }}
-            transition={{ duration: 0.3 }}
+            className="footer-anim group flex items-center justify-between py-8 md:py-10 md:pl-10"
           >
-            <span className="font-sans font-semibold text-5xl md:text-8xl tracking-tight text-white">
-              Careers
-            </span>
-            <motion.div
-              className="flex-shrink-0"
-              whileHover={{ x: 8, y: -8 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ArrowUpRight className="h-10 w-10 md:h-16 md:w-16 text-white" />
-            </motion.div>
-          </motion.a>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-1.5 group-hover:text-[#FFD600]/60 transition-colors duration-300">Join the team</p>
+              <span className="text-h2 font-sans font-semibold tracking-tight text-black group-hover:text-[#FFD600] transition-colors duration-300">
+                <span className="btn-label"><SlotText>Careers</SlotText></span>
+              </span>
+            </div>
+            <ArrowUpRight className="flex-shrink-0 ml-4 h-7 w-7 md:h-9 md:w-9 text-black group-hover:text-[#FFD600] transition-colors duration-300" />
+          </a>
         </motion.div>
 
         {/* Link columns grid */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 md:px-12 py-12 md:py-16 border-t border-white/10"
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 md:py-10 border-b border-black/10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          {/* Quick Links */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/40 font-mono mb-4">
-              Quick Links
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-3">Quick Links</p>
             <ul className="space-y-2">
               {FOOTER_LINKS.quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white text-sm transition-colors duration-200"
-                  >
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -159,18 +146,12 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Services */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/40 font-mono mb-4">
-              Services
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-3">Services</p>
             <ul className="space-y-2">
               {FOOTER_LINKS.services.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white text-sm transition-colors duration-200"
-                  >
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -178,18 +159,12 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Work */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/40 font-mono mb-4">
-              Work
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-3">Work</p>
             <ul className="space-y-2">
               {FOOTER_LINKS.work.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white text-sm transition-colors duration-200"
-                  >
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -197,18 +172,12 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Resources */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/40 font-mono mb-4">
-              Resources
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-3">Resources</p>
             <ul className="space-y-2">
               {FOOTER_LINKS.resources.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white text-sm transition-colors duration-200"
-                  >
+                  <Link href={link.href} className="inline-block text-black/60 hover:text-black text-sm transition-all duration-200 hover:translate-x-1">
                     {link.label}
                   </Link>
                 </li>
@@ -219,34 +188,32 @@ export function FooterSection() {
 
         {/* Contact Us bar */}
         <motion.div
-          className="border-t border-white/10 px-8 md:px-12 py-8 md:py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+          className="py-6 md:py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-black/10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-white/40 font-mono mb-2">
-              Contact Us
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-1.5">Contact Us</p>
             <a
-              href={`mailto:${FOOTER_CONFIG.email}`}
-              className="font-sans text-2xl md:text-4xl font-semibold text-white hover:text-white/70 transition-colors duration-200"
+              href="mailto:contact@websitevikreta.com"
+              className="footer-anim font-sans text-xl md:text-3xl font-semibold text-black hover:text-[#FFD600] transition-colors duration-300"
             >
-              {FOOTER_CONFIG.email}
+              <span className="btn-label"><SlotText>contact@websitevikreta.com</SlotText></span>
             </a>
           </div>
           <a
-            href={`tel:${FOOTER_CONFIG.phone.replace(/\s/g, '')}`}
-            className="font-mono text-white/60 hover:text-white text-sm md:text-base transition-colors duration-200"
+            href="tel:+919970445198"
+            className="font-mono text-black/50 hover:text-[#FFD600] text-sm transition-colors duration-300"
           >
-            {FOOTER_CONFIG.phone}
+            +91 99704 45198
           </a>
         </motion.div>
 
         {/* Copyright strip */}
         <motion.div
-          className="px-8 md:px-12 py-6 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-white/30 font-mono border-t border-white/10"
+          className="py-4 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-black/30 font-mono"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
@@ -255,6 +222,7 @@ export function FooterSection() {
           <span>© 2026 {FOOTER_CONFIG.brandName}. All rights reserved.</span>
           <span>{FOOTER_CONFIG.tagline}</span>
         </motion.div>
+
       </div>
     </motion.section>
   )

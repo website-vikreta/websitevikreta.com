@@ -10,14 +10,14 @@ import { chromium } from 'playwright';
     // Scroll to CTA section
     await page.evaluate(() => {
       const sections = document.querySelectorAll('section');
-      const ctaSection = Array.from(sections).find(s => s.textContent.includes('Ready when you are'));
+      const ctaSection = Array.from(sections).find(s => s.textContent.includes('Let\'s talk'));
       if (ctaSection) ctaSection.scrollIntoView({ behavior: 'smooth' });
     });
 
     await page.waitForTimeout(1500);
 
     // Verify content
-    const badge = await page.locator('text=Ready when you are').first().isVisible();
+    const badge = await page.locator('text=Le\'s talk').first().isVisible();
     const title = await page.locator('text=Let\'s build something intelligent together').isVisible();
     const button = await page.getByRole('link', { name: /^Book a Call$/ }).first().isVisible();
 
@@ -27,7 +27,7 @@ import { chromium } from 'playwright';
     // Check glow element
     const glowDiv = await page.evaluate(() => {
       const sections = document.querySelectorAll('section');
-      const ctaSection = Array.from(sections).find(s => s.textContent.includes('Ready when you are'));
+      const ctaSection = Array.from(sections).find(s => s.textContent.includes('Let\'s talk'));
       if (ctaSection) {
         const glow = ctaSection.querySelector('div[class*="bg-gradient"]');
         if (glow) {
