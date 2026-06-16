@@ -11,16 +11,22 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@next/third-parties": "^16.2.9",
+    "@portabletext/react": "^6.2.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.0.0",
     "geist": "^1.7.2",
     "gsap": "^3.15.0",
     "lenis": "^1.1.15",
     "lucide-react": "^1.18.0",
     "motion": "^11.15.0",
     "next": "16.2.9",
+    "next-sanity": "^13.1.0",
     "react": "19.2.4",
     "react-bootstrap-icons": "^1.11.6",
     "react-dom": "19.2.4",
-    "react-use-measure": "^2.1.7"
+    "react-use-measure": "^2.1.7",
+    "sanity": "^6.0.0",
+    "styled-components": "^6.4.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

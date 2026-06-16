@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import { Navbar } from '@/components/ui/Navbar'
+import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -44,7 +44,7 @@ export default function RootLayout({
       className={utile.variable}
     >
       <body>
-        <Navbar />
+        <ConditionalNavbar />
         {children}
         <GoogleAnalytics gaId="G-QN768NT1EF" />
       </body>
