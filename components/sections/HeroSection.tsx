@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
+import { UpworkBadge } from '@/components/ui/UpworkBadge'
 
 const HEADLINE = 'We don\'t just build your website. We think with you.'
 const WORDS = HEADLINE.split(' ')
@@ -98,7 +99,7 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="main-content"
-      className="relative flex flex-col justify-center min-h-svh overflow-hidden"
+      className="relative flex flex-col justify-center min-h-svh overflow-x-clip"
       aria-label="Hero — Website Vikreta"
     >
       {/* ── Content ──────────────────────────────────────────── */}
@@ -160,6 +161,18 @@ export function HeroSection() {
           <Button href="/contact" variant="ghost" size="lg" showArrow>
             See our work
           </Button>
+        </div>
+
+      </div>
+
+      {/* Upwork badge — center sits on the fold (half above), right edge aligned
+          to the container content edge. Overlaps the section below, so it adds no
+          page height and triggers no extra scrollbar. */}
+      <div className="pointer-events-none absolute inset-x-0 top-[100vh] z-20">
+        <div className="container relative">
+          <div className="pointer-events-auto absolute right-(--section-x) -translate-y-1/2">
+            <UpworkBadge />
+          </div>
         </div>
       </div>
 
