@@ -4,7 +4,9 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { ChevronDown, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { Logo } from '@/components/ui/Logo'
 
 interface DropdownItem {
   label: string
@@ -97,19 +99,7 @@ export function Navbar() {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex-shrink-0 flex items-center"
-            aria-label="Website Vikreta — Home"
-          >
-            <Image
-              src="/logo/websitevikreta-logo-horizontal.svg"
-              alt="Website Vikreta"
-              width={180}
-              height={54}
-              priority
-            />
-          </Link>
+          <Logo variant="light" />
 
           {/* Desktop nav — hidden at top, visible on scroll */}
           <ul
@@ -144,24 +134,14 @@ export function Navbar() {
                       }}
                     >
                       {item.label}
-                      <svg
-                        width="11"
-                        height="11"
-                        viewBox="0 0 11 11"
-                        fill="none"
-                        aria-hidden="true"
+                      <ChevronDown
+                        size={11}
+                        strokeWidth={1.5}
+                        aria-hidden={true}
                         className={`transition-transform duration-200 ${
                           activeDropdown === item.label ? 'rotate-180' : ''
                         }`}
-                      >
-                        <path
-                          d="M2 3.5l3.5 3.5 3.5-3.5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      />
                     </button>
 
                     <div
@@ -200,7 +180,7 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center">
-            <Button href="/contact" variant="primary" size="sm" showArrow>
+            <Button href="/#footer" variant="primary" size="sm" showArrow>
               Contact Us
             </Button>
           </div>
@@ -268,14 +248,7 @@ export function Navbar() {
             onClick={closeMobileMenu}
             aria-label="Close navigation"
           >
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <path
-                d="M3 3l12 12M15 3L3 15"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            <X size={18} strokeWidth={1.5} aria-hidden={true} />
           </button>
         </div>
 
@@ -295,24 +268,14 @@ export function Navbar() {
                       aria-expanded={mobileExpanded === item.label}
                     >
                       {item.label}
-                      <svg
-                        width="13"
-                        height="13"
-                        viewBox="0 0 13 13"
-                        fill="none"
-                        aria-hidden="true"
+                      <ChevronDown
+                        size={13}
+                        strokeWidth={1.5}
+                        aria-hidden={true}
                         className={`transition-transform duration-200 ${
                           mobileExpanded === item.label ? 'rotate-180' : ''
                         }`}
-                      >
-                        <path
-                          d="M2 4.5l4.5 4.5 4.5-4.5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      />
                     </button>
 
                     <ul
@@ -350,7 +313,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex flex-col gap-3 px-6 py-6 border-t border-black/[0.06] flex-shrink-0">
-          <Button href="/contact" variant="primary" className="w-full justify-center" showArrow>
+          <Button href="/#footer" variant="primary" className="w-full justify-center" showArrow>
             Contact Us
           </Button>
         </div>

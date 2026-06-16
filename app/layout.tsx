@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Navbar } from '@/components/ui/Navbar'
 import './globals.css'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const utile = localFont({
   src: [
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
   title: 'Website Vikreta — AI-First Digital Agency',
   description:
     "You're losing hours every week to work a system could do. Website Vikreta builds AI-powered automation for digital marketing, web, and business operations.",
+  icons: {
+    icon: '/logo/websitevikreta-icon.png',
+  },
 }
 
 export default function RootLayout({
@@ -42,6 +46,7 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <GoogleAnalytics gaId="G-QN768NT1EF" />
       </body>
     </html>
   )

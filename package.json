@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@next/third-parties": "^16.2.9",
     "geist": "^1.7.2",
     "gsap": "^3.15.0",
     "lenis": "^1.1.15",
