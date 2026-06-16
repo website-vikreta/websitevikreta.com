@@ -170,7 +170,7 @@ export function HeroSection() {
           page height and triggers no extra scrollbar. */}
       <div className="pointer-events-none absolute inset-x-0 top-[100vh] z-20">
         <div className="container relative">
-          <div className="pointer-events-auto absolute right-(--section-x) -translate-y-1/2">
+          <div className="pointer-events-auto absolute right-(--section-x) -translate-y-[150%] md:-translate-y-[80%]">
             <UpworkBadge />
           </div>
         </div>

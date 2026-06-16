@@ -11,7 +11,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
+}
 }
 
 /* ─── Design Tokens ───────────────────────────────────────────── */
@@ -64,6 +64,11 @@
 }
 
 html { scroll-behavior: smooth; }
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-text);
+}
 
 body {
   background-color: var(--color-bg);

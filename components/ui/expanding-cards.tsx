@@ -82,7 +82,7 @@ export const ExpandingCards = React.forwardRef<
         <li
           key={item.id}
           className={cn(
-            "group relative cursor-pointer overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]",
+            "group relative cursor-pointer overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]",
             "md:min-w-[80px]",
             "min-h-0 min-w-0"
           )}

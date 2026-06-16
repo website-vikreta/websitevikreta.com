@@ -56,7 +56,7 @@ export function CTASection({
 
         {/* Glow Effect */}
         {withGlow && (
-          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-b from-yellow-400/20 to-transparent opacity-50" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-yellow-400/20 to-transparent opacity-50" />
         )}
       </div>
     </section>

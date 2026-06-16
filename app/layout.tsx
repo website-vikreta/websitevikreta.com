@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Navbar } from '@/components/ui/Navbar'
+import { GoToTop } from '@/components/ui/GoToTop'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -46,7 +47,8 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
-        <GoogleAnalytics gaId="G-QN768NT1EF" />
+        {/* <GoToTop /> */}
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
       </body>
     </html>
   )

@@ -44,7 +44,7 @@ export function StackingCard({
           scale,
           top: `calc(-5vh + ${i * 25}px)`,
         }}
-        className={`flex flex-col relative -top-[25%] h-[450px] w-[70%] rounded-lg p-10 origin-top ${borderClass}`}
+        className={`flex flex-col relative -top-[25%] h-[450px] w-[70%] p-10 origin-top ${borderClass}`}
       >
         <h2 className={`font-sans text-3xl md:text-4xl text-center font-semibold ${textColor}`}>
           {title}
@@ -59,7 +59,7 @@ export function StackingCard({
           </div>
 
           {/* Image placeholder (right side) */}
-          <div className="relative w-[60%] h-full rounded-lg overflow-hidden">
+          <div className="relative w-[60%] h-full overflow-hidden">
             <motion.div className="w-full h-full" style={{ scale: imageScale }}>
               <div
                 className={`absolute inset-0 w-full h-full ${placeholderBg} flex items-center justify-center`}

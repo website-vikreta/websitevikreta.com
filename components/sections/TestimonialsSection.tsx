@@ -1,7 +1,7 @@
 "use client"
 
 import { Fragment, useState, useEffect, useRef, useCallback } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence, LayoutGroup } from "motion/react"
 import { gsap } from "@/lib/gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { cn } from "@/lib/utils"
@@ -158,7 +158,7 @@ export function TestimonialsSection() {
             </div>
 
             {/* Quote — word by word clip reveal */}
-            <p className="text-xl md:text-[1.45rem] font-light text-[#121212] leading-[1.7] mb-5">
+            <p className="text-xl md:text-[1.45rem] font-light text-[#121212] leading-[1.7] mb-5 min-h-[3.4em]">
               <span className="text-[#D4D4D4]">&ldquo;</span>
               {words.map((word, i) => (
                 <Fragment key={active.id + "-w-" + i}>
@@ -204,7 +204,9 @@ export function TestimonialsSection() {
         </AnimatePresence>
 
         {/* Avatar switcher */}
-        <div
+        <LayoutGroup>
+        <motion.div
+          layout
           ref={switcherRef}
           className="flex items-center justify-center gap-2 mt-10 md:mt-12"
         >
@@ -214,7 +216,8 @@ export function TestimonialsSection() {
             const showLabel = isActive || isHovered
 
             return (
-              <button
+              <motion.button
+                layout
                 key={t.id}
                 onClick={() => handleSelect(index)}
                 onMouseEnter={() => setHoveredIndex(index)}
@@ -259,10 +262,11 @@ export function TestimonialsSection() {
                     </span>
                   </div>
                 </div>
-              </button>
+              </motion.button>
             )
           })}
-        </div>
+        </motion.div>
+        </LayoutGroup>
 
       </div>
     </section>
