@@ -2,24 +2,13 @@
 
 import { motion } from "motion/react"
 import { TextLink } from "@/components/ui/TextLink"
+import { blogPosts } from "@/lib/blog-data"
 
-const posts = [
-  {
-    title: "Where your team's week actually goes — and what to automate first",
-    excerpt: "The most common time sinks in 20–100 person businesses, mapped.",
-    href: "/blog/automate-first",
-  },
-  {
-    title: "Why ranking on Google now also means ranking on AI answer engines",
-    excerpt: "Build a content system that wins both search and AI discovery.",
-    href: "/blog/seo-and-geo",
-  },
-  {
-    title: "Your website is either your best salesperson or your worst",
-    excerpt: "What separates a site that generates leads from one that just sits there.",
-    href: "/blog/web-conversion",
-  },
-]
+const posts = blogPosts.slice(0, 3).map((p) => ({
+  title: p.title,
+  excerpt: p.description,
+  href: `/blog/${p.slug}`,
+}))
 
 const container = {
   hidden: {},
