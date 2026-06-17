@@ -117,7 +117,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
     <motion.div
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="flex-shrink-0 rounded-3xl overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-[calc(100vw_-_2rem)] md:w-[min(70vw,900px)]"
+      className="flex-shrink-0 overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-[calc(100vw_-_2rem)] md:w-[min(70vw,900px)]"
       style={{ background: cardBg }}
     >
       {/* Grain texture */}
@@ -152,7 +152,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
       {/* Right — image (60%) */}
       <motion.div
-        className="relative overflow-hidden rounded-2xl m-3"
+        className="relative overflow-hidden m-3"
         style={{ width: '60%' }}
         animate={{ scale: hovered ? 1.02 : 1 }}
         transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}

@@ -3,9 +3,8 @@
 import React, { useEffect, useId, useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 
-const BADGE_TEXT = 'TOP RATED ON UPWORK ✱ 100% JOB SUCCESS ✱ '
+const BADGE_TEXT = 'TOP RATED ON UPWORK ✱ 100% JOB SUCCESS ✱ CLICK TO HIRE ✱ '
 
-// Upwork wordmark "U" — path lifted from public/brands-upwork.svg
 function UpworkMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 512 512" className={className} aria-hidden="true">
@@ -17,27 +16,78 @@ function UpworkMark({ className }: { className?: string }) {
   )
 }
 
+const CIRCUMFERENCE = 2 * Math.PI * 40 // path radius = 40 SVG units ≈ 251.327
+
 export function UpworkBadge() {
-  const pathId = useId().replace(/:/g, 'up')
-  const ringRef = useRef<HTMLDivElement>(null)
+  const pathId  = useId().replace(/:/g, 'up')
+  const badgeRef = useRef<HTMLAnchorElement>(null)
+  const ringRef  = useRef<HTMLDivElement>(null)
+  const textRef  = useRef<SVGTextElement>(null)
   const tweenRef = useRef<gsap.core.Tween | null>(null)
 
+  // Fit font-size so text exactly fills the circle circumference.
+  // Must run after paint + fonts loaded — useLayoutEffect fires too early for SVG text metrics.
   useEffect(() => {
-    if (!ringRef.current) return
+    let cancelled = false
+
+    const fit = () => {
+      if (cancelled) return
+      const textEl = textRef.current
+      if (!textEl) return
+      const tp = textEl.querySelector('textPath') as (SVGTextContentElement & Element) | null
+      if (!tp) return
+      const natural = tp.getComputedTextLength()
+      if (natural === 0) {
+        requestAnimationFrame(fit)
+        return
+      }
+      const base = parseFloat(textEl.getAttribute('font-size') ?? '5.5')
+      textEl.setAttribute('font-size', ((base * CIRCUMFERENCE) / natural).toFixed(4))
+    }
+
+    document.fonts.ready.then(() => requestAnimationFrame(fit))
+
+    return () => { cancelled = true }
+  }, [])
+
+  useEffect(() => {
+    const el = badgeRef.current
+    const ring = ringRef.current
+    if (!el || !ring) return
 
     const prefersReduced =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    if (prefersReduced) return
-
-    tweenRef.current = gsap.to(ringRef.current, {
-      rotation: 360,
-      duration: 12,
-      ease: 'linear',
-      repeat: -1,
-      transformOrigin: '50% 50%',
-    })
+    // Entrance — fires after all hero animations complete (~2.6s total)
+    if (prefersReduced) {
+      gsap.set(el, { opacity: 1, scale: 1 })
+      tweenRef.current = gsap.to(ring, {
+        rotation: 360,
+        duration: 12,
+        ease: 'linear',
+        repeat: -1,
+        transformOrigin: '50% 50%',
+      })
+    } else {
+      gsap.set(el, { opacity: 0, scale: 0, transformOrigin: '50% 50%' })
+      gsap.to(el, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.9,
+        ease: 'back.out(2.4)',
+        delay: 2.8,
+        onComplete: () => {
+          tweenRef.current = gsap.to(ring, {
+            rotation: 360,
+            duration: 12,
+            ease: 'linear',
+            repeat: -1,
+            transformOrigin: '50% 50%',
+          })
+        },
+      })
+    }
 
     return () => {
       tweenRef.current?.kill()
@@ -49,15 +99,21 @@ export function UpworkBadge() {
 
   return (
     <a
+      ref={badgeRef}
       href="http://upwork.com/ag/websitevikreta"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Top rated on Upwork with 100% Job Success Score — view agency profile"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group relative flex items-center justify-center w-[180px] h-[180px] cursor-pointer select-none"
+      className="group relative flex items-center justify-center
+                 w-[120px] h-[120px]
+                 md:w-[150px] md:h-[150px]
+                 lg:w-[180px] lg:h-[180px]
+                 cursor-pointer select-none"
+      style={{ opacity: 0 }}
     >
-      {/* Spinning text ring — no circle, text only */}
+      {/* Spinning text ring — font in SVG user units so it scales with badge size */}
       <div ref={ringRef} className="absolute inset-0">
         <svg viewBox="0 0 100 100" className="w-full h-full" aria-hidden="true">
           <defs>
@@ -67,10 +123,12 @@ export function UpworkBadge() {
             />
           </defs>
           <text
-            style={{ fontSize: '0.5rem' }}
-            letterSpacing="0.5"
+            ref={textRef}
+            fontSize="5.5"
+            letterSpacing="0.3"
             fill="var(--color-text-muted)"
-            fontFamily="var(--font-epilogue, sans-serif)"
+            fontFamily="Epilogue, sans-serif"
+            textAnchor="start"
           >
             <textPath href={`#${pathId}`} startOffset="0%">
               {BADGE_TEXT}
@@ -79,8 +137,8 @@ export function UpworkBadge() {
         </svg>
       </div>
 
-      {/* Centre — bare logo, no disc/border/background */}
-      <UpworkMark className="relative z-10 w-[46px] h-[46px] text-(--color-text) group-hover:text-[#14A800] transition-colors duration-300" />
+      {/* Centre — bare Upwork logo, ~25% of badge width */}
+      <UpworkMark className="relative z-10 w-1/4 h-1/4 text-(--color-text) group-hover:text-[#14A800] transition-colors duration-300" />
     </a>
   )
 }
