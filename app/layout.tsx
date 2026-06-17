@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { GoToTop } from '@/components/ui/GoToTop'
+import { CTASection } from '@/components/sections/CTASection'
+import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -49,6 +51,18 @@ export default function RootLayout({
         {children}
         {/* <GoToTop /> */}
         {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+
+      <CTASection
+        badge={{ text: "Let's talk" }}
+        title="Let's build something intelligent together"
+        description="Free consultation. No commitment. Whether it's a website, an app, or a full AI audit — we'll listen, map it out, and tell you exactly what we'd do."
+        action={{
+          text: "Book a Call",
+          href: "/contact"
+        }}
+        withGlow={true}
+      />
+      <FooterSection />
       </body>
     </html>
   )

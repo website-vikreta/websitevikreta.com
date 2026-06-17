@@ -85,6 +85,11 @@ export function ContactForm() {
         {
           from_name: formData.name,
           reply_to: formData.email,
+          name: formData.name,
+          mobile: "<blank>",
+          email: formData.email,
+          service: "<blank>",
+          budget: "<blank>",
           message: formData.message,
         },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
