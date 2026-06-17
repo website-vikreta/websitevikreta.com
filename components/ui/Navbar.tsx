@@ -180,7 +180,7 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center">
-            <Button href="/#footer" variant="primary" size="sm" showArrow>
+            <Button href="/contact" variant="primary" size="sm" showArrow>
               Contact Us
             </Button>
           </div>
@@ -313,7 +313,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex flex-col gap-3 px-6 py-6 border-t border-black/[0.06] flex-shrink-0">
-          <Button href="/#footer" variant="primary" className="w-full justify-center" showArrow>
+          <Button href="/contact" variant="primary" className="w-full justify-center" showArrow>
             Contact Us
           </Button>
         </div>

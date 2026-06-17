@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function WorkPage() {
-  return <ComingSoonPage />
+  return <ComingSoonPage pageName="Our Work" showFooter={false} />
 }
