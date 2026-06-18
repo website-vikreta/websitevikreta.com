@@ -1,10 +1,9 @@
 'use client'
 
 import { DotGrid } from '@/components/ui/DotGrid'
-import { ArrowDotsButton } from '@/components/ui/arrow-dots-button'
-import { ContactForm } from '@/components/ContactForm'
 import { Mail, ChevronDown } from 'lucide-react'
 import { motion } from 'motion/react'
+import { FooterSection } from '@/components/sections/FooterSection'
 
 function InstagramIcon({ size = 24 }: { size?: number }) {
   return (
@@ -26,7 +25,12 @@ function LinkedinIcon({ size = 24 }: { size?: number }) {
   )
 }
 
-export function ComingSoonPage() {
+interface ComingSoonPageProps {
+  pageName: string
+  showFooter?: boolean
+}
+
+export function ComingSoonPage({ pageName, showFooter = false }: ComingSoonPageProps) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -88,14 +92,6 @@ export function ComingSoonPage() {
 
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 mb-16"
-          >
-            <ArrowDotsButton label="Back to Home" href="/#hero" variant="secondary" />
-            <ArrowDotsButton label="Contact Us" href="/#footer" variant="primary" />
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
             className="flex justify-center gap-8"
           >
             <a
@@ -142,21 +138,7 @@ export function ComingSoonPage() {
         </motion.div>
       </section>
 
-      {/* Form — below the fold, scroll-triggered */}
-      <section className="relative flex flex-col items-center py-24 px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="w-full max-w-md"
-        >
-          <p className="text-xs font-mono uppercase tracking-widest text-neutral-400 text-center mb-8">
-            Or send us a message
-          </p>
-          <ContactForm />
-        </motion.div>
-      </section>
+      {showFooter && <FooterSection />}
     </>
   )
 }

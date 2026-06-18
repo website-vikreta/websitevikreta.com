@@ -106,11 +106,7 @@ export function UpworkBadge() {
       aria-label="Top rated on Upwork with 100% Job Success Score — view agency profile"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group relative flex items-center justify-center
-                 w-[120px] h-[120px]
-                 md:w-[150px] md:h-[150px]
-                 lg:w-[180px] lg:h-[180px]
-                 cursor-pointer select-none"
+      className="group relative flex items-center justify-center w-[120px] h-[120px] md:w-[150px] md:h-[150px] lg:w-[180px] lg:h-[180px] cursor-pointer select-none"
       style={{ opacity: 0 }}
     >
       {/* Spinning text ring — font in SVG user units so it scales with badge size */}

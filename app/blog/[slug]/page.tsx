@@ -148,34 +148,10 @@ export default async function BlogPostPage({
 
         <div className={`container pb-24 md:pb-32 ${hasCover ? 'pt-16 md:pt-20' : 'pt-32 md:pt-40'}`}>
 
-          {/* Breadcrumb */}
-          <p className="text-[0.8125rem] font-mono uppercase tracking-[0.1em] text-[var(--color-text-faint)] mb-6">
-            <Link
-              href="/blog"
-              className="hover:text-[var(--color-text)] transition-colors duration-200"
-            >
-              Blog
-            </Link>
-            {' / '}
-            #{post.category}
-          </p>
-
           {/* Title */}
-          <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-4 max-w-4xl">
+          <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-12 max-w-[720px] mx-auto text-center">
             {post.title}
           </h2>
-
-          {/* Meta: author · date · readTime */}
-          <p className="text-[0.8125rem] font-mono text-[var(--color-text-faint)] mb-10">
-            {post.source === 'sanity' && post.author?.name && (
-              <>{post.author.name} · </>
-            )}
-            {post.publishDate}
-            {post.readTime ? ` · ${post.readTime}` : ''}
-          </p>
-
-          {/* Divider */}
-          <hr className="border-t border-[var(--color-border)] mb-16" />
 
           {/* Body */}
           <div className="mx-auto max-w-[720px]">
