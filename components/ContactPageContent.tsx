@@ -11,16 +11,20 @@ import { Button } from '@/components/ui/Button'
 function SlotText({ children }: { children: string }) {
   return (
     <span aria-label={children}>
-      {children.split('').map((char, i) => (
-        <span
-          key={i}
-          className="slot-char-wrap"
-          style={{ '--char-i': i } as React.CSSProperties}
-          aria-hidden="true"
-        >
-          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
-        </span>
-      ))}
+      {children.split('').map((char, i) =>
+        char === ' ' ? (
+          <span key={i} aria-hidden="true" style={{ display: 'inline-block', width: '0.3em' }} />
+        ) : (
+          <span
+            key={i}
+            className="slot-char-wrap"
+            style={{ '--char-i': i } as React.CSSProperties}
+            aria-hidden="true"
+          >
+            <span className="slot-char">{char}</span>
+          </span>
+        )
+      )}
     </span>
   )
 }

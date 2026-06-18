@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'motion/react'
 import { ArrowLeft } from 'lucide-react'
-import { DotGrid } from '@/components/ui/DotGrid'
 
 interface Section {
   heading: string
@@ -49,8 +48,6 @@ export function LegalPageLayout({ title, lastUpdated, sections }: LegalPageLayou
       className="relative min-h-screen overflow-hidden"
       style={{ background: '#ffffff' }}
     >
-      <DotGrid />
-
       <div className="relative z-10 pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="container">
           <div className="max-w-3xl mx-auto">

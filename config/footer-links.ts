@@ -22,6 +22,7 @@ export const FOOTER_LINKS = {
     { label: 'Privacy Policy', href: '/legal/privacy-policy' },
     { label: 'Terms & Conditions', href: '/legal/terms-and-conditions' },
     { label: 'Disclaimer', href: '/legal/disclaimer' },
+    { label: 'Sitemap', href: '/sitemap' },
   ],
   social: [
     {
