@@ -70,12 +70,12 @@ export function ServicesSection() {
         <div ref={anchorRef} className="container absolute inset-0 pointer-events-none" aria-hidden />
         <motion.div
           ref={trackRef}
-          className="flex gap-5 items-start"
+          className="flex gap-12 items-start"
           style={{ x, width: 'max-content', paddingLeft: leftPad ?? 'var(--section-x)', paddingRight: 'var(--section-x)' }}
         >
           <IntroPanel />
-          {SERVICES.map((service, i) => (
-            <ServiceCard key={service.id} service={service} index={i} />
+          {SERVICES.map((service) => (
+            <ServiceCard key={service.id} service={service} />
           ))}
         </motion.div>
       </div>
@@ -109,16 +109,15 @@ function IntroPanel() {
   )
 }
 
-function ServiceCard({ service, index }: { service: Service; index: number }) {
+function ServiceCard({ service }: { service: Service }) {
   const [hovered, setHovered] = useState(false)
-  const cardBg = index % 2 === 0 ? '#131313' : '#181818'
 
   return (
     <motion.div
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="flex-shrink-0 overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-[calc(100vw_-_2rem)] md:w-[min(70vw,900px)]"
-      style={{ background: cardBg }}
+      className="flex-shrink-0 overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-[calc(100vw_-_2rem)] md:w-[min(80vw,1100px)]"
+      style={{ background: '#131313' }}
     >
       {/* Grain texture */}
       <div
@@ -133,7 +132,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       />
 
       {/* Left — text content (40%) */}
-      <div className="relative z-20 flex flex-col justify-between p-8 md:p-10" style={{ width: '40%' }}>
+      <div className="relative z-20 flex flex-col justify-between py-8 px-10 md:py-10 md:px-12" style={{ width: '40%' }}>
         <div>
           <h3
             className="font-sans font-bold text-white leading-snug mb-3"
@@ -141,18 +140,20 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           >
             {service.title}
           </h3>
-          <p className="text-sm md:text-[0.9375rem] leading-relaxed text-white/50">
+          <p className="text-sm md:text-[0.9375rem] leading-relaxed text-white/50 mb-4">
             {service.description}
           </p>
         </div>
-        <Button href="/contact" variant="light" size="sm" className="w-fit">
-          Get in touch
-        </Button>
+        <div className="mt-6">
+          <Button href={service.href} variant="ghost" size="sm" className="w-fit border-white/20 text-white/70 hover:text-white hover:border-white/40" showArrow>
+            Read More
+          </Button>
+        </div>
       </div>
 
       {/* Right — image (60%) */}
       <motion.div
-        className="relative overflow-hidden m-3"
+        className="relative overflow-hidden"
         style={{ width: '60%' }}
         animate={{ scale: hovered ? 1.02 : 1 }}
         transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}

@@ -29,7 +29,7 @@ export function Logo({ variant = 'light', className = '' }: LogoProps) {
         width={54}
         height={54}
         priority
-        className={variant === 'dark' ? 'brightness-0 invert h-8 w-8' : 'h-8 w-8'}
+        className={variant === 'dark' ? 'brightness-0 invert h-6 w-6 md:h-8 md:w-8' : 'h-6 w-6 md:h-8 md:w-8'}
         aria-hidden="true"
       />
       {/* Text */}
@@ -39,7 +39,7 @@ export function Logo({ variant = 'light', className = '' }: LogoProps) {
         width={180}
         height={30}
         priority
-        className={variant === 'dark' ? 'brightness-0 invert h-6 w-auto' : 'h-6 w-auto'}
+        className={variant === 'dark' ? 'brightness-0 invert h-5 w-auto md:h-6' : 'h-5 w-auto md:h-6'}
       />
     </Link>
   )

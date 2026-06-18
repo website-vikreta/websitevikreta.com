@@ -23,11 +23,11 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: 'Services',
     dropdown: [
-      { label: 'UX Design', href: '/services/ux-design' },
-      { label: 'UI Design', href: '/services/ui-design' },
+      { label: 'AI Automations', href: '/services/ai-automations' },
       { label: 'Web Development', href: '/services/web-development' },
-      { label: 'Web & Mobile Apps', href: '/services/web-mobile-apps' },
-      { label: 'AI & Automation', href: '/services/ai-automation' },
+      { label: 'Apps & CRM', href: '/services/web-and-mobile-apps' },
+      { label: 'UI/UX Design', href: '/services/uiux-design' },
+      { label: 'Digital Marketing', href: '/services/digital-marketing' },
     ],
   },
   { label: 'Work', href: '/work' },
