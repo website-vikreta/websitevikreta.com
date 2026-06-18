@@ -1,4 +1,3 @@
-import { DotGrid } from '@/components/ui/DotGrid'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
 import { ProcessSection } from '@/components/sections/ProcessSection'
@@ -8,6 +7,7 @@ import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
 import { TechnologiesSection } from '@/components/sections/TechnologiesSection'
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
 import { BlogPreviewSection } from '@/components/sections/BlogPreviewSection'
+import { DotGrid } from '@/components/ui/DotGrid'
 
 export default function Home() {
   return (
