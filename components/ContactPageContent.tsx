@@ -164,17 +164,23 @@ export function ContactPageContent() {
       <style>{`
         .inline-field {
           display: inline-block;
-          background: transparent;
+          background-color: transparent;
+          /* yellow underline that draws left -> right on focus/fill */
+          background-image: linear-gradient(var(--color-accent), var(--color-accent));
+          background-repeat: no-repeat;
+          background-position: left 100%;
+          background-size: 0% 1px;
           border: none;
-          border-bottom: 1px solid var(--color-border);
+          border-bottom: 1px solid var(--color-border-strong);
           outline: none;
+          caret-color: var(--color-accent);
           font-family: inherit;
           font-size: inherit;
           font-weight: 800;
           line-height: inherit;
-          color: var(--color-accent);
+          color: var(--color-text);
           padding: 0 4px 2px;
-          transition: border-color 0.2s;
+          transition: background-size 0.32s cubic-bezier(0.22,1,0.36,1), border-color 0.2s;
           min-width: 160px;
           vertical-align: baseline;
         }
@@ -182,23 +188,63 @@ export function ContactPageContent() {
           color: var(--color-text-faint);
           font-weight: 400;
         }
-        .inline-field:focus {
-          border-bottom-color: var(--color-text);
+        .inline-field:focus,
+        .inline-field.filled {
+          background-size: 100% 2px;
+          border-bottom-color: transparent;
         }
         .inline-field.error {
-          border-bottom-color: #FF4444;
+          border-bottom-color: transparent;
+          background-image: linear-gradient(#FF4444, #FF4444);
+          background-size: 100% 1px;
+        }
+        .email-row {
+          display: flex;
+          align-items: baseline;
+          gap: 0.5ch;
+          width: 100%;
+          flex-wrap: wrap;
+          margin-top: 0.25rem;
         }
         .inline-field.field-email {
+          flex: 1 1 220px;
           min-width: 220px;
+        }
+
+        .social-divider {
+          display: none;
+        }
+
+        @media (max-width: 1024px) {
+          .contact-left  { order: 1; }
+          .contact-right { order: 2; }
+          .contact-socials-mobile { order: 3; display: flex !important; }
+          .contact-socials-desktop { display: none !important; }
+          .social-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.14em;
+            color: var(--color-text-faint);
+          }
+          .social-divider::before,
+          .social-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--color-border);
+          }
         }
 
         @media (max-width: 640px) {
           .inline-field {
             display: block;
-            width: 100%;
+            width: 100% !important;
             margin: 0.5rem 0;
             min-width: 0;
-            border-bottom-color: var(--color-border);
             padding: 4px 0;
           }
           .prose-form {
@@ -209,14 +255,14 @@ export function ContactPageContent() {
 
       <section className="relative min-h-screen overflow-x-clip pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="container relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 lg:gap-24 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 lg:gap-24 items-start" style={{ display: 'grid' }}>
 
             {/* ── Left ── */}
             <motion.div
               variants={animate ? containerV : undefined}
               initial={animate ? 'hidden' : false}
               animate={animate ? 'visible' : undefined}
-              className="lg:sticky lg:top-40"
+              className="contact-left lg:sticky lg:top-40"
             >
               <motion.h1
                 variants={animate ? itemV : undefined}
@@ -226,16 +272,16 @@ export function ContactPageContent() {
                   lineHeight:    1.0,
                   letterSpacing: '-0.02em',
                   color:         'var(--color-text)',
-                  marginBottom:  '3rem',
+                  marginBottom:  'clamp(1rem, 4vw, 3rem)',
                 }}
               >
                 Let&apos;s get<br />started.
               </motion.h1>
 
-              {/* Social CTAs */}
+              {/* Social CTAs — desktop only */}
               <motion.div
                 variants={animate ? itemV : undefined}
-                className="flex flex-col gap-4"
+                className="contact-socials-desktop flex flex-col gap-4"
               >
                 {SOCIAL_LINKS.map(({ href, label, icon, ariaLabel }) => (
                   <SocialLink key={href} href={href} label={label} icon={icon} ariaLabel={ariaLabel} />
@@ -248,6 +294,7 @@ export function ContactPageContent() {
               initial={animate ? { opacity: 0, y: 24 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: EASE, delay: 0.15 }}
+              className="contact-right"
             >
               {submitted ? (
                 <motion.div
@@ -272,7 +319,7 @@ export function ContactPageContent() {
                 <form onSubmit={handleSubmit} noValidate>
                   {/* Prose sentence form */}
                   <p
-                    className="prose-form font-bold"
+                    className="prose-form font-semibold"
                     style={{
                       fontSize:      'clamp(1.375rem, 3vw, 2rem)',
                       lineHeight:    1.55,
@@ -287,7 +334,7 @@ export function ContactPageContent() {
                       value={form.name}
                       onChange={handleChange}
                       placeholder="your name"
-                      className={`inline-field${errors.name ? ' error' : ''}`}
+                      className={`inline-field${form.name.trim() ? ' filled' : ''}${errors.name ? ' error' : ''}`}
                       aria-label="Your name"
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? 'err-name' : undefined}
@@ -299,28 +346,31 @@ export function ContactPageContent() {
                       type="text"
                       value={form.jobOrWebsite}
                       onChange={handleChange}
-                      placeholder="website, full-time job, etc."
-                      className={`inline-field${errors.jobOrWebsite ? ' error' : ''}`}
+                      placeholder="website, app, team, etc."
+                      className={`inline-field${form.jobOrWebsite.trim() ? ' filled' : ''}${errors.jobOrWebsite ? ' error' : ''}`}
                       style={{ minWidth: '240px' }}
                       aria-label="Your job or website"
                       aria-invalid={!!errors.jobOrWebsite}
                       aria-describedby={errors.jobOrWebsite ? 'err-job' : undefined}
                       disabled={isSubmitting}
                     />{' '}
-                    that needs help. You can reach me at{' '}
-                    <input
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="your email address"
-                      className={`inline-field field-email${errors.email ? ' error' : ''}`}
-                      aria-label="Your email address"
-                      aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? 'err-email' : undefined}
-                      disabled={isSubmitting}
-                    />{' '}
-                    to get things started.
+                    that needs help. You can reach me at
+                    <span className="email-row">
+                      <input
+                        name="email"
+                        type="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        placeholder="your email address"
+                        className={`inline-field field-email${form.email.trim() ? ' filled' : ''}${errors.email ? ' error' : ''}`}
+                        aria-label="Your email address"
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'err-email' : undefined}
+                        disabled={isSubmitting}
+                      />
+                      <span>to</span>
+                    </span>{' '}
+                    get things started.
                   </p>
 
                   {/* Inline error hints */}
@@ -369,6 +419,19 @@ export function ContactPageContent() {
                   </div>
                 </form>
               )}
+            </motion.div>
+
+            {/* ── Mobile social CTAs ── */}
+            <motion.div
+              initial={animate ? { opacity: 0, y: 16 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE, delay: 0.25 }}
+              className="contact-socials-mobile hidden flex-col gap-4"
+            >
+              <div className="social-divider">OR</div>
+              {SOCIAL_LINKS.map(({ href, label, icon, ariaLabel }) => (
+                <SocialLink key={href} href={href} label={label} icon={icon} ariaLabel={ariaLabel} />
+              ))}
             </motion.div>
 
           </div>
