@@ -8,10 +8,11 @@ export const FOOTER_LINKS = {
     { label: 'FAQ', href: '/faq' },
   ],
   services: [
-    { label: 'Custom Web Development', href: '/services/web-development' },
-    { label: 'SEO & Growth', href: '/services/seo-growth' },
-    { label: 'E-Commerce Platforms', href: '/services/ecommerce' },
-    { label: 'UI/UX Design', href: '/services/design' },
+    { label: 'AI Automation & Workflow Optimization', href: '/services/ai-automations' },
+    { label: 'Website Development', href: '/services/web-development' },
+    { label: 'Web & Mobile Apps / CRM Systems', href: '/services/web-and-mobile-apps' },
+    { label: 'UX & UI Design', href: '/services/uiux-design' },
+    { label: 'Digital Marketing / SEO & GEO', href: '/services/digital-marketing' },
   ],
   work: [
     { label: 'Case Studies', href: '/work/case-studies' },
