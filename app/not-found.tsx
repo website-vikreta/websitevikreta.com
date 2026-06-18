@@ -2,11 +2,11 @@
 
 import React, { useRef, useEffect } from 'react'
 import { gsap } from '@/lib/gsap'
-import { ArrowDotsButton } from '@/components/ui/arrow-dots-button'
+import { Button } from '@/components/ui/Button'
 
 export default function NotFound() {
   const sectionRef = useRef<HTMLElement>(null)
-  const labelRef = useRef<HTMLSpanElement>(null)
+  const labelRef = useRef<HTMLHeadingElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const subheadRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -85,16 +85,14 @@ export default function NotFound() {
     >
       {/* Content */}
       <div className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28">
-        {/* Label */}
-        <span
+        <div className="max-w-[720px] mx-auto">
+        {/* 404 */}
+        <h1
           ref={labelRef}
-          className="inline-flex items-center gap-2 border border-(--color-border) bg-white px-3 py-1.5 rounded-sm mb-6"
+          className="inline-block font-bold text-[var(--color-text)] mb-8 text-7xl md:text-9xl leading-[1]"
         >
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-(--color-accent)" />
-          <span className="font-mono text-meta-label tracking-(--tracking-meta) text-(--color-text) uppercase">
-            Error 404
-          </span>
-        </span>
+          404
+        </h1>
 
         {/* Heading */}
         <h2
@@ -114,7 +112,8 @@ export default function NotFound() {
 
         {/* CTA */}
         <div ref={ctaRef}>
-          <ArrowDotsButton label="Back to Home" href="/#main-content" />
+          <Button href="/" variant="primary" showArrow>Visit Home</Button>
+        </div>
         </div>
       </div>
     </section>
