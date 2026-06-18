@@ -353,7 +353,7 @@ export function ContactPageContent() {
         className="relative min-h-screen overflow-x-clip pt-32 pb-24 md:pt-40 md:pb-32"
       >
         <div className="container relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4 lg:gap-24 items-start" style={{ display: 'grid' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4 lg:gap-24 items-start">
 
             {/* ── Left ── */}
             <div className="contact-left lg:sticky lg:top-40">
