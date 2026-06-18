@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { Loader2, ArrowUpRight } from 'lucide-react'
 import { Linkedin, Whatsapp, Instagram, Envelope, Telephone } from 'react-bootstrap-icons'
 import emailjs from '@emailjs/browser'
+import { Button } from '@/components/ui/Button'
 
 function SlotText({ children }: { children: string }) {
   return (
@@ -165,13 +166,13 @@ export function ContactPageContent() {
           display: inline-block;
           background: transparent;
           border: none;
-          border-bottom: 2px solid var(--color-text);
+          border-bottom: 1px solid var(--color-border);
           outline: none;
           font-family: inherit;
           font-size: inherit;
-          font-weight: inherit;
+          font-weight: 800;
           line-height: inherit;
-          color: var(--color-text);
+          color: var(--color-accent);
           padding: 0 4px 2px;
           transition: border-color 0.2s;
           min-width: 160px;
@@ -182,7 +183,7 @@ export function ContactPageContent() {
           font-weight: 400;
         }
         .inline-field:focus {
-          border-bottom-color: #FFD600;
+          border-bottom-color: var(--color-text);
         }
         .inline-field.error {
           border-bottom-color: #FF4444;
@@ -197,7 +198,7 @@ export function ContactPageContent() {
             width: 100%;
             margin: 0.5rem 0;
             min-width: 0;
-            border-bottom-width: 1px;
+            border-bottom-color: var(--color-border);
             padding: 4px 0;
           }
           .prose-form {
@@ -285,9 +286,9 @@ export function ContactPageContent() {
                       type="text"
                       value={form.name}
                       onChange={handleChange}
-                      placeholder="YOUR FULL NAME"
+                      placeholder="your name"
                       className={`inline-field${errors.name ? ' error' : ''}`}
-                      aria-label="Your full name"
+                      aria-label="Your name"
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? 'err-name' : undefined}
                       disabled={isSubmitting}
@@ -298,7 +299,7 @@ export function ContactPageContent() {
                       type="text"
                       value={form.jobOrWebsite}
                       onChange={handleChange}
-                      placeholder="WEBSITE, FULL-TIME JOB, ETC."
+                      placeholder="website, full-time job, etc."
                       className={`inline-field${errors.jobOrWebsite ? ' error' : ''}`}
                       style={{ minWidth: '240px' }}
                       aria-label="Your job or website"
@@ -312,7 +313,7 @@ export function ContactPageContent() {
                       type="email"
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="YOUR EMAIL ADDRESS"
+                      placeholder="your email address"
                       className={`inline-field field-email${errors.email ? ' error' : ''}`}
                       aria-label="Your email address"
                       aria-invalid={!!errors.email}
@@ -352,34 +353,20 @@ export function ContactPageContent() {
                   )}
 
                   {/* Submit */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    style={{
-                      marginTop:       '2.5rem',
-                      display:         'inline-flex',
-                      alignItems:      'center',
-                      gap:             '0.5rem',
-                      background:      'none',
-                      border:          'none',
-                      cursor:          isSubmitting ? 'not-allowed' : 'pointer',
-                      padding:         '0',
-                      fontFamily:      'monospace',
-                      fontSize:        '0.8125rem',
-                      textTransform:   'uppercase',
-                      letterSpacing:   '0.14em',
-                      color:           isSubmitting ? 'var(--color-text-faint)' : 'var(--color-text)',
-                      transition:      'opacity 0.2s',
-                      opacity:         isSubmitting ? 0.5 : 1,
-                    }}
-                    onMouseEnter={e => { if (!isSubmitting) e.currentTarget.style.color = '#FFD600' }}
-                    onMouseLeave={e => { e.currentTarget.style.color = isSubmitting ? 'var(--color-text-faint)' : 'var(--color-text)' }}
-                  >
-                    {isSubmitting
-                      ? <><Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" /> Sending…</>
-                      : <>— Send Info</>
-                    }
-                  </button>
+                  <div style={{ marginTop: '2.5rem' }}>
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="md"
+                      showArrow={!isSubmitting}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting
+                        ? <><Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" /> Sending…</>
+                        : 'Send Info'
+                      }
+                    </Button>
+                  </div>
                 </form>
               )}
             </motion.div>
