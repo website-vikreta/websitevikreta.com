@@ -4,6 +4,8 @@ export const FOOTER_LINKS = {
     { label: 'About', href: '/about' },
     { label: 'Services', href: '/services' },
     { label: 'Contact', href: '/contact' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'FAQ', href: '/faq' },
   ],
   services: [
     { label: 'Custom Web Development', href: '/services/web-development' },
@@ -16,10 +18,10 @@ export const FOOTER_LINKS = {
     { label: 'View All Projects', href: '/work' },
   ],
   resources: [
-    { label: 'Blog', href: '/blog' },
     { label: 'Careers', href: '/careers' },
-    { label: 'FAQ', href: '/faq' },
-    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Privacy Policy', href: '/legal/privacy-policy' },
+    { label: 'Terms & Conditions', href: '/legal/terms-and-conditions' },
+    { label: 'Disclaimer', href: '/legal/disclaimer' },
   ],
   social: [
     {
