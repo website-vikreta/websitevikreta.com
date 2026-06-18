@@ -213,9 +213,9 @@ export function ContactPageContent() {
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         {
-          from_name: form.name,
+          name: form.name,
           reply_to: form.email,
-          from_email: form.email,
+          email: form.email,
           service_type: form.jobOrWebsite,
           budget: 'Not specified',
           message: `${form.name} has a ${form.jobOrWebsite} that needs help.`,
