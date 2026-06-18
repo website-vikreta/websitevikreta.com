@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { Mail, MapPin, Clock, ChevronDown, Loader2, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react'
-import { DotGrid } from '@/components/ui/DotGrid'
 import emailjs from '@emailjs/browser'
 
 const EMAILJS_SERVICE_ID  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  ?? ''
@@ -225,8 +224,6 @@ export function ContactPageContent() {
 
       {/* Outer wrapper — no bg override, inherits site light bg */}
       <section className="relative min-h-screen overflow-x-clip pt-32 pb-24 md:pt-40 md:pb-32">
-        <DotGrid />
-
         <div className="container relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 

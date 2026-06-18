@@ -4,7 +4,6 @@ import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { GoToTop } from '@/components/ui/GoToTop'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
-import { DotGrid } from '@/components/ui/DotGrid'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -48,7 +47,6 @@ export default function RootLayout({
       className={utile.variable}
     >
       <body>
-        <DotGrid global />
         <ConditionalNavbar />
         {children}
         {/* <GoToTop /> */}
