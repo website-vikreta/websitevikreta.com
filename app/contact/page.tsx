@@ -1,11 +1,11 @@
-import { Metadata } from 'next'
-import { ComingSoonPage } from '@/components/ComingSoonPage'
+import type { Metadata } from 'next'
+import { ContactPageContent } from '@/components/ContactPageContent'
 
 export const metadata: Metadata = {
   title: 'Contact Us | Website Vikreta',
-  description: 'Get in touch with Website Vikreta. Send us a message and we\'ll be in touch soon.',
+  description: "Get in touch with Website Vikreta. Tell us about your project and we'll get back to you within 24 hours.",
 }
 
 export default function ContactPage() {
-  return <ComingSoonPage />
+  return <ContactPageContent />
 }
