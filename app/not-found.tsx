@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
-import { DotGrid } from '@/components/ui/DotGrid'
 
 export default function NotFound() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -84,7 +83,6 @@ export default function NotFound() {
       className="relative flex flex-col justify-center min-h-svh overflow-hidden"
       aria-label="Page Not Found"
     >
-      <DotGrid />
       {/* Content */}
       <div className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28">
         <div className="max-w-[720px] mx-auto">
