@@ -110,7 +110,6 @@ function computeTarget(
 export default function IntroAnimation() {
     const containerRef     = useRef<HTMLDivElement>(null);
     const containerSizeRef = useRef({ width: 0, height: 0 });
-    const scrollRef        = useRef(0);
     const introPhaseRef    = useRef<AnimationPhase>("scatter");
 
     const cardRefs     = useRef<Array<HTMLDivElement | null>>(Array(TOTAL_IMAGES).fill(null));
@@ -205,43 +204,16 @@ export default function IntroAnimation() {
         return () => { clearTimeout(t1); clearTimeout(t2); };
     }, []);
 
-    // ── Virtual scroll (bounded so user can leave hero) ───────────────────────
+    // ── Drive morph from real page scroll (no event hijacking) ──────────────
+    // Maps scrollY 0 → 70% of viewport height → virtualScroll 0 → MAX_SCROLL
+    // so the arc completes while hero is still visible, then user scrolls freely.
     useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const handleWheel = (e: WheelEvent) => {
-            const atMax = scrollRef.current >= MAX_SCROLL;
-            const atMin = scrollRef.current <= 0;
-            if ((atMax && e.deltaY > 0) || (atMin && e.deltaY < 0)) return;
-            e.preventDefault();
-            const v = Math.min(Math.max(scrollRef.current + e.deltaY, 0), MAX_SCROLL);
-            scrollRef.current = v;
-            virtualScroll.set(v);
+        const handle = () => {
+            const progress = Math.min(window.scrollY / (window.innerHeight * 0.7), 1);
+            virtualScroll.set(progress * MAX_SCROLL);
         };
-
-        let touchStartY = 0;
-        const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
-        const handleTouchMove  = (e: TouchEvent) => {
-            const deltaY = touchStartY - e.touches[0].clientY;
-            touchStartY  = e.touches[0].clientY;
-            const atMax  = scrollRef.current >= MAX_SCROLL;
-            const atMin  = scrollRef.current <= 0;
-            if ((atMax && deltaY > 0) || (atMin && deltaY < 0)) return;
-            e.preventDefault();
-            const v = Math.min(Math.max(scrollRef.current + deltaY, 0), MAX_SCROLL);
-            scrollRef.current = v;
-            virtualScroll.set(v);
-        };
-
-        container.addEventListener("wheel",      handleWheel,      { passive: false });
-        container.addEventListener("touchstart", handleTouchStart, { passive: false });
-        container.addEventListener("touchmove",  handleTouchMove,  { passive: false });
-        return () => {
-            container.removeEventListener("wheel",      handleWheel);
-            container.removeEventListener("touchstart", handleTouchStart);
-            container.removeEventListener("touchmove",  handleTouchMove);
-        };
+        window.addEventListener("scroll", handle, { passive: true });
+        return () => window.removeEventListener("scroll", handle);
     }, [virtualScroll]);
 
     // ── Mouse parallax ────────────────────────────────────────────────────────
