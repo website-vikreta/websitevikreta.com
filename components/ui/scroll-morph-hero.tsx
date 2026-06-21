@@ -122,8 +122,6 @@ export default function IntroAnimation() {
     const virtualScroll      = useMotionValue(0);
     const morphProgress      = useTransform(virtualScroll, [0, 600], [0, 1]);
     const smoothMorph        = useSpring(morphProgress, { stiffness: 40, damping: 20 });
-    const mouseX             = useMotionValue(0);
-    const smoothMouseX       = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
     // Stable scatter start positions (opacity 0 → fade in during fly-to-line)
     const scatterPositions = useMemo<Target[]>(
@@ -242,17 +240,6 @@ export default function IntroAnimation() {
         };
     }, [virtualScroll]);
 
-    // ── Mouse parallax ────────────────────────────────────────────────────────
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        const handleMouseMove = (e: MouseEvent) => {
-            const rect = container.getBoundingClientRect();
-            mouseX.set(((e.clientX - rect.left) / rect.width * 2 - 1) * 100);
-        };
-        container.addEventListener("mousemove", handleMouseMove);
-        return () => container.removeEventListener("mousemove", handleMouseMove);
-    }, [mouseX]);
 
     // ── Single rAF loop: real spring physics → direct DOM (zero re-renders) ───
     useEffect(() => {
@@ -265,14 +252,13 @@ export default function IntroAnimation() {
             last = now;
 
             const morph   = smoothMorph.get();
-            const px      = smoothMouseX.get();
             const phase   = introPhaseRef.current;
             const { width: cw, height: ch } = containerSizeRef.current;
 
             for (let i = 0; i < TOTAL_IMAGES; i++) {
                 const el = cardRefs.current[i];
                 if (!el) continue;
-                const t = computeTarget(i, phase, morph, px, cw, ch, scatterPositions);
+                const t = computeTarget(i, phase, morph, 0, cw, ch, scatterPositions);
                 const s = cardState.current[i];
 
                 // Critically-ish damped spring per axis (mass = 1)
@@ -316,7 +302,7 @@ export default function IntroAnimation() {
 
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, [smoothMorph, smoothMouseX, scatterPositions]);
+    }, [smoothMorph, scatterPositions]);
 
     // ─── Render ───────────────────────────────────────────────────────────────
 
