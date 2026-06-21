@@ -1,107 +1,255 @@
 'use client'
 
-import { motion, useReducedMotion } from 'motion/react'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+
+const Ico = {
+  Nodes: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <circle cx="2.5" cy="7" r="1.5" fill="currentColor" />
+      <circle cx="11.5" cy="3" r="1.5" fill="currentColor" />
+      <circle cx="11.5" cy="11" r="1.5" fill="currentColor" />
+      <path d="M4 7L10 3M4 7L10 11" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  ),
+  Code: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <path d="M4.5 3.5L1.5 7l3 3.5M9.5 3.5L12.5 7l-3 3.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Terminal: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <rect x="1" y="2.5" width="12" height="9" rx="1" stroke="currentColor" strokeWidth="1" />
+      <path d="M4 7l2-1.5L4 5M7.5 9h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  ),
+  Stream: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <path d="M1 4h12M1 7h9M1 10h6" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+    </svg>
+  ),
+  Bolt: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <path d="M8.5 1.5L3 7.5h4L5.5 12.5l6-6.5H8L8.5 1.5z" stroke="currentColor" strokeWidth="1" strokeLinejoin="round" />
+    </svg>
+  ),
+  Chart: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <path d="M1.5 12.5V4.5M5 12.5V7M8.5 12.5V2.5M12 12.5V5.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+      <path d="M1 12.5h12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  ),
+  AI: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <circle cx="7" cy="7" r="2" fill="currentColor" />
+      <circle cx="2" cy="3.5" r="1" fill="currentColor" />
+      <circle cx="12" cy="3.5" r="1" fill="currentColor" />
+      <circle cx="2" cy="10.5" r="1" fill="currentColor" />
+      <circle cx="12" cy="10.5" r="1" fill="currentColor" />
+      <path d="M3 4L5.5 5.5M11 4L8.5 5.5M3 10L5.5 8.5M11 10L8.5 8.5" stroke="currentColor" strokeWidth="0.75" />
+    </svg>
+  ),
+  Branch: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <circle cx="3" cy="2.5" r="1.5" fill="currentColor" />
+      <circle cx="11" cy="6.5" r="1.5" fill="currentColor" />
+      <circle cx="11" cy="11.5" r="1.5" fill="currentColor" />
+      <path d="M3 4v7M4.5 3.5Q8 3.5 9.5 6.5M4.5 10.5Q8 10.5 9.5 10" stroke="currentColor" strokeWidth="1" fill="none" strokeLinecap="round" />
+    </svg>
+  ),
+  Person: () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+      <circle cx="7" cy="4" r="2.5" stroke="currentColor" strokeWidth="1" />
+      <path d="M1.5 13c0-3.038 2.462-5.5 5.5-5.5s5.5 2.462 5.5 5.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  ),
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const sections = [
   {
     id: 1,
-    title: 'Reduce Manual Workloads',
+    title: "Your team is the bottleneck, and it's not their fault",
     description:
-      'Most teams spend a significant chunk of their day on work that follows a predictable pattern — data entry, routing emails, updating records, chasing approvals. AI handles all of it. Not by cutting corners, but by doing it faster and without errors. Your team stops being the pipeline and starts being the decision-makers.',
+      "Someone on your team is manually moving data between tools, chasing approvals, copy-pasting the same report every Monday. We remove that with workflows that connect your existing tools directly — no rip-and-replace.",
+    stack: [
+      { label: 'Zapier / n8n', Icon: Ico.Nodes },
+      { label: 'API integrations', Icon: Ico.Code },
+      { label: 'Custom scripts', Icon: Ico.Terminal },
+    ],
     imageUrl:
-      'https://images.unsplash.com/photo-1647427060118-4911c9821b82?w=640&h=640&fit=crop&q=80&auto=format',
-    imageAlt: 'Factory floor with orange industrial automation machines',
-    reverse: false,
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&q=80&auto=format',
+    imageAlt: 'Abstract circuit board with complex interconnected pathways',
   },
   {
     id: 2,
-    title: 'Faster, Smarter Decisions',
+    title: "You're always one report behind reality",
     description:
-      'When your data lives across five tools and gets summarised once a week, decisions lag behind reality. AI-powered automation closes that gap — pulling live data, surfacing what matters, and triggering the right actions before your team even opens a report. You stop reacting and start leading.',
+      "By the time your weekly numbers are compiled, they're already stale. We pull live data from your CRM, sheets, or database and surface it the moment it changes — not five days later.",
+    stack: [
+      { label: 'Real-time pipelines', Icon: Ico.Stream },
+      { label: 'Webhook triggers', Icon: Ico.Bolt },
+      { label: 'Auto-updating dashboards', Icon: Ico.Chart },
+    ],
     imageUrl:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&h=640&fit=crop&q=80&auto=format',
-    imageAlt: 'Colourful performance analytics graphs on a laptop screen',
-    reverse: true,
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80&auto=format',
+    imageAlt: 'Live analytics data visualized across multiple screens',
   },
   {
     id: 3,
-    title: 'A Better Customer Experience',
+    title: "Hiring isn't the only way to handle more volume",
     description:
-      "Customers don't care that it's 2am or that your team is at capacity. They want answers now. AI-powered chatbots and automated workflows give them exactly that — accurate, helpful responses around the clock. And when a human genuinely needs to step in, the handoff is seamless, with full context already there.",
+      "More customers usually means more headcount. We build AI agents and automated workflows that handle the repeatable parts of that volume — lead routing, ticket triage, follow-up sequences — without adding people.",
+    stack: [
+      { label: 'LLM-powered agents', Icon: Ico.AI },
+      { label: 'Conditional logic flows', Icon: Ico.Branch },
+      { label: 'Human-in-the-loop handoffs', Icon: Ico.Person },
+    ],
     imageUrl:
-      'https://images.unsplash.com/photo-1766066014237-00645c74e9c6?w=640&h=640&fit=crop&q=80&auto=format',
-    imageAlt: 'Smiling customer support agent wearing a headset at her desk',
-    reverse: false,
-  },
-  {
-    id: 4,
-    title: 'Scalable Without the Overhead',
-    description:
-      'Growth usually means hiring. More customers means more staff, more coordination, more management overhead. Automation breaks that equation. The workflows we build handle higher volume without breaking a sweat — and without a proportional increase in cost. You scale the output, not the headcount.',
-    imageUrl:
-      'https://images.unsplash.com/photo-1758691736903-c60a33e5b83f?w=640&h=640&fit=crop&q=80&auto=format',
-    imageAlt: 'Diverse team brainstorming with colourful sticky notes on a glass board',
-    reverse: true,
+      'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=600&fit=crop&q=80&auto=format',
+    imageAlt: 'Dense city skyline representing scale and compounding growth',
   },
 ]
 
 type Section = (typeof sections)[0]
 
-function FeatureRow({ section, reduce }: { section: Section; reduce: boolean | null }) {
+// ─── Stack row ────────────────────────────────────────────────────────────────
+
+function StackRow({ items }: { items: Section['stack'] }) {
   return (
-    <motion.div
-      className={`flex flex-col gap-6 md:gap-10 py-10 md:py-12 border-t border-[var(--color-border)] items-center ${
-        section.reverse ? 'md:flex-row-reverse' : 'md:flex-row'
-      }`}
-      initial={{ opacity: 0, y: reduce ? 0 : 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.4, ease: EASE }}
-    >
-      {/* Text */}
-      <div className={`flex-1 ${section.reverse ? 'md:text-right' : ''}`}>
-        <h3
-          className="font-semibold text-[var(--color-text)] mb-3"
+    <div className="mt-8">
+      <p className="mb-4">
+        <span
+          className="font-mono"
           style={{
-            fontSize: 'clamp(1.375rem, 2vw, 1.75rem)',
-            lineHeight: 1.2,
-            letterSpacing: '-0.02em',
+            fontSize: '0.625rem',
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            background: 'var(--color-accent)',
+            color: '#000',
+            padding: '2px 8px',
           }}
         >
-          {section.title}
-        </h3>
-        <p
-          className={`text-[var(--color-text-muted)] ${section.reverse ? 'md:ml-auto' : ''}`}
-          style={{ fontSize: '1.0625rem', lineHeight: 1.75, maxWidth: '52ch' }}
-        >
-          {section.description}
-        </p>
+          Stack
+        </span>
+      </p>
+      <div className="flex flex-wrap gap-x-7 gap-y-3">
+        {items.map(({ label, Icon }) => (
+          <div key={label} className="flex items-center gap-2">
+            <span className="text-[var(--color-text-faint)]">
+              <Icon />
+            </span>
+            <span
+              className="font-mono text-[var(--color-text-muted)]"
+              style={{ fontSize: '0.875rem', letterSpacing: '0.02em' }}
+            >
+              {label}
+            </span>
+          </div>
+        ))}
       </div>
-
-      {/* Image */}
-      <motion.div
-        className="shrink-0"
-        initial={{
-          clipPath: reduce ? 'inset(0% 0% 0% 0%)' : 'inset(100% 0% 0% 0%)',
-          opacity: reduce ? 1 : 0,
-        }}
-        whileInView={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.55, ease: EASE }}
-      >
-        <img
-          src={section.imageUrl}
-          alt={section.imageAlt}
-          className="w-full h-48 md:w-[480px] md:h-60 rounded-2xl object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      </motion.div>
-    </motion.div>
+    </div>
   )
 }
+
+// ─── Reveal variants ──────────────────────────────────────────────────────────
+
+const titleContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+}
+
+const titleLine = {
+  hidden:  { y: '110%', opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+}
+
+// ─── Feature row ──────────────────────────────────────────────────────────────
+
+function FeatureRow({ section, reduce }: { section: Section; reduce: boolean | null }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  })
+  const imageY = useTransform(scrollYProgress, [0, 1], ['18%', '-18%'])
+
+  const titleLines = section.title.split(',').flatMap((part, i, arr) =>
+    i < arr.length - 1 ? [part + ','] : [part]
+  )
+
+  return (
+    <div ref={containerRef} className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+      {/* Image — always left, 60% */}
+      <div className="relative overflow-hidden w-full md:w-1/2 md:shrink-0 h-64 md:h-[380px]">
+        <motion.div
+          className="absolute inset-0"
+          style={{ y: reduce ? 0 : imageY, scale: 1.35 }}
+        >
+          <img
+            src={section.imageUrl}
+            alt={section.imageAlt}
+            className="w-full h-full object-cover"
+            style={{ filter: 'grayscale(1)' }}
+            loading="lazy"
+            decoding="async"
+          />
+        </motion.div>
+      </div>
+
+      {/* Text — 40% */}
+      <div className="md:flex-1">
+        <motion.h3
+          className="font-bold text-[var(--color-text)] mb-4"
+          style={{
+            fontSize: 'clamp(1.15rem, 2vw, 1.75rem)',
+            lineHeight: 1.2,
+            letterSpacing: '-0.025em',
+          }}
+          variants={titleContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+        >
+          {titleLines.map((line, i) => (
+            <span key={i} className="block overflow-hidden">
+              <motion.span className="block" variants={reduce ? {} : titleLine}>
+                {line.trim()}
+              </motion.span>
+            </span>
+          ))}
+        </motion.h3>
+
+        <motion.p
+          className="text-[var(--color-text-muted)]"
+          style={{ fontSize: '1.0625rem', lineHeight: 1.8, maxWidth: '52ch' }}
+          initial={{ opacity: 0, y: reduce ? 0 : 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.45, delay: 0.25, ease: EASE }}
+        >
+          {section.description}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.4, delay: 0.4, ease: EASE }}
+        >
+          <StackRow items={section.stack} />
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Export ───────────────────────────────────────────────────────────────────
 
 export function ParallaxFeatureScroll() {
   const reduce = useReducedMotion()
@@ -110,20 +258,24 @@ export function ParallaxFeatureScroll() {
     <section aria-labelledby="benefits-heading">
       <div className="container py-16 md:py-20">
         <motion.div
-          className="max-w-2xl mb-2"
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-10 md:mb-14"
+          variants={titleContainer}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.35, ease: EASE }}
         >
-          <h2 id="benefits-heading" className="text-h2 font-semibold text-[var(--color-text)]">
-            Why Choose AI Automation for Your Business?
+          <h2 id="benefits-heading" className="text-h2 font-bold leading-[1.1] tracking-tight overflow-hidden">
+            <motion.span className="block text-[var(--color-text)]" variants={reduce ? {} : titleLine}>
+              <span style={{ color: 'var(--color-accent)' }}>Why</span> AI Automation?
+            </motion.span>
           </h2>
         </motion.div>
 
-        {sections.map((section) => (
-          <FeatureRow key={section.id} section={section} reduce={reduce} />
-        ))}
+        <div className="flex flex-col gap-10 md:gap-14">
+          {sections.map((section) => (
+            <FeatureRow key={section.id} section={section} reduce={reduce} />
+          ))}
+        </div>
       </div>
     </section>
   )
