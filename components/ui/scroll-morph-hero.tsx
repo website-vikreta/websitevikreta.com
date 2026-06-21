@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, useTransform, useSpring, useMotionValue } from "motion/react";
-import { DotGrid } from "@/components/ui/DotGrid";
 
 // --- Types ---
 export type AnimationPhase = "scatter" | "line" | "circle" | "bottom-strip";
@@ -280,7 +279,6 @@ export default function IntroAnimation() {
 
     return (
         <div ref={containerRef} className="relative w-full h-full overflow-hidden">
-            <DotGrid />
             {/* Container */}
             <div className="flex h-full w-full flex-col items-center justify-center perspective-1000">
 

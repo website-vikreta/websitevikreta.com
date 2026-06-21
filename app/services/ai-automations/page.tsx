@@ -6,7 +6,6 @@ import IntroAnimation from '@/components/ui/scroll-morph-hero'
 import {
   Minus, CheckCircle2,
 } from 'lucide-react'
-import { DotGrid } from '@/components/ui/DotGrid'
 import AutomationWorkflowCanvas from '@/components/ui/automation-workflow-canvas'
 import { ParallaxFeatureScroll } from '@/components/ui/parallax-feature-scroll'
 
@@ -140,8 +139,6 @@ export default function AIAutomationsPage() {
 
   return (
     <>
-      <DotGrid global />
-
       <main id="main-content" className="relative z-10">
 
         {/* ── 1 · Hero ──────────────────────────────────────────────────────── */}
