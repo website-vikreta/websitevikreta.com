@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { useTransform, useSpring, useMotionValue } from "motion/react";
 
-export type AnimationPhase = "scatter" | "line" | "circle" | "bottom-strip";
+export type AnimationPhase = "scatter" | "line" | "circle";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -14,21 +14,9 @@ const MAX_SCROLL   = 3000;
 const SPRITE_COLS  = 4;
 const SPRITE_ROWS  = Math.ceil(TOTAL_IMAGES / SPRITE_COLS);
 
-// Scroll ranges for each phase transition
-const SCATTER_TO_LINE_START   = 0;
-const SCATTER_TO_LINE_END     = 600;
-const LINE_TO_CIRCLE_START    = 600;
-const LINE_TO_CIRCLE_END      = 1200;
-const CIRCLE_TO_ARC_START     = 1200;
-const CIRCLE_TO_ARC_END       = 2200;
-const ARC_ROTATE_START        = 1600;
-const ARC_ROTATE_END          = 3000;
-const INTRO_TEXT_IN_START     = 900;
-const INTRO_TEXT_IN_END       = 1100;
-const INTRO_TEXT_OUT_START    = 1600;
-const INTRO_TEXT_OUT_END      = 1800;
-const ARC_TEXT_IN_START       = 1800;
-const ARC_TEXT_IN_END         = 2100;
+// Per-card spring (matches original FlipCard spring: stiffness 40, damping 15)
+const SPRING_K = 40;
+const SPRING_C = 15;
 
 const IMAGES = [
     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=80",
@@ -54,84 +42,69 @@ const IMAGES = [
 ];
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
-// ─── Position computation ─────────────────────────────────────────────────────
-// All phases are continuous lerps driven by scrolled motion values.
-// lineT: 0=scatter 1=line | circleT: 0=line 1=circle | arcT: 0=circle 1=arc
+type Target = { x: number; y: number; rotation: number; scale: number; opacity: number };
+
+// ─── Target position per phase (identical math to original) ───────────────────
 
 function computeTarget(
     i: number,
-    lineT: number,
-    circleT: number,
-    arcT: number,
-    rotateT: number,
+    phase: AnimationPhase,
+    morphVal: number,
+    rotateVal: number,
     parallaxVal: number,
-    containerW: number,
-    containerH: number,
-    scatter: Array<{ x: number; y: number; rotation: number; scale: number; opacity: number }>
-) {
-    const sp = scatter[i];
+    cw: number,
+    ch: number,
+    scatter: Target[]
+): Target {
+    // 1. Scatter
+    if (phase === "scatter") return scatter[i];
 
-    // Line position
-    const lineSpacing = 70;
-    const lx = i * lineSpacing - (TOTAL_IMAGES * lineSpacing) / 2;
-    const lp = { x: lx, y: 0, rot: 0, scale: 1, opacity: 1 };
+    // 2. Line
+    if (phase === "line") {
+        const lineSpacing = 70;
+        const lineX = i * lineSpacing - (TOTAL_IMAGES * lineSpacing) / 2;
+        return { x: lineX, y: 0, rotation: 0, scale: 1, opacity: 1 };
+    }
 
-    // Circle position
-    const circleAngle = (i / TOTAL_IMAGES) * 360;
-    const circleRad   = (circleAngle * Math.PI) / 180;
-    const circleR     = Math.min(Math.min(containerW, containerH) * 0.35, 350);
-    const cp = {
-        x:    Math.cos(circleRad) * circleR,
-        y:    Math.sin(circleRad) * circleR,
-        rot:  circleAngle + 90,
-        scale:   1,
-        opacity: 1,
+    // 3. Circle → Arc morph
+    const isMobile     = cw < 768;
+    const minDimension = Math.min(cw, ch);
+    const circleRadius = Math.min(minDimension * 0.35, 350);
+    const circleAngle  = (i / TOTAL_IMAGES) * 360;
+    const circleRad    = (circleAngle * Math.PI) / 180;
+    const circlePos = {
+        x:        Math.cos(circleRad) * circleRadius,
+        y:        Math.sin(circleRad) * circleRadius,
+        rotation: circleAngle + 90,
     };
 
-    // Arc position (same geometry as original)
-    const isMobile    = containerW < 768;
-    const baseRadius  = Math.min(containerW, containerH * 1.5);
+    const baseRadius  = Math.min(cw, ch * 1.5);
     const arcRadius   = baseRadius * (isMobile ? 1.4 : 1.1);
-    const arcApexY    = containerH * (isMobile ? 0.35 : 0.25);
+    const arcApexY    = ch * (isMobile ? 0.35 : 0.25);
     const arcCenterY  = arcApexY + arcRadius;
     const spreadAngle = isMobile ? 100 : 130;
     const startAngle  = -90 - spreadAngle / 2;
     const step        = spreadAngle / (TOTAL_IMAGES - 1);
 
-    const scrollProgress  = Math.min(Math.max(rotateT / 360, 0), 1);
+    const scrollProgress  = Math.min(Math.max(rotateVal / 360, 0), 1);
     const boundedRotation = -scrollProgress * spreadAngle * 0.8;
     const currentArcAngle = startAngle + i * step + boundedRotation;
     const arcRad          = (currentArcAngle * Math.PI) / 180;
-    const ap = {
-        x:    Math.cos(arcRad) * arcRadius + parallaxVal,
-        y:    Math.sin(arcRad) * arcRadius + arcCenterY,
-        rot:  currentArcAngle + 90,
-        scale:   isMobile ? 1.4 : 1.8,
-        opacity: 1,
+    const arcPos = {
+        x:        Math.cos(arcRad) * arcRadius + parallaxVal,
+        y:        Math.sin(arcRad) * arcRadius + arcCenterY,
+        rotation: currentArcAngle + 90,
+        scale:    isMobile ? 1.4 : 1.8,
     };
 
-    // Lerp through phases: scatter → line → circle → arc
-    const p1 = {
-        x:       lerp(sp.x,        lp.x,    lineT),
-        y:       lerp(sp.y,        lp.y,    lineT),
-        rot:     lerp(sp.rotation, lp.rot,  lineT),
-        scale:   lerp(sp.scale,    lp.scale,   lineT),
-        opacity: lerp(sp.opacity,  lp.opacity, lineT),
-    };
-    const p2 = {
-        x:       lerp(p1.x,   cp.x,    circleT),
-        y:       lerp(p1.y,   cp.y,    circleT),
-        rot:     lerp(p1.rot, cp.rot,  circleT),
-        scale:   lerp(p1.scale,   cp.scale,   circleT),
-        opacity: lerp(p1.opacity, cp.opacity, circleT),
-    };
     return {
-        x:        lerp(p2.x,   ap.x,   arcT),
-        y:        lerp(p2.y,   ap.y,   arcT),
-        rotation: lerp(p2.rot, ap.rot, arcT),
-        scale:    lerp(p2.scale,   ap.scale,   arcT),
-        opacity:  lerp(p2.opacity, ap.opacity, arcT),
+        x:        lerp(circlePos.x,        arcPos.x,        morphVal),
+        y:        lerp(circlePos.y,        arcPos.y,        morphVal),
+        rotation: lerp(circlePos.rotation, arcPos.rotation, morphVal),
+        scale:    lerp(1,                  arcPos.scale,    morphVal),
+        opacity:  1,
     };
 }
 
@@ -141,46 +114,23 @@ export default function IntroAnimation() {
     const containerRef     = useRef<HTMLDivElement>(null);
     const containerSizeRef = useRef({ width: 0, height: 0 });
     const scrollRef        = useRef(0);
+    const introPhaseRef    = useRef<AnimationPhase>("scatter");
 
-    const cardRefs  = useRef<Array<HTMLDivElement | null>>(Array(TOTAL_IMAGES).fill(null));
+    const cardRefs     = useRef<Array<HTMLDivElement | null>>(Array(TOTAL_IMAGES).fill(null));
     const introTextRef = useRef<HTMLDivElement>(null);
     const arcTextRef   = useRef<HTMLDivElement>(null);
 
-    // ── Motion values ─────────────────────────────────────────────────────────
-    const virtualScroll = useMotionValue(0);
+    // Scroll-driven scalars (smoothed) — same as original
+    const virtualScroll      = useMotionValue(0);
+    const morphProgress      = useTransform(virtualScroll, [0, 600], [0, 1]);
+    const smoothMorph        = useSpring(morphProgress, { stiffness: 40, damping: 20 });
+    const scrollRotate       = useTransform(virtualScroll, [600, 3000], [0, 360]);
+    const smoothScrollRotate = useSpring(scrollRotate, { stiffness: 40, damping: 20 });
+    const mouseX             = useMotionValue(0);
+    const smoothMouseX       = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
-    // Phase lerp factors (raw, 0→1)
-    const rawLineT   = useTransform(virtualScroll, [SCATTER_TO_LINE_START,  SCATTER_TO_LINE_END],  [0, 1]);
-    const rawCircleT = useTransform(virtualScroll, [LINE_TO_CIRCLE_START,   LINE_TO_CIRCLE_END],   [0, 1]);
-    const rawArcT    = useTransform(virtualScroll, [CIRCLE_TO_ARC_START,    CIRCLE_TO_ARC_END],    [0, 1]);
-    const rawRotateT = useTransform(virtualScroll, [ARC_ROTATE_START,       ARC_ROTATE_END],       [0, 360]);
-
-    // Text opacity
-    const rawIntroOpa = useTransform(
-        virtualScroll,
-        [INTRO_TEXT_IN_START, INTRO_TEXT_IN_END, INTRO_TEXT_OUT_START, INTRO_TEXT_OUT_END],
-        [0, 1, 1, 0]
-    );
-    const rawArcOpa  = useTransform(virtualScroll, [ARC_TEXT_IN_START, ARC_TEXT_IN_END], [0, 1]);
-    const rawArcTop  = useTransform(virtualScroll, [ARC_TEXT_IN_START, ARC_TEXT_IN_END], [10, 38]);
-    const rawArcY    = useTransform(virtualScroll, [ARC_TEXT_IN_START, ARC_TEXT_IN_END], [20, 0]);
-
-    // Spring smooth everything — same params as original (stiffness:40 damping:20/15)
-    const SPRING_SLOW = { stiffness: 40, damping: 20 } as const;
-    const lineT    = useSpring(rawLineT,   SPRING_SLOW);
-    const circleT  = useSpring(rawCircleT, SPRING_SLOW);
-    const arcT     = useSpring(rawArcT,    SPRING_SLOW);
-    const rotateT  = useSpring(rawRotateT, SPRING_SLOW);
-    const introOpa = useSpring(rawIntroOpa, SPRING_SLOW);
-    const arcOpa   = useSpring(rawArcOpa,   SPRING_SLOW);
-    const arcTop   = useSpring(rawArcTop,   SPRING_SLOW);
-    const arcY     = useSpring(rawArcY,     SPRING_SLOW);
-
-    const mouseX       = useMotionValue(0);
-    const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 20 });
-
-    // Stable scatter positions
-    const scatterPositions = useMemo(
+    // Stable scatter start positions (opacity 0 → fade in during fly-to-line)
+    const scatterPositions = useMemo<Target[]>(
         () => IMAGES.map(() => ({
             x:        (Math.random() - 0.5) * 1500,
             y:        (Math.random() - 0.5) * 1000,
@@ -191,7 +141,15 @@ export default function IntroAnimation() {
         []
     );
 
-    // ── Sprite builder ────────────────────────────────────────────────────────
+    // Per-card live spring state (position + velocity), seeded at scatter
+    const cardState = useRef(
+        scatterPositions.map(s => ({
+            x: s.x, y: s.y, rot: s.rotation, scale: s.scale, opacity: s.opacity,
+            vx: 0, vy: 0, vrot: 0, vscale: 0, vopacity: 0,
+        }))
+    );
+
+    // ── Sprite: 20 images → 1 canvas → 1 blob → 1 GPU texture ─────────────────
     useEffect(() => {
         const canvas = document.createElement("canvas");
         canvas.width  = IMG_WIDTH  * SPRITE_COLS;
@@ -232,7 +190,7 @@ export default function IntroAnimation() {
         return () => revoke?.();
     }, []);
 
-    // ── Container resize → ref (no re-render) ────────────────────────────────
+    // ── Resize → ref (no re-render) ───────────────────────────────────────────
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -245,7 +203,14 @@ export default function IntroAnimation() {
         return () => ro.disconnect();
     }, []);
 
-    // ── Virtual scroll ────────────────────────────────────────────────────────
+    // ── Intro timeline (original): scatter → line @500ms → circle @2500ms ─────
+    useEffect(() => {
+        const t1 = setTimeout(() => { introPhaseRef.current = "line";   }, 500);
+        const t2 = setTimeout(() => { introPhaseRef.current = "circle"; }, 2500);
+        return () => { clearTimeout(t1); clearTimeout(t2); };
+    }, []);
+
+    // ── Virtual scroll (bounded so user can leave hero) ───────────────────────
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
@@ -296,34 +261,57 @@ export default function IntroAnimation() {
         return () => container.removeEventListener("mousemove", handleMouseMove);
     }, [mouseX]);
 
-    // ── rAF loop: read sprung motion values → mutate DOM directly ────────────
+    // ── Single rAF loop: real spring physics → direct DOM (zero re-renders) ───
     useEffect(() => {
         let rafId: number;
+        let last = performance.now();
 
-        const tick = () => {
-            const lt = lineT.get();
-            const ct = circleT.get();
-            const at = arcT.get();
-            const rt = rotateT.get();
-            const px = smoothMouseX.get();
+        const tick = (now: number) => {
+            // dt in seconds, clamped to avoid jumps after tab-switch
+            const dt = Math.min((now - last) / 1000, 1 / 30);
+            last = now;
+
+            const morph   = smoothMorph.get();
+            const rotate  = smoothScrollRotate.get();
+            const px      = smoothMouseX.get();
+            const phase   = introPhaseRef.current;
             const { width: cw, height: ch } = containerSizeRef.current;
 
             for (let i = 0; i < TOTAL_IMAGES; i++) {
-                const target = computeTarget(i, lt, ct, at, rt, px, cw, ch, scatterPositions);
                 const el = cardRefs.current[i];
                 if (!el) continue;
-                el.style.transform = `translate(${target.x}px,${target.y}px) rotate(${target.rotation}deg) scale(${target.scale})`;
-                el.style.opacity   = String(Math.max(0, Math.min(1, target.opacity)));
+                const t = computeTarget(i, phase, morph, rotate, px, cw, ch, scatterPositions);
+                const s = cardState.current[i];
+
+                // Critically-ish damped spring per axis (mass = 1)
+                s.vx       += (-SPRING_K * (s.x       - t.x)        - SPRING_C * s.vx)       * dt;
+                s.vy       += (-SPRING_K * (s.y       - t.y)        - SPRING_C * s.vy)       * dt;
+                s.vrot     += (-SPRING_K * (s.rot     - t.rotation) - SPRING_C * s.vrot)     * dt;
+                s.vscale   += (-SPRING_K * (s.scale   - t.scale)    - SPRING_C * s.vscale)   * dt;
+                s.vopacity += (-SPRING_K * (s.opacity - t.opacity)  - SPRING_C * s.vopacity) * dt;
+
+                s.x       += s.vx       * dt;
+                s.y       += s.vy       * dt;
+                s.rot     += s.vrot     * dt;
+                s.scale   += s.vscale   * dt;
+                s.opacity += s.vopacity * dt;
+
+                el.style.transform = `translate(${s.x}px,${s.y}px) rotate(${s.rot}deg) scale(${s.scale})`;
+                el.style.opacity   = String(clamp01(s.opacity));
             }
 
+            // Intro text — visible in circle phase, fades as morph crosses 0.5
             if (introTextRef.current) {
-                introTextRef.current.style.opacity = String(Math.max(0, introOpa.get()));
+                const show = phase === "circle" ? Math.max(0, 1 - morph * 2) : 0;
+                introTextRef.current.style.opacity = String(show);
+                introTextRef.current.style.filter  = `blur(${(1 - show) * 10}px)`;
             }
+
+            // Arc content — fades in as arc forms (morph 0.8 → 1), same as original
             if (arcTextRef.current) {
-                const opa = Math.max(0, Math.min(1, arcOpa.get()));
-                arcTextRef.current.style.opacity   = String(opa);
-                arcTextRef.current.style.top       = `${arcTop.get()}%`;
-                arcTextRef.current.style.transform = `translateY(${arcY.get()}px)`;
+                const o = clamp01((morph - 0.8) / 0.2);
+                arcTextRef.current.style.opacity   = String(o);
+                arcTextRef.current.style.transform = `translateY(${lerp(20, 0, o)}px)`;
             }
 
             rafId = requestAnimationFrame(tick);
@@ -331,65 +319,72 @@ export default function IntroAnimation() {
 
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, [lineT, circleT, arcT, rotateT, smoothMouseX, introOpa, arcOpa, arcTop, arcY, scatterPositions]);
+    }, [smoothMorph, smoothScrollRotate, smoothMouseX, scatterPositions]);
 
     // ─── Render ───────────────────────────────────────────────────────────────
 
     return (
         <div ref={containerRef} className="relative w-full h-full overflow-hidden">
+            <div className="flex h-full w-full flex-col items-center justify-center">
 
-            {/* Intro text — visible during circle phase */}
-            <div
-                ref={introTextRef}
-                className="absolute inset-0 z-0 flex flex-col items-center justify-center text-center pointer-events-none"
-                style={{ opacity: 0 }}
-            >
-                <h1 className="text-2xl font-medium tracking-tight text-gray-800 md:text-4xl">
-                    The future is built on AI.
-                </h1>
-                <p className="mt-4 text-xs font-bold tracking-[0.2em] text-gray-500">
-                    SCROLL TO EXPLORE
-                </p>
-            </div>
+                {/* Intro text — fades out as arc forms */}
+                <div
+                    ref={introTextRef}
+                    className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2"
+                    style={{ opacity: 0, filter: "blur(10px)" }}
+                >
+                    <h1 className="text-2xl font-medium tracking-tight text-gray-800 md:text-4xl">
+                        The future is built on AI.
+                    </h1>
+                    <p className="mt-4 text-xs font-bold tracking-[0.2em] text-gray-500">
+                        SCROLL TO EXPLORE
+                    </p>
+                </div>
 
-            {/* Arc content text — fades in with arc phase */}
-            <div
-                ref={arcTextRef}
-                className="absolute left-0 right-0 z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
-                style={{ opacity: 0, top: "10%" }}
-            >
-                <h2 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-4">
-                    Explore Our Vision
-                </h2>
-                <p className="text-sm md:text-base text-gray-600 max-w-lg leading-relaxed">
-                    Discover a world where technology meets creativity.{" "}
-                    <br className="hidden md:block" />
-                    Scroll through our curated collection of innovations designed to shape the future.
-                </p>
-            </div>
+                {/* Arc content — fades in as arc forms */}
+                <div
+                    ref={arcTextRef}
+                    className="absolute top-[10%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
+                    style={{ opacity: 0 }}
+                >
+                    <h2 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-4">
+                        Explore Our Vision
+                    </h2>
+                    <p className="text-sm md:text-base text-gray-600 max-w-lg leading-relaxed">
+                        Discover a world where technology meets creativity.{" "}
+                        <br className="hidden md:block" />
+                        Scroll through our curated collection of innovations designed to shape the future.
+                    </p>
+                </div>
 
-            {/* Cards — positions driven by rAF loop above */}
-            <div className="relative flex items-center justify-center w-full h-full">
-                {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => (
-                    <div
-                        key={i}
-                        ref={el => { cardRefs.current[i] = el; }}
-                        aria-hidden="true"
-                        style={{
-                            position:           "absolute",
-                            width:              IMG_WIDTH,
-                            height:             IMG_HEIGHT,
-                            backgroundImage:    `url(${src})`,
-                            backgroundSize:     "cover",
-                            backgroundPosition: "center",
-                            backgroundRepeat:   "no-repeat",
-                            borderRadius:       12,
-                            boxShadow:          "0 4px 20px rgba(0,0,0,0.15)",
-                            opacity:            0,
-                            willChange:         "transform, opacity",
-                        }}
-                    />
-                ))}
+                {/* Cards — plain sprite tiles, no flip/hover; positioned by rAF */}
+                <div className="relative flex items-center justify-center w-full h-full">
+                    {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => {
+                        const s = scatterPositions[i];
+                        return (
+                            <div
+                                key={i}
+                                ref={el => { cardRefs.current[i] = el; }}
+                                aria-hidden="true"
+                                style={{
+                                    position:           "absolute",
+                                    width:              IMG_WIDTH,
+                                    height:             IMG_HEIGHT,
+                                    backgroundImage:    `url(${src})`,
+                                    backgroundSize:     "cover",
+                                    backgroundPosition: "center",
+                                    backgroundRepeat:   "no-repeat",
+                                    borderRadius:       12,
+                                    boxShadow:          "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
+                                    // Seed at scatter so first frame matches spring start (no flash)
+                                    transform:          `translate(${s.x}px,${s.y}px) rotate(${s.rotation}deg) scale(${s.scale})`,
+                                    opacity:            0,
+                                    willChange:         "transform, opacity",
+                                }}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
