@@ -10,7 +10,7 @@ export type AnimationPhase = "scatter" | "line" | "circle";
 const IMG_WIDTH    = 60;
 const IMG_HEIGHT   = 85;
 const TOTAL_IMAGES = 20;
-const MAX_SCROLL   = 3000;
+const MAX_SCROLL   = 600;
 const SPRITE_COLS  = 4;
 const SPRITE_ROWS  = Math.ceil(TOTAL_IMAGES / SPRITE_COLS);
 
@@ -52,7 +52,6 @@ function computeTarget(
     i: number,
     phase: AnimationPhase,
     morphVal: number,
-    rotateVal: number,
     parallaxVal: number,
     cw: number,
     ch: number,
@@ -88,9 +87,7 @@ function computeTarget(
     const startAngle  = -90 - spreadAngle / 2;
     const step        = spreadAngle / (TOTAL_IMAGES - 1);
 
-    const scrollProgress  = Math.min(Math.max(rotateVal / 360, 0), 1);
-    const boundedRotation = -scrollProgress * spreadAngle * 0.8;
-    const currentArcAngle = startAngle + i * step + boundedRotation;
+    const currentArcAngle = startAngle + i * step;
     const arcRad          = (currentArcAngle * Math.PI) / 180;
     const arcPos = {
         x:        Math.cos(arcRad) * arcRadius + parallaxVal,
@@ -124,8 +121,6 @@ export default function IntroAnimation() {
     const virtualScroll      = useMotionValue(0);
     const morphProgress      = useTransform(virtualScroll, [0, 600], [0, 1]);
     const smoothMorph        = useSpring(morphProgress, { stiffness: 40, damping: 20 });
-    const scrollRotate       = useTransform(virtualScroll, [600, 3000], [0, 360]);
-    const smoothScrollRotate = useSpring(scrollRotate, { stiffness: 40, damping: 20 });
     const mouseX             = useMotionValue(0);
     const smoothMouseX       = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
@@ -272,7 +267,6 @@ export default function IntroAnimation() {
             last = now;
 
             const morph   = smoothMorph.get();
-            const rotate  = smoothScrollRotate.get();
             const px      = smoothMouseX.get();
             const phase   = introPhaseRef.current;
             const { width: cw, height: ch } = containerSizeRef.current;
@@ -280,7 +274,7 @@ export default function IntroAnimation() {
             for (let i = 0; i < TOTAL_IMAGES; i++) {
                 const el = cardRefs.current[i];
                 if (!el) continue;
-                const t = computeTarget(i, phase, morph, rotate, px, cw, ch, scatterPositions);
+                const t = computeTarget(i, phase, morph, px, cw, ch, scatterPositions);
                 const s = cardState.current[i];
 
                 // Critically-ish damped spring per axis (mass = 1)
@@ -319,7 +313,7 @@ export default function IntroAnimation() {
 
         rafId = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafId);
-    }, [smoothMorph, smoothScrollRotate, smoothMouseX, scatterPositions]);
+    }, [smoothMorph, smoothMouseX, scatterPositions]);
 
     // ─── Render ───────────────────────────────────────────────────────────────
 
