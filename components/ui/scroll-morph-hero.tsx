@@ -109,7 +109,8 @@ function computeTarget(
 
 export default function IntroAnimation() {
     const containerRef     = useRef<HTMLDivElement>(null);
-    const containerSizeRef = useRef({ width: 0, height: 0 });
+    const containerSizeRef  = useRef({ width: 0, height: 0 });
+    const morphCompleteRef  = useRef(false);
     const introPhaseRef    = useRef<AnimationPhase>("scatter");
 
     const cardRefs     = useRef<Array<HTMLDivElement | null>>(Array(TOTAL_IMAGES).fill(null));
@@ -204,16 +205,40 @@ export default function IntroAnimation() {
         return () => { clearTimeout(t1); clearTimeout(t2); };
     }, []);
 
-    // ── Drive morph from real page scroll (no event hijacking) ──────────────
-    // Maps scrollY 0 → 70% of viewport height → virtualScroll 0 → MAX_SCROLL
-    // so the arc completes while hero is still visible, then user scrolls freely.
+    // ── Scroll capture: block page scroll until arc is complete ──────────────
+    // During scatter/line: preventDefault only (intro is timed, scroll does nothing).
+    // During circle: scroll drives virtualScroll (morph).
+    // Once morphCompleteRef flips true (set in rAF when smoothMorph ≈ 1):
+    //   handlers return without preventDefault → page scrolls normally.
     useEffect(() => {
-        const handle = () => {
-            const progress = Math.min(window.scrollY / (window.innerHeight * 0.7), 1);
-            virtualScroll.set(progress * MAX_SCROLL);
+        const handleWheel = (e: WheelEvent) => {
+            if (morphCompleteRef.current) return; // arc done — let page scroll
+            e.preventDefault();
+            if (introPhaseRef.current !== "circle") return; // timed intro — just block
+            const v = Math.min(Math.max(virtualScroll.get() + e.deltaY, 0), MAX_SCROLL);
+            virtualScroll.set(v);
         };
-        window.addEventListener("scroll", handle, { passive: true });
-        return () => window.removeEventListener("scroll", handle);
+
+        let touchStartY = 0;
+        const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+        const handleTouchMove  = (e: TouchEvent) => {
+            if (morphCompleteRef.current) return;
+            e.preventDefault();
+            if (introPhaseRef.current !== "circle") return;
+            const deltaY = touchStartY - e.touches[0].clientY;
+            touchStartY  = e.touches[0].clientY;
+            const v = Math.min(Math.max(virtualScroll.get() + deltaY, 0), MAX_SCROLL);
+            virtualScroll.set(v);
+        };
+
+        window.addEventListener("wheel",      handleWheel,      { passive: false });
+        window.addEventListener("touchstart", handleTouchStart, { passive: false });
+        window.addEventListener("touchmove",  handleTouchMove,  { passive: false });
+        return () => {
+            window.removeEventListener("wheel",      handleWheel);
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchmove",  handleTouchMove);
+        };
     }, [virtualScroll]);
 
     // ── Mouse parallax ────────────────────────────────────────────────────────
@@ -264,6 +289,11 @@ export default function IntroAnimation() {
 
                 el.style.transform = `translate(${s.x}px,${s.y}px) rotate(${s.rot}deg) scale(${s.scale})`;
                 el.style.opacity   = String(clamp01(s.opacity));
+            }
+
+            // Release page scroll once arc is fully formed
+            if (!morphCompleteRef.current && morph > 0.98 && introPhaseRef.current === "circle") {
+                morphCompleteRef.current = true;
             }
 
             // Intro text — visible in circle phase, fades as morph crosses 0.5
