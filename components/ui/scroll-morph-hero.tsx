@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef } from "react";
 import { useTransform, useSpring, useMotionValue } from "motion/react";
+import { Button } from "@/components/ui/Button";
 
 export type AnimationPhase = "scatter" | "line" | "circle";
 
@@ -326,31 +327,31 @@ export default function IntroAnimation() {
                 {/* Intro text — fades out as arc forms */}
                 <div
                     ref={introTextRef}
-                    className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2"
+                    className="absolute z-30 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2"
                     style={{ opacity: 0, filter: "blur(10px)" }}
                 >
-                    <h1 className="text-2xl font-medium tracking-tight text-gray-800 md:text-4xl">
-                        The future is built on AI.
+                    <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl md:text-6xl">
+                        We automate<br />
+                        the <span style={{ color: "#FFD600" }}>busywork.</span>
                     </h1>
-                    <p className="mt-4 text-xs font-bold tracking-[0.2em] text-gray-500">
-                        SCROLL TO EXPLORE
-                    </p>
                 </div>
 
                 {/* Arc content — fades in as arc forms */}
                 <div
                     ref={arcTextRef}
-                    className="absolute top-[10%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
+                    className="absolute top-[18%] z-30 flex flex-col items-center justify-center text-center px-4"
                     style={{ opacity: 0 }}
                 >
-                    <h2 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-4">
-                        Explore Our Vision
+                    <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl mb-4">
+                        We automate the <span style={{ color: "#FFD600" }}>busywork.</span><br />
+                        Your team does the real work.
                     </h2>
-                    <p className="text-sm md:text-base text-gray-600 max-w-lg leading-relaxed">
-                        Discover a world where technology meets creativity.{" "}
-                        <br className="hidden md:block" />
-                        Scroll through our curated collection of innovations designed to shape the future.
+                    <p className="text-sm md:text-base text-gray-600 max-w-lg leading-relaxed mb-6">
+                        Invoicing, reporting, follow-ups — if it repeats, we automate it. Built around how your business actually runs, not a generic playbook.
                     </p>
+                    <Button href="#services" variant="primary" showArrow>
+                        See what we automate
+                    </Button>
                 </div>
 
                 {/* Cards — plain sprite tiles, no flip/hover; positioned by rAF */}
