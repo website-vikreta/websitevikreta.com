@@ -353,31 +353,26 @@ export default function IntroAnimation() {
 
                 {/* Cards — plain sprite tiles, no flip/hover; positioned by rAF */}
                 <div className="relative flex items-center justify-center w-full h-full">
-                    {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => {
-                        const s = scatterPositions[i];
-                        return (
-                            <div
-                                key={i}
-                                ref={el => { cardRefs.current[i] = el; }}
-                                aria-hidden="true"
-                                style={{
-                                    position:           "absolute",
-                                    width:              IMG_WIDTH,
-                                    height:             IMG_HEIGHT,
-                                    backgroundImage:    `url(${src})`,
-                                    backgroundSize:     "cover",
-                                    backgroundPosition: "center",
-                                    backgroundRepeat:   "no-repeat",
-                                    borderRadius:       12,
-                                    boxShadow:          "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
-                                    // Seed at scatter so first frame matches spring start (no flash)
-                                    transform:          `translate(${s.x}px,${s.y}px) rotate(${s.rotation}deg) scale(${s.scale})`,
-                                    opacity:            0,
-                                    willChange:         "transform, opacity",
-                                }}
-                            />
-                        );
-                    })}
+                    {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => (
+                        <div
+                            key={i}
+                            ref={el => { cardRefs.current[i] = el; }}
+                            aria-hidden="true"
+                            style={{
+                                position:           "absolute",
+                                width:              IMG_WIDTH,
+                                height:             IMG_HEIGHT,
+                                backgroundImage:    `url(${src})`,
+                                backgroundSize:     "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat:   "no-repeat",
+                                borderRadius:       12,
+                                boxShadow:          "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
+                                opacity:            0,
+                                willChange:         "transform, opacity",
+                            }}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
