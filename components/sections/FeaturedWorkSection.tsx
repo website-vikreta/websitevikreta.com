@@ -2,9 +2,43 @@
 
 import React from 'react'
 import { motion } from 'motion/react'
-import { ExpandingCards } from '@/components/ui/expanding-cards'
-import { Button } from '@/components/ui/Button'
-import { FEATURED_WORK } from '@/config/featured-work'
+import { HoverExpand, WorkItem } from '@/components/ui/expand-on-hover'
+
+const ITEMS: WorkItem[] = [
+  {
+    id: "sbp-webapp-redesign",
+    title: "Figma Buzz automation for Bulk media generation",
+    excerpt:
+      "Reimagined the web experience for a leading sustainable Bitcoin initiative — modern UI, faster flows, clearer architecture.",
+    imgSrc:
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1400&h=900&q=80",
+    secondaryImgSrc:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1400&h=600&q=80",
+    linkHref: "#",
+  },
+  {
+    id: "blancora-ecommerce",
+    title: "E-Commerce & CMS for Blancora Clothing",
+    excerpt:
+      "Built a full e-commerce platform with custom CMS — the Blancora team owns their store completely.",
+    imgSrc:
+      "https://images.unsplash.com/photo-1557672172-298e090bd0f1?auto=format&fit=crop&w=1400&h=900&q=80",
+    secondaryImgSrc:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&h=600&q=80",
+    linkHref: "#",
+  },
+  {
+    id: "iendorse-mvp",
+    title: "MVP for Influencer Affiliate Platform iEndorse",
+    excerpt:
+      "Built the MVP from zero — core flows, dashboards, and affiliate tracking infrastructure for day-one launch.",
+    imgSrc:
+      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1400&h=900&q=80",
+    secondaryImgSrc:
+      "https://images.unsplash.com/photo-1499673610122-01c7122c5dcb?auto=format&fit=crop&w=1400&h=600&q=80",
+    linkHref: "#",
+  },
+]
 
 const headingLines = [
   "Every service we offer,",
@@ -37,6 +71,7 @@ export function FeaturedWorkSection() {
   return (
     <section className="relative overflow-hidden">
       <div className="container py-16 md:py-20">
+
         {/* Heading — staggered line reveal */}
         <motion.div
           className="mb-10 md:mb-12 max-w-4xl"
@@ -48,7 +83,7 @@ export function FeaturedWorkSection() {
           {headingLines.map((line, i) => (
             <div key={i} className="overflow-hidden">
               <motion.h2
-                className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-[var(--color-text)]"
+                className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-(--color-text)"
                 variants={lineReveal}
               >
                 {line}
@@ -58,7 +93,7 @@ export function FeaturedWorkSection() {
 
           <div className="overflow-hidden">
             <motion.h2
-              className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-[var(--color-text)]"
+              className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-(--color-text)"
               variants={lineReveal}
             >
               now <span style={{ color: 'var(--color-accent)' }}>powered by AI.</span>
@@ -67,7 +102,7 @@ export function FeaturedWorkSection() {
 
           <div className="overflow-hidden mt-5">
             <motion.p
-              className="text-base md:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed"
+              className="text-base md:text-lg text-(--color-text-muted) max-w-2xl leading-relaxed"
               variants={fadeUp}
             >
               We didn&apos;t slap &quot;AI&quot; onto our services as a trend. We rebuilt how we work — so every website, every app, every workflow we touch is smarter, faster, and built to compound over time.
@@ -79,27 +114,12 @@ export function FeaturedWorkSection() {
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ once: true, amount: 0.08 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
         >
-          <ExpandingCards items={FEATURED_WORK} defaultActiveIndex={0} />
+          <HoverExpand items={ITEMS} />
         </motion.div>
 
-        {/* CTAs */}
-        <motion.div
-          className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-        >
-          <Button href="/work" variant="primary" size="lg" showArrow>
-            See All Projects
-          </Button>
-          <Button href="/contact" variant="ghost" size="lg" showArrow>
-            Start a Project
-          </Button>
-        </motion.div>
       </div>
     </section>
   )
