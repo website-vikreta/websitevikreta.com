@@ -6,6 +6,7 @@ export interface Service {
   tag: string
   href: string
   isNew?: boolean
+  image?: string
 }
 
 export const SERVICES: Service[] = [
@@ -18,6 +19,7 @@ export const SERVICES: Service[] = [
     tag: 'Any tool, any stack, no limitation',
     href: '/services/ai-automations',
     isNew: true,
+    image: '/our-services/ai-automations.jpeg',
   },
   {
     id: 2,
@@ -27,6 +29,7 @@ export const SERVICES: Service[] = [
       'Fast, responsive, SEO-ready sites built in Next.js. Every line of code is written with ranking, speed, and scale in mind.',
     tag: 'AI-powered SEO & performance optimisation',
     href: '/services/web-development',
+    image: '/our-services/web-development.jpeg',
   },
   {
     id: 3,
@@ -36,6 +39,7 @@ export const SERVICES: Service[] = [
       "CRMs, portals, e-commerce, custom systems — built for how your business actually works, not a template of how others think it should.",
     tag: 'AI workflows embedded from day one',
     href: '/services/web-and-mobile-apps',
+    image: '/our-services/web-app-crm.jpeg',
   },
   {
     id: 4,
@@ -45,6 +49,7 @@ export const SERVICES: Service[] = [
       "Research-led design that feels premium. We use AI to test, iterate, and personalise — so you don't get a pretty site, you get one that converts.",
     tag: 'AI-assisted prototyping & testing',
     href: '/services/uiux-design',
+    image: '/our-services/ui-ux.jpeg',
   },
   {
     id: 5,
@@ -54,5 +59,6 @@ export const SERVICES: Service[] = [
       'Campaigns that rank, reach, and convert — built on real data, not guesswork. We combine SEO, GEO, and paid channels into one growth engine.',
     tag: 'AI-driven targeting & content strategy',
     href: '/services/digital-marketing',
+    image: '/our-services/digital-marketing-seo-geo.jpeg',
   },
 ]
