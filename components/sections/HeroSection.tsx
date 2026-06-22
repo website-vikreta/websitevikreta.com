@@ -40,56 +40,30 @@ export function HeroSection() {
         return
       }
 
-      // Initial states — set before first paint to avoid flash
       gsap.set(labelRef.current, { opacity: 0, y: 14 })
       gsap.set(wordEls, { y: '110%' })
-      gsap.set([subheadRef.current, ctaRef.current], {
-        opacity: 0,
-        y: 18,
-      })
+      gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
 
-      const tl = gsap.timeline({ delay: 0.1 })
+      const runTimeline = () => {
+        gsap.timeline({ delay: 0.2 })
+          .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
+          .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
+          .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
+      }
 
-      // 1. Label fades in
-      tl.to(labelRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-      })
-      // 2. Headline words reveal — masked upward slide
-        .to(
-          wordEls,
-          {
-            y: '0%',
-            duration: 1.05,
-            ease: 'expo.out',
-            stagger: 0.065,
-          },
-          '-=0.2',
-        )
-      // 3. Subhead fades up
-        .to(
-          subheadRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.65,
-            ease: 'power2.out',
-          },
-          '-=0.3',
-        )
-      // 4. CTAs follow immediately
-        .to(
-          ctaRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-          },
-          '-=0.45',
-        )
+      // Fallback: run after 6s if preloader never fires (e.g. cached visit)
+      const fallback = setTimeout(() => {
+        window.removeEventListener('preloader-done', runTimeline)
+        runTimeline()
+      }, 6000)
+
+      window.addEventListener('preloader-done', runTimeline, { once: true })
+
+      return () => {
+        clearTimeout(fallback)
+        window.removeEventListener('preloader-done', runTimeline)
+      }
     }, sectionRef)
 
     return () => ctx.revert()
