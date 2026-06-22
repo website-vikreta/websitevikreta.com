@@ -1,5 +1,6 @@
 'use client'
 
+import { DotGrid } from '@/components/ui/DotGrid'
 import { motion } from 'motion/react'
 import { Instagram, Linkedin, Whatsapp } from 'react-bootstrap-icons'
 import { FooterSection } from '@/components/sections/FooterSection'
@@ -53,6 +54,8 @@ export function ComingSoonPage({ pageName, showFooter = false }: ComingSoonPageP
             className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
             aria-label="Coming Soon"
          >
+            <DotGrid />
+
             <motion.div
                className="relative z-20 flex flex-col items-center justify-center px-6"
                variants={containerVariants}
