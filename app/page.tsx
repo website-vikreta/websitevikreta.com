@@ -1,3 +1,4 @@
+import { HomePreloader } from '@/components/ui/HomePreloader'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
 import { ProcessSection } from '@/components/sections/ProcessSection'
@@ -12,6 +13,7 @@ import { DotGrid } from '@/components/ui/DotGrid'
 export default function Home() {
   return (
     <main>
+      <HomePreloader />
       <DotGrid global />
       <HeroSection />
       <StatsCounters />

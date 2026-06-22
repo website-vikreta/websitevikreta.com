@@ -12,35 +12,24 @@ const IMG_WIDTH    = 60;
 const IMG_HEIGHT   = 85;
 const TOTAL_IMAGES = 20;
 const MAX_SCROLL   = 600;
-const SPRITE_COLS  = 4;
+
+// Shared preloader sprite — 2 cols × 10 rows, frame t at col t%2, row t/2.
+const SPRITE       = "/preloader/sprite.jpg";
+const SPRITE_COLS  = 2;
 const SPRITE_ROWS  = Math.ceil(TOTAL_IMAGES / SPRITE_COLS);
+
+const shuffle = <T,>(arr: T[]): T[] => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+};
 
 // Per-card spring (matches original FlipCard spring: stiffness 40, damping 15)
 const SPRING_K = 40;
 const SPRING_C = 15;
-
-const IMAGES = [
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=80",
-    "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=300&q=80",
-    "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&q=80",
-    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&q=80",
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=300&q=80",
-    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&q=80",
-    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=300&q=80",
-    "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=300&q=80",
-    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=300&q=80",
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&q=80",
-    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=300&q=80",
-    "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=300&q=80",
-    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&q=80",
-    "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=300&q=80",
-    "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&q=80",
-    "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=300&q=80",
-    "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=300&q=80",
-    "https://images.unsplash.com/photo-1614064641938-31aeb8e35bab?w=300&q=80",
-    "https://images.unsplash.com/photo-1563191911-e65f8655ebf9?w=300&q=80",
-    "https://images.unsplash.com/photo-1677756119517-756a188d2d94?w=300&q=80",
-];
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -125,7 +114,7 @@ export default function IntroAnimation() {
 
     // Stable scatter start positions (opacity 0 → fade in during fly-to-line)
     const scatterPositions = useMemo<Target[]>(
-        () => IMAGES.map(() => ({
+        () => Array.from({ length: TOTAL_IMAGES }, () => ({
             x:        (Math.random() - 0.5) * 1500,
             y:        (Math.random() - 0.5) * 1000,
             rotation: (Math.random() - 0.5) * 180,
@@ -143,45 +132,16 @@ export default function IntroAnimation() {
         }))
     );
 
-    // ── Sprite: 20 images → 1 canvas → 1 blob → 1 GPU texture ─────────────────
+    // ── Map shared sprite onto cards — random frame per card, reshuffled each load ──
     useEffect(() => {
-        const canvas = document.createElement("canvas");
-        canvas.width  = IMG_WIDTH  * SPRITE_COLS;
-        canvas.height = IMG_HEIGHT * SPRITE_ROWS;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
-        let loaded = 0;
-        let revoke: (() => void) | null = null;
-
-        IMAGES.forEach((src, idx) => {
-            const img       = new Image();
-            img.crossOrigin = "anonymous";
-            img.onload = () => {
-                ctx.drawImage(
-                    img,
-                    (idx % SPRITE_COLS) * IMG_WIDTH,
-                    Math.floor(idx / SPRITE_COLS) * IMG_HEIGHT,
-                    IMG_WIDTH, IMG_HEIGHT
-                );
-                if (++loaded < IMAGES.length) return;
-                canvas.toBlob(blob => {
-                    if (!blob) return;
-                    const url = URL.createObjectURL(blob);
-                    revoke = () => URL.revokeObjectURL(url);
-                    cardRefs.current.forEach((el, i) => {
-                        if (!el) return;
-                        el.style.backgroundImage    = `url(${url})`;
-                        el.style.backgroundSize     = `${IMG_WIDTH * SPRITE_COLS}px ${IMG_HEIGHT * SPRITE_ROWS}px`;
-                        el.style.backgroundPosition = `-${(i % SPRITE_COLS) * IMG_WIDTH}px -${Math.floor(i / SPRITE_COLS) * IMG_HEIGHT}px`;
-                    });
-                }, "image/webp", 0.85);
-            };
-            img.onerror = () => { ++loaded; };
-            img.src = src;
+        const order = shuffle(Array.from({ length: TOTAL_IMAGES }, (_, n) => n));
+        cardRefs.current.forEach((el, i) => {
+            if (!el) return;
+            const tile = order[i];
+            el.style.backgroundImage    = `url(${SPRITE})`;
+            el.style.backgroundSize     = `${IMG_WIDTH * SPRITE_COLS}px ${IMG_HEIGHT * SPRITE_ROWS}px`;
+            el.style.backgroundPosition = `-${(tile % SPRITE_COLS) * IMG_WIDTH}px -${Math.floor(tile / SPRITE_COLS) * IMG_HEIGHT}px`;
         });
-
-        return () => revoke?.();
     }, []);
 
     // ── Resize → ref (no re-render) ───────────────────────────────────────────
@@ -364,7 +324,7 @@ export default function IntroAnimation() {
 
                 {/* Cards — plain sprite tiles, no flip/hover; positioned by rAF */}
                 <div className="relative flex items-center justify-center w-full h-full">
-                    {IMAGES.slice(0, TOTAL_IMAGES).map((src, i) => (
+                    {Array.from({ length: TOTAL_IMAGES }, (_, i) => (
                         <div
                             key={i}
                             ref={el => { cardRefs.current[i] = el; }}
@@ -373,12 +333,7 @@ export default function IntroAnimation() {
                                 position:           "absolute",
                                 width:              IMG_WIDTH,
                                 height:             IMG_HEIGHT,
-                                backgroundImage:    `url(${src})`,
-                                backgroundSize:     "cover",
-                                backgroundPosition: "center",
                                 backgroundRepeat:   "no-repeat",
-                                borderRadius:       12,
-                                boxShadow:          "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
                                 opacity:            0,
                                 willChange:         "transform, opacity",
                             }}
