@@ -3,6 +3,28 @@
 @theme inline {
   --font-sans: var(--font-utile);
   --font-mono: var(--font-utile);
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.accordion-content {
+  overflow: hidden;
+}
+.accordion-content[data-state="open"] {
+  animation: accordion-down 0.2s ease-out;
+}
+.accordion-content[data-state="closed"] {
+  animation: accordion-up 0.2s ease-out;
 }
 
 /* ─── Reset ───────────────────────────────────────────────────── */
