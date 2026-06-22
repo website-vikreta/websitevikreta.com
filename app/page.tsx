@@ -7,10 +7,12 @@ import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
 import { TechnologiesSection } from '@/components/sections/TechnologiesSection'
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
 import { BlogPreviewSection } from '@/components/sections/BlogPreviewSection'
+import { DotGrid } from '@/components/ui/DotGrid'
 
 export default function Home() {
   return (
     <main>
+      <DotGrid global />
       <HeroSection />
       <StatsCounters />
       <ProcessSection />

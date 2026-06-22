@@ -197,6 +197,15 @@ export default function IntroAnimation() {
         return () => ro.disconnect();
     }, []);
 
+    // ── Skip animation if hero is off-screen on mount (e.g. page refresh while scrolled) ──
+    useEffect(() => {
+        const rect = containerRef.current?.getBoundingClientRect();
+        if (rect && (rect.bottom < 0 || rect.top > window.innerHeight)) {
+            morphCompleteRef.current = true;
+            virtualScroll.set(MAX_SCROLL);
+        }
+    }, [virtualScroll]);
+
     // ── Intro timeline (original): scatter → line @500ms → circle @2500ms ─────
     useEffect(() => {
         const t1 = setTimeout(() => { introPhaseRef.current = "line";   }, 500);
@@ -210,10 +219,19 @@ export default function IntroAnimation() {
     // Once morphCompleteRef flips true (set in rAF when smoothMorph ≈ 1):
     //   handlers return without preventDefault → page scrolls normally.
     useEffect(() => {
+        const isHeroVisible = () => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            return rect && rect.bottom > 0 && rect.top < window.innerHeight;
+        };
+
         const handleWheel = (e: WheelEvent) => {
-            if (morphCompleteRef.current) return; // arc done — let page scroll
+            if (morphCompleteRef.current) return;
+            if (!isHeroVisible()) {
+                morphCompleteRef.current = true;
+                return;
+            }
             e.preventDefault();
-            if (introPhaseRef.current !== "circle") return; // timed intro — just block
+            if (introPhaseRef.current !== "circle") return;
             const v = Math.min(Math.max(virtualScroll.get() + e.deltaY, 0), MAX_SCROLL);
             virtualScroll.set(v);
         };
@@ -222,6 +240,10 @@ export default function IntroAnimation() {
         const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
         const handleTouchMove  = (e: TouchEvent) => {
             if (morphCompleteRef.current) return;
+            if (!isHeroVisible()) {
+                morphCompleteRef.current = true;
+                return;
+            }
             e.preventDefault();
             if (introPhaseRef.current !== "circle") return;
             const deltaY = touchStartY - e.touches[0].clientY;
