@@ -6,6 +6,7 @@ import {
   POSTS_BY_CATEGORY_QUERY,
   ALL_POST_SLUGS_QUERY,
 } from './queries'
+import { urlFor } from './image'
 import type { PortableTextBlock } from '@portabletext/react'
 import type { Post, FullPost, DisplayPost, SanityImage } from '../types'
 
@@ -30,6 +31,9 @@ function toDisplayPost(post: Post): DisplayPost {
     description: post.excerpt ?? '',
     publishDate: formatDate(post.publishedAt),
     readTime: post.readTime ?? '',
+    imageUrl: post.featuredImage?.asset
+      ? urlFor(post.featuredImage).width(800).fit('crop').url()
+      : undefined,
   }
 }
 

@@ -4,7 +4,6 @@ import { motion } from 'motion/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { TextLink } from '@/components/ui/TextLink'
-import { Button } from '@/components/ui/Button'
 import type { DisplayPost } from '@/sanity/types'
 
 const container = {
@@ -43,29 +42,18 @@ export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
             initial="hidden"
             animate="visible"
           >
-            <div className="overflow-hidden mb-3">
-              <motion.span
-                className="text-meta-label tracking-[var(--tracking-meta)] text-[var(--color-text-muted)] uppercase"
-                variants={lineReveal}
-              >
-                The thinking behind the work
-              </motion.span>
-            </div>
             <div className="overflow-hidden">
               <motion.h2
                 className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
                 variants={lineReveal}
               >
-                All Articles
+                Blogs
               </motion.h2>
             </div>
           </motion.div>
 
-          {/* Divider */}
-          <hr className="border-t border-[var(--color-border)] mb-12 md:mb-16" />
-
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
             {posts.map((post, i) => (
               <motion.article
                 key={post.slug}
@@ -85,13 +73,10 @@ export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
                         alt={post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover grayscale transition-opacity duration-300 group-hover/img:opacity-70"
+                        className="object-cover grayscale transition-[filter] duration-300 group-hover/img:grayscale-0"
                       />
                     ) : null}
                   </div>
-                  <span className="absolute top-3 left-3 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-white/80 bg-black/60 px-2 py-1">
-                    #{post.category}
-                  </span>
                 </Link>
 
                 {/* Title */}
@@ -120,14 +105,8 @@ export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
             ))}
           </div>
 
-          {/* Return to home */}
-          <div className="flex justify-center mt-16 md:mt-20">
-            <Button href="/#hero" variant="ghost">
-              ← Return to Home
-            </Button>
-          </div>
 
-        </div>
+</div>
       </section>
     </main>
   )
