@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import { useScroll, useTransform, motion } from 'motion/react'
+import Image from 'next/image'
 import { SERVICES, Service } from '@/config/services'
 import { Button } from '@/components/ui/Button'
 
@@ -159,7 +160,9 @@ function ServiceCard({ service }: { service: Service }) {
         transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="absolute inset-0 bg-white/5" />
-        {/* <Image src={service.image} alt={service.title} fill className="object-cover grayscale" sizes="42vw" /> */}
+        {service.image && (
+          <Image src={service.image} alt={service.title} fill className="object-cover" sizes="42vw" />
+        )}
       </motion.div>
     </motion.div>
   )

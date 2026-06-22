@@ -36,9 +36,11 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     setMousePos({ x, y });
-    // image is 208px wide + 12px cursor offset
     setFlipLeft(x + 12 + 208 > rect.width);
   };
+
+  const xOffset = flipLeft ? mousePos.x - 208 - 12 : mousePos.x + 12;
+  const yOffset = mousePos.y + 12;
 
   return (
     <div
@@ -103,14 +105,15 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
 
       {/* Magnetic cursor image — desktop only, follows mouse */}
       <div
-        className="pointer-events-none absolute z-50 h-36 w-52 overflow-hidden shadow-2xl hidden md:block"
+        className="pointer-events-none absolute z-50 w-52 aspect-video overflow-hidden shadow-2xl hidden md:block"
         style={{
-          left: mousePos.x,
-          top: mousePos.y,
-          transform: `${flipLeft ? 'translate(calc(-100% - 12px), 12px)' : 'translate(12px, 12px)'} scale(${hovered ? 1 : 0.85}) rotate(${hovered ? 0 : 4}deg)`,
+          top: 0,
+          left: 0,
+          willChange: 'transform, opacity',
+          transform: `translate(${xOffset}px, ${yOffset}px) scale(${hovered ? 1 : 0.85}) rotate(${hovered ? 0 : 4}deg)`,
           opacity: hovered ? 1 : 0,
           transition: hovered
-            ? 'opacity 0.35s ease, transform 0.35s ease, left 0.1s ease-out, top 0.1s ease-out'
+            ? 'opacity 0.35s ease, transform 0.35s ease'
             : 'opacity 0.25s ease, transform 0.25s ease',
         }}
       >
@@ -119,7 +122,7 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
             src={item.src}
             alt={item.alt}
             fill
-            className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
         </div>
@@ -134,7 +137,7 @@ const defaultItems: ProcessItem[] = [
     step: "01",
     title: "Listen",
     description: "A real conversation, not a form. We understand your business before we touch anything.",
-    src: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&auto=format&fit=crop&q=60",
+    src: "/our-process/01-listen.jpeg",
     alt: "Real conversation",
   },
   {
@@ -142,7 +145,7 @@ const defaultItems: ProcessItem[] = [
     step: "02",
     title: "Diagnose",
     description: "We study your requirements and look deeper. We find what you asked for and what you didn't know to ask for.",
-    src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop&q=60",
+    src: "/our-process/02-diagnose.jpeg",
     alt: "Deep analysis",
   },
   {
@@ -150,7 +153,7 @@ const defaultItems: ProcessItem[] = [
     step: "03",
     title: "Propose",
     description: "We bring you a solution that's honest, scoped, and priced clearly. You approve before anything moves.",
-    src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&auto=format&fit=crop&q=60",
+    src: "/our-process/03-propose.jpeg",
     alt: "Clear proposal",
   },
   {
@@ -158,7 +161,7 @@ const defaultItems: ProcessItem[] = [
     step: "04",
     title: "Build",
     description: "We develop with transparency. You see progress, not silence.",
-    src: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&auto=format&fit=crop&q=60",
+    src: "/our-process/04-build.jpeg",
     alt: "Building with transparency",
   },
   {
@@ -166,7 +169,7 @@ const defaultItems: ProcessItem[] = [
     step: "05",
     title: "Deliver & Stay",
     description: "We don't hand over a zip file and disappear. We make sure it works.",
-    src: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&auto=format&fit=crop&q=60",
+    src: "/our-process/05-deliver-and-stay.jpeg",
     alt: "Delivery and support",
   },
 ];
