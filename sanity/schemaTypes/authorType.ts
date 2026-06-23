@@ -29,6 +29,12 @@ export const authorType = defineType({
       type: 'text',
       rows: 3,
     }),
+    defineField({
+      name: 'linkedinUrl',
+      title: 'LinkedIn URL',
+      type: 'url',
+      description: 'Full LinkedIn profile URL e.g. https://linkedin.com/in/username',
+    }),
   ],
   preview: {
     select: {
