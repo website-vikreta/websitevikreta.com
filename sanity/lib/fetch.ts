@@ -67,7 +67,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
   type PostData = (Omit<Post, 'author'> & {
     body?: unknown[]
-    author?: { name: string; image?: SanityImage; bio?: string }
+    author?: { name: string; image?: SanityImage; bio?: string; linkedinUrl?: string }
   }) | null
   // Try exact slug; fall back to slug with leading space (Studio data-entry issue)
   let post = await client.fetch<PostData>(POST_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } })
@@ -90,6 +90,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
       name: post.author.name,
       image: post.author.image,
       bio: post.author.bio,
+      linkedinUrl: post.author.linkedinUrl,
     } : undefined,
     seoTitle: post.seoTitle,
     seoDescription: post.seoDescription,

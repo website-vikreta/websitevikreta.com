@@ -31,7 +31,7 @@ export const POST_BY_SLUG_QUERY = groq`
     body,
     seoTitle,
     seoDescription,
-    "author": author->{ name, "slug": slug.current, image, bio }
+    "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl }
   }
 `
 

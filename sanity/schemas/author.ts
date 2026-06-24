@@ -30,5 +30,11 @@ export const author = defineType({
       type: 'image',
       options: { hotspot: true },
     }),
+    defineField({
+      name: 'linkedinUrl',
+      title: 'LinkedIn URL',
+      type: 'url',
+      description: 'Full LinkedIn profile URL e.g. https://linkedin.com/in/username',
+    }),
   ],
 })

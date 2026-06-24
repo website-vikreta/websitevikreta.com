@@ -11,16 +11,30 @@ import type { FullPost } from '@/sanity/types'
 
 export const dynamic = 'force-dynamic'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function calcReadTime(body: any[]): string {
+  const text = body
+    .filter((b) => b._type === 'block')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .flatMap((b) => (b.children ?? []).map((c: any) => c.text ?? ''))
+    .join(' ')
+  const words = text.trim().split(/\s+/).filter(Boolean).length
+  return `${Math.ceil(words / 200)} min read`
+}
+
 const isSanityConfigured = Boolean(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ptComponents: any = {
   block: {
     h2: ({ children }: any) => (
-      <h2 className="text-2xl font-bold mt-8 mb-4 text-[var(--color-text)]">{children}</h2>
+      <h2 className="text-2xl font-bold mt-10 mb-4 text-[var(--color-text)]">{children}</h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-xl font-semibold mt-6 mb-3 text-[var(--color-text)]">{children}</h3>
+      <h3 className="text-xl font-semibold mt-8 mb-3 text-[var(--color-text)]">{children}</h3>
+    ),
+    h4: ({ children }: any) => (
+      <h4 className="text-lg font-semibold mt-6 mb-2 text-[var(--color-text)]">{children}</h4>
     ),
     normal: ({ children }: any) => (
       <p className="mb-4 leading-relaxed text-[var(--color-text-muted)]">{children}</p>
@@ -30,6 +44,18 @@ const ptComponents: any = {
         {children}
       </blockquote>
     ),
+  },
+  list: {
+    bullet: ({ children }: any) => (
+      <ul className="list-disc list-outside ml-6 mb-4 space-y-1 text-[var(--color-text-muted)]">{children}</ul>
+    ),
+    number: ({ children }: any) => (
+      <ol className="list-decimal list-outside ml-6 mb-4 space-y-1 text-[var(--color-text-muted)]">{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }: any) => <li className="leading-relaxed">{children}</li>,
+    number: ({ children }: any) => <li className="leading-relaxed">{children}</li>,
   },
   marks: {
     strong: ({ children }: any) => (
@@ -49,6 +75,59 @@ const ptComponents: any = {
         {children}
       </a>
     ),
+  },
+  types: {
+    image: ({ value }: any) =>
+      value?.asset ? (
+        <figure className="my-8">
+          <Image
+            src={urlFor(value).width(720).url()}
+            alt={value.alt ?? ''}
+            width={720}
+            height={405}
+            className="rounded w-full h-auto"
+          />
+          {value.caption && (
+            <figcaption className="text-sm text-center text-[var(--color-text-muted)] mt-2">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      ) : null,
+    table: ({ value }: any) => {
+      const rows: { cells?: string[] }[] = value?.rows ?? []
+      if (!rows.length) return null
+      return (
+        <div className="overflow-x-auto my-8">
+          <table className="w-full border-collapse text-sm">
+            <tbody>
+              {rows.map((row, i) => (
+                <tr
+                  key={i}
+                  className={
+                    i === 0
+                      ? 'border-b-2 border-[#FFD600] bg-neutral-900'
+                      : 'border-b border-neutral-800'
+                  }
+                >
+                  {(row.cells ?? []).map((cell, j) => {
+                    const Tag = i === 0 ? 'th' : 'td'
+                    return (
+                      <Tag
+                        key={j}
+                        className="px-4 py-2 text-left text-[var(--color-text)] font-normal"
+                      >
+                        {cell}
+                      </Tag>
+                    )
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    },
   },
 }
 
@@ -128,6 +207,9 @@ export default async function BlogPostPage({
   if (!post) notFound()
 
   const hasCover = post.source === 'sanity' && Boolean(post.featuredImage)
+  const readTime = post.source === 'sanity' && Array.isArray(post.body) && post.body.length > 0
+    ? calcReadTime(post.body)
+    : post.readTime
 
   return (
     <main>
@@ -149,9 +231,42 @@ export default async function BlogPostPage({
         <div className={`container pb-24 md:pb-32 ${hasCover ? 'pt-16 md:pt-20' : 'pt-32 md:pt-40'}`}>
 
           {/* Title */}
-          <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-12 max-w-[720px] mx-auto text-center">
+          <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-8 max-w-[720px] mx-auto">
             {post.title}
           </h2>
+
+          {/* Author byline — Sanity posts only */}
+          {post.source === 'sanity' && post.author && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 items-start mb-16 max-w-[720px] mx-auto">
+              {/* Left: label + photo + name */}
+              <div className="flex flex-col gap-3">
+                <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-widest">
+                  Written by
+                </p>
+                <div className="flex items-center gap-3">
+                  {post.author.linkedinUrl ? (
+                    <a
+                      href={post.author.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative inline-block text-sm font-medium text-[var(--color-text)]"
+                    >
+                      {post.author.name}
+                      <span className="absolute -bottom-px left-0 w-full h-px bg-[var(--color-text)] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+                    </a>
+                  ) : (
+                    <span className="text-sm font-medium text-[var(--color-text)]">{post.author.name}</span>
+                  )}
+                </div>
+              </div>
+              {/* Right: read time aligned to right border */}
+              {readTime && (
+                <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-widest md:text-right">
+                  {readTime}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Body */}
           <div className="mx-auto max-w-[720px]">
@@ -172,7 +287,7 @@ export default async function BlogPostPage({
           </div>
 
           {/* Go back */}
-          <div className="flex justify-center mt-20">
+          <div className="flex justify-center mt-16">
             <Button href="/blog" variant="ghost">
               ← Go Back
             </Button>

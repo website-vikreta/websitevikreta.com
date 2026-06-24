@@ -16,6 +16,7 @@ export interface Author {
   slug: { current: string }
   image?: SanityImage
   bio?: string
+  linkedinUrl?: string
 }
 
 export interface Category {
@@ -69,6 +70,7 @@ export type FullPost =
         name: string
         image?: SanityImage
         bio?: string
+        linkedinUrl?: string
       }
       seoTitle?: string
       seoDescription?: string
