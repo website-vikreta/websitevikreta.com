@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /studio/
 
-Sitemap: https://websitevikreta.com/sitemap.xml
+Sitemap: https://stage.websitevikreta.com/sitemap.xml
