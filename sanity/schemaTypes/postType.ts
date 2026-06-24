@@ -68,7 +68,12 @@ export const postType = defineType({
             { title: 'Normal', value: 'normal' },
             { title: 'H2', value: 'h2' },
             { title: 'H3', value: 'h3' },
+            { title: 'H4', value: 'h4' },
             { title: 'Quote', value: 'blockquote' },
+          ],
+          lists: [
+            { title: 'Bullet', value: 'bullet' },
+            { title: 'Numbered', value: 'number' },
           ],
           marks: {
             decorators: [
@@ -101,6 +106,47 @@ export const postType = defineType({
             defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
             defineField({ name: 'caption', title: 'Caption', type: 'string' }),
           ],
+        },
+        {
+          type: 'object',
+          name: 'table',
+          title: 'Table',
+          fields: [
+            defineField({
+              name: 'rows',
+              title: 'Rows',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  name: 'tableRow',
+                  title: 'Row',
+                  fields: [
+                    defineField({
+                      name: 'cells',
+                      title: 'Cells',
+                      type: 'array',
+                      of: [{ type: 'string' }],
+                    }),
+                  ],
+                  preview: {
+                    select: { cells: 'cells' },
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    prepare: (value: any) => ({
+                      title: (value.cells ?? []).join(' | '),
+                    }),
+                  },
+                },
+              ],
+            }),
+          ],
+          preview: {
+            select: { rows: 'rows' },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            prepare: (value: any) => ({
+              title: `Table (${(value.rows ?? []).length} rows)`,
+            }),
+          },
         },
       ],
     }),

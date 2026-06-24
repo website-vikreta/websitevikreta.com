@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'motion/react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { gsap } from '@/lib/gsap'
 import { cn } from '@/lib/utils'
@@ -134,14 +135,8 @@ export function FaqPageContent() {
           >
             <div className="mx-auto max-w-[720px] text-center">
               <h1
-                className="font-bold"
-                style={{
-                  fontSize:      'var(--text-h1)',
-                  lineHeight:    'var(--leading-h1)',
-                  letterSpacing: '-0.02em',
-                  color:         'var(--color-text)',
-                  marginBottom:  '1rem',
-                }}
+                className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
+                style={{ marginBottom: '1rem' }}
               >
                 Frequently Asked Questions
               </h1>
@@ -179,8 +174,8 @@ export function FaqPageContent() {
                       <h2>
                         <AccordionPrimitive.Trigger
                           className={cn(
-                            'group flex w-full items-start gap-4 pl-6 md:pl-14 py-6 text-left',
-                            '[&>svg]:hidden',
+                            'group flex w-full items-start gap-4 py-6 text-left',
+                            'cursor-pointer',
                             'focus-visible:outline-2 focus-visible:outline-offset-4',
                           )}
                           style={{ outlineColor: 'var(--color-accent)' }}
@@ -192,16 +187,39 @@ export function FaqPageContent() {
                           >
                             {String(index + 1).padStart(2, '0')}
                           </span>
-                          <span
-                            className={cn(
-                              'flex-1 text-xl md:text-2xl font-semibold leading-snug tracking-tight',
-                              'text-[var(--color-text-muted)]',
-                              'transition-colors duration-200',
-                              'group-hover:text-[var(--color-text)]',
-                              'group-data-[state=open]:text-[var(--color-text)]',
-                            )}
+                          <motion.span
+                            className="flex-1 text-xl md:text-2xl font-semibold leading-snug tracking-tight text-[var(--color-text-muted)] group-data-[state=open]:text-[var(--color-text)]"
+                            initial="initial"
+                            whileHover="hover"
                           >
-                            {item.title}
+                            {item.title.split('').map((char, i) => (
+                              <motion.span
+                                key={i}
+                                style={{ display: 'inline-block' }}
+                                variants={{
+                                  initial: { y: 0, scale: 1 },
+                                  hover: {
+                                    y: -4,
+                                    scale: 1.2,
+                                    transition: {
+                                      type: 'spring',
+                                      stiffness: 300,
+                                      damping: 15,
+                                      delay: i * 0.03,
+                                    },
+                                  },
+                                }}
+                              >
+                                {char === ' ' ? ' ' : char}
+                              </motion.span>
+                            ))}
+                          </motion.span>
+                          <span
+                            className="flex-shrink-0 self-center text-xl font-light text-[var(--color-text-muted)] transition-opacity duration-150 ml-2 select-none"
+                            aria-hidden="true"
+                          >
+                            <span className="group-data-[state=open]:hidden">+</span>
+                            <span className="group-data-[state=closed]:hidden">&#8722;</span>
                           </span>
                         </AccordionPrimitive.Trigger>
                       </h2>
@@ -211,7 +229,7 @@ export function FaqPageContent() {
                       className="accordion-content"
                     >
                       <p
-                        className="pl-6 md:pl-14 pb-8 text-[1.0625rem] leading-[1.8]"
+                        className="pb-8 text-[1.0625rem] leading-[1.7]"
                         style={{ color: 'var(--color-text-muted)' }}
                       >
                         {item.content}
