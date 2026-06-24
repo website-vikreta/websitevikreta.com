@@ -25,12 +25,19 @@ export const LATEST_POSTS_QUERY = groq`
   }
 `
 
+export const HOMEPAGE_POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current) && featuredOnHomepage == true] | order(publishedAt desc)[0...3] {
+    ${POST_SUMMARY}
+  }
+`
+
 export const POST_BY_SLUG_QUERY = groq`
   *[_type == "post" && slug.current == $slug][0] {
     ${POST_SUMMARY},
     body,
     seoTitle,
     seoDescription,
+    seoKeywords,
     "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl }
   }
 `
