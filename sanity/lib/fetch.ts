@@ -2,6 +2,7 @@ import { client } from './client'
 import {
   ALL_POSTS_QUERY,
   LATEST_POSTS_QUERY,
+  HOMEPAGE_POSTS_QUERY,
   POST_BY_SLUG_QUERY,
   POSTS_BY_CATEGORY_QUERY,
   ALL_POST_SLUGS_QUERY,
@@ -62,6 +63,15 @@ export async function fetchBlogPosts(): Promise<DisplayPost[]> {
   return posts.map(toDisplayPost)
 }
 
+/** Returns up to 3 DisplayPost[] for homepage — featured first, falls back to latest */
+export async function fetchHomepagePosts(): Promise<DisplayPost[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  const featured = await client.fetch<Post[]>(HOMEPAGE_POSTS_QUERY, {}, { next: { revalidate: 60 } })
+  if (featured.length > 0) return featured.map(toDisplayPost)
+  const latest = await client.fetch<Post[]>(LATEST_POSTS_QUERY, {}, { next: { revalidate: 60 } })
+  return latest.map(toDisplayPost)
+}
+
 /** Returns FullPost discriminated union — used by blog detail page */
 export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
@@ -94,6 +104,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
     } : undefined,
     seoTitle: post.seoTitle,
     seoDescription: post.seoDescription,
+    seoKeywords: post.seoKeywords,
   } as Extract<FullPost, { source: 'sanity' }>
 }
 
