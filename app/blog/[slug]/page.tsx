@@ -160,6 +160,7 @@ export async function generateMetadata({
         return {
           title: `${post.seoTitle ?? post.title} | Website Vikreta`,
           description: post.seoDescription ?? post.description,
+          keywords: post.seoKeywords,
         }
       }
     } catch (err) {

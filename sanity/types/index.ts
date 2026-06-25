@@ -39,6 +39,8 @@ export interface Post {
   readTime?: string
   seoTitle?: string
   seoDescription?: string
+  seoKeywords?: string[]
+  featuredOnHomepage?: boolean
 }
 
 // ── Discriminated union — blog detail page handles static + Sanity posts ──────
@@ -55,6 +57,7 @@ export type FullPost =
       body: string[]
       seoTitle?: undefined
       seoDescription?: undefined
+      seoKeywords?: undefined
     }
   | {
       source: 'sanity'
@@ -74,6 +77,7 @@ export type FullPost =
       }
       seoTitle?: string
       seoDescription?: string
+      seoKeywords?: string[]
     }
 
 // ── Blog listing UI ───────────────────────────────────────────────────────────

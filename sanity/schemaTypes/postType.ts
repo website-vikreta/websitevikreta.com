@@ -173,6 +173,14 @@ export const postType = defineType({
       description: 'e.g. 5 min read',
     }),
     defineField({
+      name: 'featuredOnHomepage',
+      title: 'Featured on Homepage',
+      type: 'boolean',
+      group: 'content',
+      description: 'Show this post in the homepage blog preview section.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'seoTitle',
       title: 'SEO Title',
       type: 'string',
@@ -188,6 +196,15 @@ export const postType = defineType({
       group: 'seo',
       description: 'Shown in search results. 150–160 chars recommended.',
       validation: (r) => r.max(160),
+    }),
+    defineField({
+      name: 'seoKeywords',
+      title: 'SEO Keywords',
+      type: 'array',
+      of: [{ type: 'string' }],
+      group: 'seo',
+      description: 'Keywords for search engines. Add as tags.',
+      options: { layout: 'tags' },
     }),
   ],
   orderings: [
