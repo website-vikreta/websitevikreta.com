@@ -5,23 +5,78 @@ import { groq } from 'next-sanity'
 const BASE = 'https://stage.websitevikreta.com'
 
 const staticRoutes: MetadataRoute.Sitemap = [
+  // Home
   {
     url: `${BASE}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 1.0,
   },
+
+  // Services
   {
-    url: `${BASE}/blog`,
+    url: `${BASE}/services`,
     lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.8,
+    changeFrequency: 'monthly',
+    priority: 0.9,
   },
   {
     url: `${BASE}/services/ai-automations`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.9,
+  },
+  {
+    url: `${BASE}/services/web-development`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+  {
+    url: `${BASE}/services/web-and-mobile-apps`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+  {
+    url: `${BASE}/services/uiux-design`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+  {
+    url: `${BASE}/services/digital-marketing`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+
+  // Work
+  {
+    url: `${BASE}/work`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+  {
+    url: `${BASE}/work/case-studies`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+
+  // Company
+  {
+    url: `${BASE}/about`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+  {
+    url: `${BASE}/careers`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.6,
   },
   {
     url: `${BASE}/contact`,
@@ -35,6 +90,16 @@ const staticRoutes: MetadataRoute.Sitemap = [
     changeFrequency: 'monthly',
     priority: 0.7,
   },
+
+  // Blog
+  {
+    url: `${BASE}/blog`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  },
+
+  // Legal
   {
     url: `${BASE}/legal/privacy-policy`,
     lastModified: new Date(),

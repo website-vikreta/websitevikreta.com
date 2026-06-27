@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'motion/react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { gsap } from '@/lib/gsap'
 import { cn } from '@/lib/utils'
@@ -187,33 +186,11 @@ export function FaqPageContent() {
                           >
                             {String(index + 1).padStart(2, '0')}
                           </span>
-                          <motion.span
+                          <span
                             className="flex-1 text-xl md:text-2xl font-semibold leading-snug tracking-tight text-[var(--color-text-muted)] group-data-[state=open]:text-[var(--color-text)]"
-                            initial="initial"
-                            whileHover="hover"
                           >
-                            {item.title.split('').map((char, i) => (
-                              <motion.span
-                                key={i}
-                                style={{ display: 'inline-block' }}
-                                variants={{
-                                  initial: { y: 0, scale: 1 },
-                                  hover: {
-                                    y: -4,
-                                    scale: 1.2,
-                                    transition: {
-                                      type: 'spring',
-                                      stiffness: 300,
-                                      damping: 15,
-                                      delay: i * 0.03,
-                                    },
-                                  },
-                                }}
-                              >
-                                {char === ' ' ? ' ' : char}
-                              </motion.span>
-                            ))}
-                          </motion.span>
+                            {item.title}
+                          </span>
                           <span
                             className="flex-shrink-0 self-center text-xl font-light text-[var(--color-text-muted)] transition-opacity duration-150 ml-2 select-none"
                             aria-hidden="true"
