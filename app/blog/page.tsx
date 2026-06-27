@@ -5,8 +5,57 @@ import { fetchBlogPosts } from '@/sanity/lib/fetch'
 import type { DisplayPost } from '@/sanity/types'
 
 export const metadata: Metadata = {
-  title: 'Blog | Website Vikreta',
-  description: 'Insights on AI, automation, web design, and digital growth from Website Vikreta.',
+  title: 'AI Automation, Next.js & Web Development Blog | WebsiteVikreta',
+  description: 'Read practical guides on AI automation, Next.js development, workflow automation, SEO, and business growth. Learn how to build faster websites and automate repetitive work with AI.',
+  keywords: [
+    'AI automation blog',
+    'AI workflow automation',
+    'Next.js blog',
+    'web development blog',
+    'business automation guides',
+    'AI automation agency',
+    'web development agency India',
+    'workflow automation with n8n',
+    'Make.com tutorials',
+    'SEO and Next.js',
+    'AI business automation tips',
+    'WebsiteVikreta blog',
+  ],
+  openGraph: {
+    title: 'AI Automation, Next.js & Web Development Blog | WebsiteVikreta',
+    description: 'Read practical guides on AI automation, Next.js development, workflow automation, SEO, and business growth.',
+    url: 'https://stage.websitevikreta.com/blog',
+    siteName: 'WebsiteVikreta',
+    type: 'website',
+    locale: 'en_IN',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'WebsiteVikreta Blog — AI Automation & Web Development',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Automation, Next.js & Web Development Blog | WebsiteVikreta',
+    description: 'Read practical guides on AI automation, Next.js development, workflow automation, SEO, and business growth.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/blog',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 async function getPosts(): Promise<DisplayPost[]> {

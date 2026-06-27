@@ -2,8 +2,42 @@ import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Website Vikreta',
-  description: 'Terms and Conditions governing use of Website Vikreta services.',
+  title: 'Terms and Conditions | WebsiteVikreta',
+  description: 'Read the terms and conditions for using WebsiteVikreta\'s website and services, including intellectual property, payments, and acceptable use.',
+  keywords: [
+    'WebsiteVikreta terms',
+    'terms and conditions',
+    'website terms of use',
+    'service agreement',
+  ],
+  openGraph: {
+    title: 'Terms and Conditions | WebsiteVikreta',
+    description: 'Read the terms and conditions for using WebsiteVikreta\'s website and services, including intellectual property, payments, and acceptable use.',
+    url: 'https://stage.websitevikreta.com/legal/terms-and-conditions',
+    siteName: 'WebsiteVikreta',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'WebsiteVikreta Terms and Conditions',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms and Conditions | WebsiteVikreta',
+    description: 'Read the terms and conditions for using WebsiteVikreta\'s website and services.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/legal/terms-and-conditions',
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 const sections = [

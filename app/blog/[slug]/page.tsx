@@ -157,10 +157,44 @@ export async function generateMetadata({
     try {
       const post = await fetchPostBySlug(slug)
       if (post) {
+        const featuredImage = post.source === 'sanity' ? post.featuredImage : undefined
         return {
-          title: `${post.seoTitle ?? post.title} | Website Vikreta`,
-          description: post.seoDescription ?? post.description,
-          keywords: post.seoKeywords,
+          title: `${post.seoTitle ?? post.title} | WebsiteVikreta`,
+          description: post.seoDescription ?? post.description ?? '',
+          keywords: post.seoKeywords ?? [],
+          openGraph: {
+            title: post.seoTitle ?? post.title,
+            description: post.seoDescription ?? post.description ?? '',
+            url: `https://stage.websitevikreta.com/blog/${post.slug}`,
+            siteName: 'WebsiteVikreta',
+            type: 'article',
+            locale: 'en_IN',
+            images: featuredImage
+              ? [
+                  {
+                    url: urlFor(featuredImage).width(1200).height(630).url(),
+                    width: 1200,
+                    height: 630,
+                    alt: post.title,
+                  },
+                ]
+              : [{ url: '/og-image.png', width: 1200, height: 630 }],
+          },
+          twitter: {
+            card: 'summary_large_image',
+            title: post.seoTitle ?? post.title,
+            description: post.seoDescription ?? post.description ?? '',
+            images: featuredImage
+              ? [urlFor(featuredImage).width(1200).height(630).url()]
+              : ['/og-image.png'],
+          },
+          alternates: {
+            canonical: `https://stage.websitevikreta.com/blog/${post.slug}`,
+          },
+          robots: {
+            index: true,
+            follow: true,
+          },
         }
       }
     } catch (err) {
@@ -170,8 +204,33 @@ export async function generateMetadata({
   const post = staticPosts.find((p) => p.slug === slug)
   if (!post) return {}
   return {
-    title: `${post.title} | Website Vikreta`,
+    title: `${post.title} | WebsiteVikreta`,
     description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: `https://stage.websitevikreta.com/blog/${slug}`,
+      siteName: 'WebsiteVikreta',
+      type: 'article',
+      locale: 'en_IN',
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: ['/og-image.png'],
+    },
+    alternates: {
+      canonical: `https://stage.websitevikreta.com/blog/${slug}`,
+    },
   }
 }
 

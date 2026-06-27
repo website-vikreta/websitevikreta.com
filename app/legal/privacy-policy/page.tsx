@@ -2,8 +2,43 @@ import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Website Vikreta',
-  description: 'Privacy Policy for Website Vikreta — how we collect, use, and protect your data.',
+  title: 'Privacy Policy | WebsiteVikreta',
+  description: 'Learn how WebsiteVikreta collects, uses, stores, and protects your personal information and your privacy rights.',
+  keywords: [
+    'WebsiteVikreta privacy policy',
+    'data privacy',
+    'GDPR',
+    'CCPA',
+    'personal data policy',
+  ],
+  openGraph: {
+    title: 'Privacy Policy | WebsiteVikreta',
+    description: 'Learn how WebsiteVikreta collects, uses, stores, and protects your personal information and your privacy rights.',
+    url: 'https://stage.websitevikreta.com/legal/privacy-policy',
+    siteName: 'WebsiteVikreta',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'WebsiteVikreta Privacy Policy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy | WebsiteVikreta',
+    description: 'Learn how WebsiteVikreta collects, uses, stores, and protects your personal information and your privacy rights.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/legal/privacy-policy',
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 const sections = [
