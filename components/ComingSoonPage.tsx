@@ -26,7 +26,7 @@ const SOCIAL = [
 ]
 
 interface ComingSoonPageProps {
-   pageName: string
+   pageName?: string
    showFooter?: boolean
 }
 
