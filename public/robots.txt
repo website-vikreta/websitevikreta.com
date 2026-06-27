@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /studio/
-
-Sitemap: https://stage.websitevikreta.com/sitemap.xml

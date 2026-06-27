@@ -161,6 +161,12 @@ export async function generateMetadata({
           title: `${post.seoTitle ?? post.title} | Website Vikreta`,
           description: post.seoDescription ?? post.description,
           keywords: post.seoKeywords,
+          openGraph: {
+            url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
+          },
+          alternates: {
+            canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
+          },
         }
       }
     } catch (err) {
@@ -172,6 +178,12 @@ export async function generateMetadata({
   return {
     title: `${post.title} | Website Vikreta`,
     description: post.description,
+    openGraph: {
+      url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
+    },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
+    },
   }
 }
 

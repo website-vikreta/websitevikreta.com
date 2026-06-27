@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI Automations | Website Vikreta',
     description: 'Intelligent automation systems built for real businesses. From lead capture to client delivery — fully automated.',
-    url: 'https://stage.websitevikreta.com/services/ai-automations',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
     siteName: 'Website Vikreta',
     type: 'website',
   },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     description: 'Intelligent automation systems built for real businesses.',
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/services/ai-automations',
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
   },
 }
 

@@ -14,10 +14,10 @@ import { DotGrid } from '@/components/ui/DotGrid'
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  '@id': 'https://stage.websitevikreta.com/#organization',
+  '@id': `${process.env.NEXT_PUBLIC_HOSTNAME}/#organization`,
   name: 'Website Vikreta',
-  url: 'https://stage.websitevikreta.com',
-  logo: 'https://stage.websitevikreta.com/logo/websitevikreta-logo-horizontal.svg',
+  url: process.env.NEXT_PUBLIC_HOSTNAME,
+  logo: `${process.env.NEXT_PUBLIC_HOSTNAME}/logo/websitevikreta-logo-horizontal.svg`,
   description: 'Website Vikreta is an AI-first web agency based in Pune, India. We design and build fast, modern websites and intelligent AI automation systems for businesses ready to grow.',
   foundingLocation: {
     '@type': 'Place',
@@ -38,7 +38,7 @@ const jsonLd = {
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer support',
-    url: 'https://stage.websitevikreta.com/contact',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
     email: 'contact@websitevikreta.com',
     telephone: '+919970445198',
     availableLanguage: ['English', 'Hindi', 'Marathi'],
@@ -57,7 +57,7 @@ const jsonLd = {
           '@type': 'Service',
           name: 'AI Automations',
           description: 'Custom AI automation systems that eliminate repetitive work and connect business tools into intelligent workflows.',
-          url: 'https://stage.websitevikreta.com/services/ai-automations',
+          url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
         },
       },
       {
@@ -66,7 +66,7 @@ const jsonLd = {
           '@type': 'Service',
           name: 'Web Design and Development',
           description: 'Modern, performant websites built with Next.js, TypeScript, and Tailwind CSS — optimised for speed, SEO, and mobile.',
-          url: 'https://stage.websitevikreta.com',
+          url: process.env.NEXT_PUBLIC_HOSTNAME,
         },
       },
     ],
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Website Vikreta — AI-First Web Agency in Pune',
     description: 'We design and build fast, modern websites and intelligent AI automation systems for businesses ready to grow.',
-    url: 'https://stage.websitevikreta.com',
+    url: process.env.NEXT_PUBLIC_HOSTNAME,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -123,7 +123,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com',
+    canonical: process.env.NEXT_PUBLIC_HOSTNAME,
   },
   robots: {
     index: true,

@@ -9,7 +9,10 @@ export const metadata: Metadata = {
     title: 'FAQ | Website Vikreta',
     description:
       'Answers to common questions about Website Vikreta — what we do, how we work, project timelines, pricing, and more.',
-    url: 'https://websitevikreta.com/faq',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
+  },
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
   },
 }
 
