@@ -2,14 +2,51 @@ import type { Metadata } from 'next'
 import { FaqPageContent } from './FaqPageContent'
 
 export const metadata: Metadata = {
-  title: 'FAQ | Website Vikreta',
-  description:
-    'Answers to common questions about Website Vikreta — what we do, how we work, project timelines, pricing, and more.',
+  title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
+  description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
+  keywords: [
+    'AI automation FAQ',
+    'web development FAQ',
+    'Next.js development questions',
+    'website pricing India',
+    'AI workflow automation FAQ',
+    'CRM automation FAQ',
+    'WebsiteVikreta FAQ',
+  ],
   openGraph: {
-    title: 'FAQ | Website Vikreta',
-    description:
-      'Answers to common questions about Website Vikreta — what we do, how we work, project timelines, pricing, and more.',
-    url: 'https://websitevikreta.com/faq',
+    title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
+    description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
+    url: 'https://stage.websitevikreta.com/faq',
+    siteName: 'WebsiteVikreta',
+    type: 'website',
+    locale: 'en_IN',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'WebsiteVikreta FAQ — AI Automation & Web Development',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
+    description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/faq',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 }
 
