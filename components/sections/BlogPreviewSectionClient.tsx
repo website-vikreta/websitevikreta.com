@@ -1,13 +1,15 @@
 "use client"
 
 import { motion } from "motion/react"
-import { TextLink } from "@/components/ui/TextLink"
+import BlogMinimalCard from "@/components/ui/BlogMinimalCard"
 
 export interface BlogPreviewPost {
   title: string
   excerpt: string
   href: string
   imageUrl?: string
+  category?: string
+  readTime?: string
 }
 
 const container = {
@@ -70,32 +72,11 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
               viewport={{ once: true, amount: 0.15 }}
               className="flex flex-col"
             >
-              {/* Image or placeholder */}
-              {post.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.imageUrl}
-                  alt={post.title}
-                  className="w-full aspect-video object-cover mb-6"
-                />
-              ) : (
-                <div className="w-full aspect-video bg-[#121212] mb-6" />
-              )}
-
-              {/* Title */}
-              <h3
-                className="font-bold leading-[1.2] tracking-tight text-[var(--color-text)] mb-3"
-                style={{ fontSize: "clamp(1.05rem, 1.6vw, 1.35rem)" }}
-              >
-                {post.title}
-              </h3>
-
-              {/* Excerpt */}
-              <p className="text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5 flex-1">
-                {post.excerpt}
-              </p>
-
-              <TextLink href={post.href} arrow="diagonal">Read more</TextLink>
+              <BlogMinimalCard
+                imageUrl={post.imageUrl ?? "/placeholder-blog.jpg"}
+                title={post.title}
+                href={post.href}
+              />
             </motion.article>
           ))}
         </div>

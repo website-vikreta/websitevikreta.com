@@ -4,7 +4,7 @@ import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
 import { ProcessSection } from '@/components/sections/ProcessSection'
 import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
-import { ServicesSection } from '@/components/sections/ServicesSection'
+import { ServicesBentoGrid } from '@/components/sections/ServicesBentoGrid'
 import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
 import { TechnologiesSection } from '@/components/sections/TechnologiesSection'
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
@@ -150,7 +150,7 @@ export default function Home() {
       <StatsCounters />
       <ProcessSection />
       <ClientLogosSection />
-      <ServicesSection />
+      <ServicesBentoGrid />
       <FeaturedWorkSection />
       <TechnologiesSection />
       <TestimonialsSection />
