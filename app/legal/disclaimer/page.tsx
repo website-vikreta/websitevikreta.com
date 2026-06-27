@@ -2,8 +2,42 @@ import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
 
 export const metadata: Metadata = {
-  title: 'Disclaimer | Website Vikreta',
-  description: 'Disclaimer for Website Vikreta — limitations of liability and scope of information provided.',
+  title: 'Disclaimer | WebsiteVikreta',
+  description: 'Read WebsiteVikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+  keywords: [
+    'WebsiteVikreta disclaimer',
+    'website disclaimer',
+    'legal disclaimer',
+    'web agency disclaimer',
+  ],
+  openGraph: {
+    title: 'Disclaimer | WebsiteVikreta',
+    description: 'Read WebsiteVikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+    url: 'https://stage.websitevikreta.com/legal/disclaimer',
+    siteName: 'WebsiteVikreta',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'WebsiteVikreta Disclaimer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Disclaimer | WebsiteVikreta',
+    description: 'Read WebsiteVikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/legal/disclaimer',
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 const sections = [
