@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 interface ProcessItem {
@@ -17,8 +18,6 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [flipLeft, setFlipLeft] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -31,32 +30,23 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
     return () => observer.disconnect();
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setMousePos({ x, y });
-    setFlipLeft(x + 12 + 208 > rect.width);
-  };
-
-  const xOffset = flipLeft ? mousePos.x - 208 - 12 : mousePos.x + 12;
-  const yOffset = mousePos.y + 12;
-
   return (
     <div
       ref={ref}
-      className={`group relative w-full cursor-pointer ${!isLast ? 'border-b border-neutral-200 dark:border-neutral-800' : ''}`}
+      className={cn(
+        "group relative w-full cursor-pointer flex flex-col",
+        !isLast && !hovered ? "border-b border-neutral-200 dark:border-neutral-800" : "",
+      )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onMouseMove={handleMouseMove}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(20px)',
+        transform: visible ? "translateY(0)" : "translateY(20px)",
         transition: `opacity 0.6s ease ${index * 90}ms, transform 0.6s ease ${index * 90}ms`,
       }}
     >
       {/* Desktop */}
-      <div className="hidden md:grid md:grid-cols-[3rem_1fr_1fr] items-center py-8 gap-x-10">
+      <div className="hidden md:grid md:grid-cols-[3rem_1fr] items-center py-8 gap-x-10">
         {/* Step number */}
         <span className="text-xs font-bold text-neutral-400 tracking-widest self-center">
           {item.step}
@@ -77,15 +67,6 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
             </div>
           </div>
         </div>
-
-        {/* Description — slides in on hover */}
-        <p className={cn(
-          "text-base text-neutral-500 dark:text-neutral-400 leading-relaxed self-center",
-          "opacity-0 translate-x-5 transition-all duration-500 ease-out",
-          "group-hover:opacity-100 group-hover:translate-x-0"
-        )}>
-          {item.description}
-        </p>
       </div>
 
       {/* Mobile — always visible, scroll reveal */}
@@ -103,30 +84,33 @@ function ProcessRow({ item, index, isLast }: { item: ProcessItem; index: number;
         </p>
       </div>
 
-      {/* Magnetic cursor image — desktop only, follows mouse */}
-      <div
-        className="pointer-events-none absolute z-50 w-52 aspect-video overflow-hidden shadow-2xl hidden md:block"
-        style={{
-          top: 0,
-          left: 0,
-          willChange: 'transform, opacity',
-          transform: `translate(${xOffset}px, ${yOffset}px) scale(${hovered ? 1 : 0.85}) rotate(${hovered ? 0 : 4}deg)`,
-          opacity: hovered ? 1 : 0,
-          transition: hovered
-            ? 'opacity 0.35s ease, transform 0.35s ease'
-            : 'opacity 0.25s ease, transform 0.25s ease',
-        }}
-      >
-        <div className="relative h-full w-full">
-          <Image
-            src={item.src}
-            alt={item.alt}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
-        </div>
-      </div>
+      {/* Dropdown panel — desktop only */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, filter: "blur(8px)" }}
+            animate={{ opacity: 1, height: "auto", filter: "blur(0px)" }}
+            exit={{ opacity: 0, height: 0, filter: "blur(8px)" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="w-full overflow-hidden hidden md:block border border-black/10 rounded-b-2xl"
+          >
+            <div className="w-full grid grid-cols-[1fr_auto] items-center gap-8 px-6 py-5">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-semibold text-black dark:text-white">{item.title}</h3>
+                <p className="text-sm text-black/70 dark:text-white/70 leading-relaxed">{item.description}</p>
+              </div>
+              <div className="relative w-40 h-52 flex-shrink-0 rounded-xl overflow-hidden">
+                <Image src={item.src} alt={item.alt} fill className="object-cover" />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom border when not hovered (hidden during hover so dropdown border takes over) */}
+      {!isLast && hovered && (
+        <div className="hidden md:block h-px" />
+      )}
     </div>
   );
 }
@@ -136,7 +120,7 @@ const defaultItems: ProcessItem[] = [
     id: 1,
     step: "01",
     title: "Listen",
-    description: "A real conversation, not a form. We understand your business before we touch anything.",
+    description: "A real conversation, not a form. We ask about your business, your customers, and what's actually broken — before we suggest anything. Most problems we solve weren't the ones people originally described.",
     src: "/our-process/01-listen.jpeg",
     alt: "Real conversation",
   },
@@ -144,7 +128,7 @@ const defaultItems: ProcessItem[] = [
     id: 2,
     step: "02",
     title: "Diagnose",
-    description: "We study your requirements and look deeper. We find what you asked for and what you didn't know to ask for.",
+    description: "We map what you have, what's missing, and where the friction lives. We look at your workflow, your tools, your competitors, and your market. You'll get an honest read — including the parts you didn't ask about.",
     src: "/our-process/02-diagnose.jpeg",
     alt: "Deep analysis",
   },
@@ -152,7 +136,7 @@ const defaultItems: ProcessItem[] = [
     id: 3,
     step: "03",
     title: "Propose",
-    description: "We bring you a solution that's honest, scoped, and priced clearly. You approve before anything moves.",
+    description: "We come back with a clear plan — what we'll build, why, how long it takes, and what it costs. No vague scope, no hidden phases. You approve every decision before we write a single line of code.",
     src: "/our-process/03-propose.jpeg",
     alt: "Clear proposal",
   },
@@ -160,7 +144,7 @@ const defaultItems: ProcessItem[] = [
     id: 4,
     step: "04",
     title: "Build",
-    description: "We develop with transparency. You see progress, not silence.",
+    description: "We build fast and keep you close. You see real progress at every stage — not a black box that opens three months later. If something changes, we tell you. No surprises at launch.",
     src: "/our-process/04-build.jpeg",
     alt: "Building with transparency",
   },
@@ -168,7 +152,7 @@ const defaultItems: ProcessItem[] = [
     id: 5,
     step: "05",
     title: "Deliver & Stay",
-    description: "We don't hand over a zip file and disappear. We make sure it works.",
+    description: "We launch, we test, and we stick around. If something breaks or needs to change after go-live, we're still here. Your success after handoff matters to us as much as the build itself.",
     src: "/our-process/05-deliver-and-stay.jpeg",
     alt: "Delivery and support",
   },

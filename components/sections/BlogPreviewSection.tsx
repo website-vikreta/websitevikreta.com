@@ -9,6 +9,8 @@ async function getPosts(): Promise<BlogPreviewPost[]> {
       excerpt: p.description,
       href: `/blog/${p.slug}`,
       imageUrl: p.imageUrl,
+      category: p.category,
+      readTime: p.readTime,
     }))
   }
   try {
@@ -19,6 +21,8 @@ async function getPosts(): Promise<BlogPreviewPost[]> {
         excerpt: p.description,
         href: `/blog/${p.slug}`,
         imageUrl: p.imageUrl,
+        category: p.category,
+        readTime: p.readTime,
       }))
     }
   } catch {
@@ -29,6 +33,8 @@ async function getPosts(): Promise<BlogPreviewPost[]> {
     excerpt: p.description,
     href: `/blog/${p.slug}`,
     imageUrl: p.imageUrl,
+    category: p.category,
+    readTime: p.readTime,
   }))
 }
 
