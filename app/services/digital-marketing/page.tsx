@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
-  title: 'Digital Marketing & SEO Services | WebsiteVikreta',
+  title: 'Digital Marketing & SEO Services | Website Vikreta',
   description: 'Grow your business with SEO, content marketing, and digital marketing services that help you attract qualified traffic and generate more leads.',
   keywords: [
     'SEO agency Pune',
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
     'growth marketing',
   ],
   openGraph: {
-    title: 'Digital Marketing & SEO Services | WebsiteVikreta',
+    title: 'Digital Marketing & SEO Services | Website Vikreta',
     description: 'Grow your business with SEO, content marketing, and digital marketing services that help you attract qualified traffic and generate more leads.',
     url: 'https://stage.websitevikreta.com/services/digital-marketing',
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Digital Marketing & SEO Services — WebsiteVikreta',
+        alt: 'Digital Marketing & SEO Services | Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Digital Marketing & SEO Services | WebsiteVikreta',
+    title: 'Digital Marketing & SEO Services | Website Vikreta',
     description: 'Grow your business with SEO, content marketing, and digital marketing services.',
     images: ['/og-image.png'],
   },

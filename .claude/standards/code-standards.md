@@ -7,6 +7,7 @@
 - No inline styles except for dynamic values (e.g. GSAP targets).
 - CSS custom properties for all design tokens. No hardcoded hex values in component files.
 - Accessibility: every interactive element is keyboard-navigable.
+- Scroll reveals come from `components/ui/Reveal.tsx` (`RevealText`/`RevealFade`/`Counter`). No per-component hand-rolled `whileInView`/GSAP reveals — raw GSAP is for bespoke hero-class motion only.
 
 ---
 

@@ -86,6 +86,17 @@
 }
 ```
 
+## Section & Hierarchy Conventions
+> Applied conventions that keep pages uniform. See `.claude/learning.md` for full log.
+
+- **Section vertical rhythm:** every top-level section uses `py-16 md:py-20`. No other section padding.
+- **Heading → content gap:** section heading block uses `mb-10 md:mb-14`.
+- **Heading tiers (one size per tier, sitewide):**
+  - Section heading (H2): `text-h2` token (`clamp(1.75rem,4vw,3rem)`) + `font-bold` + `text-(--color-text)`. Never raw `text-3xl/4xl` or ad-hoc clamps.
+  - Card / item title (H3 tier): `text-2xl sm:text-3xl font-bold`.
+  - Eyebrow / meta label: `text-xs font-bold uppercase tracking-widest text-(--color-text-faint)` or the `text-meta-label` token.
+- **Scroll reveals:** use `components/ui/Reveal.tsx` primitives (see motion-system.md) — section headings masked, cards fade, numbers count up.
+
 ## Component Rules
 
 ### Buttons

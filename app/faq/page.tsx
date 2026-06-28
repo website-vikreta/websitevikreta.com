@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { FaqPageContent } from './FaqPageContent'
 
 export const metadata: Metadata = {
-  title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
+  title: 'FAQs | AI Automation, Web Development & Pricing | Website Vikreta',
   description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
   keywords: [
     'AI automation FAQ',
@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     'website pricing India',
     'AI workflow automation FAQ',
     'CRM automation FAQ',
-    'WebsiteVikreta FAQ',
+    'Website Vikreta FAQ',
   ],
   openGraph: {
-    title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
+    title: 'FAQs | AI Automation, Web Development & Pricing | Website Vikreta',
     description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
     url: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'WebsiteVikreta FAQ — AI Automation & Web Development',
+        alt: 'Website Vikreta FAQ | AI Automation & Web Development',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
+    title: 'FAQs | AI Automation, Web Development & Pricing | Website Vikreta',
     description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
     images: ['/og-image.png'],
   },

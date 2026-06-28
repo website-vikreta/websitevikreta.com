@@ -104,7 +104,7 @@ function IntroPanel() {
         className="text-sm md:text-[0.9375rem] leading-relaxed max-w-[50ch]"
         style={{ color: 'var(--color-text-muted)' }}
       >
-        Design + development + the automation layer underneath — so your site generates leads, your team handles less, and your business runs cleaner. That&apos;s the WebsiteVikreta difference.
+        Design + development + the automation layer underneath, so your site generates leads, your team handles less, and your business runs cleaner. That&apos;s the Website Vikreta difference.
       </p>
     </div>
   )

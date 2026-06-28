@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
-  title: 'Web & Mobile App Development | WebsiteVikreta',
+  title: 'Web & Mobile App Development | Website Vikreta',
   description: 'Build custom web and mobile applications with modern technologies including React, Next.js, and TypeScript for startups and growing businesses.',
   keywords: [
     'web app development',
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
     'full stack development',
   ],
   openGraph: {
-    title: 'Web & Mobile App Development | WebsiteVikreta',
+    title: 'Web & Mobile App Development | Website Vikreta',
     description: 'Build custom web and mobile applications with modern technologies including React, Next.js, and TypeScript for startups and growing businesses.',
     url: 'https://stage.websitevikreta.com/services/web-and-mobile-apps',
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Web & Mobile App Development — WebsiteVikreta',
+        alt: 'Web & Mobile App Development | Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Web & Mobile App Development | WebsiteVikreta',
+    title: 'Web & Mobile App Development | Website Vikreta',
     description: 'Build custom web and mobile applications with modern technologies for startups and growing businesses.',
     images: ['/og-image.png'],
   },

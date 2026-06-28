@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
-import { HomePreloader } from '@/components/ui/HomePreloader'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
-import { ProcessSection } from '@/components/sections/ProcessSection'
 import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
 import { ServicesBentoGrid } from '@/components/sections/ServicesBentoGrid'
 import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
@@ -65,7 +63,7 @@ const jsonLd = {
         itemOffered: {
           '@type': 'Service',
           name: 'Web Design and Development',
-          description: 'Modern, performant websites built with Next.js, TypeScript, and Tailwind CSS — optimised for speed, SEO, and mobile.',
+          description: 'Modern, performant websites built with Next.js, TypeScript, and Tailwind CSS. Optimised for speed, SEO, and mobile.',
           url: process.env.NEXT_PUBLIC_HOSTNAME,
         },
       },
@@ -86,7 +84,7 @@ const jsonLd = {
 }
 
 export const metadata: Metadata = {
-  title: 'Website Vikreta — AI-First Web Agency in Pune',
+  title: 'Website Vikreta | AI-First Web Agency',
   description: 'Website Vikreta is a Pune-based AI-first web agency. We design and build fast, modern websites and intelligent AI automation systems for businesses ready to grow.',
   keywords: [
     'web design agency Pune',
@@ -99,7 +97,7 @@ export const metadata: Metadata = {
     'custom website design',
   ],
   openGraph: {
-    title: 'Website Vikreta — AI-First Web Agency in Pune',
+    title: 'Website Vikreta | AI-First Web Agency',
     description: 'We design and build fast, modern websites and intelligent AI automation systems for businesses ready to grow.',
     url: process.env.NEXT_PUBLIC_HOSTNAME,
     siteName: 'Website Vikreta',
@@ -112,13 +110,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Website Vikreta — AI-First Web Agency in Pune',
+        alt: 'Website Vikreta | AI-First Web Agency',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Website Vikreta — AI-First Web Agency in Pune',
+    title: 'Website Vikreta | AI-First Web Agency',
     description: 'We design and build fast, modern websites and intelligent AI automation systems for businesses ready to grow.',
     images: ['/og-image.png'],
   },
@@ -144,13 +142,11 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomePreloader />
       <DotGrid global />
       <HeroSection />
       <StatsCounters />
-      <ProcessSection />
-      <ClientLogosSection />
       <ServicesBentoGrid />
+      <ClientLogosSection />
       <FeaturedWorkSection />
       <TechnologiesSection />
       <TestimonialsSection />

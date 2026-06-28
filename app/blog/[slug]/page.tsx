@@ -159,14 +159,14 @@ export async function generateMetadata({
       if (post) {
         const featuredImage = post.source === 'sanity' ? post.featuredImage : undefined
         return {
-          title: `${post.seoTitle ?? post.title} | WebsiteVikreta`,
+          title: `${post.seoTitle ?? post.title} | Website Vikreta`,
           description: post.seoDescription ?? post.description ?? '',
           keywords: post.seoKeywords ?? [],
           openGraph: {
             title: post.seoTitle ?? post.title,
             description: post.seoDescription ?? post.description ?? '',
             url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${post.slug}`,
-            siteName: 'WebsiteVikreta',
+            siteName: 'Website Vikreta',
             type: 'article',
             locale: 'en_IN',
             images: featuredImage
@@ -204,13 +204,13 @@ export async function generateMetadata({
   const post = staticPosts.find((p) => p.slug === slug)
   if (!post) return {}
   return {
-    title: `${post.title} | WebsiteVikreta`,
+    title: `${post.title} | Website Vikreta`,
     description: post.description,
     openGraph: {
       title: post.title,
       description: post.description,
       url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
-      siteName: 'WebsiteVikreta',
+      siteName: 'Website Vikreta',
       type: 'article',
       locale: 'en_IN',
       images: [
@@ -277,14 +277,16 @@ export default async function BlogPostPage({
 
         {/* Cover image — Sanity posts only */}
         {post.source === 'sanity' && post.featuredImage && (
-          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9', maxHeight: 520 }}>
-            <Image
-              src={urlFor(post.featuredImage).width(1200).height(675).url()}
-              alt={post.featuredImage.alt ?? post.title}
-              fill
-              className="object-cover"
-              priority
-            />
+          <div className="container pt-[150px]">
+            <div className="relative w-full overflow-hidden aspect-video lg:aspect-[16/6]">
+              <Image
+                src={urlFor(post.featuredImage).width(1200).height(675).url()}
+                alt={post.featuredImage.alt ?? post.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           </div>
         )}
 
@@ -295,36 +297,63 @@ export default async function BlogPostPage({
             {post.title}
           </h2>
 
-          {/* Author byline — Sanity posts only */}
-          {post.source === 'sanity' && post.author && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 items-start mb-16 max-w-[720px] mx-auto">
-              {/* Left: label + photo + name */}
-              <div className="flex flex-col gap-3">
-                <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-widest">
-                  Written by
-                </p>
-                <div className="flex items-center gap-3">
-                  {post.author.linkedinUrl ? (
-                    <a
-                      href={post.author.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative inline-block text-sm font-medium text-[var(--color-text)]"
-                    >
-                      {post.author.name}
-                      <span className="absolute -bottom-px left-0 w-full h-px bg-[var(--color-text)] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
-                    </a>
-                  ) : (
-                    <span className="text-sm font-medium text-[var(--color-text)]">{post.author.name}</span>
+          {/* Byline — Sanity posts only */}
+          {post.source === 'sanity' && (
+            <div className="max-w-[720px] mx-auto mb-10">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                {/* Left: category + read time */}
+                <div className="flex items-center gap-3 flex-wrap">
+                  {post.category && (
+                    <span className="text-xs font-medium uppercase tracking-widest text-[var(--color-text)] border border-[var(--color-border)] px-2.5 py-1">
+                      {post.category}
+                    </span>
+                  )}
+                  {readTime && (
+                    <>
+                      <span className="text-[var(--color-text-muted)] text-xs">·</span>
+                      <span className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-widest">
+                        {readTime}
+                      </span>
+                    </>
                   )}
                 </div>
+
+                {/* Right: author */}
+                {post.author && (
+                  <div className="flex items-center gap-3">
+                    {post.author.image && (
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0 border border-[var(--color-border)]">
+                        <Image
+                          src={urlFor(post.author.image).width(80).height(80).url()}
+                          alt={post.author.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-col">
+                      {post.author.linkedinUrl ? (
+                        <a
+                          href={post.author.linkedinUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={`Visit ${post.author.name} LinkedIn`}
+                          className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-200 leading-tight"
+                        >
+                          {post.author.name}
+                        </a>
+                      ) : (
+                        <span className="text-sm font-medium text-[var(--color-text)] leading-tight">
+                          {post.author.name}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
               </div>
-              {/* Right: read time aligned to right border */}
-              {readTime && (
-                <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-widest md:text-right">
-                  {readTime}
-                </p>
-              )}
+              <hr className="mt-6 border-[var(--color-border)]" />
             </div>
           )}
 

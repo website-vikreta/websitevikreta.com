@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
-  title: 'Careers at WebsiteVikreta | Join Our AI Automation & Web Development Agency',
-  description: 'Join WebsiteVikreta, a Pune-based AI automation and web development agency. Explore opportunities for developers, designers, marketers, and AI automation specialists.',
+  title: 'Careers at Website Vikreta | Join Our AI Automation & Web Development Agency',
+  description: 'Join Website Vikreta, a Pune-based AI automation and web development agency. Explore opportunities for developers, designers, marketers, and AI automation specialists.',
   keywords: [
-    'careers WebsiteVikreta',
+    'careers Website Vikreta',
     'web development jobs Pune',
     'AI automation jobs India',
     'Next.js developer jobs',
@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     'software developer jobs Pune',
   ],
   openGraph: {
-    title: 'Careers at WebsiteVikreta | Join Our AI Automation & Web Development Agency',
-    description: 'Join WebsiteVikreta, a Pune-based AI automation and web development agency. Explore opportunities for developers, designers, marketers, and AI automation specialists.',
+    title: 'Careers at Website Vikreta | Join Our AI Automation & Web Development Agency',
+    description: 'Join Website Vikreta, a Pune-based AI automation and web development agency. Explore opportunities for developers, designers, marketers, and AI automation specialists.',
     url: 'https://stage.websitevikreta.com/careers',
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Careers at WebsiteVikreta',
+        alt: 'Careers at Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Careers at WebsiteVikreta | Join Our AI Automation & Web Development Agency',
-    description: 'Join WebsiteVikreta, a Pune-based AI automation and web development agency.',
+    title: 'Careers at Website Vikreta | Join Our AI Automation & Web Development Agency',
+    description: 'Join Website Vikreta, a Pune-based AI automation and web development agency.',
     images: ['/og-image.png'],
   },
   alternates: {

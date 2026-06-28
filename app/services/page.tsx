@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
-  title: 'AI Automation & Web Development Services | WebsiteVikreta',
-  description: 'Explore WebsiteVikreta\'s AI automation, web development, UI/UX design, digital marketing, and mobile app development services for businesses in India and worldwide.',
+  title: 'AI Automation & Web Development Services | Website Vikreta',
+  description: 'Explore Website Vikreta\'s AI automation, web development, UI/UX design, digital marketing, and mobile app development services for businesses in India and worldwide.',
   keywords: [
     'AI automation services',
     'web development agency',
@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     'business automation',
   ],
   openGraph: {
-    title: 'AI Automation & Web Development Services | WebsiteVikreta',
-    description: 'Explore WebsiteVikreta\'s AI automation, web development, UI/UX design, digital marketing, and mobile app development services for businesses in India and worldwide.',
+    title: 'AI Automation & Web Development Services | Website Vikreta',
+    description: 'Explore Website Vikreta\'s AI automation, web development, UI/UX design, digital marketing, and mobile app development services for businesses in India and worldwide.',
     url: 'https://stage.websitevikreta.com/services',
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'WebsiteVikreta Services — AI Automation & Web Development',
+        alt: 'Website Vikreta Services | AI Automation & Web Development',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Automation & Web Development Services | WebsiteVikreta',
-    description: 'Explore WebsiteVikreta\'s AI automation, web development, UI/UX design, digital marketing, and mobile app development services.',
+    title: 'AI Automation & Web Development Services | Website Vikreta',
+    description: 'Explore Website Vikreta\'s AI automation, web development, UI/UX design, digital marketing, and mobile app development services.',
     images: ['/og-image.png'],
   },
   alternates: {

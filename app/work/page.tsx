@@ -2,20 +2,20 @@ import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
-  title: 'Our Work | Web Development & AI Automation Projects | WebsiteVikreta',
-  description: 'Explore websites, AI automation systems, and digital products built by WebsiteVikreta for businesses across industries.',
+  title: 'Our Work | Web Development & AI Automation Projects | Website Vikreta',
+  description: 'Explore websites, AI automation systems, and digital products built by Website Vikreta for businesses across industries.',
   keywords: [
     'web development portfolio',
     'AI automation projects',
-    'WebsiteVikreta portfolio',
+    'Website Vikreta portfolio',
     'client work',
     'case studies',
   ],
   openGraph: {
-    title: 'Our Work | Web Development & AI Automation Projects | WebsiteVikreta',
-    description: 'Explore websites, AI automation systems, and digital products built by WebsiteVikreta for businesses across industries.',
+    title: 'Our Work | Web Development & AI Automation Projects | Website Vikreta',
+    description: 'Explore websites, AI automation systems, and digital products built by Website Vikreta for businesses across industries.',
     url: 'https://stage.websitevikreta.com/work',
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -23,14 +23,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Our Work — WebsiteVikreta Portfolio',
+        alt: 'Our Work | Website Vikreta Portfolio',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Our Work | Web Development & AI Automation Projects | WebsiteVikreta',
-    description: 'Explore websites, AI automation systems, and digital products built by WebsiteVikreta.',
+    title: 'Our Work | Web Development & AI Automation Projects | Website Vikreta',
+    description: 'Explore websites, AI automation systems, and digital products built by Website Vikreta.',
     images: ['/og-image.png'],
   },
   alternates: {
