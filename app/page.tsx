@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
-import { ProcessSection } from '@/components/sections/ProcessSection'
 import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
 import { ServicesBentoGrid } from '@/components/sections/ServicesBentoGrid'
 import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
@@ -146,9 +145,9 @@ export default function Home() {
       <DotGrid global />
       <HeroSection />
       <StatsCounters />
-      <ProcessSection />
-      <ClientLogosSection />
       <ServicesBentoGrid />
+      {/* <ProcessSection /> */}
+      <ClientLogosSection />
       <FeaturedWorkSection />
       <TechnologiesSection />
       <TestimonialsSection />
