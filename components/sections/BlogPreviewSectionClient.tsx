@@ -42,7 +42,7 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
 
         {/* Heading */}
         <motion.div
-          className="mb-12 md:mb-16 max-w-3xl"
+          className="mb-12 md:mb-16 max-w-3xl mx-auto text-center"
           variants={container}
           initial="hidden"
           whileInView="visible"
