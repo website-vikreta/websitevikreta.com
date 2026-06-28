@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { HomePreloader } from '@/components/ui/HomePreloader'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { StatsCounters } from '@/components/sections/StatsCounters'
 import { ProcessSection } from '@/components/sections/ProcessSection'
@@ -144,7 +143,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomePreloader />
       <DotGrid global />
       <HeroSection />
       <StatsCounters />

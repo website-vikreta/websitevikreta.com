@@ -44,26 +44,11 @@ export function HeroSection() {
       gsap.set(wordEls, { y: '110%' })
       gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
 
-      const runTimeline = () => {
-        gsap.timeline({ delay: 0.2 })
-          .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
-          .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
-          .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
-          .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
-      }
-
-      // Fallback: run after 6s if preloader never fires (e.g. cached visit)
-      const fallback = setTimeout(() => {
-        window.removeEventListener('preloader-done', runTimeline)
-        runTimeline()
-      }, 6000)
-
-      window.addEventListener('preloader-done', runTimeline, { once: true })
-
-      return () => {
-        clearTimeout(fallback)
-        window.removeEventListener('preloader-done', runTimeline)
-      }
+      gsap.timeline()
+        .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+        .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
+        .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
+        .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
     }, sectionRef)
 
     return () => ctx.revert()

@@ -37,8 +37,8 @@ const cardReveal = {
 
 export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }) {
   return (
-    <section className="relative overflow-hidden">
-      <div className="container py-16 md:py-20">
+    <section className="relative overflow-hidden bg-[var(--color-bg)]">
+      <div className="container py-20 md:py-28">
 
         {/* Heading */}
         <motion.div
@@ -50,7 +50,7 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
         >
           <div className="overflow-hidden">
             <motion.h2
-              className="font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-[var(--color-text)]"
+              className="text-h2 font-bold leading-[1.05] tracking-tight text-[var(--color-text)]"
               variants={lineReveal}
             >
               The{" "}
@@ -60,8 +60,8 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
           </div>
         </motion.div>
 
-        {/* 3-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {/* 3-column card grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-16 md:gap-y-14">
           {posts.map((post, i) => (
             <motion.article
               key={post.href}
@@ -70,7 +70,6 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
-              className="flex flex-col"
             >
               <BlogMinimalCard
                 imageUrl={post.imageUrl ?? "/placeholder-blog.jpg"}
