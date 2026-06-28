@@ -85,9 +85,8 @@
   --section-x: clamp(1.5rem, 6vw, 7.5rem);
 }
 
-html { scroll-behavior: smooth; }
 
-/* ─── Portable Text (Sanity rich text) ───────────────────────── */
+/* ─── Portable Text (Sanity rich text) ──────────────────────────── */
 .portable-text p {
   font-size: 1.0625rem;
   line-height: 1.75;

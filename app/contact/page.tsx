@@ -3,7 +3,7 @@ import { ContactPageContent } from '@/components/ContactPageContent'
 
 export const metadata: Metadata = {
   title: 'Contact Us | Website Vikreta',
-  description: 'Get in touch with Website Vikreta — a Pune-based AI-first web agency. Whether you need a new website, AI automation, or want to discuss a project, we would love to hear from you.',
+  description: 'Get in touch with Website Vikreta. A Pune-based AI-first web agency. Whether you need a new website, AI automation, or want to discuss a project, we would love to hear from you.',
   keywords: [
     'contact web agency Pune',
     'hire web designer Pune',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contact Us | Website Vikreta',
     description: 'Reach out to Website Vikreta. We build modern websites and AI automation systems for businesses across India. Let us talk about your project.',
-    url: 'https://stage.websitevikreta.com/contact',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Contact Website Vikreta — AI-First Web Agency in Pune',
+        alt: 'Contact Website Vikreta | AI-First Web Agency',
       },
     ],
   },
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/contact',
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
   },
   robots: {
     index: true,

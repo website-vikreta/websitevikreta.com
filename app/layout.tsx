@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { ConditionalShell } from '@/components/ui/ConditionalShell'
-import { GoToTop } from '@/components/ui/GoToTop'
+import { ScrollManager } from '@/components/ui/ScrollManager'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
@@ -29,7 +29,7 @@ const utile = localFont({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://stage.websitevikreta.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_HOSTNAME!),
   title: 'Website Vikreta — AI-First Digital Agency',
   description:
     "You're losing hours every week to work a system could do. Website Vikreta builds AI-powered automation for digital marketing, web, and business operations.",
@@ -49,6 +49,7 @@ export default function RootLayout({
       className={utile.variable}
     >
       <body>
+        <ScrollManager />
         <ConditionalNavbar />
         {children}
         {/* <GoToTop /> */}
@@ -56,11 +57,10 @@ export default function RootLayout({
 
       <ConditionalShell>
         <CTASection
-          badge={{ text: "Let's talk" }}
-          title="Let's build something intelligent together"
-          description="Free consultation. No commitment. Whether it's a website, an app, or a full AI audit — we'll listen, map it out, and tell you exactly what we'd do."
+          title="Ready when you are."
+          description="Free call. No commitment. Tell us what you're building, or what isn't working, and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
           action={{
-            text: "Book a Call",
+            text: "Book a call",
             href: "/contact"
           }}
           withGlow={true}

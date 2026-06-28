@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 
-const BASE = 'https://stage.websitevikreta.com'
+const BASE = process.env.NEXT_PUBLIC_HOSTNAME!
 
 const staticRoutes: MetadataRoute.Sitemap = [
   // Home

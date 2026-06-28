@@ -3,7 +3,41 @@ import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
 
 export const metadata: Metadata = {
   title: 'Disclaimer | Website Vikreta',
-  description: 'Disclaimer for Website Vikreta — limitations of liability and scope of information provided.',
+  description: 'Read Website Vikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+  keywords: [
+    'Website Vikreta disclaimer',
+    'website disclaimer',
+    'legal disclaimer',
+    'web agency disclaimer',
+  ],
+  openGraph: {
+    title: 'Disclaimer | Website Vikreta',
+    description: 'Read Website Vikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+    url: 'https://stage.websitevikreta.com/legal/disclaimer',
+    siteName: 'Website Vikreta',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Website Vikreta Disclaimer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Disclaimer | Website Vikreta',
+    description: 'Read Website Vikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/legal/disclaimer',
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 const sections = [

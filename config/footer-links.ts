@@ -23,12 +23,12 @@ export const FOOTER_LINKS = {
     { label: 'Privacy Policy', href: '/legal/privacy-policy' },
     { label: 'Terms & Conditions', href: '/legal/terms-and-conditions' },
     { label: 'Disclaimer', href: '/legal/disclaimer' },
-    { label: 'Sitemap', href: 'https://websitevikreta.com/sitemap.xml' },
+    { label: 'Sitemap', href: `${process.env.NEXT_PUBLIC_HOSTNAME}/sitemap.xml` },
   ],
   social: [
     {
       label: 'LinkedIn',
-      href: 'https://linkedin.com/company/website-vikreta',
+      href: 'https://linkedin.com/company/websitevikreta',
       icon: 'Linkedin'
     },
     {

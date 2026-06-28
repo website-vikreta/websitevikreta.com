@@ -2,22 +2,52 @@ import type { Metadata } from 'next'
 import AIAutomationsClient from './AIAutomationsClient'
 
 export const metadata: Metadata = {
-  title: 'AI Automations | Website Vikreta',
-  description: 'We build intelligent AI automation systems that eliminate repetitive work, connect your tools, and let your team focus on what matters. Custom workflows built for your business.',
+  title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
+  description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+  keywords: [
+    'AI automation agency',
+    'AI workflow automation',
+    'business process automation',
+    'n8n automation',
+    'Make.com automation',
+    'CRM automation',
+    'lead automation',
+    'AI chatbot development',
+  ],
   openGraph: {
-    title: 'AI Automations | Website Vikreta',
-    description: 'Intelligent automation systems built for real businesses. From lead capture to client delivery — fully automated.',
-    url: 'https://stage.websitevikreta.com/services/ai-automations',
+    title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
+    description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
     siteName: 'Website Vikreta',
     type: 'website',
+    locale: 'en_IN',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI Automation Services | Website Vikreta',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Automations | Website Vikreta',
-    description: 'Intelligent automation systems built for real businesses.',
+    title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
+    description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+    images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/services/ai-automations',
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 }
 

@@ -2,14 +2,48 @@ import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Website Vikreta',
-  description: 'Terms and Conditions governing use of Website Vikreta services.',
+  title: 'Terms and Conditions | Website Vikreta',
+  description: 'Read the terms and conditions for using Website Vikreta\'s website and services, including intellectual property, payments, and acceptable use.',
+  keywords: [
+    'Website Vikreta terms',
+    'terms and conditions',
+    'website terms of use',
+    'service agreement',
+  ],
+  openGraph: {
+    title: 'Terms and Conditions | Website Vikreta',
+    description: 'Read the terms and conditions for using Website Vikreta\'s website and services, including intellectual property, payments, and acceptable use.',
+    url: 'https://stage.websitevikreta.com/legal/terms-and-conditions',
+    siteName: 'Website Vikreta',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Website Vikreta Terms and Conditions',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms and Conditions | Website Vikreta',
+    description: 'Read the terms and conditions for using Website Vikreta\'s website and services.',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://stage.websitevikreta.com/legal/terms-and-conditions',
+  },
+  robots: {
+    index: true,
+    follow: false,
+  },
 }
 
 const sections = [
   {
     heading: 'Introduction',
-    content: 'Welcome to Website Vikreta ("Company", "we", "our", "us"). These Terms of Service ("Terms") govern your use of our website located at WebsiteVikreta.com operated by Website Vikreta. Our Privacy Policy also governs your use of our Service. Your agreement with us includes these Terms and our Privacy Policy ("Agreements"). You acknowledge that you have read and understood these Agreements and agree to be bound by them. If you do not agree with these Agreements, you may not use the Service.',
+    content: 'Welcome to Website Vikreta ("Company", "we", "our", "us"). These Terms of Service ("Terms") govern your use of our website located at websitevikreta.com operated by Website Vikreta. Our Privacy Policy also governs your use of our Service. Your agreement with us includes these Terms and our Privacy Policy ("Agreements"). You acknowledge that you have read and understood these Agreements and agree to be bound by them. If you do not agree with these Agreements, you may not use the Service.',
   },
   {
     heading: 'Communications',

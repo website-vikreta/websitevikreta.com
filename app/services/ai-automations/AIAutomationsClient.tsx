@@ -336,7 +336,7 @@ export default function AIAutomationsClient() {
                   className="text-[var(--color-text-muted)] mb-10"
                   style={{ fontSize: '1.0625rem', lineHeight: 1.7 }}
                 >
-                  Tell us what your team spends time on. We&rsquo;ll map an automation that fits your business — no templates, no lock-in.
+                  Tell us what your team spends time on. We&rsquo;ll map an automation that fits your business. No templates, no lock-in.
                 </p>
               </motion.div>
 
@@ -347,7 +347,7 @@ export default function AIAutomationsClient() {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '1.25rem', padding: '2rem 0' }}>
                       <AnimatedTick />
                       <p style={{ fontSize: '1.25rem', lineHeight: 1.4, color: 'var(--color-text)', fontWeight: 500 }}>
-                        Thanks — we&rsquo;ll get back to you within 24 hours.
+                        Thanks, we&rsquo;ll get back to you within 24 hours.
                       </p>
                       <button
                         type="button"

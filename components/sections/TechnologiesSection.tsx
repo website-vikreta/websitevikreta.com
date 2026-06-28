@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useAnimationFrame, useMotionValue } from 'motion/react'
 import Image from 'next/image'
+import { RevealText } from '@/components/ui/Reveal'
 
 const TECH_LOGOS = [
   { src: '/tools-logos/01-OpenAI.svg',                    alt: 'OpenAI' },
@@ -67,10 +68,10 @@ export function TechnologiesSection() {
   return (
     <section className="py-16 md:py-20 overflow-hidden">
 
-      <div className="container mb-8 md:mb-10">
-        <h2 className="font-sans font-bold text-3xl md:text-4xl leading-tight text-center text-(--color-text)">
+      <div className="container mb-10 md:mb-14">
+        <RevealText as="h2" className="text-h2 font-bold text-center text-(--color-text)">
           Powered by AI. Future Tech.
-        </h2>
+        </RevealText>
       </div>
 
       <div className="container">
