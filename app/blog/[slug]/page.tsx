@@ -165,7 +165,7 @@ export async function generateMetadata({
           openGraph: {
             title: post.seoTitle ?? post.title,
             description: post.seoDescription ?? post.description ?? '',
-            url: `https://stage.websitevikreta.com/blog/${post.slug}`,
+            url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${post.slug}`,
             siteName: 'WebsiteVikreta',
             type: 'article',
             locale: 'en_IN',
@@ -189,7 +189,7 @@ export async function generateMetadata({
               : ['/og-image.png'],
           },
           alternates: {
-            canonical: `https://stage.websitevikreta.com/blog/${post.slug}`,
+            canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${post.slug}`,
           },
           robots: {
             index: true,
@@ -209,7 +209,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `https://stage.websitevikreta.com/blog/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
       siteName: 'WebsiteVikreta',
       type: 'article',
       locale: 'en_IN',
@@ -229,7 +229,7 @@ export async function generateMetadata({
       images: ['/og-image.png'],
     },
     alternates: {
-      canonical: `https://stage.websitevikreta.com/blog/${slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
     },
   }
 }

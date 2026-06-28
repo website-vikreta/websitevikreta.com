@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contact Us | Website Vikreta',
     description: 'Reach out to Website Vikreta. We build modern websites and AI automation systems for businesses across India. Let us talk about your project.',
-    url: 'https://stage.websitevikreta.com/contact',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/contact',
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
   },
   robots: {
     index: true,

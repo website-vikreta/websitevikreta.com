@@ -29,7 +29,7 @@ const utile = localFont({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://stage.websitevikreta.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_HOSTNAME!),
   title: 'Website Vikreta — AI-First Digital Agency',
   description:
     "You're losing hours every week to work a system could do. Website Vikreta builds AI-powered automation for digital marketing, web, and business operations.",

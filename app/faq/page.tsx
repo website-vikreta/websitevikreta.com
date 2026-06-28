@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FAQs | AI Automation, Web Development & Pricing | WebsiteVikreta',
     description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
-    url: 'https://stage.websitevikreta.com/faq',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
     siteName: 'WebsiteVikreta',
     type: 'website',
     locale: 'en_IN',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/faq',
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
   },
   robots: {
     index: true,

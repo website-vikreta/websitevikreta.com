@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI Automation Services | Workflow Automation for Businesses | WebsiteVikreta',
     description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
-    url: 'https://stage.websitevikreta.com/services/ai-automations',
+    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
     siteName: 'WebsiteVikreta',
     type: 'website',
     locale: 'en_IN',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/services/ai-automations',
+    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
   },
   robots: {
     index: true,
