@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { ConditionalShell } from '@/components/ui/ConditionalShell'
 import { GoToTop } from '@/components/ui/GoToTop'
+import { ScrollManager } from '@/components/ui/ScrollManager'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
@@ -49,6 +50,7 @@ export default function RootLayout({
       className={utile.variable}
     >
       <body>
+        <ScrollManager />
         <ConditionalNavbar />
         {children}
         {/* <GoToTop /> */}
