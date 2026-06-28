@@ -2,8 +2,7 @@
 
 import { Fragment, useState, useEffect, useRef, useCallback } from "react"
 import { motion, AnimatePresence, LayoutGroup } from "motion/react"
-import { gsap } from "@/lib/gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { RevealText } from "@/components/ui/Reveal"
 import { cn } from "@/lib/utils"
 
 const AUTO_INTERVAL = 10000
@@ -43,9 +42,6 @@ export function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const sectionRef = useRef<HTMLElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const switcherRef = useRef<HTMLDivElement>(null)
 
   const active = testimonials[activeIndex]
   const words = active.quote.split(" ")
@@ -67,58 +63,14 @@ export function TestimonialsSection() {
     startInterval()
   }
 
-  // Scroll reveals — pure y, no opacity
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    gsap.registerPlugin(ScrollTrigger)
-
-    const ctx = gsap.context(() => {
-      // Set initial off-screen positions
-      gsap.set(headingRef.current, { y: "110%" })
-      gsap.set(switcherRef.current, { y: 32 })
-
-      gsap.to(headingRef.current, {
-        y: "0%",
-        duration: 0.9,
-        ease: "expo.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 82%",
-          once: true,
-        },
-      })
-
-      gsap.to(switcherRef.current, {
-        y: 0,
-        duration: 0.7,
-        ease: "power2.out",
-        delay: 0.1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 76%",
-          once: true,
-        },
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 px-6">
+    <section className="py-16 md:py-20 px-6">
       <div className="max-w-2xl mx-auto text-center">
 
-        {/* Heading — clipped line reveal */}
-        <div className="overflow-hidden mb-10 md:mb-14">
-          <h2
-            ref={headingRef}
-            className="font-sans font-bold text-3xl md:text-4xl leading-tight text-[var(--color-text)]"
-          >
-            Work that moved numbers.
-          </h2>
-        </div>
+        {/* Heading */}
+        <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)] mb-10 md:mb-14">
+          Work that moved numbers.
+        </RevealText>
 
         {/* Switching content — word reveals, no opacity */}
         <AnimatePresence mode="wait">
@@ -133,7 +85,7 @@ export function TestimonialsSection() {
             {/* Metric */}
             <div className="overflow-hidden">
               <motion.span
-                className="block font-black text-[#121212] leading-none tracking-tighter"
+                className="block font-black text-[var(--color-text)] leading-none tracking-tighter"
                 style={{ fontSize: "clamp(5.5rem, 16vw, 10.5rem)" }}
                 initial={{ y: "105%" }}
                 animate={{ y: "0%" }}
@@ -151,15 +103,15 @@ export function TestimonialsSection() {
                 animate={{ y: "0%" }}
                 transition={{ duration: 0.6, ease: EASE, delay: 0.13 }}
               >
-                <span className="text-sm font-medium text-[#525252]">{active.context}</span>
-                <span className="text-[#D4D4D4] leading-none select-none">·</span>
-                <span className="text-sm text-[#A0A0A0]">{active.subcontext}</span>
+                <span className="text-sm font-medium text-[var(--color-text-muted)]">{active.context}</span>
+                <span className="text-[var(--color-border-strong)] leading-none select-none">·</span>
+                <span className="text-sm text-[var(--color-text-faint)]">{active.subcontext}</span>
               </motion.div>
             </div>
 
             {/* Quote — word by word clip reveal */}
-            <p className="text-xl md:text-[1.45rem] font-light text-[#121212] leading-[1.7] mb-5 h-[3.4em] overflow-hidden">
-              <span className="text-[#D4D4D4]">&ldquo;</span>
+            <p className="text-xl md:text-[1.45rem] font-light text-[var(--color-text)] leading-[1.7] mb-5 h-[3.4em] overflow-hidden">
+              <span className="text-[var(--color-border-strong)]">&ldquo;</span>
               {words.map((word, i) => (
                 <Fragment key={active.id + "-w-" + i}>
                   <span
@@ -182,13 +134,13 @@ export function TestimonialsSection() {
                   {i < words.length - 1 && " "}
                 </Fragment>
               ))}
-              <span className="text-[#D4D4D4]">&rdquo;</span>
+              <span className="text-[var(--color-border-strong)]">&rdquo;</span>
             </p>
 
             {/* Attribution */}
             <div className="overflow-hidden">
               <motion.p
-                className="text-sm text-[#A0A0A0] tracking-[0.12em]"
+                className="text-sm text-[var(--color-text-faint)] tracking-[0.12em]"
                 initial={{ y: "110%" }}
                 animate={{ y: "0%" }}
                 transition={{
@@ -207,7 +159,6 @@ export function TestimonialsSection() {
         <LayoutGroup>
         <motion.div
           layout
-          ref={switcherRef}
           className="flex items-center justify-center gap-2 mt-10 md:mt-12"
         >
           {testimonials.map((t, index) => {

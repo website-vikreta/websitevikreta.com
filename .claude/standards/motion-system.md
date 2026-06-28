@@ -38,8 +38,35 @@ const stagger = {
 
 ---
 
-## Text Reveal (Standard)
-All body text, headings, labels — unless specified otherwise.
+## Scroll Reveals — Use the Shared Primitives (canonical)
+> For any scroll-triggered reveal, import from `components/ui/Reveal.tsx`. Do **not** hand-roll GSAP/motion `whileInView` per section. This keeps one easing, timing, and trigger across the whole site. GSAP (below) is reserved for bespoke, load-triggered moments like the hero.
+
+```tsx
+import { RevealText, RevealFade, Counter } from '@/components/ui/Reveal'
+
+// Headings + titles — masked slide-up (overflow-hidden clip + inner translateY 110%→0)
+<RevealText as="h2" className="text-h2 font-bold">Section heading</RevealText>
+// Multi-line heading: one RevealText per line, stagger with delay
+<RevealText as="h2" delay={0.12}>Second line</RevealText>
+
+// Cards + supporting text — fade-up. Stagger a group with delay={i * 0.1}
+<RevealFade delay={i * 0.1}>{card}</RevealFade>
+
+// Numbers — count 0→value on scroll-in
+<Counter value={68} />
+```
+
+**Shared constants (all primitives):**
+- Easing `REVEAL_EASE = [0.16, 1, 0.3, 1]` (~`expo.out`).
+- Trigger `once: true` + `margin: '0px 0px -200px 0px'` (`REVEAL_MARGIN`) — element must be ~200px inside the viewport before it fires (a beat, not edge-triggered).
+- Card titles fade WITH their card; section headings get the mask.
+
+⚠️ **Masked reveal gotcha:** observe the STATIC clip wrapper, never the translated inner line. IntersectionObserver measures the *transformed* box, so watching the moving element (`translateY 110%`) never fires → headings stay invisible. Wrapper is static and drives the inner via variants.
+
+---
+
+## Text Reveal (GSAP — bespoke / hero only)
+Underlying technique. Use the primitives above for sections; reach for raw GSAP only for hero-class, load-triggered animation.
 
 ```js
 // GSAP ScrollTrigger reveal

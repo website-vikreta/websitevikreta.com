@@ -2,33 +2,33 @@ import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
 
 export const metadata: Metadata = {
-  title: 'Disclaimer | WebsiteVikreta',
-  description: 'Read WebsiteVikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+  title: 'Disclaimer | Website Vikreta',
+  description: 'Read Website Vikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
   keywords: [
-    'WebsiteVikreta disclaimer',
+    'Website Vikreta disclaimer',
     'website disclaimer',
     'legal disclaimer',
     'web agency disclaimer',
   ],
   openGraph: {
-    title: 'Disclaimer | WebsiteVikreta',
-    description: 'Read WebsiteVikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+    title: 'Disclaimer | Website Vikreta',
+    description: 'Read Website Vikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
     url: 'https://stage.websitevikreta.com/legal/disclaimer',
-    siteName: 'WebsiteVikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'WebsiteVikreta Disclaimer',
+        alt: 'Website Vikreta Disclaimer',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Disclaimer | WebsiteVikreta',
-    description: 'Read WebsiteVikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
+    title: 'Disclaimer | Website Vikreta',
+    description: 'Read Website Vikreta\'s disclaimer covering website content, external links, testimonials, trademarks, and limitations of liability.',
     images: ['/og-image.png'],
   },
   alternates: {

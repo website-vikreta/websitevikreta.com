@@ -159,14 +159,14 @@ export async function generateMetadata({
       if (post) {
         const featuredImage = post.source === 'sanity' ? post.featuredImage : undefined
         return {
-          title: `${post.seoTitle ?? post.title} | WebsiteVikreta`,
+          title: `${post.seoTitle ?? post.title} | Website Vikreta`,
           description: post.seoDescription ?? post.description ?? '',
           keywords: post.seoKeywords ?? [],
           openGraph: {
             title: post.seoTitle ?? post.title,
             description: post.seoDescription ?? post.description ?? '',
             url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${post.slug}`,
-            siteName: 'WebsiteVikreta',
+            siteName: 'Website Vikreta',
             type: 'article',
             locale: 'en_IN',
             images: featuredImage
@@ -204,13 +204,13 @@ export async function generateMetadata({
   const post = staticPosts.find((p) => p.slug === slug)
   if (!post) return {}
   return {
-    title: `${post.title} | WebsiteVikreta`,
+    title: `${post.title} | Website Vikreta`,
     description: post.description,
     openGraph: {
       title: post.title,
       description: post.description,
       url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
-      siteName: 'WebsiteVikreta',
+      siteName: 'Website Vikreta',
       type: 'article',
       locale: 'en_IN',
       images: [

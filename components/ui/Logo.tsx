@@ -20,7 +20,7 @@ export function Logo({ variant = 'light', className = '' }: LogoProps) {
     <Link
       href="/"
       className={linkClasses}
-      aria-label="Website Vikreta — Home"
+      aria-label="Website Vikreta | Home"
     >
       {/* Icon */}
       <Image
@@ -34,7 +34,7 @@ export function Logo({ variant = 'light', className = '' }: LogoProps) {
       />
       {/* Text */}
       <Image
-        src="/logo/WebsiteVikreta.svg"
+        src="/logo/websitevikreta.svg"
         alt="Website Vikreta"
         width={180}
         height={30}

@@ -5,21 +5,7 @@ import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
 import Image from 'next/image'
 import { Globe, BarChart2, Bot, Smartphone } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-
-// Heading scroll animation — exact mirror of FeaturedWorkSection
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
-}
-
-const lineReveal = {
-  hidden: { y: '110%', opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
-  },
-}
+import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
 
 type CardId = 'web-dev' | 'digital-marketing' | 'ai-automation' | 'web-mobile-crm' | 'uiux'
 
@@ -39,7 +25,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '01',
     title: 'AI Automation & Workflow Optimization',
     description:
-      'We audit your business, find the hours your team wastes, and wire in AI systems that handle it — so your people do what only humans should.',
+      'Find us the hours your team shouldn\'t be spending. We audit what\'s actually happening in your business, then wire in AI where it makes sense, not where it sounds impressive.',
     image: '/images/services/ai-automation.png',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
@@ -49,7 +35,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '02',
     title: 'Website Development',
     description:
-      'Fast, responsive, SEO-ready sites built in Next.js. Every line of code is written with ranking, speed, and scale in mind.',
+      'Built in Next.js. Fast, SEO-ready, written properly. Not a theme with your logo on it.',
     image: '/images/services/webdevelopment.png',
     href: '/services/web-development',
     FallbackIcon: Globe,
@@ -57,9 +43,9 @@ const SERVICE_CARDS: ServiceCard[] = [
   {
     id: 'uiux',
     index: '03',
-    title: 'UIUX Design',
+    title: 'UI/UX Design',
     description:
-      "CRMs, portals, e-commerce, custom systems — built for how your business actually works, not a template of how others think it should.",
+      "We start with how people actually use things. The visual part comes after that's figured out.",
     image: '/images/services/web-mobile-crm.png',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
@@ -69,7 +55,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '04',
     title: 'Web & Mobile Apps / CRM Systems',
     description:
-      "CRMs, portals, e-commerce, custom systems — built for how your business actually works, not a template of how others think it should.",
+      "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
     image: '/images/services/web-mobile-crm.png',
     href: '/services/web-and-mobile-apps',
     FallbackIcon: Smartphone,
@@ -79,7 +65,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '05',
     title: 'Digital Marketing / SEO & GEO',
     description:
-      'Campaigns that rank, reach, and convert — built on real data, not guesswork. We combine SEO, GEO, and paid channels into one growth engine.',
+      'SEO, GEO, paid: combined into one thing that\'s actually measured. No vanity metrics.',
     image: '/images/services/digital-marketing-seo-geo.png',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
@@ -112,44 +98,33 @@ function StackCard({
     <div className="sticky" style={{ top: STACK_TOP + i * STACK_GAP }}>
       <motion.article
         style={{ scale, transformOrigin: 'center top' }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: REVEAL_EASE }}
         className="relative w-full overflow-hidden border border-(--color-border) bg-(--color-bg)"
       >
         <div className="grid md:grid-cols-2 md:min-h-[600px]">
           {/* LEFT — copy */}
-          <motion.div
-            className="order-2 md:order-1 flex flex-col justify-between gap-8 p-7 sm:p-10 md:p-12"
-            variants={container}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.4 }}
-          >
+          <div className="order-2 md:order-1 flex flex-col justify-between gap-8 p-7 sm:p-10 md:p-12">
             <div>
-              <div className="overflow-hidden pb-1 -mb-1">
-                <motion.h3
-                  className="font-sans font-bold leading-[1.1] text-(--color-text)"
-                  style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2.5rem)' }}
-                  variants={lineReveal}
-                >
-                  {card.title}
-                </motion.h3>
-              </div>
-              <div className="overflow-hidden pb-1 -mb-1 mt-4">
-                <motion.p
-                  className="text-[15px] leading-relaxed text-(--color-text-muted)"
-                  style={{ maxWidth: '46ch' }}
-                  variants={lineReveal}
-                >
-                  {card.description}
-                </motion.p>
-              </div>
+              <h3 className="font-sans font-bold text-2xl sm:text-3xl leading-[1.1] text-(--color-text)">
+                {card.title}
+              </h3>
+              <p
+                className="mt-4 text-[15px] leading-relaxed text-(--color-text-muted)"
+                style={{ maxWidth: '46ch' }}
+              >
+                {card.description}
+              </p>
             </div>
 
-            <motion.div variants={lineReveal}>
+            <div>
               <Button href={card.href} variant="ghost" size="md" showArrow>
                 Explore More
               </Button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* RIGHT — 16:9 image */}
           <div className="order-1 md:order-2 relative aspect-video md:aspect-auto md:h-full">
@@ -187,32 +162,19 @@ export function ServicesBentoGrid() {
   return (
     <section className="relative py-16 md:py-20">
       <div className="container relative z-10">
-        {/* Section heading — exact FeaturedWorkSection font + animation */}
-        <motion.div
-          className="mb-10 md:mb-14"
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <div className="overflow-hidden">
-            <motion.h2
-              className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight text-(--color-text)"
-              variants={lineReveal}
-            >
-              We don&apos;t build pages.
-            </motion.h2>
-          </div>
-          <div className="overflow-hidden">
-            <motion.h2
-              className="font-sans font-bold text-[clamp(2rem,5.5vw,4.5rem)] leading-[1.05] tracking-tight"
-              style={{ color: 'var(--color-accent)' }}
-              variants={lineReveal}
-            >
-              We build systems.
-            </motion.h2>
-          </div>
-        </motion.div>
+        {/* Section heading */}
+        <div className="mb-10 md:mb-14">
+          <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
+            We don&apos;t build pages.
+          </RevealText>
+          <RevealText
+            as="h2"
+            delay={0.12}
+            className="text-h2 font-bold tracking-tight text-(--color-accent)"
+          >
+            We build systems.
+          </RevealText>
+        </div>
 
         {/* Sticky stack track — each card gets a full-height scroll slot */}
         <div ref={trackRef} className="relative flex flex-col gap-8 md:gap-12">

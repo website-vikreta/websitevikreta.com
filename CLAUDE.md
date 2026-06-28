@@ -13,6 +13,7 @@ This website is the pivot announcement to the world. It must feel like a leap fo
 - SEO + GEO first. Every page is a ranking opportunity.
 - Mobile-first. Always.
 - Lead generation is the business goal. Design serves conversion.
+- Uniformity & consistency. Reuse logged conventions. Never reinvent spacing/type/color/patterns per page.
 
 ## Before Any Implementation — Run This Pipeline
 
@@ -44,6 +45,13 @@ Never skip to code. Story → Experience → Motion → Architecture → Code.
 | Animation | `.claude/standards/motion-system.md` |
 | SEO/GEO | `.claude/standards/seo-geo.md` |
 | Code rules | `.claude/standards/code-standards.md` |
+| Design/code conventions log | `.claude/learning.md` |
+
+## Learning Log — Consistency Memory
+`.claude/learning.md` is the persistent record of every reusable design + code convention.
+- **Read it** before building any page/component. Reuse what exists.
+- **Update it** whenever a reusable decision is made (spacing, type scale, color use, component pattern, motion timing, naming, anti-pattern). One entry = one rule, exact values.
+- **Honor it** — if new work conflicts with a logged rule, follow the rule or update it with reason. No silent divergence.
 
 ## Token Rule
 Load `session.md` + one agent + one standard per task. Do not bulk-load everything.

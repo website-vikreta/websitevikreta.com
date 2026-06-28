@@ -5,14 +5,14 @@ import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
 import { UpworkBadge } from '@/components/ui/UpworkBadge'
 
-const HEADLINE = 'We don\'t just build your website. We think with you.'
+const HEADLINE = 'We don\'t just execute. We think first.'
 const WORDS = HEADLINE.split(' ')
 
-// Desktop line-break indices: forces W / b / W starts — avoids y/t descender column
-const BREAK_BEFORE = new Set([3, 6])
+// Desktop line-break index: break before second "We" — two clean lines
+const BREAK_BEFORE = new Set([4])
 
-// Word index to accent — "think" = 7
-const ACCENT_INDEX = 7
+// Word index to accent — "think" = 5
+const ACCENT_INDEX = 5
 
 export function HeroSection() {
   const sectionRef   = useRef<HTMLElement>(null)
@@ -59,7 +59,7 @@ export function HeroSection() {
       ref={sectionRef}
       id="main-content"
       className="relative flex flex-col justify-center min-h-svh overflow-x-clip"
-      aria-label="Hero — Website Vikreta"
+      aria-label="Hero Website Vikreta"
     >
       {/* ── Content ──────────────────────────────────────────── */}
       <div className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28">
@@ -104,8 +104,7 @@ export function HeroSection() {
           data-hero-anim
           className="text-body-lg text-(--color-text-muted) max-w-lg leading-relaxed mb-10 lg:mb-12"
         >
-          Website Vikreta is a premium AI agency that listens first, 
-          then builds websites, apps, and the smart systems that make everything work faster.
+          Website Vikreta works with businesses that want to go digital properly, or want to figure out where AI fits in what they already do. Websites, apps, automation, design. We use every relevant tool available. And we listen before we touch anything.
         </p>
 
         {/* CTAs */}

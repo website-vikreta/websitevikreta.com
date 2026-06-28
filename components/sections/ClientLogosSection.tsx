@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useAnimationFrame, useMotionValue } from 'motion/react'
+import { RevealText } from '@/components/ui/Reveal'
 
 const CLIENTS = [
   'Harvestt', 'Studio One', 'UrbanEdge', 'NovaMed',
@@ -29,13 +30,13 @@ export function ClientLogosSection() {
   return (
     <section className="py-16 md:py-20 overflow-hidden">
 
-      <div className="container mb-10 md:mb-12">
-        <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-faint)] mb-2">
+      <div className="container mb-10 md:mb-14">
+        <RevealText className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-faint)] mb-2">
           Our Clients
-        </p>
-        <h2 className="font-sans font-bold text-3xl md:text-4xl leading-tight text-[var(--color-text)]">
+        </RevealText>
+        <RevealText as="h2" delay={0.1} className="text-h2 font-bold text-[var(--color-text)]">
           Businesses we&apos;ve built for
-        </h2>
+        </RevealText>
       </div>
 
       <div
