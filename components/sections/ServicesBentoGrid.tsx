@@ -21,7 +21,7 @@ const lineReveal = {
   },
 }
 
-type CardId = 'web-dev' | 'digital-marketing' | 'ai-automation' | 'web-mobile-crm'
+type CardId = 'web-dev' | 'digital-marketing' | 'ai-automation' | 'web-mobile-crm' | 'uiux'
 
 interface ServiceCard {
   id: CardId
@@ -35,8 +35,18 @@ interface ServiceCard {
 
 const SERVICE_CARDS: ServiceCard[] = [
   {
-    id: 'web-dev',
+    id: 'ai-automation',
     index: '01',
+    title: 'AI Automation & Workflow Optimization',
+    description:
+      'We audit your business, find the hours your team wastes, and wire in AI systems that handle it — so your people do what only humans should.',
+    image: '/images/services/ai-automation.png',
+    href: '/services/ai-automations',
+    FallbackIcon: Bot,
+  },
+  {
+    id: 'web-dev',
+    index: '02',
     title: 'Website Development',
     description:
       'Fast, responsive, SEO-ready sites built in Next.js. Every line of code is written with ranking, speed, and scale in mind.',
@@ -45,24 +55,14 @@ const SERVICE_CARDS: ServiceCard[] = [
     FallbackIcon: Globe,
   },
   {
-    id: 'digital-marketing',
-    index: '02',
-    title: 'Digital Marketing / SEO & GEO',
-    description:
-      'Campaigns that rank, reach, and convert — built on real data, not guesswork. We combine SEO, GEO, and paid channels into one growth engine.',
-    image: '/images/services/digital-marketing-seo-geo.png',
-    href: '/services/digital-marketing',
-    FallbackIcon: BarChart2,
-  },
-  {
-    id: 'ai-automation',
+    id: 'uiux',
     index: '03',
-    title: 'AI Automation & Workflow Optimization',
+    title: 'UIUX Design',
     description:
-      'We audit your business, find the hours your team wastes, and wire in AI systems that handle it — so your people do what only humans should.',
-    image: '/images/services/ai-automation.png',
-    href: '/services/ai-automations',
-    FallbackIcon: Bot,
+      "CRMs, portals, e-commerce, custom systems — built for how your business actually works, not a template of how others think it should.",
+    image: '/images/services/web-mobile-crm.png',
+    href: '/services/uiux-design',
+    FallbackIcon: Smartphone,
   },
   {
     id: 'web-mobile-crm',
@@ -73,6 +73,16 @@ const SERVICE_CARDS: ServiceCard[] = [
     image: '/images/services/web-mobile-crm.png',
     href: '/services/web-and-mobile-apps',
     FallbackIcon: Smartphone,
+  },
+  {
+    id: 'digital-marketing',
+    index: '05',
+    title: 'Digital Marketing / SEO & GEO',
+    description:
+      'Campaigns that rank, reach, and convert — built on real data, not guesswork. We combine SEO, GEO, and paid channels into one growth engine.',
+    image: '/images/services/digital-marketing-seo-geo.png',
+    href: '/services/digital-marketing',
+    FallbackIcon: BarChart2,
   },
 ]
 
