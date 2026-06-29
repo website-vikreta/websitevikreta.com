@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { Logo } from '@/components/ui/Logo'
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { Linkedin, Instagram, Whatsapp } from 'react-bootstrap-icons'
@@ -58,16 +58,7 @@ export function FooterSection() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <Link href="/" className="flex-shrink-0">
-            <Image
-              src="/logo/websitevikreta-logo-horizontal.png"
-              alt="Website Vikreta"
-              width={180}
-              height={50}
-              className="h-9 w-auto"
-              priority
-            />
-          </Link>
+          <Logo variant="light" />
 
           <div className="flex items-center gap-4 md:gap-5">
             {socialIcons.map((item) => {
