@@ -113,10 +113,10 @@ export function HeroSection() {
           data-hero-anim
           className="flex flex-wrap gap-3 items-center"
         >
-          <Button href="/work" variant="primary" size="lg" showArrow>
+          <Button href="/contact" variant="primary" size="lg" showArrow>
             Talk to Us, it&apos;s Free
           </Button>
-          <Button href="/contact" variant="ghost" size="lg" showArrow>
+          <Button href="/work" variant="ghost" size="lg" showArrow>
             See our work
           </Button>
         </div>
