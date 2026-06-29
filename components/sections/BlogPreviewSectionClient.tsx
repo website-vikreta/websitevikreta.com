@@ -27,7 +27,7 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
         {/* 3-column card grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-16 md:gap-y-14">
           {posts.map((post, i) => (
-            <RevealFade key={post.href} delay={i * 0.1}>
+            <RevealFade key={post.href} delay={0.15 + i * 0.1}>
               <BlogMinimalCard
                 imageUrl={post.imageUrl ?? "/placeholder-blog.jpg"}
                 title={post.title}

@@ -72,7 +72,13 @@ export function TestimonialsSection() {
           Work that moved numbers.
         </RevealText>
 
-        {/* Switching content — word reveals, no opacity */}
+        {/* Switching content — scroll-triggered entrance, then word reveals on switch */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
+        >
         <AnimatePresence mode="wait">
           <motion.div
             key={active.id}
@@ -154,8 +160,15 @@ export function TestimonialsSection() {
             </div>
           </motion.div>
         </AnimatePresence>
+        </motion.div>
 
         {/* Avatar switcher */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
+        >
         <LayoutGroup>
         <motion.div
           layout
@@ -218,6 +231,7 @@ export function TestimonialsSection() {
           })}
         </motion.div>
         </LayoutGroup>
+        </motion.div>
 
       </div>
     </section>
