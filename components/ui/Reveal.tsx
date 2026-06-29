@@ -8,10 +8,8 @@ import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'r
 // supporting content + cards fade up. One easing curve everywhere (~expo.out).
 export const REVEAL_EASE = [0.16, 1, 0.3, 1] as const
 
-// Trigger only once the element is ~200px inside the viewport — gives a beat
-// before the reveal instead of firing the moment the edge appears.
-const REVEAL_MARGIN = '0px 0px -200px 0px'
-const VIEWPORT = { once: true, amount: 0.4, margin: REVEAL_MARGIN } as const
+const REVEAL_MARGIN = '0px'
+const VIEWPORT = { once: true, amount: 0.1, margin: REVEAL_MARGIN } as const
 
 /**
  * Masked line reveal — for headings + titles.
@@ -78,7 +76,7 @@ export function RevealFade({
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2, margin: REVEAL_MARGIN }}
+      viewport={{ once: true, amount: 0.1, margin: REVEAL_MARGIN }}
       transition={{ duration, ease: REVEAL_EASE, delay }}
     >
       {children}
@@ -92,7 +90,7 @@ export function RevealFade({
  */
 export function Counter({ value, duration = 1400 }: { value: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.5, margin: REVEAL_MARGIN })
+  const inView = useInView(ref, { once: true, amount: 0.1, margin: REVEAL_MARGIN })
   const [n, setN] = useState(0)
 
   useEffect(() => {

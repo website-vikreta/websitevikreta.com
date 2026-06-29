@@ -26,7 +26,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'AI Automation & Workflow Optimization',
     description:
       'Find us the hours your team shouldn\'t be spending. We audit what\'s actually happening in your business, then wire in AI where it makes sense, not where it sounds impressive.',
-    image: '/images/services/ai-automation.png',
+    image: '/our-services/ai-automation.png',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
   },
@@ -36,7 +36,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Website Development',
     description:
       'Built in Next.js. Fast, SEO-ready, written properly. Not a theme with your logo on it.',
-    image: '/images/services/webdevelopment.png',
+    image: '/our-services/webdevelopment.png',
     href: '/services/web-development',
     FallbackIcon: Globe,
   },
@@ -46,7 +46,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'UI/UX Design',
     description:
       "We start with how people actually use things. The visual part comes after that's figured out.",
-    image: '/images/services/web-mobile-crm.png',
+    image: '/our-services/ui-ux-design.png',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
   },
@@ -56,7 +56,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Web & Mobile Apps / CRM Systems',
     description:
       "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
-    image: '/images/services/web-mobile-crm.png',
+    image: '/our-services/web-mobile-crm.png',
     href: '/services/web-and-mobile-apps',
     FallbackIcon: Smartphone,
   },
@@ -66,7 +66,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Digital Marketing / SEO & GEO',
     description:
       'SEO, GEO, paid: combined into one thing that\'s actually measured. No vanity metrics.',
-    image: '/images/services/digital-marketing-seo-geo.png',
+    image: '/our-services/digital-marketing-seo-geo.png',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
   },
@@ -100,11 +100,11 @@ function StackCard({
         style={{ scale, transformOrigin: 'center top' }}
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.7, ease: REVEAL_EASE }}
         className="relative w-full overflow-hidden border border-(--color-border) bg-(--color-bg)"
       >
-        <div className="grid md:grid-cols-2 md:min-h-[600px]">
+        <div className="grid md:grid-cols-2 md:min-h-[500px]">
           {/* LEFT — copy */}
           <div className="order-2 md:order-1 flex flex-col justify-between gap-8 p-7 sm:p-10 md:p-12">
             <div>
