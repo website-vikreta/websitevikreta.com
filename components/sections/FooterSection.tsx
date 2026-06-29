@@ -98,7 +98,7 @@ export function FooterSection() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <a
+          <Link
             href="/contact"
             className="footer-anim group flex items-center justify-between py-8 md:py-10 md:pr-10"
           >
@@ -109,9 +109,9 @@ export function FooterSection() {
               </span>
             </div>
             <ArrowUpRight className="flex-shrink-0 ml-4 h-7 w-7 md:h-9 md:w-9 text-black group-hover:text-[#FFD600] transition-colors duration-300" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="/careers"
             className="footer-anim group flex items-center justify-between py-8 md:py-10 md:pl-10"
           >
@@ -122,7 +122,7 @@ export function FooterSection() {
               </span>
             </div>
             <ArrowUpRight className="flex-shrink-0 ml-4 h-7 w-7 md:h-9 md:w-9 text-black group-hover:text-[#FFD600] transition-colors duration-300" />
-          </a>
+          </Link>
         </motion.div>
 
         {/* Link columns grid */}

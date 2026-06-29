@@ -29,7 +29,7 @@ const testimonials = [
   },
   {
     id: 3,
-    metric: "3 wks",
+    metric: "3 weeks",
     context: "Delivery time",
     subcontext: "Full website",
     quote: "Fastest turnaround we had. Quality was better than agencies charging 5x.",

@@ -100,7 +100,7 @@ function StackCard({
         style={{ scale, transformOrigin: 'center top' }}
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.7, ease: REVEAL_EASE }}
         className="relative w-full overflow-hidden border border-(--color-border) bg-(--color-bg)"
       >
