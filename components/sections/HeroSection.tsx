@@ -121,14 +121,18 @@ export function HeroSection() {
           </Button>
         </div>
 
+        <div className="block md:hidden mt-4">
+          <UpworkBadge />
+        </div>
+
       </div>
 
       {/* Upwork badge — center sits on the fold (half above), right edge aligned
           to the container content edge. Overlaps the section below, so it adds no
           page height and triggers no extra scrollbar. */}
-      <div className="pointer-events-none absolute inset-x-0 top-[100vh] z-20">
+      <div className="hidden md:block pointer-events-none absolute inset-x-0 top-[100vh] z-20">
         <div className="container relative">
-          <div className="pointer-events-auto absolute right-(--section-x) -translate-y-[150%] md:-translate-y-[80%]">
+          <div className="pointer-events-auto absolute right-(--section-x) -translate-y-[60%] md:-translate-y-[80%]">
             <UpworkBadge />
           </div>
         </div>
