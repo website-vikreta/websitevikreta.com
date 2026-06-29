@@ -25,16 +25,16 @@ const testimonials = [
     subcontext: "Full website",
     quote: "Fastest turnaround we had. Quality was better than agencies charging 5x.",
     role: "Co-founder, AP Cleanco",
-    initial: "C",
+    initial: "P",
   },
   {
     id: 3,
-    metric: "3+ years",
+    metric: "3+ yrs",
     context: "Ongoing",
     subcontext: "Sustainable Bitcoin Protocol",
     quote: "They shaped our entire product from the ground up and are still the first people we call.",
     role: "Co-founder, Sustainable Bitcoin Protocol",
-    initial: "C",
+    initial: "B",
   },
 ]
 
