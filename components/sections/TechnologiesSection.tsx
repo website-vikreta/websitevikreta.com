@@ -6,45 +6,22 @@ import Image from 'next/image'
 import { RevealText } from '@/components/ui/Reveal'
 
 const TECH_LOGOS = [
-  { src: '/tools-logos/01-OpenAI.svg',                    alt: 'OpenAI' },
-  { src: '/tools-logos/02-Claude.svg',                    alt: 'Claude AI' },
-  { src: '/tools-logos/03-Figma.svg',                     alt: 'Figma' },
-  { src: '/tools-logos/04-V0.svg',                        alt: 'v0' },
-  { src: '/tools-logos/05-Lovable.svg',                   alt: 'Lovable' },
-  { src: '/tools-logos/06-Cursor.svg',                    alt: 'Cursor' },
-  { src: '/tools-logos/07-NextJS.svg',                    alt: 'Next.js' },
-  { src: '/tools-logos/08-Python.svg',                    alt: 'Python' },
-  { src: '/tools-logos/09-NodeJS.svg',                    alt: 'Node.js' },
-  { src: '/tools-logos/10-SQLServer.svg',                 alt: 'SQL Server' },
-  { src: '/tools-logos/11-GitHub.svg',                    alt: 'GitHub' },
-  { src: '/tools-logos/12-Adobe.svg',                     alt: 'Adobe' },
-  { src: '/tools-logos/13-Office365.svg',                 alt: 'Office 365' },
-  { src: '/tools-logos/14-365Copilot.svg',               alt: 'Microsoft Copilot' },
-  { src: '/tools-logos/15-n8n.svg',                       alt: 'n8n' },
-  { src: '/tools-logos/16-MakeDotCom.svg',               alt: 'Make.com' },
-  { src: '/tools-logos/17-Gemini.svg',                    alt: 'Gemini' },
-  { src: '/tools-logos/18-ElevenLabs.svg',               alt: 'ElevenLabs' },
-  { src: '/tools-logos/19-WordPress.svg',                 alt: 'WordPress' },
-  { src: '/tools-logos/20-Shopify.svg',                   alt: 'Shopify' },
-  { src: '/tools-logos/21-Squarespace.svg',              alt: 'Squarespace' },
-  { src: '/tools-logos/22-Canva.svg',                     alt: 'Canva' },
-  { src: '/tools-logos/23-Sora.svg',                      alt: 'Sora' },
-  { src: '/tools-logos/24-Midjourney.svg',               alt: 'Midjourney' },
-  { src: '/tools-logos/25-LinkedIn.svg',                  alt: 'LinkedIn' },
-  { src: '/tools-logos/26-Meta.svg',                      alt: 'Meta' },
-  { src: '/tools-logos/27-GoogleLabs(GoogleLogo).svg',   alt: 'Google' },
-  { src: '/tools-logos/28-KlingAI.svg',                  alt: 'Kling AI' },
-  { src: '/tools-logos/30-Flux.svg',                      alt: 'Flux' },
-  { src: '/tools-logos/31-Replit.svg',                    alt: 'Replit' },
-  { src: '/tools-logos/32-CrewAI.svg',                   alt: 'CrewAI' },
-  { src: '/tools-logos/33-LangChain.svg',                alt: 'LangChain' },
-  { src: '/tools-logos/34-HubSpot.svg',                  alt: 'HubSpot' },
-  { src: '/tools-logos/35-Vercel.svg',                    alt: 'Vercel' },
-  { src: '/tools-logos/36-Netlify.svg',                   alt: 'Netlify' },
-  { src: '/tools-logos/37-Sanity.svg',                    alt: 'Sanity' },
-  { src: '/tools-logos/38-MongoDB.svg',                   alt: 'MongoDB' },
-  { src: '/tools-logos/39-Java.svg',                      alt: 'Java' },
-  { src: '/tools-logos/40-PHP.svg',                       alt: 'PHP' },
+   { src: '/tools-logos/01-OpenAI.svg',        alt: 'OpenAI' },
+   { src: '/tools-logos/02-Claude.svg',        alt: 'Claude AI' },
+   { src: '/tools-logos/17-Gemini.svg',        alt: 'Gemini' },
+   { src: '/tools-logos/06-Cursor.svg',        alt: 'Cursor' },
+   { src: '/tools-logos/04-V0.svg',            alt: 'v0' },
+   { src: '/tools-logos/05-Lovable.svg',       alt: 'Lovable' },
+   { src: '/tools-logos/15-n8n.svg',           alt: 'n8n' },
+   { src: '/tools-logos/16-MakeDotCom.svg',    alt: 'Make.com' },
+   { src: '/tools-logos/24-Midjourney.svg',    alt: 'Midjourney' },
+   { src: '/tools-logos/23-Sora.svg',          alt: 'Sora' },
+   { src: '/tools-logos/30-Flux.svg',          alt: 'Flux' },
+   { src: '/tools-logos/18-ElevenLabs.svg',    alt: 'ElevenLabs' },
+   { src: '/tools-logos/28-KlingAI.svg',       alt: 'Kling AI' },
+   { src: '/tools-logos/32-CrewAI.svg',        alt: 'CrewAI' },
+   { src: '/tools-logos/33-LangChain.svg',     alt: 'LangChain' },
+   { src: '/tools-logos/14-365Copilot.svg',    alt: 'Microsoft Copilot' },
 ]
 
 const FAST = 70
@@ -69,8 +46,8 @@ export function TechnologiesSection() {
     <section className="py-16 md:py-20 overflow-hidden">
 
       <div className="container mb-10 md:mb-14">
-        <RevealText as="h2" className="text-h2 font-bold text-center text-(--color-text)">
-          Powered by AI. Future Tech.
+        <RevealText as="h3" className="text-h3 font-bold text-center text-(--color-text)">
+          The AI stack we actually use.
         </RevealText>
       </div>
 
@@ -82,7 +59,7 @@ export function TechnologiesSection() {
         >
           <motion.div
             ref={trackRef}
-            className="flex items-center gap-14 w-max"
+            className="flex items-center gap-10 md:gap-14 w-max"
             style={{ x }}
           >
             {[...TECH_LOGOS, ...TECH_LOGOS].map((logo, i) => (
@@ -108,7 +85,7 @@ function LogoSlot({ src, alt, eager }: { src: string; alt: string; eager?: boole
         height={40}
         loading={eager ? 'eager' : 'lazy'}
         style={{ width: 'auto' }}
-        className="object-contain h-8 md:h-10 grayscale opacity-30 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+        className="object-contain h-9 md:h-12 grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
       />
     </div>
   )
