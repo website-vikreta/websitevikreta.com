@@ -18,6 +18,14 @@ export function ServicesSection() {
   const [leftPad, setLeftPad] = useState<number | null>(null)
   const [maxTranslate, setMaxTranslate] = useState(0)
   const [sectionHeight, setSectionHeight] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -41,6 +49,7 @@ export function ServicesSection() {
   useEffect(() => {
     if (leftPad === null) return
     const measureOverflow = () => {
+      if (isMobile) return
       if (!trackRef.current) return
       const overflow = trackRef.current.scrollWidth - window.innerWidth
       const safeOverflow = Math.max(0, overflow)
@@ -56,9 +65,22 @@ export function ServicesSection() {
       ro.disconnect()
       window.removeEventListener('resize', measureOverflow)
     }
-  }, [leftPad])
+  }, [leftPad, isMobile])
 
   const x = useTransform(scrollYProgress, [0.05, 0.95], [0, -maxTranslate])
+
+  if (isMobile) {
+    return (
+      <section className="relative">
+        <div className="flex flex-col gap-6 px-4 py-12">
+          <IntroPanel />
+          {SERVICES.map((service) => (
+            <ServiceCard key={service.id} service={service} />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section
