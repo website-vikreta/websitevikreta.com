@@ -43,6 +43,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Where: FeaturedWork case cards, Services stack cards.
 - Date: 2026-06-28
 
+### [Hierarchy] — section subhead (H3 token)
+- Rule: Section subheading under an H2 uses the `.text-h3` utility (`--text-h3` = `clamp(1.5rem,3vw,2.125rem)`, `--leading-h3` = 1.3) + `font-semibold` + `text-(--color-text-muted)`, spaced `mt-3 md:mt-4` below the H2. Wrap in `RevealText as="h3"` with `delay={0.12}` so it staggers after the H2 line reveal. Reuse `.text-h3` — never raw clamps/text-xl for a section subhead.
+- Where: TechnologiesSection ("Powered by AI. Future Tech." → subhead).
+- Why: gives section heads a two-line H2→H3 hierarchy that stays on the design-system scale.
+- Date: 2026-06-29
+
 ### [Hierarchy] — eyebrow / meta label
 - Rule: `text-xs font-bold uppercase tracking-widest text-(--color-text-faint)` OR `text-meta-label` token. Sits above a heading.
 - Date: 2026-06-28

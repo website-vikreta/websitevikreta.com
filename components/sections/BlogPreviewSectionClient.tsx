@@ -13,7 +13,7 @@ export interface BlogPreviewPost {
 export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }) {
   return (
     <section className="relative overflow-hidden bg-[var(--color-bg)]">
-      <div className="container py-16 md:py-20">
+      <div className="container py-20 md:py-28">
 
         {/* Heading */}
         <div className="mb-10 md:mb-14 max-w-3xl mx-auto text-center">

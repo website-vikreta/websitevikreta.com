@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
@@ -13,33 +14,35 @@ interface CaseStudy {
   href: string
 }
 
-const LOGO = '/logo/websitevikreta-icon.svg'
+const FEATURED_LOGO = '/client-logos/simpli-home.svg'
+const CASE_STUDIES_1_LOGO = '/client-logos/sustainable-bitcoin-protocol.svg'
+const CASE_STUDIES_2_LOGO = '/client-logos/ap-cleanco.svg'
 
 // Real work — no invented metrics.
 const FEATURED: CaseStudy = {
-  logo: LOGO,
-  company: 'Sustainable Bitcoin Protocol',
+  logo: FEATURED_LOGO,
+  company: 'Simpli Home',
   tags: 'AI AUTOMATION / MEDIA OPS',
   title: 'Bulk media generation, automated.',
-  subtitle: 'A media team doing bulk content generation by hand. We automated the whole pipeline inside Figma Buzz. They didn\'t hire anyone. The work just started happening faster.',
+  subtitle: 'A media team doing bulk content generation by hand. We automated the whole pipeline inside Figma Buzz. The work just started happening faster.',
   href: '/work',
 }
 
 const CASE_STUDIES: CaseStudy[] = [
   {
-    logo: LOGO,
-    company: 'Blancora',
-    tags: 'E-COMMERCE / CUSTOM CMS',
-    title: 'A storefront the team owns.',
-    subtitle: 'Full e-commerce on a custom CMS. The client updates it themselves now. No developer in the loop.',
+    logo: CASE_STUDIES_1_LOGO,
+    company: 'Sustainable Bitcoin Protocol',
+    tags: 'UI/UX DESIGN / DESIGN SYSTEM',
+    title: 'From MVP to a product people actually use.',
+    subtitle: 'Rough flows, no design system, unclear product. We went in at the foundation and rebuilt everything.',
     href: '/work',
   },
   {
-    logo: LOGO,
-    company: 'iEndorse',
-    tags: 'MVP / AFFILIATE PLATFORM',
-    title: 'Affiliate platform, zero to launch.',
-    subtitle: 'Affiliate platform, built from scratch. Dashboards, tracking, core flows: live on day one. No phase two that never came.',
+    logo: CASE_STUDIES_2_LOGO,
+    company: 'AP Cleanco',
+    tags: 'WEBSITE / MARKETING',
+    title: 'Zero to online. Properly.',
+    subtitle: 'Garage cleaning company, no web presence at all. We built the marketing site from scratch. Local SEO baked in, loads fast, written to convert.',
     href: '/work',
   },
 ]
@@ -65,11 +68,7 @@ function ReadCaseStudy() {
 function CaseCard({ item }: { item: CaseStudy }) {
   return (
     <>
-      <span className="flex items-center gap-3 text-2xl font-semibold text-(--color-text)">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={item.logo} alt="" aria-hidden className="h-8 w-8" />
-        {item.company}
-      </span>
+      <Image src={item.logo} alt={item.company} height={32} width={160} className="h-8 w-auto self-start" unoptimized />
       <div>
         <span className="block font-mono text-meta-label tracking-(--tracking-meta) text-(--color-text-faint) uppercase">
           {item.tags}
@@ -125,11 +124,13 @@ export function FeaturedWorkSection() {
               <div className="py-10 lg:py-14">
                 <div className="h-full border border-(--color-border) bg-(--color-surface) p-2">
                   <div className="flex aspect-[14/9] h-full w-full items-center justify-center bg-(--color-bg-muted)">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={FEATURED.logo}
                       alt={`${FEATURED.company} case study`}
-                      className="h-16 w-16 opacity-80 grayscale"
+                      height={48}
+                      width={200}
+                      className="h-12 w-auto opacity-80 grayscale"
+                      unoptimized
                     />
                   </div>
                 </div>
