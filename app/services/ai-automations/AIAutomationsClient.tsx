@@ -4,6 +4,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
+import IntroAnimation from '@/components/ui/scroll-morph-hero'
 import AutomationWorkflowCanvas from '@/components/ui/automation-workflow-canvas'
 import { ParallaxFeatureScroll } from '@/components/ui/parallax-feature-scroll'
 import { Button } from '@/components/ui/Button'
@@ -207,6 +208,12 @@ export default function AIAutomationsClient() {
   return (
     <>
       <main id="main-content" className="relative z-10">
+
+        {/* ── 1 · Hero ──────────────────────────────────────────────────────── */}
+        {/* NOTE: this component captures wheel/touch events independently of Lenis. May cause scroll conflicts below the fold — needs review. */}
+        <section className="h-screen w-full" aria-label="AI Automation Services">
+          <IntroAnimation />
+        </section>
 
         {/* ── 3 · Comparison table ─────────────────────────────────────────── */}
         <section className="py-16 md:py-20" aria-labelledby="why-us-heading">

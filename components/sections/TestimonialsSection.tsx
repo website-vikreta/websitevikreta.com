@@ -116,7 +116,7 @@ export function TestimonialsSection() {
             </div>
 
             {/* Quote — word by word clip reveal */}
-            <p className="text-xl md:text-[1.45rem] font-light text-[var(--color-text)] leading-[1.7] mb-5 h-[3.4em] overflow-hidden">
+            <p className="text-xl md:text-[1.45rem] font-light text-[var(--color-text)] leading-[1.7] mb-5 h-[5.1em] md:h-[3.4em] overflow-hidden">
               <span className="text-[var(--color-border-strong)]">&ldquo;</span>
               {words.map((word, i) => (
                 <Fragment key={active.id + "-w-" + i}>
