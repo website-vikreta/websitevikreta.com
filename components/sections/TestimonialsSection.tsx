@@ -25,16 +25,16 @@ const testimonials = [
     subcontext: "Full website",
     quote: "Fastest turnaround we had. Quality was better than agencies charging 5x.",
     role: "Co-founder, AP Cleanco",
-    initial: "C",
+    initial: "P",
   },
   {
     id: 3,
-    metric: "3+ years",
+    metric: "3+ yrs",
     context: "Ongoing",
     subcontext: "Sustainable Bitcoin Protocol",
     quote: "They shaped our entire product from the ground up and are still the first people we call.",
     role: "Co-founder, Sustainable Bitcoin Protocol",
-    initial: "C",
+    initial: "B",
   },
 ]
 
@@ -68,7 +68,7 @@ export function TestimonialsSection() {
       <div className="max-w-2xl mx-auto text-center">
 
         {/* Heading */}
-        <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)] mb-10 md:mb-14">
+        <RevealText as="h3" className="text-h3 font-bold text-[var(--color-text)] mb-10 md:mb-14">
           Work that moved numbers.
         </RevealText>
 
@@ -117,7 +117,7 @@ export function TestimonialsSection() {
 
             {/* Quote — word by word clip reveal */}
             <p className="text-xl md:text-[1.45rem] font-light text-[var(--color-text)] leading-[1.7] mb-5 h-[5.1em] md:h-[3.4em] overflow-hidden">
-              <span className="text-[var(--color-border-strong)]">&ldquo;</span>
+              <span className="text-[var(--color-text-faint)]">&ldquo;</span>
               {words.map((word, i) => (
                 <Fragment key={active.id + "-w-" + i}>
                   <span
@@ -140,7 +140,7 @@ export function TestimonialsSection() {
                   {i < words.length - 1 && " "}
                 </Fragment>
               ))}
-              <span className="text-[var(--color-border-strong)]">&rdquo;</span>
+              <span className="text-[var(--color-text-faint)]">&rdquo;</span>
             </p>
 
             {/* Attribution */}

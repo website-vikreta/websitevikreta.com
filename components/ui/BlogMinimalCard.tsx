@@ -12,7 +12,7 @@ export default function BlogMinimalCard({ imageUrl, title, href }: BlogMinimalCa
   return (
     <div className="flex flex-col gap-4">
       <Link href={href} aria-label={`Read article: ${title}`} className="block">
-        <div className="relative w-full aspect-[3/2] overflow-hidden bg-neutral-100">
+        <div className="relative w-full aspect-video overflow-hidden bg-neutral-100">
           <Image
             src={imageUrl}
             alt={title}

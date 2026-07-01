@@ -73,7 +73,7 @@ export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
                         alt={post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover grayscale transition-[filter] duration-300 group-hover/img:grayscale-0"
+                        className="object-cover transition-[filter] duration-300 border border-(--color-border)"
                       />
                     ) : null}
                   </div>
