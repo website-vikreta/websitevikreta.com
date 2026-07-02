@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 import { Button } from '@/components/ui/Button'
@@ -39,35 +40,36 @@ export default function CareersClient({ openings }: Props) {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden">
-        <div className="container pt-32 pb-12 md:pt-40 md:pb-16">
-
-          {/* Page title — matches blog page pattern exactly */}
+      <section className="relative">
+        <div className="pt-[150px] pb-12">
           <motion.div
             variants={container}
             initial="hidden"
             animate="visible"
           >
-            <div className="overflow-hidden mb-10">
-              <motion.h2
-                variants={lineReveal}
-                className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
-              >
-                Careers
-              </motion.h2>
+            <div className="container">
+              <div className="overflow-hidden mb-10">
+                <motion.h2
+                  variants={lineReveal}
+                  className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
+                >
+                  Careers
+                </motion.h2>
+              </div>
             </div>
-
-            {/* Banner placeholder */}
             <motion.div
               variants={fadeUp}
-              className="w-full h-[280px] md:h-[380px] bg-[var(--color-bg-muted)] flex items-center justify-center"
+              className="relative w-full overflow-hidden aspect-video lg:aspect-[16/5]"
             >
-              <span className="font-mono text-meta-label tracking-[0.12em] uppercase text-[var(--color-text-faint)]">
-                Banner coming soon
-              </span>
+              <Image
+                src="/images/careers-banner.png"
+                alt="Careers at Website Vikreta"
+                fill
+                className="object-cover"
+                priority
+              />
             </motion.div>
           </motion.div>
-
         </div>
       </section>
 
