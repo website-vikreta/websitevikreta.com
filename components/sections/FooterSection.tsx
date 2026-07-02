@@ -16,7 +16,7 @@ const ICON_MAP = {
 
 function SlotText({ children }: { children: string }) {
   return (
-    <span aria-label={children}>
+    <span aria-label={children} role="text">
       {children.split('').map((char, i) => (
         <span
           key={i}

@@ -111,7 +111,7 @@ export function FeaturedWorkSection() {
         <div className="border border-(--color-border)">
 
           {/* Featured */}
-          <RevealFade>
+          <RevealFade delay={0.15}>
             <Link
               href={FEATURED.href}
               className="group grid gap-8 px-6 bg-(--color-bg) transition-colors duration-300 ease-out hover:bg-(--color-surface) md:px-10 lg:grid-cols-2 lg:gap-16"
@@ -139,7 +139,7 @@ export function FeaturedWorkSection() {
           </RevealFade>
 
           {/* Two-up rows */}
-          <RevealFade className="grid border-t border-(--color-border) lg:grid-cols-2" delay={0.1}>
+          <RevealFade className="grid border-t border-(--color-border) lg:grid-cols-2" delay={0.25}>
             {CASE_STUDIES.map((item, idx) => (
               <Link
                 key={item.company}

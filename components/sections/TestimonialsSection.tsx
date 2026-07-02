@@ -72,7 +72,13 @@ export function TestimonialsSection() {
           Work that moved numbers.
         </RevealText>
 
-        {/* Switching content — word reveals, no opacity */}
+        {/* Switching content — scroll-triggered entrance, then word reveals on switch */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
+        >
         <AnimatePresence mode="wait">
           <motion.div
             key={active.id}
@@ -110,7 +116,7 @@ export function TestimonialsSection() {
             </div>
 
             {/* Quote — word by word clip reveal */}
-            <p className="text-xl md:text-[1.45rem] font-light text-[var(--color-text)] leading-[1.7] mb-5 h-[3.4em] overflow-hidden">
+            <p className="text-xl md:text-[1.45rem] font-light text-[var(--color-text)] leading-[1.7] mb-5 h-[5.1em] md:h-[3.4em] overflow-hidden">
               <span className="text-[var(--color-text-faint)]">&ldquo;</span>
               {words.map((word, i) => (
                 <Fragment key={active.id + "-w-" + i}>
@@ -154,8 +160,15 @@ export function TestimonialsSection() {
             </div>
           </motion.div>
         </AnimatePresence>
+        </motion.div>
 
         {/* Avatar switcher */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
+        >
         <LayoutGroup>
         <motion.div
           layout
@@ -218,6 +231,7 @@ export function TestimonialsSection() {
           })}
         </motion.div>
         </LayoutGroup>
+        </motion.div>
 
       </div>
     </section>

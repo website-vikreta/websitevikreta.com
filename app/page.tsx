@@ -146,7 +146,7 @@ export default function Home() {
       <HeroSection />
       <StatsCounters />
       <ServicesBentoGrid />
-      {/* <ClientLogosSection /> */}
+      <ClientLogosSection />
       <FeaturedWorkSection />
       <TechnologiesSection />
       <TestimonialsSection />

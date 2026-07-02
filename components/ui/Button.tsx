@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 function SlotText({ children }: { children: React.ReactNode }) {
   if (typeof children !== 'string') return <>{children}</>
   return (
-    <span aria-label={children}>
+    <span aria-label={children} role="text">
       {children.split('').map((char, i) => (
         <span
           key={i}
