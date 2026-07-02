@@ -155,7 +155,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
               </motion.div>
             ) : null}
 
-            <h2 className="text-h2 font-bold tracking-tight text-[var(--color-text)] mb-8">Apply now!</h2>
+            <h2 className="text-h3 font-bold tracking-tight text-[var(--color-text)] mb-8">Apply now!</h2>
 
             <div className="flex flex-col gap-4">
 
@@ -236,7 +236,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                       setErrors(prev => ({ ...prev, resume: undefined }))
                     }
                   }}
-                  className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors file:mr-4 file:py-1 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-[var(--color-bg-muted)] file:text-[var(--color-text)] cursor-pointer"
+                  className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors file:mr-4 file:py-1 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-transparent file:text-[var(--color-text)] file:border file:border-black/35 cursor-pointer"
                   style={{ borderColor: errors.resume ? '#FF4444' : 'var(--color-border)' }}
                 />
                 {errors.resume && <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.resume}</p>}
@@ -249,7 +249,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
               )}
 
               <Button
-                variant="ghost"
+                variant="primary"
                 size="md"
                 showArrow
                 disabled={submitting}
