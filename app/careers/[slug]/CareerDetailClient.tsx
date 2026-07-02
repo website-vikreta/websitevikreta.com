@@ -37,6 +37,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
   const [resumeFile, setResumeFile]   = useState<File | null>(null)
   const [submitError, setSubmitError] = useState('')
   const [submitting, setSubmitting]   = useState(false)
+  const [fileInputKey, setFileInputKey] = useState(0)
 
   async function handleSubmit() {
     const newErrors: FormErrors = {}
@@ -79,6 +80,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
         setResumeFile(null)
         setErrors({})
         setSubmitError('')
+        setFileInputKey(k => k + 1)
       }, 4000)
     } catch {
       setSubmitError('Something went wrong. Please try again.')
@@ -224,6 +226,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                   Resume (PDF, max 5MB)
                 </label>
                 <input
+                  key={fileInputKey}
                   type="file"
                   accept=".pdf"
                   disabled={submitting}
@@ -254,6 +257,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                 showArrow
                 disabled={submitting}
                 onClick={handleSubmit}
+                className="w-fit"
               >
                 {submitting ? 'Submitting…' : 'Submit Application'}
               </Button>

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeClient } from '@/sanity/lib/write-client'
 
-const EMAILJS_SERVICE_ID   = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  ?? ''
-const EMAILJS_TEMPLATE_ID  = process.env.EMAILJS_CAREERS_TEMPLATE_ID     ?? ''
-const EMAILJS_PUBLIC_KEY   = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY  ?? ''
+const EMAILJS_SERVICE_ID   = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_SERVICE_ID    ?? ''
+const EMAILJS_TEMPLATE_ID  = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_TEMPLATE_ID   ?? ''
+const EMAILJS_PUBLIC_KEY   = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY            ?? ''
+const EMAILJS_PRIVATE_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY           ?? ''
 
 export async function POST(req: NextRequest) {
   try {
@@ -63,9 +64,10 @@ export async function POST(req: NextRequest) {
     const jobUrl = `${process.env.NEXT_PUBLIC_HOSTNAME}/careers/${openingSlug}`
 
     const emailPayload = {
-      service_id:  EMAILJS_SERVICE_ID,
-      template_id: EMAILJS_TEMPLATE_ID,
-      user_id:     EMAILJS_PUBLIC_KEY,
+      service_id:   EMAILJS_SERVICE_ID,
+      template_id:  EMAILJS_TEMPLATE_ID,
+      user_id:      EMAILJS_PUBLIC_KEY,
+      accessToken:  EMAILJS_PRIVATE_KEY,
       template_params: {
         candidate_name:  name,
         candidate_email: email,
