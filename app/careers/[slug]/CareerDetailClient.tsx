@@ -92,7 +92,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-20 container">
+      <section className="container pt-[150px] pb-16">
         <h2 className="text-h3 font-bold tracking-tight text-[var(--color-text)] mb-10">{opening.title}</h2>
         <p className="text-body-lg text-[var(--color-text-muted)] mb-4" style={{ lineHeight: 1.7 }}>
           {opening.description}
@@ -117,9 +117,9 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
               <h3 className="text-lg font-bold text-[var(--color-text)] mb-6">Prerequisites</h3>
               <ul className="flex flex-col gap-3">
                 {opening.prerequisites.map(p => (
-                  <li key={p} className="flex items-start gap-3 text-[var(--color-text-muted)]" style={{ lineHeight: 1.7 }}>
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] flex-shrink-0" />
-                    {p}
+                  <li key={p} className="flex items-baseline gap-3 text-[var(--color-text-muted)]" style={{ lineHeight: 1.7 }}>
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] flex-shrink-0 translate-y-[-2px]" />
+                    <span>{p}</span>
                   </li>
                 ))}
               </ul>

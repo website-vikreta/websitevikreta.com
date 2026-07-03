@@ -1,9 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { motion } from 'motion/react'
-import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
 
 interface Opening {
   _id: string
@@ -40,26 +39,24 @@ export default function CareersClient({ openings }: Props) {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative">
-        <div className="pt-[150px] pb-12">
+      <section className="relative overflow-hidden">
+        <div className="container pt-[150px] pb-12">
           <motion.div
             variants={container}
             initial="hidden"
             animate="visible"
           >
-            <div className="container">
-              <div className="overflow-hidden mb-10">
-                <motion.h2
-                  variants={lineReveal}
-                  className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
-                >
-                  Careers
-                </motion.h2>
-              </div>
+            <div className="overflow-hidden mb-10">
+              <motion.h2
+                variants={lineReveal}
+                className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
+              >
+                Careers
+              </motion.h2>
             </div>
             <motion.div
               variants={fadeUp}
-              className="relative w-full overflow-hidden aspect-video lg:aspect-[16/5]"
+              className="relative w-full overflow-hidden aspect-video lg:aspect-[16/6]"
             >
               <Image
                 src="/images/careers-banner.png"
@@ -122,10 +119,10 @@ export default function CareersClient({ openings }: Props) {
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-(--color-border)">
-                  <span className="text-sm font-medium text-(--color-text)">₹{opening.stipend}</span>
-                  <Link href={`/careers/${opening.slug}`}>
-                    <Button variant="ghost" size="md" showArrow>View & Apply</Button>
-                  </Link>
+                  <span className="text-sm font-medium text-[var(--color-text)]">Stipend: ₹{opening.stipend}</span>
+                  <TextLink href={`/careers/${opening.slug}`} arrow="diagonal">
+                    View & Apply
+                  </TextLink>
                 </div>
               </motion.div>
             ))}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { FaqPageContent } from './FaqPageContent'
 
 export const metadata: Metadata = {
-  title: 'FAQs | AI Automation, Web Development & Pricing | Website Vikreta',
+  title: 'FAQs | Website Vikreta',
   description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
   keywords: [
     'AI automation FAQ',
