@@ -3,8 +3,12 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import type { PortableTextBlock } from '@portabletext/react'
+import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
+import { RevealText, RevealFade } from '@/components/ui/Reveal'
+
+const SUBHEAD = 'text-h3 font-bold tracking-tight text-(--color-text) mb-6'
 
 interface Opening {
   _id: string
@@ -78,14 +82,6 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       }
 
       setSubmitted(true)
-      setTimeout(() => {
-        setSubmitted(false)
-        setFormData({ name: '', email: '', phone: '' })
-        setResumeFile(null)
-        setErrors({})
-        setSubmitError('')
-        setFileInputKey(k => k + 1)
-      }, 4000)
     } catch {
       setSubmitError('Something went wrong. Please try again.')
     } finally {
@@ -93,24 +89,34 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
     }
   }
 
+  function resetForm() {
+    setSubmitted(false)
+    setFormData({ name: '', email: '', phone: '' })
+    setResumeFile(null)
+    setErrors({})
+    setSubmitError('')
+    setFileInputKey(k => k + 1)
+  }
+
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="container pt-[150px] pb-16">
-        <h2 className="text-h3 font-bold tracking-tight text-[var(--color-text)] mb-10">{opening.title}</h2>
-        <p className="text-body-lg text-[var(--color-text-muted)] mb-4" style={{ lineHeight: 1.7 }}>
-          {opening.shortDescription}
-        </p>
-        <p className="text-sm font-medium text-[var(--color-text)]">
-          Stipend: ₹{opening.stipend} / month
-        </p>
-        <p className="text-sm font-medium text-[var(--color-text-muted)] mt-2">
-          {opening.positions} {opening.positions === 1 ? 'position' : 'positions'} available
-        </p>
+        <RevealText as="h1" className="text-h2 font-bold tracking-tight text-(--color-text) mb-6">
+          {opening.title}
+        </RevealText>
+        <RevealFade delay={0.1}>
+          <p className="text-body-lg text-(--color-text-muted) leading-relaxed">
+            {opening.shortDescription}
+          </p>
+          <p className="mt-4 text-sm text-(--color-text-muted)">
+            ₹{opening.stipend} / month · {opening.positions} {opening.positions === 1 ? 'position' : 'positions'} available
+          </p>
+        </RevealFade>
       </section>
 
       {/* ── Two-column: Details + Form ─────────────────────────────────────── */}
-      <section className="py-12 md:py-16">
+      <section className="pb-12 md:pb-16">
         <div className="container grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
           {/* LEFT — Prerequisites + Skills */}
@@ -119,18 +125,18 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
             {/* About the Internship */}
             {opening.description && opening.description.length > 0 && (
               <div>
-                <h3 className="text-lg font-bold text-[var(--color-text)] mb-6">About the Internship</h3>
+                <h2 className={SUBHEAD}>About the Internship</h2>
                 <PortableTextContent value={opening.description} />
               </div>
             )}
 
             {/* Prerequisites */}
             <div>
-              <h3 className="text-lg font-bold text-[var(--color-text)] mb-6">Prerequisites</h3>
+              <h2 className={SUBHEAD}>Prerequisites</h2>
               <ul className="flex flex-col gap-3">
                 {opening.prerequisites.map(p => (
-                  <li key={p} className="flex items-baseline gap-3 text-[var(--color-text-muted)]" style={{ lineHeight: 1.7 }}>
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] flex-shrink-0 translate-y-[-2px]" />
+                  <li key={p} className="flex items-baseline gap-3 text-(--color-text-muted) leading-relaxed">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-(--color-accent) flex-shrink-0 translate-y-[-2px]" />
                     <span>{p}</span>
                   </li>
                 ))}
@@ -139,10 +145,10 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
             {/* Skills */}
             <div>
-              <h3 className="text-lg font-bold text-[var(--color-text)] mb-6">Skills You Will Work With</h3>
+              <h2 className={SUBHEAD}>Skills You Will Work With</h2>
               <div className="flex flex-wrap gap-2">
                 {opening.skills.map(skill => (
-                  <span key={skill} className="font-mono text-sm px-3 py-1.5 border border-[var(--color-border)] text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] hover:border-[var(--color-text)] cursor-default">
+                  <span key={skill} className="rounded-full border border-(--color-border) px-3 py-1 text-sm text-(--color-text)">
                     {skill}
                   </span>
                 ))}
@@ -152,30 +158,56 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
           </div>
 
           {/* RIGHT — Application Form */}
-          <div>
+          <div className="bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="fixed bottom-6 right-6 z-50 bg-white border border-[var(--color-border)] shadow-lg px-5 py-4 flex items-center gap-3 rounded-sm"
               >
-                <span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-                <p className="text-sm font-medium text-[var(--color-text)]">Application submitted successfully!</p>
+                <p
+                  style={{
+                    fontSize:      'clamp(1.5rem, 3.5vw, 2.25rem)',
+                    lineHeight:    1.25,
+                    letterSpacing: '-0.01em',
+                    color:         '#16a34a',
+                    maxWidth:      '28ch',
+                    fontWeight:    400,
+                  }}
+                >
+                  Thanks for applying, our team will review your application and get back within 5–7 working days.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  style={{
+                    marginTop:      '1.25rem',
+                    display:        'inline-flex',
+                    alignItems:     'center',
+                    gap:            '0.25rem',
+                    fontSize:       '0.875rem',
+                    fontWeight:     500,
+                    color:          'var(--color-text)',
+                    background:     'none',
+                    border:         'none',
+                    padding:        0,
+                    cursor:         'pointer',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '3px',
+                  }}
+                >
+                  Submit another application
+                </button>
               </motion.div>
-            ) : null}
+            ) : (
+            <>
+            <h2 className={SUBHEAD}>Apply now!</h2>
 
-            <h2 className="text-h3 font-bold tracking-tight text-[var(--color-text)] mb-8">Apply now!</h2>
-
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3 sm:gap-3.5">
 
               {/* Name */}
               <div>
-                <label className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2 tracking-[0.12em]">
+                <label className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
                   Full Name
                 </label>
                 <input
@@ -185,7 +217,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                   onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Jane Doe"
                   disabled={submitting}
-                  className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
+                  className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
                   style={{ borderColor: errors.name ? '#FF4444' : 'var(--color-border)' }}
                   onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
                   onBlur={e => { e.target.style.borderColor = errors.name ? '#FF4444' : 'var(--color-border)' }}
@@ -195,7 +227,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
               {/* Email */}
               <div>
-                <label className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2 tracking-[0.12em]">
+                <label className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
                   Email
                 </label>
                 <input
@@ -205,7 +237,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                   onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="jane@company.com"
                   disabled={submitting}
-                  className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
+                  className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
                   style={{ borderColor: errors.email ? '#FF4444' : 'var(--color-border)' }}
                   onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
                   onBlur={e => { e.target.style.borderColor = errors.email ? '#FF4444' : 'var(--color-border)' }}
@@ -215,8 +247,8 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
               {/* Phone */}
               <div>
-                <label className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2 tracking-[0.12em]">
-                  Phone <span className="normal-case text-[var(--color-text-faint)]">(optional)</span>
+                <label className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
+                  Phone <span className="text-(--color-text-faint)">(optional)</span>
                 </label>
                 <input
                   type="tel"
@@ -225,7 +257,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                   onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                   placeholder="+91 98765 43210"
                   disabled={submitting}
-                  className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
+                  className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
                   style={{ borderColor: 'var(--color-border)' }}
                   onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
                   onBlur={e => { e.target.style.borderColor = 'var(--color-border)' }}
@@ -234,7 +266,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
               {/* Resume Upload */}
               <div>
-                <label className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2 tracking-[0.12em]">
+                <label className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
                   Resume (PDF, max 5MB)
                 </label>
                 <input
@@ -251,7 +283,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                       setErrors(prev => ({ ...prev, resume: undefined }))
                     }
                   }}
-                  className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors file:mr-4 file:py-1 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-transparent file:text-[var(--color-text)] file:border file:border-black/35 cursor-pointer"
+                  className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors file:mr-3 sm:file:mr-4 file:py-1 file:px-2.5 sm:file:px-3 file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-transparent file:text-(--color-text) file:border file:border-black/35 cursor-pointer"
                   style={{ borderColor: errors.resume ? '#FF4444' : 'var(--color-border)' }}
                 />
                 {errors.resume && <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.resume}</p>}
@@ -266,19 +298,24 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
               <Button
                 variant="primary"
                 size="md"
-                showArrow
+                showArrow={!submitting}
                 disabled={submitting}
                 onClick={handleSubmit}
                 className="w-fit"
               >
-                {submitting ? 'Submitting…' : 'Submit Application'}
+                {submitting
+                  ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" />Submitting…</span>
+                  : 'Submit Application'
+                }
               </Button>
 
-              <p className="text-xs text-[var(--color-text-faint)]">
+              <p className="text-xs text-(--color-text-faint)">
                 We review every application and get back within 5–7 working days.
               </p>
 
             </div>
+            </>
+            )}
           </div>
 
         </div>

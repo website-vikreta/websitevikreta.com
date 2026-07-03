@@ -142,6 +142,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Where: `sanity/schemaTypes/openingType.ts`, `app/careers/[slug]/CareerDetailClient.tsx`.
 - Date: 2026-07-03
 
+### [Page] — career detail page: h1/h2 hierarchy + stipend/positions line + form card
+- Rule: On `app/careers/[slug]/CareerDetailClient.tsx`: page title (`opening.title`) is `<h1>` styled `text-h2` (matches sibling detail page sizing — blog post title, careers listing hero). Every sub-block heading ("About the Internship", "Prerequisites", "Skills You Will Work With", "Apply now!") is `<h2>` styled `text-h3 font-bold tracking-tight text-(--color-text) mb-6` (shared `SUBHEAD` const in the file) — never `text-lg`/ad-hoc sizes for these. Stipend + position count render as ONE quiet line (`₹{stipend} / month · {positions} {position(s)} available`, `text-sm text-(--color-text-muted)`, `mt-4`) directly under the short description — not two separate `<p>` blocks with their own margins. Skills pills reuse the rounded-pill spec from the [Card] bordered-grid entry (`rounded-full border border-(--color-border) px-3 py-1 text-sm text-(--color-text)`), not the old mono/hover-invert chip style. Form field labels are plain sentence-case (`text-sm font-medium text-(--color-text-muted)`) — no uppercase/tracking (see [Anti-pattern] no eyebrow labels; form labels count too, they hurt readability same as card eyebrows). The application form column gets a white card treatment: `bg-(--color-surface) border border-(--color-border) p-6 md:p-10` wrapping the whole right column div.
+- Where: `app/careers/[slug]/CareerDetailClient.tsx`.
+- Why: page previously had two `<h2>` (title + "Apply now!") and no `<h1>`, sub-headings used arbitrary `text-lg`, stipend/positions were two loosely-spaced paragraphs, skills used mono hover-invert chips inconsistent with the listing page, form labels were uppercase-tracked (flagged anti-pattern), and the form had no surface treatment distinguishing it from the page background.
+- Date: 2026-07-03
+
 ## Naming
 _None logged yet._
 
