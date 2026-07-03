@@ -1,10 +1,3 @@
-import { ComingSoonPage } from '@/components/ComingSoonPage'
-
-export default function AIAutomationsPage() {
-  return <ComingSoonPage pageName="AI Automations" showFooter={false} />
-}
-
-/*
 import type { Metadata } from 'next'
 import AIAutomationsClient from './AIAutomationsClient'
 
@@ -61,4 +54,3 @@ export const metadata: Metadata = {
 export default function AIAutomationsPage() {
   return <AIAutomationsClient />
 }
-*/

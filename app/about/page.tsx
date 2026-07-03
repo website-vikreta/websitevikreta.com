@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
-  title: 'About Website Vikreta | AI Automation & Web Development Agency',
+  title: 'About Us | Website Vikreta',
   description: 'Learn about Website Vikreta, a Pune-based AI automation and web development agency. We build high-performance Next.js websites and custom AI workflow automation systems for businesses in India and worldwide.',
   keywords: [
     'about Website Vikreta',

@@ -33,6 +33,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Work', href: '/work' },
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
+  { label: 'Careers', href: '/careers' },
 ]
 
 function isItemActive(item: NavItem, pathname: string): boolean {
@@ -51,6 +52,7 @@ export function Navbar() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+  const isHome = pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -94,12 +96,12 @@ export function Navbar() {
           {/* Logo */}
           <Logo variant="light" />
 
-          {/* Desktop nav — hidden at top, visible on scroll */}
+          {/* Desktop nav — hidden at top on home page only, visible on scroll */}
           <ul
             className={`hidden lg:flex items-center gap-10 list-none transition-all duration-300 ${
-              scrolled
-                ? 'opacity-100 pointer-events-auto translate-y-0'
-                : 'opacity-0 pointer-events-none -translate-y-1'
+              isHome && !scrolled
+                ? 'opacity-0 pointer-events-none -translate-y-1'
+                : 'opacity-100 pointer-events-auto translate-y-0'
             }`}
             role="list"
           >
