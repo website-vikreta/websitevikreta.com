@@ -120,8 +120,15 @@ const staticRoutes: MetadataRoute.Sitemap = [
   },
 ]
 
-const SLUGS_QUERY = groq`
+const BLOG_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] {
+    "slug": slug.current,
+    _updatedAt
+  }
+`
+
+const CAREER_SLUGS_QUERY = groq`
+  *[_type == "opening" && isActive == true && defined(slug.current)] {
     "slug": slug.current,
     _updatedAt
   }
@@ -133,11 +140,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   try {
-    const posts = await client.fetch<{ slug: string; _updatedAt: string }[]>(
-      SLUGS_QUERY,
-      {},
-      { next: { revalidate: 3600 } },
-    )
+    const [posts, openings] = await Promise.all([
+      client.fetch<{ slug: string; _updatedAt: string }[]>(
+        BLOG_SLUGS_QUERY,
+        {},
+        { next: { revalidate: 3600 } },
+      ),
+      client.fetch<{ slug: string; _updatedAt: string }[]>(
+        CAREER_SLUGS_QUERY,
+        {},
+        { next: { revalidate: 3600 } },
+      ),
+    ])
 
     const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
       url: `${BASE}/blog/${post.slug}`,
@@ -146,7 +160,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }))
 
-    return [...staticRoutes, ...blogRoutes]
+    const careerRoutes: MetadataRoute.Sitemap = openings.map((opening) => ({
+      url: `${BASE}/careers/${opening.slug}`,
+      lastModified: new Date(opening._updatedAt),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }))
+
+    return [...staticRoutes, ...blogRoutes, ...careerRoutes]
   } catch {
     return staticRoutes
   }
