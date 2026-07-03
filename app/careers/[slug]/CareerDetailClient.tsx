@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 
-const SUBHEAD = 'text-h3 font-bold tracking-tight text-(--color-text) mb-6'
+const SUBHEAD = 'text-h4 font-bold tracking-tight text-(--color-text) mb-6'
 
 interface Opening {
   _id: string

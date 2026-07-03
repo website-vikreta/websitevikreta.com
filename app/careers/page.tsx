@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: 'Join Website Vikreta as an intern. We are an AI-first web agency in Pune building websites, ai automations, and digital experiences. Open roles in web development, design, and social media.',
   keywords: ['internship Pune', 'web development internship', 'graphic design internship', 'social media internship', 'Website Vikreta careers'],
   openGraph: {
-    title: 'Careers | Internships at Website Vikreta',
-    description: 'Join Website Vikreta. Open internship roles in web development, design, and social media.',
+    title: 'Website Vikreta Careers and Job Opportunities',
+    description: 'Join Website Vikreta as an intern. We are an AI-first web agency in Pune building websites, ai automations, and digital experiences. Open roles in web development, design, and social media.',
     url: `${process.env.NEXT_PUBLIC_HOSTNAME}/careers`,
     siteName: 'WebsiteVikreta',
     type: 'website',
