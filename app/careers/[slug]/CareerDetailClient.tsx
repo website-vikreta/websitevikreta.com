@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'motion/react'
 import type { PortableTextBlock } from '@portabletext/react'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
-import { RevealText, RevealFade } from '@/components/ui/Reveal'
 
 const SUBHEAD = 'text-h3 font-bold tracking-tight text-(--color-text) mb-6'
 
@@ -102,17 +100,17 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
     <>
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="container pt-[150px] pb-16">
-        <RevealText as="h1" className="text-h2 font-bold tracking-tight text-(--color-text) mb-6">
+        <h1 className="text-h2 font-bold tracking-tight text-(--color-text) mb-6">
           {opening.title}
-        </RevealText>
-        <RevealFade delay={0.1}>
+        </h1>
+        <div>
           <p className="text-body-lg text-(--color-text-muted) leading-relaxed">
             {opening.shortDescription}
           </p>
           <p className="mt-4 text-sm text-(--color-text-muted)">
             ₹{opening.stipend} / month · {opening.positions} {opening.positions === 1 ? 'position' : 'positions'} available
           </p>
-        </RevealFade>
+        </div>
       </section>
 
       {/* ── Two-column: Details + Form ─────────────────────────────────────── */}
@@ -160,11 +158,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
           {/* RIGHT — Application Form */}
           <div className="bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
             {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <div>
                 <p
                   style={{
                     fontSize:      'clamp(1.5rem, 3.5vw, 2.25rem)',
@@ -198,7 +192,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                 >
                   Submit another application
                 </button>
-              </motion.div>
+              </div>
             ) : (
             <>
             <h2 className={SUBHEAD}>Apply now!</h2>
