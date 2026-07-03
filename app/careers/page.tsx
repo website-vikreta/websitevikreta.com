@@ -4,8 +4,8 @@ import { ALL_OPENINGS_QUERY } from '@/sanity/lib/careers-queries'
 import CareersClient from './CareersClient'
 
 export const metadata: Metadata = {
-  title: 'Careers | Internships at Website Vikreta | Pune',
-  description: 'Join Website Vikreta as an intern. We are an AI-first web agency in Pune building websites, automations, and digital experiences. Open roles in web development, design, and social media.',
+  title: 'Website Vikreta Careers and Job Opportunities',
+  description: 'Join Website Vikreta as an intern. We are an AI-first web agency in Pune building websites, ai automations, and digital experiences. Open roles in web development, design, and social media.',
   keywords: ['internship Pune', 'web development internship', 'graphic design internship', 'social media internship', 'Website Vikreta careers'],
   openGraph: {
     title: 'Careers | Internships at Website Vikreta',

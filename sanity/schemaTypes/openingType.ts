@@ -55,12 +55,75 @@ export const openingType = defineType({
       validation: r => r.required().min(1),
     }),
     defineField({
-      name: 'description',
-      title: 'Description',
+      name: 'flag',
+      title: 'Flag',
+      type: 'string',
+      group: 'details',
+      description: 'Highlights this opening with a corner indicator on the careers listing.',
+      options: {
+        list: [
+          { title: 'New', value: 'New' },
+          { title: 'Hiring Urgently', value: 'Hiring Urgently' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'shortDescription',
+      title: 'Short Description',
       type: 'text',
       group: 'details',
       rows: 4,
+      description: 'Shown on the careers card and below the title on the detail page.',
       validation: r => r.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description (About the Internship)',
+      type: 'array',
+      group: 'details',
+      description: 'Full write-up rendered as "About the Internship" on the detail page.',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'H2', value: 'h2' },
+            { title: 'H3', value: 'h3' },
+            { title: 'Quote', value: 'blockquote' },
+          ],
+          marks: {
+            decorators: [
+              { title: 'Bold', value: 'strong' },
+              { title: 'Italic', value: 'em' },
+              { title: 'Code', value: 'code' },
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  defineField({ name: 'href', type: 'url', title: 'URL' }),
+                  defineField({
+                    name: 'blank',
+                    type: 'boolean',
+                    title: 'Open in new tab',
+                    initialValue: false,
+                  }),
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
+            defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'prerequisites',
@@ -99,6 +162,14 @@ export const openingType = defineType({
       group: 'seo',
       rows: 2,
       validation: r => r.max(160),
+    }),
+    defineField({
+      name: 'metaKeywords',
+      title: 'Meta Keywords',
+      type: 'array',
+      group: 'seo',
+      of: [{ type: 'string' }],
+      options: { layout: 'tags' },
     }),
   ],
   preview: {

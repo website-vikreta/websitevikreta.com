@@ -1,8 +1,9 @@
 'use client'
 
-import Image from 'next/image'
-import { motion } from 'motion/react'
-import { TextLink } from '@/components/ui/TextLink'
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { RevealText, RevealFade } from '@/components/ui/Reveal'
+import SkillsPills from '@/components/ui/SkillsPills'
 
 interface Opening {
   _id: string
@@ -11,7 +12,8 @@ interface Opening {
   type: string
   stipend: string
   positions: number
-  description: string
+  flag?: string
+  shortDescription: string
   prerequisites: string[]
   skills: string[]
 }
@@ -20,19 +22,9 @@ interface Props {
   openings: Opening[]
 }
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
-}
-
-const lineReveal = {
-  hidden:  { y: '110%', opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
-}
-
-const fadeUp = {
-  hidden:  { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+const FLAG_STYLES: Record<string, string> = {
+  New: 'bg-(--color-accent) text-(--color-text)',
+  'Hiring Urgently': 'bg-[#FF4444] text-white',
 }
 
 export default function CareersClient({ openings }: Props) {
@@ -40,91 +32,79 @@ export default function CareersClient({ openings }: Props) {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
-        <div className="container pt-[150px] pb-12">
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
+        <div className="container pt-32 pb-8 md:pb-16 md:pt-40">
+          <RevealText
+            as="h1"
+            className="text-h2 font-bold tracking-tight text-(--color-text)"
           >
-            <div className="overflow-hidden mb-10">
-              <motion.h2
-                variants={lineReveal}
-                className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
-              >
-                Careers
-              </motion.h2>
-            </div>
-            <motion.div
-              variants={fadeUp}
-              className="relative w-full overflow-hidden aspect-video lg:aspect-[16/6]"
-            >
-              <Image
-                src="/images/careers-banner.png"
-                alt="Careers at Website Vikreta"
-                fill
-                className="object-cover"
-                priority
-              />
-            </motion.div>
-          </motion.div>
+            Careers
+          </RevealText>
         </div>
       </section>
 
       {/* ── Openings listing ─────────────────────────────────────────────── */}
-      <section id="openings" className="py-16 md:py-20">
+      <section id="openings" className="pb-16 md:pb-20">
         <div className="container">
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            <motion.h2 variants={fadeUp} className="text-h3 font-bold tracking-tight text-[var(--color-text)] mb-4">
+          <div className="mb-10 md:mb-14 max-w-2xl">
+            <RevealText
+              as="h2"
+              className="text-h3 font-bold tracking-tight text-(--color-text)"
+            >
               Open Roles
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-[var(--color-text-muted)] mb-12" style={{ fontSize: '1.0625rem', lineHeight: 1.7 }}>
-              All roles are internship positions based in Pune (hybrid/remote flexible).
-            </motion.p>
-          </motion.div>
+            </RevealText>
+            <RevealFade className="mt-4" delay={0.1}>
+              <p className="text-body-lg text-(--color-text-muted) leading-relaxed">
+                All roles are flexible and available in hybrid and remote formats.
+              </p>
+            </RevealFade>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {openings.map((opening) => (
-              <motion.div
-                key={opening.slug}
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 24 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-[var(--color-bg-muted)] p-6 flex flex-col gap-4"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-meta-label tracking-(--tracking-meta) uppercase text-(--color-text-faint)">
-                    {opening.type}
-                  </span>
-                  <span className="font-mono text-meta-label tracking-(--tracking-meta) uppercase text-(--color-text-faint)">
-                    {opening.positions} {opening.positions === 1 ? 'intern' : 'interns'} needed
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-(--color-text)">{opening.title}</h3>
-
-                <p className="text-(--color-text-muted) text-sm leading-relaxed line-clamp-3">{opening.description}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {opening.skills.map(skill => (
-                    <span key={skill} className="text-xs font-mono px-2 py-1 border border-(--color-border) text-(--color-text-muted)">
-                      {skill}
+          <div className="grid grid-cols-1 border-t border-l border-(--color-border) md:grid-cols-2 lg:grid-cols-3">
+            {openings.map((opening, i) => (
+              <RevealFade key={opening.slug} delay={(i % 3) * 0.08} className="border-r border-b border-(--color-border)">
+                <Link
+                  href={`/careers/${opening.slug}`}
+                  className="group relative flex h-full flex-col gap-5 bg-(--color-surface) p-6 transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) md:p-8"
+                >
+                  {opening.flag && (
+                    <span
+                      className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium uppercase tracking-wide ${FLAG_STYLES[opening.flag] ?? 'bg-(--color-accent) text-(--color-text)'}`}
+                    >
+                      {opening.flag}
                     </span>
-                  ))}
-                </div>
+                  )}
 
-                <div className="flex items-center justify-between pt-2 border-t border-(--color-border)">
-                  <span className="text-sm font-medium text-[var(--color-text)]">Stipend: ₹{opening.stipend}</span>
-                  <TextLink href={`/careers/${opening.slug}`} arrow="diagonal">
-                    View & Apply
-                  </TextLink>
-                </div>
-              </motion.div>
+                  <span className="text-sm text-(--color-text-muted)">
+                    {opening.type} · {opening.positions} {opening.positions === 1 ? 'opening' : 'openings'}
+                  </span>
+
+                  <h3 className="text-2xl font-bold leading-snug tracking-tight text-(--color-text)">
+                    {opening.title}
+                  </h3>
+
+                  <p className="text-base text-(--color-text-muted) leading-relaxed line-clamp-3">
+                    {opening.shortDescription}
+                  </p>
+
+                  {opening.skills.length > 0 && <SkillsPills skills={opening.skills} />}
+
+                  <div className="mt-auto flex items-center justify-between pt-2">
+                    <span className="text-sm text-(--color-text-muted)">₹{opening.stipend}</span>
+                    <span className="inline-flex items-center gap-1.5 text-base font-medium text-(--color-text)">
+                      <span className="relative">
+                        View &amp; Apply
+                        <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-(--color-text) transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" />
+                      </span>
+                      <ArrowUpRight
+                        size={15}
+                        strokeWidth={1.75}
+                        className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </div>
+                </Link>
+              </RevealFade>
             ))}
           </div>
         </div>

@@ -2,7 +2,9 @@
 
 import { useState } from 'react'
 import { motion } from 'motion/react'
+import type { PortableTextBlock } from '@portabletext/react'
 import { Button } from '@/components/ui/Button'
+import PortableTextContent from '@/components/ui/PortableTextContent'
 
 interface Opening {
   _id: string
@@ -11,11 +13,13 @@ interface Opening {
   type: string
   stipend: string
   positions: number
-  description: string
+  shortDescription: string
+  description?: PortableTextBlock[]
   prerequisites: string[]
   skills: string[]
   metaTitle?: string
   metaDescription?: string
+  metaKeywords?: string[]
 }
 
 interface FormState {
@@ -95,7 +99,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       <section className="container pt-[150px] pb-16">
         <h2 className="text-h3 font-bold tracking-tight text-[var(--color-text)] mb-10">{opening.title}</h2>
         <p className="text-body-lg text-[var(--color-text-muted)] mb-4" style={{ lineHeight: 1.7 }}>
-          {opening.description}
+          {opening.shortDescription}
         </p>
         <p className="text-sm font-medium text-[var(--color-text)]">
           Stipend: ₹{opening.stipend} / month
@@ -111,6 +115,14 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
           {/* LEFT — Prerequisites + Skills */}
           <div className="flex flex-col gap-10">
+
+            {/* About the Internship */}
+            {opening.description && opening.description.length > 0 && (
+              <div>
+                <h3 className="text-lg font-bold text-[var(--color-text)] mb-6">About the Internship</h3>
+                <PortableTextContent value={opening.description} />
+              </div>
+            )}
 
             {/* Prerequisites */}
             <div>

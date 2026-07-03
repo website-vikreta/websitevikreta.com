@@ -15,10 +15,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!opening) return {}
   return {
     title: opening.metaTitle ?? `${opening.title} | Careers at Website Vikreta`,
-    description: opening.metaDescription ?? opening.description,
+    description: opening.metaDescription ?? opening.shortDescription,
+    keywords: opening.metaKeywords ?? [],
     openGraph: {
       title: opening.metaTitle ?? `${opening.title} | Website Vikreta`,
-      description: opening.metaDescription ?? opening.description,
+      description: opening.metaDescription ?? opening.shortDescription,
       url: `${process.env.NEXT_PUBLIC_HOSTNAME}/careers/${slug}`,
       siteName: 'WebsiteVikreta',
       images: [{ url: '/og-image.png', width: 1200, height: 630 }],

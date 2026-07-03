@@ -8,7 +8,8 @@ export const ALL_OPENINGS_QUERY = defineQuery(`
     type,
     stipend,
     positions,
-    description,
+    flag,
+    shortDescription,
     prerequisites,
     skills,
   }
@@ -22,10 +23,13 @@ export const OPENING_BY_SLUG_QUERY = defineQuery(`
     type,
     stipend,
     positions,
+    flag,
+    shortDescription,
     description,
     prerequisites,
     skills,
     metaTitle,
     metaDescription,
+    metaKeywords,
   }
 `)
