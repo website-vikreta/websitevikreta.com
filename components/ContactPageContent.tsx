@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button'
 
 function SlotText({ children }: { children: string }) {
   return (
-    <span aria-label={children}>
+    <span aria-label={children} role="text">
       {children.split('').map((char, i) =>
         char === ' ' ? (
           <span key={i} aria-hidden="true" style={{ display: 'inline-block', width: '0.3em' }} />
