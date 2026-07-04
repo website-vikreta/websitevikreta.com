@@ -400,3 +400,17 @@ body {
     border-radius: 2px;
   }
 }
+
+/* ─── Hide native scrollbar ────────────────────────────────────────
+   Paired with a JS-driven custom scrollbar (see automation-workflow-canvas.tsx)
+   so the track/thumb render identically across browsers and OS scrollbar
+   settings, instead of relying on ::-webkit-scrollbar (which some browsers
+   ignore for OS-level overlay scrollbars). */
+.wf-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wf-scroll::-webkit-scrollbar {
+  display: none;
+}
