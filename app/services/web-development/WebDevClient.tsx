@@ -188,8 +188,11 @@ export default function WebDevClient() {
             </motion.p>
 
             <motion.div variants={ctaChild}>
-              {/* TODO: confirm final CTA destination */}
-              <Button href="#work" variant="primary" showArrow>
+              <Button
+                onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
+                variant="primary"
+                showArrow
+              >
                 See What We Build
               </Button>
             </motion.div>
