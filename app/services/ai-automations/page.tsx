@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
     description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
     url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
-    siteName: 'Website Vikreta',
+   siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
