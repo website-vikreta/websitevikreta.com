@@ -79,44 +79,6 @@ const COMPARISON_ROWS: { problem: string; solution: string }[] = [
   },
 ]
 
-// ─── Animated success tick ────────────────────────────────────────────────────
-
-function AnimatedTick() {
-  return (
-    <motion.svg
-      width="72"
-      height="72"
-      viewBox="0 0 72 72"
-      fill="none"
-      initial="hidden"
-      animate="visible"
-      aria-hidden="true"
-    >
-      <motion.circle
-        cx="36" cy="36" r="30"
-        stroke="var(--color-text)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        variants={{
-          hidden:   { pathLength: 0, opacity: 0 },
-          visible:  { pathLength: 1, opacity: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
-        }}
-      />
-      <motion.path
-        d="M22 37 L31 46 L50 27"
-        stroke="var(--color-text)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        variants={{
-          hidden:   { pathLength: 0, opacity: 0 },
-          visible:  { pathLength: 1, opacity: 1, transition: { duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] } },
-        }}
-      />
-    </motion.svg>
-  )
-}
-
 // ─── Contact Form ─────────────────────────────────────────────────────────────
 
 const EMAILJS_SERVICE_ID  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  ?? ''
@@ -325,28 +287,36 @@ export default function AIAutomationsClient() {
             >
 
               {/* Left — 40% */}
-              <motion.div variants={ctaChild}>
+              <motion.div variants={ctaChild} className='md:py-8'>
                 <h2
                   id="cta-form-heading"
-                  className="text-h2 font-bold leading-[1.05] tracking-tight text-[var(--color-text)] mb-6"
+                  className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6"
                 >
-                  Share your project details.
+                  Find the Hours You&apos;re Losing Every Week
                 </h2>
                 <p
-                  className="text-[var(--color-text-muted)] mb-10"
+                  className="text-(--color-text-muted) mb-10"
                   style={{ fontSize: '1.0625rem', lineHeight: 1.7 }}
                 >
-                  Tell us what your team spends time on. We&rsquo;ll map an automation that fits your business. No templates, no lock-in.
+                  Book a free audit. We&apos;ll tell you honestly whether automation is worth it for your process, before you spend a dollar.
                 </p>
               </motion.div>
 
               {/* Right — 60% */}
               <motion.div variants={ctaChild}>
-                <div>
+                <div className="bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
                   {ctaSubmitted ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '1.25rem', padding: '2rem 0' }}>
-                      <AnimatedTick />
-                      <p style={{ fontSize: '1.25rem', lineHeight: 1.4, color: 'var(--color-text)', fontWeight: 500 }}>
+                    <div>
+                      <p
+                        style={{
+                          fontSize:      'clamp(1.5rem, 3.5vw, 2.25rem)',
+                          lineHeight:    1.25,
+                          letterSpacing: '-0.01em',
+                          color:         '#16a34a',
+                          maxWidth:      '28ch',
+                          fontWeight:    400,
+                        }}
+                      >
                         Thanks, we&rsquo;ll get back to you within 24 hours.
                       </p>
                       <button
@@ -359,6 +329,9 @@ export default function AIAutomationsClient() {
                         }}
                         style={{
                           marginTop:           '1.25rem',
+                          display:             'inline-flex',
+                          alignItems:          'center',
+                          gap:                 '0.25rem',
                           fontSize:            '0.875rem',
                           fontWeight:          500,
                           color:               'var(--color-text)',
@@ -376,188 +349,200 @@ export default function AIAutomationsClient() {
                   ) : (
                     <form onSubmit={handleCtaSubmit} noValidate>
 
-                      {/* First + Last Name */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-
-                        <div>
-                          <label
-                            htmlFor="ctaFirstName"
-                            className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2"
-                          >
-                            First Name
-                          </label>
-                          <input
-                            id="ctaFirstName"
-                            name="firstName"
-                            type="text"
-                            value={ctaForm.firstName}
-                            onChange={handleCtaChange}
-                            placeholder="Jane"
-                            disabled={ctaSubmitting}
-                            aria-invalid={!!ctaErrors.firstName}
-                            aria-describedby={ctaErrors.firstName ? 'err-cta-fn' : undefined}
-                            className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
-                            style={{ borderColor: ctaErrors.firstName ? '#FF4444' : 'var(--color-border)' }}
-                            onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
-                            onBlur={e => { e.target.style.borderColor = ctaErrors.firstName ? '#FF4444' : 'var(--color-border)' }}
-                          />
-                          {ctaErrors.firstName && (
-                            <p id="err-cta-fn" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
-                              {ctaErrors.firstName}
-                            </p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label
-                            htmlFor="ctaLastName"
-                            className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2"
-                          >
-                            Last Name
-                          </label>
-                          <input
-                            id="ctaLastName"
-                            name="lastName"
-                            type="text"
-                            value={ctaForm.lastName}
-                            onChange={handleCtaChange}
-                            placeholder="Doe"
-                            disabled={ctaSubmitting}
-                            aria-invalid={!!ctaErrors.lastName}
-                            aria-describedby={ctaErrors.lastName ? 'err-cta-ln' : undefined}
-                            className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
-                            style={{ borderColor: ctaErrors.lastName ? '#FF4444' : 'var(--color-border)' }}
-                            onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
-                            onBlur={e => { e.target.style.borderColor = ctaErrors.lastName ? '#FF4444' : 'var(--color-border)' }}
-                          />
-                          {ctaErrors.lastName && (
-                            <p id="err-cta-ln" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
-                              {ctaErrors.lastName}
-                            </p>
-                          )}
-                        </div>
-
-                      </div>
-
-                      {/* Email */}
-                      <div className="mb-4">
-                        <label
-                          htmlFor="ctaEmail"
-                          className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2"
-                        >
-                          Email
-                        </label>
-                        <input
-                          id="ctaEmail"
-                          name="email"
-                          type="email"
-                          value={ctaForm.email}
-                          onChange={handleCtaChange}
-                          placeholder="jane@company.com"
-                          disabled={ctaSubmitting}
-                          aria-invalid={!!ctaErrors.email}
-                          aria-describedby={ctaErrors.email ? 'err-cta-email' : undefined}
-                          className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
-                          style={{ borderColor: ctaErrors.email ? '#FF4444' : 'var(--color-border)' }}
-                          onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
-                          onBlur={e => { e.target.style.borderColor = ctaErrors.email ? '#FF4444' : 'var(--color-border)' }}
-                        />
-                        {ctaErrors.email && (
-                          <p id="err-cta-email" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
-                            {ctaErrors.email}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Subject */}
-                      <div className="mb-4">
-                        <label
-                          htmlFor="ctaSubject"
-                          className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2"
-                        >
-                          Subject
-                        </label>
-                        <input
-                          id="ctaSubject"
-                          name="subject"
-                          type="text"
-                          value={ctaForm.subject}
-                          onChange={handleCtaChange}
-                          placeholder="What do you need automated?"
-                          disabled={ctaSubmitting}
-                          aria-invalid={!!ctaErrors.subject}
-                          aria-describedby={ctaErrors.subject ? 'err-cta-subject' : undefined}
-                          className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]"
-                          style={{ borderColor: ctaErrors.subject ? '#FF4444' : 'var(--color-border)' }}
-                          onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
-                          onBlur={e => { e.target.style.borderColor = ctaErrors.subject ? '#FF4444' : 'var(--color-border)' }}
-                        />
-                        {ctaErrors.subject && (
-                          <p id="err-cta-subject" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
-                            {ctaErrors.subject}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Message */}
-                      <div className="mb-6">
-                        <label
-                          htmlFor="ctaMessage"
-                          className="block text-meta-label font-medium uppercase text-[var(--color-text-muted)] mb-2"
-                        >
-                          Message
-                        </label>
-                        <textarea
-                          id="ctaMessage"
-                          name="message"
-                          value={ctaForm.message}
-                          onChange={handleCtaChange}
-                          placeholder="Describe the repetitive work you want to automate…"
-                          rows={5}
-                          disabled={ctaSubmitting}
-                          aria-invalid={!!ctaErrors.message}
-                          aria-describedby={ctaErrors.message ? 'err-cta-message' : undefined}
-                          className="w-full border bg-transparent px-4 py-3 text-base text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-faint)] resize-none"
-                          style={{ borderColor: ctaErrors.message ? '#FF4444' : 'var(--color-border)' }}
-                          onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
-                          onBlur={e => { e.target.style.borderColor = ctaErrors.message ? '#FF4444' : 'var(--color-border)' }}
-                        />
-                        {ctaErrors.message && (
-                          <p id="err-cta-message" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
-                            {ctaErrors.message}
-                          </p>
-                        )}
-                      </div>
-
-                      {ctaSendError && (
-                        <p
-                          style={{ marginBottom: '1rem', fontSize: '0.8125rem', color: '#FF4444', fontFamily: 'monospace' }}
-                          role="alert"
-                        >
-                          Something went wrong. Email us at{' '}
-                          <a href="mailto:contact@websitevikreta.com" style={{ textDecoration: 'underline' }}>
-                            contact@websitevikreta.com
-                          </a>
-                        </p>
-                      )}
-
-                      <div className="flex justify-center">
-                      <Button
-                        type="submit"
-                        variant="accent"
-                        size="md"
-                        disabled={ctaSubmitting}
+                      <h2
+                        className="font-bold text-(--color-text) mb-6"
+                        style={{
+                          fontSize:      'clamp(1.15rem, 2vw, 1.75rem)',
+                          lineHeight:    1.2,
+                          letterSpacing: '-0.025em',
+                        }}
                       >
-                        {ctaSubmitting
-                          ? (
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" />
-                              Sending…
-                            </span>
-                          )
-                          : 'Send message'
-                        }
-                      </Button>
+                        Book a Free Process Audit
+                      </h2>
+
+                      <div className="flex flex-col gap-3 sm:gap-3.5">
+
+                        {/* First + Last Name */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                          <div>
+                            <label
+                              htmlFor="ctaFirstName"
+                              className="block text-sm font-medium text-(--color-text-muted) mb-1.5"
+                            >
+                              First Name
+                            </label>
+                            <input
+                              id="ctaFirstName"
+                              name="firstName"
+                              type="text"
+                              value={ctaForm.firstName}
+                              onChange={handleCtaChange}
+                              placeholder="Jane"
+                              disabled={ctaSubmitting}
+                              aria-invalid={!!ctaErrors.firstName}
+                              aria-describedby={ctaErrors.firstName ? 'err-cta-fn' : undefined}
+                              className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
+                              style={{ borderColor: ctaErrors.firstName ? '#FF4444' : 'var(--color-border)' }}
+                              onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+                              onBlur={e => { e.target.style.borderColor = ctaErrors.firstName ? '#FF4444' : 'var(--color-border)' }}
+                            />
+                            {ctaErrors.firstName && (
+                              <p id="err-cta-fn" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
+                                {ctaErrors.firstName}
+                              </p>
+                            )}
+                          </div>
+
+                          <div>
+                            <label
+                              htmlFor="ctaLastName"
+                              className="block text-sm font-medium text-(--color-text-muted) mb-1.5"
+                            >
+                              Last Name
+                            </label>
+                            <input
+                              id="ctaLastName"
+                              name="lastName"
+                              type="text"
+                              value={ctaForm.lastName}
+                              onChange={handleCtaChange}
+                              placeholder="Doe"
+                              disabled={ctaSubmitting}
+                              aria-invalid={!!ctaErrors.lastName}
+                              aria-describedby={ctaErrors.lastName ? 'err-cta-ln' : undefined}
+                              className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
+                              style={{ borderColor: ctaErrors.lastName ? '#FF4444' : 'var(--color-border)' }}
+                              onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+                              onBlur={e => { e.target.style.borderColor = ctaErrors.lastName ? '#FF4444' : 'var(--color-border)' }}
+                            />
+                            {ctaErrors.lastName && (
+                              <p id="err-cta-ln" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
+                                {ctaErrors.lastName}
+                              </p>
+                            )}
+                          </div>
+
+                        </div>
+
+                        {/* Email */}
+                        <div>
+                          <label
+                            htmlFor="ctaEmail"
+                            className="block text-sm font-medium text-(--color-text-muted) mb-1.5"
+                          >
+                            Email
+                          </label>
+                          <input
+                            id="ctaEmail"
+                            name="email"
+                            type="email"
+                            value={ctaForm.email}
+                            onChange={handleCtaChange}
+                            placeholder="jane@company.com"
+                            disabled={ctaSubmitting}
+                            aria-invalid={!!ctaErrors.email}
+                            aria-describedby={ctaErrors.email ? 'err-cta-email' : undefined}
+                            className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
+                            style={{ borderColor: ctaErrors.email ? '#FF4444' : 'var(--color-border)' }}
+                            onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+                            onBlur={e => { e.target.style.borderColor = ctaErrors.email ? '#FF4444' : 'var(--color-border)' }}
+                          />
+                          {ctaErrors.email && (
+                            <p id="err-cta-email" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
+                              {ctaErrors.email}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Subject */}
+                        <div>
+                          <label
+                            htmlFor="ctaSubject"
+                            className="block text-sm font-medium text-(--color-text-muted) mb-1.5"
+                          >
+                            Subject
+                          </label>
+                          <input
+                            id="ctaSubject"
+                            name="subject"
+                            type="text"
+                            value={ctaForm.subject}
+                            onChange={handleCtaChange}
+                            placeholder="What do you need automated?"
+                            disabled={ctaSubmitting}
+                            aria-invalid={!!ctaErrors.subject}
+                            aria-describedby={ctaErrors.subject ? 'err-cta-subject' : undefined}
+                            className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
+                            style={{ borderColor: ctaErrors.subject ? '#FF4444' : 'var(--color-border)' }}
+                            onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+                            onBlur={e => { e.target.style.borderColor = ctaErrors.subject ? '#FF4444' : 'var(--color-border)' }}
+                          />
+                          {ctaErrors.subject && (
+                            <p id="err-cta-subject" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
+                              {ctaErrors.subject}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Message */}
+                        <div>
+                          <label
+                            htmlFor="ctaMessage"
+                            className="block text-sm font-medium text-(--color-text-muted) mb-1.5"
+                          >
+                            Message
+                          </label>
+                          <textarea
+                            id="ctaMessage"
+                            name="message"
+                            value={ctaForm.message}
+                            onChange={handleCtaChange}
+                            placeholder="Describe the repetitive work you want to automate…"
+                            rows={5}
+                            disabled={ctaSubmitting}
+                            aria-invalid={!!ctaErrors.message}
+                            aria-describedby={ctaErrors.message ? 'err-cta-message' : undefined}
+                            className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint) resize-none"
+                            style={{ borderColor: ctaErrors.message ? '#FF4444' : 'var(--color-border)' }}
+                            onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+                            onBlur={e => { e.target.style.borderColor = ctaErrors.message ? '#FF4444' : 'var(--color-border)' }}
+                          />
+                          {ctaErrors.message && (
+                            <p id="err-cta-message" style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>
+                              {ctaErrors.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {ctaSendError && (
+                          <p style={{ fontSize: '0.8125rem', color: '#FF4444', fontFamily: 'monospace' }} role="alert">
+                            Something went wrong. Email us at{' '}
+                            <a href="mailto:contact@websitevikreta.com" style={{ textDecoration: 'underline' }}>
+                              contact@websitevikreta.com
+                            </a>
+                          </p>
+                        )}
+
+                        <Button
+                          type="submit"
+                          variant="primary"
+                          size="md"
+                          showArrow={!ctaSubmitting}
+                          disabled={ctaSubmitting}
+                          className="w-fit"
+                        >
+                          {ctaSubmitting
+                            ? (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" />
+                                Sending…
+                              </span>
+                            )
+                            : 'Send message'
+                          }
+                        </Button>
+
                       </div>
 
                     </form>
