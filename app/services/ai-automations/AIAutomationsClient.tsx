@@ -4,10 +4,10 @@ import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
-import IntroAnimation from '@/components/ui/scroll-morph-hero'
 import AutomationWorkflowCanvas from '@/components/ui/automation-workflow-canvas'
 import { ParallaxFeatureScroll } from '@/components/ui/parallax-feature-scroll'
 import { Button } from '@/components/ui/Button'
+import { DotGrid } from '@/components/ui/DotGrid'
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
@@ -169,12 +169,48 @@ export default function AIAutomationsClient() {
 
   return (
     <>
+      <DotGrid global />
       <main id="main-content" className="relative z-10">
 
         {/* ── 1 · Hero ──────────────────────────────────────────────────────── */}
-        {/* NOTE: this component captures wheel/touch events independently of Lenis. May cause scroll conflicts below the fold — needs review. */}
-        <section className="h-screen w-full" aria-label="AI Automation Services">
-          <IntroAnimation />
+        <section
+          className="relative flex flex-col items-center justify-center min-h-svh text-center overflow-x-clip"
+          aria-label="AI Automation Services"
+        >
+          <div className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24">
+            <motion.h1
+              className="text-h1 font-semibold text-(--color-text) font-sans mb-6 max-w-4xl mx-auto text-balance"
+              initial={{ opacity: 0, y: reduce ? 0 : 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+            >
+              Your Team Is{' '}
+              <span style={{ color: 'var(--color-accent)' }}>Too Expensive</span>{' '}
+              to Spend on Copy-Paste
+            </motion.h1>
+
+            <motion.p
+              className="text-body-lg text-(--color-text-muted) max-w-xl mx-auto leading-relaxed mb-10"
+              initial={{ opacity: 0, y: reduce ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
+            >
+              We find the slow, manual part of your business and build a system
+              that runs it in a fraction of the time. Your team keeps the work
+              that needs a human. The rest runs itself.
+            </motion.p>
+
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, y: reduce ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.18, ease: EASE }}
+            >
+              <Button href="#book-audit" variant="primary" size="lg" showArrow>
+                Book a Free Process Audit
+              </Button>
+            </motion.div>
+          </div>
         </section>
 
         {/* ── 3 · Comparison table ─────────────────────────────────────────── */}
@@ -276,7 +312,7 @@ export default function AIAutomationsClient() {
         <ParallaxFeatureScroll />
 
         {/* ── 6 · Contact Form ──────────────────────────────────────────────── */}
-        <section className="pt-28 md:pt-36 pb-20 md:pb-28" aria-labelledby="cta-form-heading">
+        <section id="book-audit" className="pt-28 md:pt-36 pb-20 md:pb-28" aria-labelledby="cta-form-heading">
           <div className="container">
             <motion.div
               className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20 lg:items-start"
