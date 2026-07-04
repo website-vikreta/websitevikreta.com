@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import localFont from 'next/font/local'
 import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { ConditionalShell } from '@/components/ui/ConditionalShell'
 import { ScrollManager } from '@/components/ui/ScrollManager'
+import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
@@ -49,6 +51,9 @@ export default function RootLayout({
       className={utile.variable}
     >
       <body>
+        <Suspense fallback={null}>
+          <RouteProgressBar />
+        </Suspense>
         <ScrollManager />
         <ConditionalNavbar />
         {children}
