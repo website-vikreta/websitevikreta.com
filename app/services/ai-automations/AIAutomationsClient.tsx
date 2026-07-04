@@ -3,7 +3,8 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import emailjs from '@emailjs/browser'
-import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
+import { Loader2, ArrowRight } from 'lucide-react'
 import AutomationWorkflowCanvas from '@/components/ui/automation-workflow-canvas'
 import { ParallaxFeatureScroll } from '@/components/ui/parallax-feature-scroll'
 import { Button } from '@/components/ui/Button'
@@ -55,6 +56,36 @@ const ctaChild = {
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
+
+interface FixCard {
+  title:       string
+  description: string
+  cta:         string
+  image:       string
+  stat?:       { from: string; to: string }
+}
+
+const FIX_CARDS: FixCard[] = [
+  {
+    title:       'Bulk content and workflow automation',
+    description: 'The repetitive production work your team does by hand. We turn a spreadsheet and a template into a system anyone can run.',
+    cta:         'See how we cut a 20-hour job to 1',
+    image:       '/images/careers-banner.png',
+    stat:        { from: '20h', to: '1h' },
+  },
+  {
+    title:       'AI product visuals and UGC',
+    description: 'Product content without the studio, the models, or the two-week wait. Your real product, any setting, production quality.',
+    cta:         'See what a shoot costs now',
+    image:       '/images/careers-banner.png',
+  },
+  {
+    title:       'WhatsApp AI agents',
+    description: 'A customer assistant that sounds like your team and actually does things: payment links, live tracking, returns, all in the chat.',
+    cta:         'See how it works',
+    image:       '/images/careers-banner.png',
+  },
+]
 
 const COMPARISON_ROWS: { problem: string; solution: string }[] = [
   {
@@ -213,7 +244,7 @@ export default function AIAutomationsClient() {
           </div>
         </section>
 
-        {/* ── 3 · Comparison table ─────────────────────────────────────────── */}
+        {/* ── 2 · Comparison table ─────────────────────────────────────────── */}
         <section className="py-16 md:py-20" aria-labelledby="why-us-heading">
           <div className="container">
 
@@ -292,12 +323,69 @@ export default function AIAutomationsClient() {
           </div>
         </section>
 
+        {/* ── 3 · What we fix most often ──────────────────────────────────── */}
+        <section className="py-16 md:py-20" aria-labelledby="fix-heading">
+          <div className="container">
+
+            <motion.div className="mb-10 md:mb-12 max-w-2xl" {...scrollIn(reduce)}>
+              <h2 id="fix-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
+                Three Things We Fix Most Often
+              </h2>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-(--color-border)">
+              {FIX_CARDS.map((card, i) => (
+                <motion.article
+                  key={card.title}
+                  {...scrollIn(reduce, i * 0.1)}
+                  className="group flex h-full flex-col border-r border-b border-(--color-border) bg-(--color-surface) p-6 sm:p-8"
+                >
+                  <div className="relative w-full aspect-video mb-6 overflow-hidden bg-(--color-bg-muted)">
+                    <Image
+                      src={card.image}
+                      alt={card.title}
+                      fill
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    {card.stat && (
+                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-(--color-text) px-3 py-1.5">
+                        <span className="text-sm font-bold text-(--color-bg) line-through decoration-2">
+                          {card.stat.from}
+                        </span>
+                        <ArrowRight size={13} className="text-(--color-accent) shrink-0" aria-hidden="true" />
+                        <span className="text-sm font-bold text-(--color-bg)">
+                          {card.stat.to}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <h3 className="font-sans font-bold text-2xl leading-[1.1] text-(--color-text)">
+                    {card.title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-[15px] leading-relaxed text-(--color-text-muted)">
+                    {card.description}
+                  </p>
+
+                  <div className="mt-6">
+                    <Button href="#book-audit" variant="ghost" size="sm" showArrow>
+                      {card.cta}
+                    </Button>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
         {/* ── 4 · Services canvas ───────────────────────────────────────────── */}
         <section id="services" className="py-16 md:py-20" aria-labelledby="services-heading">
           <div className="container">
             <motion.div className="mb-12 md:mb-14 max-w-2xl" {...scrollIn(reduce)}>
               <h2 id="services-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-[var(--color-text)]">
-                Our AI Automation Services
+                How We Work
               </h2>
             </motion.div>
 

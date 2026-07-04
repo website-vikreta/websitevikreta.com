@@ -148,6 +148,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: page previously had two `<h2>` (title + "Apply now!") and no `<h1>`, sub-headings used arbitrary `text-lg`, stipend/positions were two loosely-spaced paragraphs, skills used mono hover-invert chips inconsistent with the listing page, form labels were uppercase-tracked (flagged anti-pattern), and the form had no surface treatment distinguishing it from the page background.
 - Date: 2026-07-03
 
+### [Card] — equal 3-up image/title/description/cta grid
+- Rule: For a simple 3-item feature grid, use the flat bordered-grid wrapper (`border-t border-l` on `grid grid-cols-1 md:grid-cols-3`, each cell `border-r border-b border-(--color-border)`) — same pattern as the careers openings grid, equal-size cells, nothing asymmetric. Cell: `aspect-video` image on top (`object-cover`, `group-hover:scale-105` on the image only for a quiet hover-zoom), then `h3` title (`text-2xl font-bold`), description, `Button variant="ghost" size="sm" showArrow` CTA. A one-off numeric proof point (e.g. "20h → 1h") renders as a small dark pill (`bg-(--color-text) text-(--color-bg)`, strikethrough-from / accent-arrow / bold-to) absolutely positioned over the image corner — not a large separate display-type block — so it doesn't break the equal-height row rhythm.
+- Where: `app/services/ai-automations/AIAutomationsClient.tsx` "Three Things We Fix Most Often" section.
+- Why: first pass used an asymmetric bento (one cell `md:row-span-2` as a "hero" cell). User rejected it as "too hard to interpret" — a flat equal grid reads faster; save asymmetric/bento treatments for when content genuinely differs in weight, not as a default "creative" move. That first pass also had 01/02/03 index labels — cut, see [Anti-pattern] no numbered card index below.
+- Date: 2026-07-04
+
 ## Naming
 _None logged yet._
 
@@ -157,3 +163,9 @@ _None logged yet._
 - Why: IntersectionObserver measures the *transformed* bounding box. The inner line starts shifted 110% down, so its observed rect is wrong and the reveal never fires (symptom: headings stay invisible). The wrapper doesn't move → reliable trigger; it drives the inner via variants.
 - Where: `RevealText` in `components/ui/Reveal.tsx`.
 - Date: 2026-06-28
+
+### [Card] — never number cards 01/02/03
+- Rule: Don't add an index label (`01`, `02`, `03` …) to cards in a feature/service grid. No exceptions for "just a small counter in the corner."
+- Why: user explicitly banned this after seeing it on the AI-automations "Three Things We Fix Most Often" grid — reads as generic template filler, not considered design. Let the image, title, and grid position carry the ordering instead.
+- Where: `app/services/ai-automations/AIAutomationsClient.tsx` "Three Things We Fix Most Often" section (index field removed from `FixCard`).
+- Date: 2026-07-04
