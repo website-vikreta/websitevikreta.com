@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
 import {
   Eye, Search, Wrench, PackageCheck,
   Plus, RotateCcw, ArrowRight,
   type LucideIcon,
 } from 'lucide-react'
+import { gsap } from '@/lib/gsap'
+import { prefersReducedMotion, DUR, EASE, STAGGER } from '@/lib/gsap/reveals'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -81,10 +82,12 @@ function WorkflowConnectionLine({
   from,
   to,
   nodes,
+  pathRef,
 }: {
   from: string
   to: string
   nodes: WorkflowNode[]
+  pathRef?: (el: SVGPathElement | null) => void
 }) {
   const fromNode = nodes.find(n => n.id === from)
   const toNode   = nodes.find(n => n.id === to)
@@ -98,6 +101,7 @@ function WorkflowConnectionLine({
 
   return (
     <path
+      ref={pathRef}
       d={`M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`}
       fill="none"
       stroke="var(--color-text)"
@@ -112,10 +116,19 @@ function WorkflowConnectionLine({
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AutomationWorkflowCanvas() {
-  const reduce = useReducedMotion()
   const [nodes,       setNodes]       = useState<WorkflowNode[]>(initialNodes)
   const [dragging,    setDragging]    = useState(false)
+  // Gates the transform CSS-transition (hover lift) so it can't smear gsap's
+  // per-frame entrance transform. Flips true once the entrance settles.
+  const [entered,     setEntered]     = useState(false)
   const connections = initialConnections
+
+  // ── Entrance choreography refs (self-drawing workflow) ─────────────────────
+  const scopeRef    = useRef<HTMLDivElement>(null)
+  const nodeElRefs   = useRef<Record<string, HTMLDivElement | null>>({})
+  const pathElRefs   = useRef<(SVGPathElement | null)[]>([])
+  const markerRef    = useRef<SVGPathElement>(null)
+  const badgeRef     = useRef<HTMLSpanElement>(null)
 
   const dragRef = useRef<{
     id: string
@@ -276,6 +289,73 @@ export default function AutomationWorkflowCanvas() {
     setNodes(initialNodes)
   }, [])
 
+  // ── Entrance: nodes settle 01→04, connectors self-draw L→R, arrows pop last ──
+  useEffect(() => {
+    const scope = scopeRef.current
+    if (!scope) return
+
+    const nodeEls = initialNodes
+      .map(n => nodeElRefs.current[n.id])
+      .filter((el): el is HTMLDivElement => !!el)
+    const paths  = pathElRefs.current.filter(
+      (p): p is SVGPathElement => !!p,
+    )
+    const marker = markerRef.current
+    const badge  = badgeRef.current
+
+    // Reduced motion: render the fully-drawn final state, no animation.
+    if (prefersReducedMotion()) {
+      setEntered(true)
+      return
+    }
+
+    const ctx = gsap.context(() => {
+      // Solid "draw" setup: dash the whole length, hide via offset. Restored
+      // to the dashed look on complete so drag redraws stay dashed.
+      const lengths = paths.map(p => p.getTotalLength())
+      // Dash the whole length as one solid dash; `.from` below sweeps the
+      // offset len→0 (immediateRender hides it until the sweep plays).
+      paths.forEach((p, i) => {
+        gsap.set(p, { strokeDasharray: lengths[i] })
+      })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: scope, start: 'top 75%', once: true },
+        onComplete: () => {
+          gsap.set(nodeEls, { clearProps: 'transform,opacity' })
+          paths.forEach(p =>
+            gsap.set(p, { clearProps: 'strokeDasharray,strokeDashoffset' }),
+          )
+          if (marker) gsap.set(marker, { clearProps: 'opacity' })
+          if (badge)  gsap.set(badge,  { clearProps: 'transform' })
+          setEntered(true)
+        },
+      })
+
+      // 01 + 02 settle, then connector 01→02 draws, then 03, draw, then 04, draw.
+      tl.from(nodeEls[0], { opacity: 0, y: 16, duration: DUR.base, ease: EASE.out }, 0)
+      tl.from(nodeEls[1], { opacity: 0, y: 16, duration: DUR.base, ease: EASE.out }, STAGGER.base)
+      tl.from(paths[0],   { strokeDashoffset: lengths[0], duration: DUR.crawl, ease: EASE.draw }, '>-0.15')
+      tl.from(nodeEls[2], { opacity: 0, y: 16, duration: DUR.base, ease: EASE.out }, '<+0.15')
+      tl.from(paths[1],   { strokeDashoffset: lengths[1], duration: DUR.crawl, ease: EASE.draw }, '>-0.15')
+      tl.from(nodeEls[3], { opacity: 0, y: 16, duration: DUR.base, ease: EASE.out }, '<+0.15')
+      tl.from(paths[2],   { strokeDashoffset: lengths[2], duration: DUR.crawl, ease: EASE.draw }, '>-0.15')
+
+      // Arrowheads pop last.
+      if (marker) tl.from(marker, { opacity: 0, duration: DUR.fast, ease: EASE.out }, '>-0.2')
+
+      // Single, non-looping "Active" pulse on entrance.
+      if (badge) {
+        tl.to(badge, {
+          scale: 1.15, duration: DUR.fast, ease: EASE.out, yoyo: true, repeat: 1,
+          transformOrigin: 'center',
+        }, '<')
+      }
+    }, scope)
+
+    return () => ctx.revert()
+  }, [])
+
   const hasXOverflow = metrics.scrollWidth  > metrics.clientWidth  + 1
   const hasYOverflow = metrics.scrollHeight > metrics.clientHeight + 1
 
@@ -289,7 +369,7 @@ export default function AutomationWorkflowCanvas() {
   const yThumbTopPct  = yMaxScroll > 0 ? (metrics.scrollTop  / yMaxScroll) * (100 - yThumbHeightPct) : 0
 
   return (
-    <div className="bg-[var(--color-surface)] overflow-hidden">
+    <div ref={scopeRef} className="bg-[var(--color-surface)] overflow-hidden">
 
       {/* ── Header ── */}
       <div className="flex items-center justify-between gap-4 px-5 py-3.5 border-b border-[var(--color-border)]">
@@ -306,6 +386,7 @@ export default function AutomationWorkflowCanvas() {
             }}
           >
             <span
+              ref={badgeRef}
               className="w-1.5 h-1.5 rounded-full"
               style={{ background: GREEN }}
               aria-hidden
@@ -374,38 +455,32 @@ export default function AutomationWorkflowCanvas() {
                 markerHeight="6"
                 orient="auto-start-reverse"
               >
-                <path d="M 0 1 L 6 4 L 0 7" fill="none" stroke="var(--color-text)" strokeOpacity={0.55} strokeWidth={1.4} />
+                <path ref={markerRef} d="M 0 1 L 6 4 L 0 7" fill="none" stroke="var(--color-text)" strokeOpacity={0.55} strokeWidth={1.4} />
               </marker>
             </defs>
-            {connections.map(conn => (
+            {connections.map((conn, i) => (
               <WorkflowConnectionLine
                 key={`${conn.from}-${conn.to}`}
                 from={conn.from}
                 to={conn.to}
                 nodes={nodes}
+                pathRef={el => { pathElRefs.current[i] = el }}
               />
             ))}
           </svg>
 
           {/* Nodes */}
-          {nodes.map((node, i) => {
+          {nodes.map((node) => {
             const Icon = node.icon
             return (
-              <motion.div
+              <div
                 key={node.id}
-                initial={reduce ? { opacity: 1, scale: 1 } : { opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{
-                  duration: reduce ? 0 : 0.35,
-                  delay:    reduce ? 0 : i * 0.08,
-                  ease:     [0.22, 1, 0.36, 1],
-                }}
+                ref={el => { nodeElRefs.current[node.id] = el }}
                 onMouseDown={e => onNodeMouseDown(e, node.id)}
                 role="article"
                 aria-roledescription="Draggable process step"
                 aria-label={`Step ${node.step}: ${node.title}. ${node.description}`}
-                className="absolute border p-4 select-none"
+                className={`absolute border border-[var(--color-border-strong)] p-4 select-none duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] ${entered ? 'transition-[border-color,transform]' : 'transition-colors'} ${dragging ? '' : 'hover:border-[var(--color-text)] hover:-translate-y-0.5'}`}
                 style={{
                   left:        node.position.x,
                   top:         node.position.y,
@@ -413,7 +488,6 @@ export default function AutomationWorkflowCanvas() {
                   minHeight:   NODE_HEIGHT,
                   cursor:      dragging && dragRef.current?.id === node.id ? 'grabbing' : 'grab',
                   background:  'var(--color-surface)',
-                  borderColor: 'var(--color-border-strong)',
                   color:       'var(--color-text)',
                 }}
               >
@@ -454,7 +528,7 @@ export default function AutomationWorkflowCanvas() {
                 >
                   {node.description}
                 </p>
-              </motion.div>
+              </div>
             )
           })}
         </div>
