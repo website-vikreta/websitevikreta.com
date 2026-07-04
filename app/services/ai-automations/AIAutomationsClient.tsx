@@ -9,6 +9,7 @@ import AutomationWorkflowCanvas from '@/components/ui/automation-workflow-canvas
 import { ParallaxFeatureScroll } from '@/components/ui/parallax-feature-scroll'
 import { Button } from '@/components/ui/Button'
 import { DotGrid } from '@/components/ui/DotGrid'
+import { RevealText, RevealFade } from '@/components/ui/Reveal'
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
@@ -23,26 +24,6 @@ function scrollIn(reduce: boolean | null, delay = 0) {
     viewport:    { once: true, margin: '-80px' } as { once: boolean; margin: string },
     transition:  { duration: 0.35, delay, ease: EASE },
   }
-}
-
-const lineContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
-}
-
-const lineReveal = {
-  hidden:   { y: '110%', opacity: 0 },
-  visible:  { y: 0, opacity: 1, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
-}
-
-const rowContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
-}
-
-const rowReveal = {
-  hidden:   { y: '100%' },
-  visible:  { y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
 }
 
 const ctaContainer = {
@@ -84,29 +65,6 @@ const FIX_CARDS: FixCard[] = [
     description: 'A customer assistant that sounds like your team and actually does things: payment links, live tracking, returns, all in the chat.',
     cta:         'See how it works',
     image:       '/images/careers-banner.png',
-  },
-]
-
-const COMPARISON_ROWS: { problem: string; solution: string }[] = [
-  {
-    problem:  'Multiple vendors, you\'re the project manager',
-    solution: 'One team, start to finish',
-  },
-  {
-    problem:  'Generic templates, your logo on top',
-    solution: 'Built around how you actually work',
-  },
-  {
-    problem:  'Vague timelines',
-    solution: 'Clear scope before we build',
-  },
-  {
-    problem:  'Goes quiet after launch',
-    solution: 'We stay on',
-  },
-  {
-    problem:  'Locked into their platform',
-    solution: 'Open, leave anytime',
   },
 ]
 
@@ -244,82 +202,48 @@ export default function AIAutomationsClient() {
           </div>
         </section>
 
-        {/* ── 2 · Comparison table ─────────────────────────────────────────── */}
-        <section className="py-16 md:py-20" aria-labelledby="why-us-heading">
+        {/* ── 2 · The unspoken part of the job ──────────────────────────────── */}
+        <section className="py-16 md:py-20" aria-label="The Part of the Job Nobody Talks About">
           <div className="container">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              <div className="max-w-2xl">
+                <RevealText as="h2" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6">
+                  The Part of the Job Nobody Talks About
+                </RevealText>
 
-            {/* Heading — 2-line clip reveal */}
-            <motion.div
-              className="mb-10 md:mb-12 max-w-[768px] mx-auto text-center"
-              variants={lineContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-            >
-              <h2 id="why-us-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-[var(--color-text)]">
-                <span className="overflow-hidden block">
-                  <motion.span className="block" variants={lineReveal}>
-                    Why Choose Website Vikreta for
-                  </motion.span>
-                </span>
-                <span className="overflow-hidden block">
-                  <motion.span className="block" variants={lineReveal}>
-                    AI Automation?
-                  </motion.span>
-                </span>
-              </h2>
-            </motion.div>
+                <RevealFade as="p" className="text-body-lg text-(--color-text-muted) leading-relaxed mb-5" delay={0.1}>
+                  Every business has one. The task that&apos;s just &ldquo;how it&apos;s done.&rdquo;
+                </RevealFade>
 
-            {/* Table — rows clip-reveal */}
-            <motion.div
-              className="max-w-[768px] mx-auto border border-[var(--color-border)]"
-              variants={rowContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-            >
+                <RevealFade as="p" className="text-body-lg text-(--color-text-muted) leading-relaxed mb-5" delay={0.16}>
+                  A team rebuilding the same product image twenty ways. A founder buried in the same customer questions every day. A shoot that costs two weeks and a small fortune, every season.
+                </RevealFade>
 
-              {/* Column headers */}
-              <div className="grid grid-cols-2 border-b border-[var(--color-border)]">
-                <div className="px-5 py-3 border-r border-[var(--color-border)]">
-                  <span className="text-lg font-bold text-[var(--color-text-muted)]">
-                    The usual way
-                  </span>
-                </div>
-                <div className="px-5 py-3 bg-[var(--color-accent)]">
-                  <span className="text-lg font-bold text-[var(--color-text)]">
-                    With Website Vikreta
-                  </span>
-                </div>
+                <RevealFade as="p" className="text-body-lg text-(--color-text-muted) leading-relaxed mb-5" delay={0.22}>
+                  It works. It&apos;s just slow, and it&apos;s eating hours from people who are worth more than that.
+                </RevealFade>
+
+                <RevealFade as="p" className="text-body-lg text-(--color-text-muted) leading-relaxed" delay={0.28}>
+                  That&apos;s where we come in.
+                </RevealFade>
               </div>
 
-              {/* Rows */}
-              {COMPARISON_ROWS.map((row, i) => (
-                <div
-                  key={i}
-                  className={`overflow-hidden${i < COMPARISON_ROWS.length - 1 ? ' border-b border-[var(--color-border)]' : ''}`}
-                >
-                  <motion.div className="grid grid-cols-2" variants={rowReveal}>
-
-                    {/* Problem */}
-                    <div className="px-5 py-4 border-r border-[var(--color-border)]">
-                      <p className="leading-relaxed text-[var(--color-text-muted)]">
-                        {row.problem}
-                      </p>
-                    </div>
-
-                    {/* Solution */}
-                    <div className="px-5 py-4 bg-[var(--color-text)]">
-                      <p className="leading-relaxed font-medium text-[var(--color-bg)]">
-                        {row.solution}
-                      </p>
-                    </div>
-
-                  </motion.div>
-                </div>
-              ))}
-
-            </motion.div>
+              <motion.div
+                className="relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first md:order-last"
+                initial={{ opacity: 0, y: reduce ? 0 : 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5, ease: EASE }}
+              >
+                <Image
+                  src="/images/careers-banner.png"
+                  alt="The unspoken work behind every business"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </motion.div>
+            </div>
           </div>
         </section>
 
@@ -396,10 +320,44 @@ export default function AIAutomationsClient() {
           </div>
         </section>
 
-        {/* ── 5 · Why automation matters ────────────────────────────────────── */}
-        <ParallaxFeatureScroll />
+        {/* ── 5 · Why Website Vikreta ──────────────────────────────────────── */}
+        <section className="py-16 md:py-20" aria-label="Why Website Vikreta">
+          <div className="container">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              <div className="max-w-2xl">
+                <RevealText as="h2" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6">
+                  Why Website Vikreta
+                </RevealText>
 
-        {/* ── 6 · Contact Form ──────────────────────────────────────────────── */}
+                <RevealFade as="p" className="text-body-lg text-(--color-text-muted) leading-relaxed mb-5" delay={0.1}>
+                  We audit before we build. If a $50 tool solves it, we&apos;ll tell you that instead of inventing a reason to charge you more.
+                </RevealFade>
+
+                <RevealFade as="p" className="text-body-lg text-(--color-text-muted) leading-relaxed" delay={0.18}>
+                  We&apos;ve done the unglamorous version of this. Spreadsheet chaos, tools that won&apos;t talk to each other, exports that need renaming by hand. That&apos;s most of the real work, and it&apos;s where we&apos;re strongest.
+                </RevealFade>
+              </div>
+
+              <motion.div
+                className="relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first"
+                initial={{ opacity: 0, y: reduce ? 0 : 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5, ease: EASE }}
+              >
+                <Image
+                  src="/images/careers-banner.png"
+                  alt="Why Website Vikreta"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 7 · Contact Form ──────────────────────────────────────────────── */}
         <section id="book-audit" className="pt-28 md:pt-36 pb-20 md:pb-28" aria-labelledby="cta-form-heading">
           <div className="container">
             <motion.div
