@@ -92,7 +92,7 @@ export const metadata: Metadata = {
     'website development Pune',
     'AI-first web agency',
     'web agency India',
-    'Next.js web development',
+    ' web development',
     'business automation Pune',
     'custom website design',
   ],
