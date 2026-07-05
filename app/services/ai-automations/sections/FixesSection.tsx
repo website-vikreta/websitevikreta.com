@@ -19,20 +19,20 @@ const FIX_CARDS: FixCard[] = [
     title:       'Bulk content and workflow automation',
     description: 'The repetitive production work your team does by hand. We turn a spreadsheet and a template into a system anyone can run.',
     cta:         'See how we cut a 20-hour job to 1',
-    image:       '/images/careers-banner.png',
+    image:       '/our-services/ai-automation/bulk-content-and-workflow-automation.webp',
     stat:        { from: '20h', to: '1h' },
   },
   {
     title:       'AI product visuals and UGC',
     description: 'Product content without the studio, the models, or the two-week wait. Your real product, any setting, production quality.',
     cta:         'See what a shoot costs now',
-    image:       '/images/careers-banner.png',
+    image:       '/our-services/ai-automation/ai-ugc-content.webp',
   },
   {
     title:       'WhatsApp AI agents',
     description: 'A customer assistant that sounds like your team and actually does things: payment links, live tracking, returns, all in the chat.',
     cta:         'See how it works',
-    image:       '/images/careers-banner.png',
+    image:       '/our-services/ai-automation/whatsapp-ai-agents.webp',
   },
 ]
 
@@ -61,7 +61,7 @@ export default function FixesSection() {
           {FIX_CARDS.map((card) => (
             <article
               key={card.title}
-              className="fix-card group flex h-full flex-col border-r border-b border-(--color-border) bg-(--color-surface) p-6 sm:p-8 transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-(--color-border-strong)"
+              className="fix-card group flex h-full flex-col border-r border-b border-(--color-border) bg-(--color-surface) p-6 transition-[transform,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-(--color-border-strong)"
             >
               <div className="fix-card-image relative w-full aspect-video mb-6 overflow-hidden bg-(--color-bg-muted)">
                 <Image

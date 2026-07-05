@@ -39,9 +39,9 @@ export default function PainSection() {
             </p>
           </div>
 
-          <div className="pain-image relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first md:order-last">
+          <div className="pain-image relative w-full aspect-[16/10] overflow-hidden bg-(--color-bg-muted) order-first md:order-last">
             <Image
-              src="/images/careers-banner.png"
+              src="/our-services/ai-automation/hard-truth.webp"
               alt="The unspoken work behind every business"
               fill
               className="object-cover"

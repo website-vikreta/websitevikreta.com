@@ -31,9 +31,9 @@ export default function WhySection() {
             </p>
           </div>
 
-          <div className="why-image relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first">
+          <div className="why-image relative w-full aspect-[16/10] overflow-hidden bg-(--color-bg-muted) order-first">
             <Image
-              src="/images/careers-banner.png"
+              src="/our-services/ai-automation/why-website-vikreta.webp"
               alt="Why Website Vikreta"
               fill
               className="object-cover"
