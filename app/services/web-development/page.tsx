@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import WebDevClient from './WebDevClient'
+import { ComingSoonPage } from '@/components/ComingSoonPage'
 
 export const metadata: Metadata = {
   title: 'Web Development Services | Website Vikreta',
@@ -49,5 +50,6 @@ export const metadata: Metadata = {
 }
 
 export default function WebDevelopmentPage() {
-  return <WebDevClient />
+  // return <WebDevClient />
+  return <ComingSoonPage pageName="Web Development" />
 }
