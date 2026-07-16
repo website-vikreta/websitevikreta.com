@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
-  title: 'About Website Vikreta | AI Automation & Web Development Agency',
+  title: 'About Us | Website Vikreta',
   description: 'Learn about Website Vikreta, a Pune-based AI automation and web development agency. We build high-performance Next.js websites and custom AI workflow automation systems for businesses in India and worldwide.',
   keywords: [
     'about Website Vikreta',
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'About Website Vikreta | AI Automation & Web Development Agency',
     description: 'Learn about Website Vikreta, a Pune-based AI automation and web development agency. We build high-performance Next.js websites and custom AI workflow automation systems for businesses in India and worldwide.',
-    url: 'https://stage.websitevikreta.com/about',
+    url: `${SITE_URL}/about`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/about',
+    canonical: `${SITE_URL}/about`,
   },
   robots: {
     index: true,

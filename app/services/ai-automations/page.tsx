@@ -1,12 +1,6 @@
-import { ComingSoonPage } from '@/components/ComingSoonPage'
-
-export default function AIAutomationsPage() {
-  return <ComingSoonPage pageName="AI Automations" showFooter={false} />
-}
-
-/*
 import type { Metadata } from 'next'
 import AIAutomationsClient from './AIAutomationsClient'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
@@ -24,8 +18,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
     description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
-    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
-    siteName: 'Website Vikreta',
+    url: `${SITE_URL}/services/ai-automations`,
+   siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -44,7 +38,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/ai-automations`,
+    canonical: `${SITE_URL}/services/ai-automations`,
   },
   robots: {
     index: true,
@@ -61,4 +55,3 @@ export const metadata: Metadata = {
 export default function AIAutomationsPage() {
   return <AIAutomationsClient />
 }
-*/

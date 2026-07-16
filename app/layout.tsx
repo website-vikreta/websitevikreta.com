@@ -1,12 +1,15 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import localFont from 'next/font/local'
 import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { ConditionalShell } from '@/components/ui/ConditionalShell'
 import { ScrollManager } from '@/components/ui/ScrollManager'
+import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { SITE_URL } from '@/config/site'
 
 const utile = localFont({
   src: [
@@ -29,7 +32,7 @@ const utile = localFont({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_HOSTNAME!),
+  metadataBase: new URL(SITE_URL),
   title: 'Website Vikreta — AI-First Digital Agency',
   description:
     "You're losing hours every week to work a system could do. Website Vikreta builds AI-powered automation for digital marketing, web, and business operations.",
@@ -49,6 +52,9 @@ export default function RootLayout({
       className={utile.variable}
     >
       <body>
+        <Suspense fallback={null}>
+          <RouteProgressBar />
+        </Suspense>
         <ScrollManager />
         <ConditionalNavbar />
         {children}

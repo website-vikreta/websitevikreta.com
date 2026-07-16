@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { ContactPageContent } from '@/components/ContactPageContent'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Contact Us | Website Vikreta',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contact Us | Website Vikreta',
     description: 'Reach out to Website Vikreta. We build modern websites and AI automation systems for businesses across India. Let us talk about your project.',
-    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
+    url: `${SITE_URL}/contact`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/contact`,
+    canonical: `${SITE_URL}/contact`,
   },
   robots: {
     index: true,

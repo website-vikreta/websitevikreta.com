@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import WebDevClient from './WebDevClient'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
-  title: 'Next.js Web Development Services | Website Vikreta',
+  title: 'Web Development Services | Website Vikreta',
   description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
   keywords: [
     'Next.js development agency',
@@ -12,9 +14,9 @@ export const metadata: Metadata = {
     'TypeScript development',
   ],
   openGraph: {
-    title: 'Next.js Web Development Services | Website Vikreta',
+    title: 'Web Development Services | Website Vikreta',
     description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
-    url: 'https://stage.websitevikreta.com/services/web-development',
+    url: `${SITE_URL}/services/web-development`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -23,18 +25,18 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Next.js Web Development Services | Website Vikreta',
+        alt: 'Web Development Services | Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Next.js Web Development Services | Website Vikreta',
+    title: 'Web Development Services | Website Vikreta',
     description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS.',
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/services/web-development',
+    canonical: `${SITE_URL}/services/web-development`,
   },
   robots: {
     index: true,
@@ -48,6 +50,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Page() {
+export default function WebDevelopmentPage() {
+  // return <WebDevClient />
   return <ComingSoonPage pageName="Web Development" />
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import { FaqPageContent } from './FaqPageContent'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
-  title: 'FAQs | AI Automation, Web Development & Pricing | Website Vikreta',
+  title: 'FAQs | Website Vikreta',
   description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
   keywords: [
     'AI automation FAQ',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FAQs | AI Automation, Web Development & Pricing | Website Vikreta',
     description: 'Find answers about our AI automation services, web development process, pricing, timelines, technologies, support, and project delivery.',
-    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
+    url: `${SITE_URL}/faq`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/faq`,
+    canonical: `${SITE_URL}/faq`,
   },
   robots: {
     index: true,

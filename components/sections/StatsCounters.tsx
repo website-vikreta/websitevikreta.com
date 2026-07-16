@@ -31,7 +31,7 @@ export function StatsCounters() {
           {STATS.map((stat, i) => (
             <RevealFade
               key={stat.id}
-              delay={i * 0.1}
+              delay={0.15 + i * 0.1}
               className="flex flex-col border-l border-[var(--color-border)] pl-5 pr-8 py-2"
             >
               <div

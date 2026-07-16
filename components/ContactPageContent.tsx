@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button'
 
 function SlotText({ children }: { children: string }) {
   return (
-    <span aria-label={children}>
+    <span aria-label={children} role="text">
       {children.split('').map((char, i) =>
         char === ' ' ? (
           <span key={i} aria-hidden="true" style={{ display: 'inline-block', width: '0.3em' }} />
@@ -217,13 +217,14 @@ export function ContactPageContent() {
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         {
-          name: form.name,
+          name:     form.name,
           reply_to: form.email,
-          email: form.email,
-          service_type: form.jobOrWebsite,
-          budget: 'Not specified',
-          message: `${form.name} has a ${form.jobOrWebsite} that needs help.`,
-          to_name: 'Website Vikreta',
+          email:    form.email,
+          service:  form.jobOrWebsite,
+          mobile:   'Not provided',
+          budget:   'Not specified',
+          message:  `${form.name} has a ${form.jobOrWebsite} that needs help.`,
+          to_name:  'Website Vikreta',
         },
         EMAILJS_PUBLIC_KEY,
       )
