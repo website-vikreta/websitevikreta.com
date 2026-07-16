@@ -41,8 +41,8 @@ export default function PainSection() {
 
           <div className="pain-image relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first md:order-last">
             <Image
-              src="/images/careers-banner.png"
-              alt="The unspoken work behind every business"
+              src="/our-services/ai-automation/ai-business-process-automation-diagram.webp"
+              alt="AI-powered business process automation connecting products, servers, and dashboards"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
