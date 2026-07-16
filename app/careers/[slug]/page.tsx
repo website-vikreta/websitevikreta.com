@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { client } from '@/sanity/lib/client'
 import { ALL_OPENINGS_QUERY, OPENING_BY_SLUG_QUERY } from '@/sanity/lib/careers-queries'
 import CareerDetailClient from './CareerDetailClient'
+import { SITE_URL } from '@/config/site'
 
 export async function generateStaticParams() {
   const openings = await client.fetch(ALL_OPENINGS_QUERY)
@@ -20,11 +21,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: opening.metaTitle ?? `${opening.title} | Website Vikreta`,
       description: opening.metaDescription ?? opening.shortDescription,
-      url: `${process.env.NEXT_PUBLIC_HOSTNAME}/careers/${slug}`,
+      url: `${SITE_URL}/careers/${slug}`,
       siteName: 'WebsiteVikreta',
       images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
-    alternates: { canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/careers/${slug}` },
+    alternates: { canonical: `${SITE_URL}/careers/${slug}` },
   }
 }
 

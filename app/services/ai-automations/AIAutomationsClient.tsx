@@ -9,6 +9,7 @@ import WhySection from './sections/WhySection'
 import ContactSection from './sections/ContactSection'
 
 export default function AIAutomationsClient() {
+
   return (
     <>
       <DotGrid global />

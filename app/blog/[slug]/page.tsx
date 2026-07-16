@@ -8,6 +8,7 @@ import { urlFor } from '@/sanity/lib/image'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import type { FullPost } from '@/sanity/types'
+import { SITE_URL } from '@/config/site'
 
 export const dynamic = 'force-dynamic'
 
@@ -58,7 +59,7 @@ export async function generateMetadata({
           openGraph: {
             title: post.seoTitle ?? post.title,
             description: post.seoDescription ?? post.description ?? '',
-            url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${post.slug}`,
+            url: `${SITE_URL}/blog/${post.slug}`,
             siteName: 'Website Vikreta',
             type: 'article',
             locale: 'en_IN',
@@ -82,7 +83,7 @@ export async function generateMetadata({
               : ['/og-image.png'],
           },
           alternates: {
-            canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${post.slug}`,
+            canonical: `${SITE_URL}/blog/${post.slug}`,
           },
           robots: {
             index: true,
@@ -102,7 +103,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
+      url: `${SITE_URL}/blog/${slug}`,
       siteName: 'Website Vikreta',
       type: 'article',
       locale: 'en_IN',
@@ -122,7 +123,7 @@ export async function generateMetadata({
       images: ['/og-image.png'],
     },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/blog/${slug}`,
+      canonical: `${SITE_URL}/blog/${slug}`,
     },
   }
 }

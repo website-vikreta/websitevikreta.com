@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions | Website Vikreta',
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Terms and Conditions | Website Vikreta',
     description: 'Read the terms and conditions for using Website Vikreta\'s website and services, including intellectual property, payments, and acceptable use.',
-    url: 'https://stage.websitevikreta.com/legal/terms-and-conditions',
+    url: `${SITE_URL}/legal/terms-and-conditions`,
     siteName: 'Website Vikreta',
     type: 'website',
     images: [
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/legal/terms-and-conditions',
+    canonical: `${SITE_URL}/legal/terms-and-conditions`,
   },
   robots: {
     index: true,

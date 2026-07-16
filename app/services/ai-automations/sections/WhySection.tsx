@@ -33,8 +33,8 @@ export default function WhySection() {
 
           <div className="why-image relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first">
             <Image
-              src="/images/careers-banner.png"
-              alt="Why Website Vikreta"
+              src="/our-services/ai-automation/why-choose-website-vikreta-ai-automation.webp"
+              alt="Why choose Website Vikreta for AI automation"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"

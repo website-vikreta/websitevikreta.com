@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Digital Marketing & SEO Services | Website Vikreta',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Digital Marketing & SEO Services | Website Vikreta',
     description: 'Grow your business with SEO, content marketing, and digital marketing services that help you attract qualified traffic and generate more leads.',
-    url: 'https://stage.websitevikreta.com/services/digital-marketing',
+    url: `${SITE_URL}/services/digital-marketing`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/services/digital-marketing',
+    canonical: `${SITE_URL}/services/digital-marketing`,
   },
   robots: {
     index: true,

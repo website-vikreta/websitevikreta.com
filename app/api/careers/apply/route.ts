@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeClient } from '@/sanity/lib/write-client'
+import { SITE_URL } from '@/config/site'
 
 const EMAILJS_SERVICE_ID   = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_SERVICE_ID    ?? ''
 const EMAILJS_TEMPLATE_ID  = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_TEMPLATE_ID   ?? ''
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
       status: 'new',
     })
 
-    const jobUrl = `${process.env.NEXT_PUBLIC_HOSTNAME}/careers/${openingSlug}`
+    const jobUrl = `${SITE_URL}/careers/${openingSlug}`
 
     const emailPayload = {
       service_id:   EMAILJS_SERVICE_ID,
