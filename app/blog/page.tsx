@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { BlogListingClient } from './BlogListingClient'
+import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchBlogPosts } from '@/sanity/lib/fetch'
 import type { DisplayPost } from '@/sanity/types'
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
     description: 'Read practical guides on AI automation, Next.js development, workflow automation, SEO, and business growth.',
-    url: 'https://stage.websitevikreta.com/blog',
+    url: `${SITE_URL}/blog`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/blog',
+    canonical: `${SITE_URL}/blog`,
   },
   robots: {
     index: true,

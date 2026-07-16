@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import WebDevClient from './WebDevClient'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Web Development Services | Website Vikreta',
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Web Development Services | Website Vikreta',
     description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
-    url: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/web-development`,
+    url: `${SITE_URL}/services/web-development`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_HOSTNAME}/services/web-development`,
+    canonical: `${SITE_URL}/services/web-development`,
   },
   robots: {
     index: true,

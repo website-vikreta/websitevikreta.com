@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'UI/UX Design Services | Website Vikreta',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'UI/UX Design Services | Website Vikreta',
     description: 'Design user-friendly websites and applications with modern UI/UX that improves usability, engagement, and conversions.',
-    url: 'https://stage.websitevikreta.com/services/uiux-design',
+    url: `${SITE_URL}/services/uiux-design`,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/services/uiux-design',
+    canonical: `${SITE_URL}/services/uiux-design`,
   },
   robots: {
     index: true,

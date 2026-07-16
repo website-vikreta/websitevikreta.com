@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { LegalPageLayout } from '@/components/legal/LegalPageLayout'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Website Vikreta',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Privacy Policy | Website Vikreta',
     description: 'Learn how Website Vikreta collects, uses, stores, and protects your personal information and your privacy rights.',
-    url: 'https://stage.websitevikreta.com/legal/privacy-policy',
+    url: `${SITE_URL}/legal/privacy-policy`,
     siteName: 'Website Vikreta',
     type: 'website',
     images: [
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://stage.websitevikreta.com/legal/privacy-policy',
+    canonical: `${SITE_URL}/legal/privacy-policy`,
   },
   robots: {
     index: true,

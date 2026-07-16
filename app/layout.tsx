@@ -9,6 +9,7 @@ import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { SITE_URL } from '@/config/site'
 
 const utile = localFont({
   src: [
@@ -31,7 +32,7 @@ const utile = localFont({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_HOSTNAME!),
+  metadataBase: new URL(SITE_URL),
   title: 'Website Vikreta — AI-First Digital Agency',
   description:
     "You're losing hours every week to work a system could do. Website Vikreta builds AI-powered automation for digital marketing, web, and business operations.",

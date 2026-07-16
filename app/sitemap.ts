@@ -1,13 +1,14 @@
 import type { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
+import { SITE_URL } from '@/config/site'
 
-const BASE = process.env.NEXT_PUBLIC_HOSTNAME!
+const BASE = SITE_URL
 
 const staticRoutes: MetadataRoute.Sitemap = [
   // Home
   {
-    url: `${BASE}/`,
+    url: BASE,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 1.0,
