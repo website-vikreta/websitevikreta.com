@@ -108,11 +108,11 @@ Always create a new branch from the target release branch:
 # Fetch the latest upstream branches
 git fetch upstream
 
-# Create and checkout a new branch based on the release branch
-git checkout -b feature/your-feature-name upstream/release-july-week5
+# Create and checkout a new branch based on the current release branch
+git checkout -b feature/your-feature-name upstream/<release-branch>
 
 # Example:
-# git checkout -b feature/add-contact-form upstream/release-july-week5
+# git checkout -b feature/add-contact-form upstream/<release-branch>
 ```
 
 ### Branch Naming Convention
@@ -130,7 +130,7 @@ Use descriptive branch names with prefixes:
 
 1. **Make your changes** in your feature branch
 2. **Test locally** - ensure everything works as expected
-3. **Run build** before committing (this is crucial!)
+3. **Run build** before pushing (this is crucial!)
 
 ```bash
 # Build the project to catch errors early
@@ -195,8 +195,8 @@ If the build fails, fix the errors before proceeding.
 2. Click **"Compare & pull request"** button
 3. Configure the PR:
    - **Base repository:** `website-vikreta/websitevikreta.com`
-   - **Base branch:** `release-july-week5` (or the current release branch)
-   - **Head repository:** `your-username/websitevikreta-fork`
+   - **Base branch:** `<release-branch>` (the current release branch)
+   - **Head repository:** `your-username/websitevikreta.com`
    - **Compare branch:** `feature/your-feature-name`
 
 ### 4. PR Title and Description
@@ -269,16 +269,16 @@ Check these files for detailed guidelines:
 ```
 main (production)
   ↑
-  └── release-july-week5 (staging/release branch)
+  └── <release-branch> (staging/release branch)
         ↑
         └── feature/your-feature (your work)
 ```
 
 **Flow:**
-1. You create a feature branch from `release-july-week5`
-2. You submit a PR to `release-july-week5`
-3. After review and approval, your PR is merged into `release-july-week5`
-4. When ready, `release-july-week5` is merged into `main` (by maintainers)
+1. You create a feature branch from `<release-branch>`
+2. You submit a PR to `<release-branch>`
+3. After review and approval, your PR is merged into `<release-branch>`
+4. When ready, `<release-branch>` is merged into `main` (by maintainers)
 
 ## 🔍 Troubleshooting
 
@@ -312,7 +312,7 @@ If you encounter merge conflicts:
 git fetch upstream
 
 # Rebase your branch
-git rebase upstream/release-july-week5
+git rebase upstream/<release-branch>
 
 # Resolve conflicts in your editor
 # After resolving, continue rebase
@@ -320,7 +320,7 @@ git add .
 git rebase --continue
 
 # Force push (only for your feature branch!)
-git push -f origin feature/your-feature-name
+ git push --force-with-lease origin feature/your-feature-name
 ```
 
 ## 📞 Getting Help
