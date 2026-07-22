@@ -151,7 +151,7 @@ git commit -m "feat: add contact form validation"
 
 ### Commit Message Guidelines
 
-Follow conventional commit format:
+Use the following commit message prefixes (project convention; similar to Conventional Commits):
 
 - `feat:` - New feature
 - `fix:` - Bug fix
