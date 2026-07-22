@@ -33,10 +33,10 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 # Clone your forked repository
-git clone https://github.com/YOUR-USERNAME/websitevikreta-fork.git
+git clone https://github.com/YOUR-USERNAME/websitevikreta.com.git
 
 # Navigate to the project directory
-cd websitevikreta-fork
+cd websitevikreta.com
 ```
 
 ### 3. Set Up Upstream Remote
