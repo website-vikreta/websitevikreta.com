@@ -102,18 +102,18 @@ git push origin main
 
 ### Create a Feature Branch
 
-Always create a new branch from the target release branch:
+Always create a new branch from the target release branch.
 
-```bash
-# Fetch the latest upstream branches
-git fetch upstream
+If you’re unsure what the current release branch is, check the repository’s branches on GitHub (it’s the branch maintainers target for staging/release PRs) or ask a maintainer.
 
-# Create and checkout a new branch based on the current release branch
-git checkout -b feature/your-feature-name upstream/<release-branch>
+   # Fetch the latest upstream branches
+   git fetch upstream
 
-# Example:
-# git checkout -b feature/add-contact-form upstream/<release-branch>
-```
+   # Create and checkout a new branch based on the current release branch
+   git checkout -b feature/your-feature-name upstream/<release-branch>
+   # Example:
+   # git checkout -b feature/add-contact-form upstream/<release-branch>
+
 
 ### Branch Naming Convention
 
@@ -320,7 +320,7 @@ git add .
 git rebase --continue
 
 # Force push (only for your feature branch!)
- git push --force-with-lease origin feature/your-feature-name
+git push --force-with-lease origin feature/your-feature-name
 ```
 
 ## 📞 Getting Help
