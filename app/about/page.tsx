@@ -1,6 +1,15 @@
 import type { Metadata } from 'next'
-import { ComingSoonPage } from '@/components/ComingSoonPage'
 import { SITE_URL } from '@/config/site'
+import { DotGrid } from '@/components/ui/DotGrid'
+import { AboutHeroSection } from '@/components/sections/AboutHeroSection'
+import { VisionSection } from '@/components/sections/VisionSection'
+import { PhotoGallerySection } from '@/components/sections/PhotoGallerySection'
+import { CoreValuesSection } from '@/components/sections/CoreValuesSection'
+import { ValuesCTASection } from '@/components/sections/ValuesCTASection'
+import { StatsCounters } from '@/components/sections/StatsCounters'
+import { InsightsSection } from '@/components/sections/InsightsSection'
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
+import { AboutCTASection } from '@/components/sections/AboutCTASection'
 
 export const metadata: Metadata = {
   title: 'About Us | Website Vikreta',
@@ -54,5 +63,18 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
-  return <ComingSoonPage pageName="About Us" showFooter={false} />
+  return (
+    <main>
+      <DotGrid global />
+      <AboutHeroSection />
+      <VisionSection />
+      <PhotoGallerySection />
+      <StatsCounters />
+      <CoreValuesSection />
+      <ValuesCTASection />
+      <InsightsSection />
+      <AboutCTASection />
+      <TestimonialsSection />
+    </main>
+  )
 }
