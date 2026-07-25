@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import {
   CASE_STUDY_GRID,
@@ -9,23 +10,22 @@ import {
   CaseStudyGridLink,
 } from '@/components/sections/work/CaseStudyCard'
 
-export function FeaturedWorkSection() {
+export function WorkCaseStudiesSection() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="container py-16 md:py-20">
+    <section
+      id="case-studies"
+      className="relative py-16 md:py-20"
+      aria-label="Case Studies"
+    >
+      <div className="container">
         <div className="mb-10 md:mb-14 max-w-3xl">
-          <RevealText
-            as="h2"
-            className="text-h1 font-bold tracking-tight text-(--color-text)"
-          >
-            Proof over <span className="text-(--color-accent)">promises.</span>
+          <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
+            Case studies
           </RevealText>
-
           <RevealFade className="mt-5" delay={0.1}>
-            <span className="block max-w-xl text-body-lg leading-relaxed text-(--color-text-muted)">
-              We don&apos;t pitch what we might do. Here is what we&apos;ve already
-              shipped, and what it changed for the businesses behind it.
-            </span>
+            <p className="text-body-lg leading-relaxed text-(--color-text-muted)">
+              Real client work with measurable outcomes — not mockups, not concept decks.
+            </p>
           </RevealFade>
         </div>
 
@@ -34,13 +34,16 @@ export function FeaturedWorkSection() {
             <CaseStudyFeaturedLink study={FEATURED_CASE_STUDY} />
           </RevealFade>
 
-          <RevealFade className="grid border-t border-(--color-border) lg:grid-cols-2" delay={0.25}>
-            {CASE_STUDY_GRID.map((item, idx) => (
+          <RevealFade
+            className="grid border-t border-(--color-border) lg:grid-cols-2"
+            delay={0.25}
+          >
+            {CASE_STUDY_GRID.map((study, index) => (
               <CaseStudyGridLink
-                key={item.slug}
-                study={item}
+                key={study.slug}
+                study={study}
                 className={
-                  idx === 1
+                  index === 1
                     ? 'border-t border-(--color-border) lg:border-t-0 lg:border-l'
                     : ''
                 }
