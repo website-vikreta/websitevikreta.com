@@ -112,7 +112,9 @@ export const CASE_STUDIES: CaseStudy[] = [
 export const FEATURED_CASE_STUDY =
   CASE_STUDIES.find((study) => study.featured) ?? CASE_STUDIES[0]
 
-export const CASE_STUDY_GRID = CASE_STUDIES.filter((study) => !study.featured)
+export const CASE_STUDY_GRID = CASE_STUDIES.filter(
+  (study) => study.slug !== FEATURED_CASE_STUDY.slug,
+)
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return CASE_STUDIES.find((study) => study.slug === slug)
@@ -163,7 +165,7 @@ export const WEB_PROJECTS: WebProject[] = [
 
 export const WORK_OUTCOMES = [
   {
-    id: 'clients',
+    id: 'years',
     display: '5+',
     useCounter: false,
     label: 'Years shipping for clients across industries',
