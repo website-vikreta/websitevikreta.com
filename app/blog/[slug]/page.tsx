@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import Image from 'next/image'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/image'
 import { Button } from '@/components/ui/Button'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import type { FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -166,7 +166,9 @@ export default async function BlogPostPage({
     : post.readTime
 
   return (
-    <main>
+    <>
+      <ScrollToTop />
+      <main>
       <article>
 
         {/* Cover image — Sanity posts only */}
@@ -279,5 +281,6 @@ export default async function BlogPostPage({
         </div>
       </article>
     </main>
+    </>
   )
 }
