@@ -44,6 +44,7 @@ export function AboutHeroSection() {
                 src="/images/about1.avif"
                 alt="Website Vikreta workspace and strategy"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
                 priority
               />
