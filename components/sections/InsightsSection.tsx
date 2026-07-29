@@ -32,7 +32,7 @@ const INSIGHTS = [
 
 export function InsightsSection() {
   return (
-    <section className="relative py-16 md:py-20 bg-(--color-bg)" aria-label="How We Work">
+    <section className="relative py-16 md:py-20" aria-label="How We Work">
       <div className="container">
         <div className="mb-10 md:mb-14">
           <RevealText>

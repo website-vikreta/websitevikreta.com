@@ -4,7 +4,7 @@ import { RevealText, RevealFade } from '@/components/ui/Reveal'
 
 export function VisionSection() {
   return (
-    <section className="relative py-16 md:py-20 bg-(--color-bg)" aria-label="Our Vision">
+    <section className="relative py-16 md:py-20" aria-label="Our Vision">
       <div className="container">
         <div className="mb-10 md:mb-14">
           <RevealText>

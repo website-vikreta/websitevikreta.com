@@ -28,7 +28,7 @@ export function ClientLogosSection() {
   })
 
   return (
-    <section className="py-16 md:py-20 bg-(--color-bg) overflow-hidden">
+    <section className="py-16 md:py-20 overflow-hidden">
 
       <div className="container mb-10 md:mb-14">
         <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)]">

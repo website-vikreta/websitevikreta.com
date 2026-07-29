@@ -69,7 +69,7 @@ export default function AboutPage() {
       <VisionSection />
       <CoreValuesSection />
       <PhotoGallerySection />
-      <StatsCounters bgClassName="bg-(--color-bg)" />
+      <StatsCounters bgClassName="" />
       <ClientLogosSection />
       <InsightsSection />
       <AboutContactCTASection />

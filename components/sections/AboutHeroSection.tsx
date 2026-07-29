@@ -6,7 +6,7 @@ import Image from 'next/image'
 export function AboutHeroSection() {
   return (
     <section
-      className="relative py-16 md:py-20 bg-(--color-bg)"
+      className="relative py-16 md:py-20"
       aria-label="About Hero"
     >
       <div className="container">

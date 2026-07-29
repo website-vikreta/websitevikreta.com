@@ -51,7 +51,7 @@ const PHOTOS = [
 export function PhotoGallerySection() {
   return (
     <section
-      className="relative py-16 md:py-20 bg-(--color-bg)"
+      className="relative py-16 md:py-20"
       aria-label="Photo Gallery"
     >
       <div className="container">
