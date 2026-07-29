@@ -179,6 +179,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: user asked for a full responsive-typography audit across all 6 ai-automations sections; the fluid `clamp()` tokens already cover cross-device scaling, so the actual defects were inline styles bypassing the token system (harder to keep consistent) and one missing responsive breakpoint, not the scale itself.
 - Date: 2026-07-04
 
+### [Page] — about page section sequence + form-CTA closing section
+- Rule: `/about` section order is: Hero → Vision → Core Values → Photo Gallery ("Behind the work") → Stats/Impact → Client Logos (`ClientLogosSection`) → Insights ("How we stay sharp") → closing form-CTA (`AboutContactCTASection`). The page ends on the form CTA — no testimonials, no plain link-out CTA banner after it. New component `components/sections/AboutContactCTASection.tsx` duplicates the structure/motion of `app/services/ai-automations/sections/ContactSection.tsx` (2fr/3fr grid, left heading+sub, right bordered form card with First/Last/Email/Subject/Message + `revealLines`/`revealFadeUp`/`useGsapSection` from `lib/gsap/reveals`) with About-specific copy ("Tell Us What's Broken" / "Book a Free Call"), and reuses the same closing-CTA padding exception (`pt-16 pb-24 md:pt-20 md:pb-32`) rather than the flat `py-16 md:py-20`. `ValuesCTASection.tsx` and `AboutCTASection.tsx` (the old link-only CTA banners) were deleted — they had no other callers. `TestimonialsSection.tsx` was only removed from the about page's usage, not deleted, since the home page still renders it.
+- Where: `app/about/page.tsx`, `components/sections/AboutContactCTASection.tsx`.
+- Why: user wants every top-level CTA that closes a page to be an actual lead-capture form (matching the AI Automations pattern), not a button-only banner; testimonials and the extra banner CTA were flagged as redundant given the new form close. All image-bearing sections on this page (`AboutHeroSection`, `PhotoGallerySection`) already shared the canonical `RevealFade` primitive, so no motion divergence needed fixing there.
+- Date: 2026-07-29
+
 ## Naming
 _None logged yet._
 

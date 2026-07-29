@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/config/site'
-import { DotGrid } from '@/components/ui/DotGrid'
+import { AboutContactCTASection } from '@/components/sections/AboutContactCTASection'
 import { AboutHeroSection } from '@/components/sections/AboutHeroSection'
-import { VisionSection } from '@/components/sections/VisionSection'
-import { PhotoGallerySection } from '@/components/sections/PhotoGallerySection'
+import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
 import { CoreValuesSection } from '@/components/sections/CoreValuesSection'
-import { ValuesCTASection } from '@/components/sections/ValuesCTASection'
-import { StatsCounters } from '@/components/sections/StatsCounters'
 import { InsightsSection } from '@/components/sections/InsightsSection'
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
-import { AboutCTASection } from '@/components/sections/AboutCTASection'
+import { PhotoGallerySection } from '@/components/sections/PhotoGallerySection'
+import { StatsCounters } from '@/components/sections/StatsCounters'
+import { VisionSection } from '@/components/sections/VisionSection'
+import { DotGrid } from '@/components/ui/DotGrid'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'About Us | Website Vikreta',
@@ -68,13 +67,12 @@ export default function AboutPage() {
       <DotGrid global />
       <AboutHeroSection />
       <VisionSection />
-      <PhotoGallerySection />
-      <StatsCounters />
       <CoreValuesSection />
-      <ValuesCTASection />
+      <PhotoGallerySection />
+      <StatsCounters bgClassName="bg-(--color-bg)" />
+      <ClientLogosSection />
       <InsightsSection />
-      <AboutCTASection />
-      <TestimonialsSection />
+      <AboutContactCTASection />
     </main>
   )
 }

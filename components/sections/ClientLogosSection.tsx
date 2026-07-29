@@ -28,13 +28,10 @@ export function ClientLogosSection() {
   })
 
   return (
-    <section className="py-16 md:py-20 overflow-hidden">
+    <section className="py-16 md:py-20 bg-(--color-bg) overflow-hidden">
 
       <div className="container mb-10 md:mb-14">
-        <RevealText className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-faint)] mb-2">
-          Our Clients
-        </RevealText>
-        <RevealText as="h2" delay={0.1} className="text-h2 font-bold text-[var(--color-text)]">
+        <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)]">
           Businesses we&apos;ve built for
         </RevealText>
       </div>
