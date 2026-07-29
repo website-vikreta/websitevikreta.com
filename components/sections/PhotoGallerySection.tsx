@@ -76,7 +76,7 @@ export function PhotoGallerySection() {
               delay={index * 0.08}
               className={photo.className}
             >
-              <div className="relative h-full w-full overflow-hidden rounded-sm border border-(--color-border) bg-(--color-bg-muted)">
+              <div className="relative h-full w-full overflow-hidden rounded-sm border border-(--color-border) bg-(--color-bg-muted) transition-[border-radius] duration-300 ease-out hover:rounded-none">
                 <Image
                   src={photo.src}
                   alt={photo.alt}
