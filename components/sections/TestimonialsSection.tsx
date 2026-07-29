@@ -64,8 +64,8 @@ export function TestimonialsSection() {
   }
 
   return (
-    <section className="py-16 md:py-20 px-6">
-      <div className="max-w-2xl mx-auto text-center">
+    <section className="py-16 md:py-20 bg-(--color-surface)">
+      <div className="container max-w-2xl text-center">
 
         {/* Heading */}
         <RevealText as="h3" className="text-h3 font-bold text-[var(--color-text)] mb-10 md:mb-14">
@@ -189,19 +189,19 @@ export function TestimonialsSection() {
                 aria-label={`View ${t.role} testimonial`}
                 className={cn(
                   "relative flex items-center rounded-full cursor-pointer",
-                  "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                  "transition-all duration-300 ease-out",
                   isActive
-                    ? "bg-[#121212] pr-4 pl-[5px] py-[5px]"
-                    : "bg-transparent hover:bg-[#EBEBEB] pr-[3px] pl-[3px] py-[3px]",
+                    ? "bg-(--color-text) pr-4 pl-[5px] py-[5px]"
+                    : "bg-transparent hover:bg-(--color-bg-muted) pr-[3px] pl-[3px] py-[3px]",
                 )}
               >
                 <div
                   className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 select-none",
-                    "transition-all duration-500",
+                    "transition-all duration-300",
                     isActive
-                      ? "bg-[#FFD600] text-[#121212]"
-                      : "bg-[#E0E0E0] text-[#525252]",
+                      ? "bg-(--color-accent) text-(--color-text)"
+                      : "bg-(--color-bg-muted) text-(--color-text-muted)",
                   )}
                 >
                   {t.initial}
@@ -209,7 +209,7 @@ export function TestimonialsSection() {
 
                 <div
                   className={cn(
-                    "grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                    "grid transition-all duration-300 ease-out",
                     showLabel
                       ? "grid-cols-[1fr] opacity-100 ml-2"
                       : "grid-cols-[0fr] opacity-0 ml-0",
@@ -219,7 +219,7 @@ export function TestimonialsSection() {
                     <span
                       className={cn(
                         "text-xs font-medium whitespace-nowrap block",
-                        isActive ? "text-white" : "text-[#121212]",
+                        isActive ? "text-(--color-surface)" : "text-(--color-text)",
                       )}
                     >
                       {t.role}

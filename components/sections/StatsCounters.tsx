@@ -19,7 +19,7 @@ const STATS: StatItem[] = [
 export function StatsCounters() {
   return (
     <section
-      className="relative py-16 md:py-20 overflow-hidden"
+      className="relative py-16 md:py-20 bg-(--color-surface) overflow-hidden"
       aria-label="Impact Statistics"
     >
       <div className="container relative z-10">
@@ -66,7 +66,7 @@ export function StatsCounters() {
         {/* Note below stats */}
         <RevealFade className="mt-10 md:mt-14" delay={0.4}>
           <p className="text-[var(--color-text-muted)] text-sm md:text-base leading-relaxed max-w-2xl">
-            That last number is one year old. We made the shift, measured everything, and haven't looked back.
+            That last number is one year old. We made the shift, measured everything, and haven&apos;t looked back.
           </p>
         </RevealFade>
       </div>
