@@ -41,8 +41,8 @@ export function AboutHeroSection() {
           <RevealFade delay={0.3}>
             <div className="relative w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-sm overflow-hidden bg-(--color-bg-muted) border border-(--color-border)">
               <Image
-                src="/images/about1.avif"
-                alt="Website Vikreta workspace and strategy"
+                src="/about/team-strategy-meeting.webp"
+                alt="Website Vikreta team in a strategy meeting"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"

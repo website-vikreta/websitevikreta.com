@@ -206,3 +206,9 @@ _None logged yet._
 - Where: `app/about/page.tsx` and the section files listed above.
 - Why: user flagged that the CTA form section's background looked different from the sections above it on the live page even though the code used the same color token — root cause was the opaque fill blocking the global dot-grid canvas, not a color mismatch. Numerals color/size change was a direct, explicit ask.
 - Date: 2026-07-29
+
+### [Anti-pattern exception] — PhotoGallerySection tiles use rounded-2xl, not the sitewide radius cap
+- Rule: `design-system.md` sets a hard rule — "No border-radius > 4px on containers" — and every other image on the site (`AboutHeroSection`, `ServicesBentoGrid` cards) follows it with `rounded-sm` (2px) or no radius at all. `components/sections/PhotoGallerySection.tsx` bento tiles are a deliberate, section-scoped exception: `rounded-2xl` (16px) at rest, animating to `rounded-none` on hover (`transition-[border-radius] duration-300 ease-out hover:rounded-none`). Confirmed with user during a sitewide consistency pass — they want it kept as-is. Do not "fix" this back to `rounded-sm` without asking again; do not propagate `rounded-2xl` to other image grids as a new default.
+- Where: `components/sections/PhotoGallerySection.tsx`.
+- Why: user's explicit, twice-repeated request (first to add rounded-2xl, then to keep it when flagged against the design-system cap during a consistency audit).
+- Date: 2026-07-30
