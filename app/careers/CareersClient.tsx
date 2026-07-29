@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
@@ -27,7 +28,21 @@ const FLAG_STYLES: Record<string, string> = {
   'Hiring Urgently': 'bg-[#FF4444] text-white',
 }
 
+const ALL_FILTER = 'All'
+
 export default function CareersClient({ openings }: Props) {
+  const filters = useMemo(() => {
+    const flags = Array.from(new Set(openings.map(o => o.flag).filter((f): f is string => !!f)))
+    return [ALL_FILTER, ...flags]
+  }, [openings])
+
+  const [activeFilter, setActiveFilter] = useState(ALL_FILTER)
+
+  const filteredOpenings = useMemo(
+    () => (activeFilter === ALL_FILTER ? openings : openings.filter(o => o.flag === activeFilter)),
+    [openings, activeFilter]
+  )
+
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
@@ -59,8 +74,36 @@ export default function CareersClient({ openings }: Props) {
             </RevealFade>
           </div>
 
+          {filters.length > 1 && (
+            <RevealFade className="mb-8 md:mb-10" delay={0.15}>
+              <div role="group" aria-label="Filter openings by status" className="flex flex-wrap gap-2">
+                {filters.map(filter => {
+                  const isActive = filter === activeFilter
+                  return (
+                    <button
+                      key={filter}
+                      type="button"
+                      aria-pressed={isActive}
+                      onClick={() => setActiveFilter(filter)}
+                      className={`cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
+                        isActive
+                          ? 'border-(--color-text) bg-(--color-text) text-(--color-bg)'
+                          : 'border-(--color-border) text-(--color-text-muted) hover:border-(--color-text)'
+                      }`}
+                    >
+                      {filter}
+                    </button>
+                  )
+                })}
+              </div>
+            </RevealFade>
+          )}
+
+          {filteredOpenings.length === 0 ? (
+            <p className="text-base text-(--color-text-muted)">No openings in this category right now.</p>
+          ) : (
           <div className="grid grid-cols-1 border-t border-l border-(--color-border) md:grid-cols-2 lg:grid-cols-3">
-            {openings.map((opening, i) => (
+            {filteredOpenings.map((opening, i) => (
               <RevealFade key={opening.slug} delay={(i % 3) * 0.08} className="border-r border-b border-(--color-border)">
                 <Link
                   href={`/careers/${opening.slug}`}
@@ -107,6 +150,7 @@ export default function CareersClient({ openings }: Props) {
               </RevealFade>
             ))}
           </div>
+          )}
         </div>
       </section>
     </>
