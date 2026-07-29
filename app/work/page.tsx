@@ -1,20 +1,24 @@
 import type { Metadata } from 'next'
-import { ComingSoonPage } from '@/components/ComingSoonPage'
 import { SITE_URL } from '@/config/site'
+import { WorkPageContent } from './WorkPageContent'
 
 export const metadata: Metadata = {
   title: 'Our Work | Web Development & AI Automation Projects | Website Vikreta',
-  description: 'Explore websites, AI automation systems, and digital products built by Website Vikreta for businesses across industries.',
+  description:
+    'Explore websites, AI automation systems, and digital products built by Website Vikreta. Real case studies with measurable outcomes for businesses across industries.',
   keywords: [
     'web development portfolio',
     'AI automation projects',
     'Website Vikreta portfolio',
     'client work',
     'case studies',
+    'Next.js agency work',
+    'AI workflow automation examples',
   ],
   openGraph: {
     title: 'Our Work | Web Development & AI Automation Projects | Website Vikreta',
-    description: 'Explore websites, AI automation systems, and digital products built by Website Vikreta for businesses across industries.',
+    description:
+      'Explore websites, AI automation systems, and digital products built by Website Vikreta for businesses across industries.',
     url: `${SITE_URL}/work`,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -31,7 +35,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Our Work | Web Development & AI Automation Projects | Website Vikreta',
-    description: 'Explore websites, AI automation systems, and digital products built by Website Vikreta.',
+    description:
+      'Explore websites, AI automation systems, and digital products built by Website Vikreta.',
     images: ['/og-image.png'],
   },
   alternates: {
@@ -49,6 +54,28 @@ export const metadata: Metadata = {
   },
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Our Work',
+  description:
+    'Portfolio of web development, AI automation, and digital design projects by Website Vikreta.',
+  url: `${SITE_URL}/work`,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Website Vikreta',
+    url: SITE_URL,
+  },
+}
+
 export default function WorkPage() {
-  return <ComingSoonPage pageName="Our Work" showFooter={false} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <WorkPageContent />
+    </>
+  )
 }
