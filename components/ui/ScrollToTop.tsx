@@ -37,11 +37,11 @@ export function ScrollToTop() {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 flex size-12 items-center justify-center border border-(--color-border) bg-(--color-text) text-(--color-bg) transition-all duration-300 ease-out hover:bg-(--color-accent) hover:text-(--color-text) hover:border-(--color-accent) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2"
+          className="fixed bottom-6 right-6 z-50 flex size-9 cursor-pointer items-center justify-center border border-(--color-border) bg-(--color-text) text-(--color-bg) transition-colors duration-300 ease-out hover:bg-(--color-accent) hover:text-(--color-text) hover:border-(--color-accent) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2"
           aria-label="Scroll to top"
           type="button"
         >
-          <ArrowUp size={18} strokeWidth={2} aria-hidden="true" />
+          <ArrowUp size={16} strokeWidth={2} aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>

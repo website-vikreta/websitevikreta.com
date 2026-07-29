@@ -107,9 +107,7 @@ export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
               </motion.article>
             ))}
           </div>
-
-
-</div>
+         </div>
       </section>
     </main>
     </>
