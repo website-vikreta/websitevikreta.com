@@ -84,7 +84,7 @@ export function PhotoGallerySection() {
                       alt={photo.alt}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 33vw, 33vw"
+                      sizes="(max-width: 768px) 67vw, 33vw"
                     />
                   </div>
                   <div className="relative h-full w-1/3 overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-muted) transition-[border-radius] duration-300 ease-out hover:rounded-none">
@@ -93,7 +93,7 @@ export function PhotoGallerySection() {
                       alt="Website Vikreta team presenting an award after a quiz session"
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 17vw, 8vw"
+                      sizes="(max-width: 768px) 33vw, 17vw"
                     />
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export function PhotoGallerySection() {
                     fill
                     className="object-cover"
                     sizes={
-                      photo.id === 1
+                      photo.className.includes('col-span-2')
                         ? '(max-width: 768px) 100vw, 50vw'
                         : '(max-width: 768px) 50vw, 25vw'
                     }

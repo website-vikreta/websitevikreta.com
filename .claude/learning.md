@@ -179,12 +179,6 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: user asked for a full responsive-typography audit across all 6 ai-automations sections; the fluid `clamp()` tokens already cover cross-device scaling, so the actual defects were inline styles bypassing the token system (harder to keep consistent) and one missing responsive breakpoint, not the scale itself.
 - Date: 2026-07-04
 
-### [Page] — about page section sequence + form-CTA closing section
-- Rule: `/about` section order is: Hero → Vision → Core Values → Photo Gallery ("Behind the work") → Stats/Impact → Client Logos (`ClientLogosSection`) → Insights ("How we stay sharp") → closing form-CTA (`AboutContactCTASection`). The page ends on the form CTA — no testimonials, no plain link-out CTA banner after it. New component `components/sections/AboutContactCTASection.tsx` duplicates the structure/motion of `app/services/ai-automations/sections/ContactSection.tsx` (2fr/3fr grid, left heading+sub, right bordered form card with First/Last/Email/Subject/Message + `revealLines`/`revealFadeUp`/`useGsapSection` from `lib/gsap/reveals`) with About-specific copy ("Tell Us What's Broken" / "Book a Free Call"), and reuses the same closing-CTA padding exception (`pt-16 pb-24 md:pt-20 md:pb-32`) rather than the flat `py-16 md:py-20`. `ValuesCTASection.tsx` and `AboutCTASection.tsx` (the old link-only CTA banners) were deleted — they had no other callers. `TestimonialsSection.tsx` was only removed from the about page's usage, not deleted, since the home page still renders it.
-- Where: `app/about/page.tsx`, `components/sections/AboutContactCTASection.tsx`.
-- Why: user wants every top-level CTA that closes a page to be an actual lead-capture form (matching the AI Automations pattern), not a button-only banner; testimonials and the extra banner CTA were flagged as redundant given the new form close. All image-bearing sections on this page (`AboutHeroSection`, `PhotoGallerySection`) already shared the canonical `RevealFade` primitive, so no motion divergence needed fixing there.
-- Date: 2026-07-29
-
 ## Naming
 _None logged yet._
 
@@ -200,15 +194,3 @@ _None logged yet._
 - Why: user explicitly banned this after seeing it on the AI-automations "Three Things We Fix Most Often" grid — reads as generic template filler, not considered design. Let the image, title, and grid position carry the ordering instead.
 - Where: `app/services/ai-automations/AIAutomationsClient.tsx` "Three Things We Fix Most Often" section (index field removed from `FixCard`).
 - Date: 2026-07-04
-
-### [About page] — no opaque section backgrounds; numbers styled in accent color
-- Rule: `/about` sections carry NO explicit `bg-*` fill on their top-level `<section>` (removed `bg-(--color-bg)` from `AboutHeroSection`, `VisionSection`, `CoreValuesSection`, `PhotoGallerySection`, `ClientLogosSection`, `InsightsSection`; `StatsCounters` is called with `bgClassName=""` on this page specifically). Reason this matters here and not elsewhere: `<DotGrid global />` renders a `fixed inset-0 -z-10` canvas behind the whole page — any section painting an *opaque* `bg-(--color-bg)` on top of it hides the dot texture in that section even though the color value is identical to the page background, while a transparent section lets the dots show through. `AboutContactCTASection` (no bg class) was the reference the user pointed to. Separately, `CoreValuesSection`'s `01`-`06` index numbers were bumped from `text-meta-label` (0.75rem, `--color-text-faint`) to `text-xl sm:text-2xl` in `text-(--color-accent)` (yellow) per explicit user request — this is a deliberate, section-scoped exception to the sitewide accent budget ("max ~1 instance per page on mobile" in `design-system.md`), not a new default; don't propagate 6x-repeated accent numerals to other sections without the user asking again.
-- Where: `app/about/page.tsx` and the section files listed above.
-- Why: user flagged that the CTA form section's background looked different from the sections above it on the live page even though the code used the same color token — root cause was the opaque fill blocking the global dot-grid canvas, not a color mismatch. Numerals color/size change was a direct, explicit ask.
-- Date: 2026-07-29
-
-### [Anti-pattern exception] — PhotoGallerySection tiles use rounded-2xl, not the sitewide radius cap
-- Rule: `design-system.md` sets a hard rule — "No border-radius > 4px on containers" — and every other image on the site (`AboutHeroSection`, `ServicesBentoGrid` cards) follows it with `rounded-sm` (2px) or no radius at all. `components/sections/PhotoGallerySection.tsx` bento tiles are a deliberate, section-scoped exception: `rounded-2xl` (16px) at rest, animating to `rounded-none` on hover (`transition-[border-radius] duration-300 ease-out hover:rounded-none`). Confirmed with user during a sitewide consistency pass — they want it kept as-is. Do not "fix" this back to `rounded-sm` without asking again; do not propagate `rounded-2xl` to other image grids as a new default.
-- Where: `components/sections/PhotoGallerySection.tsx`.
-- Why: user's explicit, twice-repeated request (first to add rounded-2xl, then to keep it when flagged against the design-system cap during a consistency audit).
-- Date: 2026-07-30

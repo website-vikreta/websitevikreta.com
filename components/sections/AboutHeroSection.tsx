@@ -6,7 +6,7 @@ import Image from 'next/image'
 export function AboutHeroSection() {
   return (
     <section
-      className="relative py-16 md:py-20"
+      className="relative pt-28 pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24"
       aria-label="About Hero"
     >
       <div className="container">
