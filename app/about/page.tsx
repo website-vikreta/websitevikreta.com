@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import { AboutContactCTASection } from '@/components/sections/AboutContactCTASection'
 import { AboutHeroSection } from '@/components/sections/AboutHeroSection'
 import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
+import { ContactCTASection } from '@/components/sections/ContactCTASection'
 import { CoreValuesSection } from '@/components/sections/CoreValuesSection'
 import { InsightsSection } from '@/components/sections/InsightsSection'
 import { PhotoGallerySection } from '@/components/sections/PhotoGallerySection'
@@ -72,7 +72,13 @@ export default function AboutPage() {
       <StatsCounters bgClassName="" />
       <ClientLogosSection />
       <InsightsSection />
-      <AboutContactCTASection />
+      <ContactCTASection
+        id="book-a-call"
+        heading="Tell Us What's Broken"
+        subheading="Free call. No commitment. Describe what isn't working — the manual process, the site that doesn't convert, the leads going cold — and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
+        formHeading="Book a Free Call"
+        className="pt-16 pb-24 md:pt-20 md:pb-32"
+      />
     </main>
   )
 }
