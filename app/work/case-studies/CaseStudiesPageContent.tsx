@@ -7,7 +7,7 @@ import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { DotGrid } from '@/components/ui/DotGrid'
 import { Button } from '@/components/ui/Button'
 import { CASE_STUDIES } from '@/lib/work-data'
-import { CaseStudyVisual } from '@/components/sections/work/CaseStudyCard'
+import { CaseStudyVisual } from '@/components/sections/CaseStudyCard'
 import { WorkCTASection } from '@/components/sections/work/WorkCTASection'
 
 export function CaseStudiesPageContent() {

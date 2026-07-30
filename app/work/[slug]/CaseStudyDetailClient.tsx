@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
 import type { CaseStudy } from '@/lib/work-data'
-import { CaseStudyVisual } from '@/components/sections/work/CaseStudyCard'
+import { CaseStudyVisual } from '@/components/sections/CaseStudyCard'
 import { WorkCTASection } from '@/components/sections/work/WorkCTASection'
 
 interface Props {

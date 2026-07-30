@@ -2,7 +2,7 @@
 
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { WEB_PROJECTS } from '@/lib/work-data'
-import { ExternalProjectLink } from '@/components/sections/work/CaseStudyCard'
+import { ExternalProjectLink } from '@/components/sections/CaseStudyCard'
 
 export function WorkWebsitesSection() {
   return (

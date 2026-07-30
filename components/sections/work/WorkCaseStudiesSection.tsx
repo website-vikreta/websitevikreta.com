@@ -8,7 +8,7 @@ import {
 import {
   CaseStudyFeaturedLink,
   CaseStudyGridLink,
-} from '@/components/sections/work/CaseStudyCard'
+} from '@/components/sections/CaseStudyCard'
 
 export function WorkCaseStudiesSection() {
   return (
