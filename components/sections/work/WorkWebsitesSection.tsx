@@ -8,7 +8,7 @@ export function WorkWebsitesSection() {
   return (
     <section
       id="websites"
-      className="relative py-16 md:py-20 bg-(--color-surface)"
+      className="relative py-16 md:py-20"
       aria-label="Selected Websites"
     >
       <div className="container">

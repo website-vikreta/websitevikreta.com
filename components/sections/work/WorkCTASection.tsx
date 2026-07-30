@@ -13,7 +13,7 @@ export function WorkCTASection() {
       submitLabel="Book a Free Call"
       buttonVariant="accent"
       buttonSize="lg"
-      className="py-16 md:py-20 bg-(--color-bg-muted)"
+      className="py-16 md:py-20"
     />
   )
 }
