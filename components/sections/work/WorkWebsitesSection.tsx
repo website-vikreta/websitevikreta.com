@@ -36,6 +36,7 @@ export function WorkWebsitesSection() {
                 description={project.description}
                 href={project.href}
                 image={project.image}
+                skills={project.skills}
                 className="h-full"
               />
             </RevealFade>
