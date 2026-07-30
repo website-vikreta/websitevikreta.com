@@ -212,7 +212,11 @@ body {
 
 .word-inner {
   display: inline-block;
-  transform: translateY(110%);
+  /* 130%, not 110%: word-wrapper's overflow-hidden box extends 0.22em past
+     the line box (padding-bottom, to avoid clipping descenders when visible),
+     so a plain 110% offset falls short and leaves a sliver of the hidden
+     word's top edge inside the clip region. */
+  transform: translateY(130%);
 }
 
 [data-hero-anim] {
