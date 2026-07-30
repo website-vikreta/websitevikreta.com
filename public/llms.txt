@@ -27,8 +27,8 @@ Strategic digital marketing services — SEO, content, and growth campaigns buil
 ## Location and Contact
 
 - Location: Pune, Maharashtra, India
-- Website: https://stage.websitevikreta.com
-- Contact page: https://stage.websitevikreta.com/contact
+- Website: https://www.websitevikreta.com
+- Contact page: https://www.websitevikreta.com/contact
 - Email: contact@websitevikreta.com
 - Phone: +919970445198
 
@@ -52,16 +52,16 @@ Website Vikreta works with:
 
 ## Key Pages
 
-- [Homepage](https://stage.websitevikreta.com): Brand overview, services summary, featured work, and contact entry point
-- [Web Development](https://stage.websitevikreta.com/services/web-development): Next.js websites built for speed, SEO, and mobile
-- [AI Automations](https://stage.websitevikreta.com/services/ai-automations): Custom AI automation systems for business workflows
-- [UI/UX Design](https://stage.websitevikreta.com/services/uiux-design): User interface and experience design for web and mobile
-- [Web and Mobile Apps](https://stage.websitevikreta.com/services/web-and-mobile-apps): Custom application development for startups and businesses
-- [Digital Marketing](https://stage.websitevikreta.com/services/digital-marketing): SEO, content, and digital growth services
-- [Our Work](https://stage.websitevikreta.com/work): Projects and case studies
-- [Blog](https://stage.websitevikreta.com/blog): Articles on web design, AI automation, and digital growth
-- [FAQ](https://stage.websitevikreta.com/faq): Common questions about our services, process, and pricing
-- [Contact](https://stage.websitevikreta.com/contact): Get in touch and start a project
+- [Homepage](https://www.websitevikreta.com): Brand overview, services summary, featured work, and contact entry point
+- [Web Development](https://www.websitevikreta.com/services/web-development): Next.js websites built for speed, SEO, and mobile
+- [AI Automations](https://www.websitevikreta.com/services/ai-automations): Custom AI automation systems for business workflows
+- [UI/UX Design](https://www.websitevikreta.com/services/uiux-design): User interface and experience design for web and mobile
+- [Web and Mobile Apps](https://www.websitevikreta.com/services/web-and-mobile-apps): Custom application development for startups and businesses
+- [Digital Marketing](https://www.websitevikreta.com/services/digital-marketing): SEO, content, and digital growth services
+- [Our Work](https://www.websitevikreta.com/work): Projects and case studies
+- [Blog](https://www.websitevikreta.com/blog): Articles on web design, AI automation, and digital growth
+- [FAQ](https://www.websitevikreta.com/faq): Common questions about our services, process, and pricing
+- [Contact](https://www.websitevikreta.com/contact): Get in touch and start a project
 
 ## What We Are Not
 
