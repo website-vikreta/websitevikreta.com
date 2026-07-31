@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { TextLink } from '@/components/ui/TextLink'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import type { DisplayPost } from '@/sanity/types'
 
 const container = {
@@ -31,7 +32,9 @@ const cardReveal = {
 
 export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
   return (
-    <main>
+    <>
+      <ScrollToTop />
+      <main>
       <section className="relative overflow-hidden">
         <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
 
@@ -104,10 +107,9 @@ export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
               </motion.article>
             ))}
           </div>
-
-
-</div>
+         </div>
       </section>
     </main>
+    </>
   )
 }

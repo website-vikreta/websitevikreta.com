@@ -31,11 +31,8 @@ export function ClientLogosSection() {
     <section className="py-16 md:py-20 overflow-hidden">
 
       <div className="container mb-10 md:mb-14">
-        <RevealText className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-faint)] mb-2">
-          Our Clients
-        </RevealText>
-        <RevealText as="h2" delay={0.1} className="text-h2 font-bold text-[var(--color-text)]">
-          Businesses we&apos;ve built for
+        <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)]">
+          Who we&apos;ve built for
         </RevealText>
       </div>
 
@@ -55,8 +52,8 @@ export function ClientLogosSection() {
         </motion.div>
 
         {/* Edge fade masks */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[var(--color-bg)] to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[var(--color-bg)] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-[var(--color-bg)] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-[var(--color-bg)] to-transparent z-10" />
       </div>
 
     </section>

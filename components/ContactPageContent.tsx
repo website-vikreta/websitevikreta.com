@@ -162,7 +162,7 @@ export function ContactPageContent() {
       }
 
       // h1 words start hidden via .word-inner CSS; form elements start hidden via inline style
-      gsap.set(h1Els, { y: '110%' })
+      gsap.set(h1Els, { y: '130%' })
       gsap.set([btnRef.current, socialsRef.current, mobileSocRef.current], { opacity: 0, y: 18 })
 
       const tl = gsap.timeline({ delay: 0.1 })

@@ -30,6 +30,8 @@ export function HeroSection() {
       (el): el is HTMLSpanElement => el !== null,
     )
 
+    let cancelled = false
+
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
         gsap.set(
@@ -41,17 +43,30 @@ export function HeroSection() {
       }
 
       gsap.set(labelRef.current, { opacity: 0, y: 14 })
-      gsap.set(wordEls, { y: '110%' })
+      gsap.set(wordEls, { y: '130%' })
       gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
-
-      gsap.timeline()
-        .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
-        .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
-        .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
-        .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
     }, sectionRef)
 
-    return () => ctx.revert()
+    if (!prefersReducedMotion) {
+      // Wait for the headline webfont before sliding words in. Otherwise the
+      // reveal can run mid font-swap (fallback font -> Utile), clipping
+      // glyphs at the wrong metrics inside the overflow-hidden word mask.
+      document.fonts.ready.then(() => {
+        if (cancelled) return
+        ctx.add(() => {
+          gsap.timeline()
+            .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+            .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
+            .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
+            .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
+        })
+      })
+    }
+
+    return () => {
+      cancelled = true
+      ctx.revert()
+    }
   }, [])
 
   return (

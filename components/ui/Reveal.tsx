@@ -85,6 +85,41 @@ export function RevealFade({
 }
 
 /**
+ * Editorial image reveal — clip-path wipes up from the bottom, inner content settles from 1.08 scale.
+ * Mirrors the AI-Automations page's GSAP `revealClipImage` in motion/react. Pass the image's own
+ * overflow-hidden/border/radius classes as `className`; children is the `<Image fill />`.
+ */
+export function RevealImage({
+  className,
+  children,
+  delay = 0,
+}: {
+  className?: string
+  children: ReactNode
+  delay?: number
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ clipPath: 'inset(0 0 100% 0)' }}
+      whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
+      viewport={VIEWPORT}
+      transition={{ duration: 1.0, ease: REVEAL_EASE, delay }}
+    >
+      <motion.div
+        className="relative h-full w-full"
+        initial={{ scale: 1.08 }}
+        whileInView={{ scale: 1 }}
+        viewport={VIEWPORT}
+        transition={{ duration: 1.4, ease: REVEAL_EASE, delay }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  )
+}
+
+/**
  * Count-up number — animates 0 → value once scrolled into view.
  * power2.out easing to match the rest of the motion system.
  */
