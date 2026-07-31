@@ -1,56 +1,90 @@
 'use client'
 
-import { RevealText, RevealFade } from '@/components/ui/Reveal'
-import Image from 'next/image'
+import { motion, useReducedMotion } from 'motion/react'
+import { RevealText, RevealFade, REVEAL_EASE } from '@/components/ui/Reveal'
+import { Button } from '@/components/ui/Button'
+
+const META = [
+  'Pune, India',
+  'Five years in',
+  '68 projects shipped',
+  '6,360 hours given back',
+]
 
 export function AboutHeroSection() {
+  const reduced = useReducedMotion()
+
   return (
     <section
-      className="relative pt-28 pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24"
+      id="main-content"
+      className="relative flex min-h-svh flex-col justify-center overflow-x-clip pt-32 pb-12 md:pt-36 md:pb-16"
       aria-label="About Hero"
     >
       <div className="container">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div>
-            <RevealFade delay={0}>
-              <span className="inline-flex items-center gap-2 border border-(--color-border) bg-(--color-surface) px-3 py-1.5 rounded-sm mb-6">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-(--color-accent)" />
-                <span className="font-mono text-meta-label tracking-(--tracking-meta) text-(--color-text) uppercase">
-                  Our Story
-                </span>
-              </span>
-            </RevealFade>
-
-            <RevealText>
-              <h1 className="text-h1 font-bold text-(--color-text) mb-6">
-                We used to build pages. Now we build systems.
-              </h1>
-            </RevealText>
-
-            <RevealFade delay={0.2}>
-              <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">
-                Five years in, we&apos;ve shipped websites for clients across the globe.
-                A year ago we stopped treating AI as an add-on and rebuilt the agency
-                around it. Today we map where your team loses time, build the automation
-                and digital systems that fix it, and measure whether the numbers actually
-                move.
-              </p>
-            </RevealFade>
-          </div>
-
-          <RevealFade delay={0.3}>
-            <div className="relative w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-sm overflow-hidden bg-(--color-bg-muted) border border-(--color-border)">
-              <Image
-                src="/about/team-strategy-meeting.webp"
-                alt="Website Vikreta team in a strategy meeting"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-                priority
+        <h1 className="text-(--color-text)">
+          {/* Past tense, struck through — the model we killed. Light weight against
+              the display line below so the size AND weight jump carry the pivot. */}
+          <RevealText as="span" className="block text-h1 font-normal text-(--color-text-faint)">
+            We used to build{' '}
+            <span className="relative inline-block">
+              pages
+              <motion.span
+                aria-hidden="true"
+                // top-[0.56em] sits on the lowercase x-height centre, not the line box
+                // centre (top-1/2), which reads visibly high on a strikethrough.
+                className="absolute left-0 top-[0.56em] h-[0.045em] w-full origin-left bg-(--color-text)"
+                initial={{ scaleX: reduced ? 1 : 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.55, ease: REVEAL_EASE, delay: reduced ? 0 : 0.75 }}
               />
-            </div>
+            </span>
+            .
+          </RevealText>
+
+          {/* Present tense, full display scale — the model we run now. */}
+          <RevealText
+            as="span"
+            className="block text-display font-bold mt-3 md:mt-5"
+            delay={0.15}
+          >
+            Now <span className="text-(--color-accent)">we build systems</span>.
+          </RevealText>
+        </h1>
+
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mt-12 lg:mt-16">
+          <RevealFade delay={0.4} className="lg:col-span-6">
+            <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">
+              A year ago we tore up our own model and rebuilt around AI. You&apos;re
+              not hiring us for a nicer homepage — you&apos;re hiring us to stop the
+              hours your team is quietly bleeding.
+            </p>
+          </RevealFade>
+
+          <RevealFade
+            delay={0.5}
+            className="lg:col-span-6 flex flex-wrap items-end gap-3 lg:justify-end"
+          >
+            <Button href="/contact" variant="primary" size="lg" showArrow>
+              Get in Touch
+            </Button>
+            <Button href="#vision" variant="ghost" size="lg" showArrow>
+              Learn More
+            </Button>
           </RevealFade>
         </div>
+      </div>
+
+      {/* Proof band — quiet, real numbers only. */}
+      <div className="container mt-16 lg:mt-24">
+        <RevealFade delay={0.6}>
+          <ul className="flex flex-wrap gap-x-10 gap-y-2">
+            {META.map((item) => (
+              <li key={item} className="text-sm text-(--color-text-muted)">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </RevealFade>
       </div>
     </section>
   )

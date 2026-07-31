@@ -65,17 +65,20 @@ export default function AboutPage() {
   return (
     <main>
       <DotGrid global />
+      {/* Surface rhythm — white `--color-surface` slabs punctuate the warm
+          `--color-bg` sections so the page never runs the same ground twice in
+          a row: bg → bg → WHITE (values) → bg → WHITE (stats) → bg → bg → bg */}
       <AboutHeroSection />
       <VisionSection />
       <CoreValuesSection />
       <PhotoGallerySection />
-      <StatsCounters bgClassName="" />
+      <StatsCounters />
       <ClientLogosSection />
       <InsightsSection />
       <ContactCTASection
         id="book-a-call"
         heading="Tell Us What's Broken"
-        subheading="Free call. No commitment. Describe what isn't working — the manual process, the site that doesn't convert, the leads going cold — and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
+        subheading="No pitch deck, no commitment. Tell us what isn't working — and we'll tell you what we'd actually do about it."
         formHeading="Book a Free Call"
         className="pt-16 pb-24 md:pt-20 md:pb-32"
       />

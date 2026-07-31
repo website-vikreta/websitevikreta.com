@@ -32,7 +32,7 @@ export function ClientLogosSection() {
 
       <div className="container mb-10 md:mb-14">
         <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)]">
-          Businesses we&apos;ve built for
+          Who we&apos;ve built for
         </RevealText>
       </div>
 
