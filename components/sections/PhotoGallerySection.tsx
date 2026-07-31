@@ -6,44 +6,44 @@ import Image from 'next/image'
 const PHOTOS = [
   {
     id: 1,
-    src: '/images/about1.avif',
-    alt: 'Website Vikreta team planning a client automation workflow',
+    src: '/about/project-review-session.webp',
+    alt: 'Website Vikreta team reviewing a client project with students',
     className: 'col-span-2 row-span-2',
   },
   {
     id: 2,
-    src: '/images/gallery-1.jpg',
-    alt: 'Collaborative design session at Website Vikreta',
+    src: '/about/student-project-poster-presentation.webp',
+    alt: 'Website Vikreta team with students presenting a project poster',
     className: 'col-span-1 row-span-1',
   },
   {
     id: 3,
-    src: '/images/peoples_wv.png',
-    alt: 'Website Vikreta team',
+    src: '/about/website-vikreta-team-photo.webp',
+    alt: 'Website Vikreta team group photo at the office',
     className: 'col-span-1 row-span-1',
   },
   {
     id: 4,
-    src: '/our-services/ai-automation.webp',
-    alt: 'AI workflow automation in progress',
+    src: '/about/student-training-session.webp',
+    alt: 'Website Vikreta team member leading a student training session',
     className: 'col-span-2 row-span-1',
   },
   {
     id: 5,
-    src: '/our-services/webdevelopment.webp',
-    alt: 'Next.js website development workspace',
+    src: '/about/team-workspace.webp',
+    alt: 'Website Vikreta team working at their office workspace',
     className: 'col-span-1 row-span-1',
   },
   {
     id: 6,
-    src: '/our-services/ui-ux-design.webp',
-    alt: 'UI/UX design review session',
+    src: '/about/team-gift-presentation.webp',
+    alt: 'Website Vikreta team presenting a gift after a training session',
     className: 'col-span-1 row-span-1',
   },
   {
     id: 7,
-    src: '/our-services/digital-marketing-seo-geo.webp',
-    alt: 'Digital marketing and SEO strategy session',
+    src: '/about/prompt-engineering-workshop.webp',
+    alt: 'Website Vikreta team and students at a prompt engineering workshop',
     className: 'col-span-2 row-span-1',
   },
 ] as const
@@ -51,16 +51,11 @@ const PHOTOS = [
 export function PhotoGallerySection() {
   return (
     <section
-      className="relative py-16 md:py-20 bg-(--color-surface)"
+      className="relative py-16 md:py-20"
       aria-label="Photo Gallery"
     >
       <div className="container">
         <div className="mb-10 md:mb-14">
-          <RevealText>
-            <span className="text-meta-label font-bold uppercase tracking-(--tracking-meta) text-(--color-text-faint) block mb-4">
-              Behind the work
-            </span>
-          </RevealText>
           <RevealText>
             <h2 className="text-h2 font-bold text-(--color-text) mb-4">
               The people and process behind the systems
@@ -78,19 +73,46 @@ export function PhotoGallerySection() {
           {PHOTOS.map((photo, index) => (
             <RevealFade
               key={photo.id}
-              delay={index * 0.08}
+              delay={index * 0.1}
               className={photo.className}
             >
-              <div className="relative h-full w-full overflow-hidden rounded-sm border border-(--color-border) bg-(--color-bg-muted)">
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  priority={index === 0}
-                />
-              </div>
+              {photo.id === 4 ? (
+                <div className="flex h-full w-full gap-3 md:gap-4">
+                  <div className="relative h-full w-2/3 overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-muted) transition-[border-radius] duration-300 ease-out hover:rounded-none">
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 67vw, 33vw"
+                    />
+                  </div>
+                  <div className="relative h-full w-1/3 overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-muted) transition-[border-radius] duration-300 ease-out hover:rounded-none">
+                    <Image
+                      src="/about/quiz-session-award-presentation.webp"
+                      alt="Website Vikreta team presenting an award after a quiz session"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 33vw, 17vw"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="relative h-full w-full overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-muted) transition-[border-radius] duration-300 ease-out hover:rounded-none">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    className="object-cover"
+                    sizes={
+                      photo.className.includes('col-span-2')
+                        ? '(max-width: 768px) 100vw, 50vw'
+                        : '(max-width: 768px) 50vw, 25vw'
+                    }
+                    priority={index === 0}
+                  />
+                </div>
+              )}
             </RevealFade>
           ))}
         </div>

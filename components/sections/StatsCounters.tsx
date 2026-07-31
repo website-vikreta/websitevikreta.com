@@ -16,10 +16,15 @@ const STATS: StatItem[] = [
   { id: 4, value: null, suffix: '',   label: 'Tools we can use: no limitation, only solutions', isInfinity: true },
 ]
 
-export function StatsCounters() {
+interface StatsCountersProps {
+  /** Full literal Tailwind bg class — defaults to the surface treatment used on the home page. */
+  bgClassName?: string
+}
+
+export function StatsCounters({ bgClassName = 'bg-(--color-surface)' }: StatsCountersProps = {}) {
   return (
     <section
-      className="relative py-16 md:py-20 bg-(--color-surface) overflow-hidden"
+      className={`relative py-16 md:py-20 ${bgClassName} overflow-hidden`}
       aria-label="Impact Statistics"
     >
       <div className="container relative z-10">

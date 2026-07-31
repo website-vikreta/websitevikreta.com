@@ -44,16 +44,11 @@ const VALUES = [
 export function CoreValuesSection() {
   return (
     <section
-      className="relative py-16 md:py-20 bg-(--color-surface)"
+      className="relative py-16 md:py-20"
       aria-label="Core Values"
     >
       <div className="container">
         <div className="mb-10 md:mb-14">
-          <RevealText>
-            <span className="text-meta-label font-bold uppercase tracking-(--tracking-meta) text-(--color-text-faint) block mb-4">
-              Our Core Values
-            </span>
-          </RevealText>
           <RevealText>
             <h2 className="text-h2 font-bold text-(--color-text) mb-4">
               Principles That Guide Us
@@ -72,7 +67,7 @@ export function CoreValuesSection() {
           {VALUES.map((value, index) => (
             <RevealFade key={value.number} delay={index * 0.1}>
               <article className="border-l-2 border-(--color-border) pl-6">
-                <div className="text-meta-label font-bold uppercase tracking-(--tracking-meta) text-(--color-text-faint) mb-3">
+                <div className="text-xl sm:text-2xl font-bold uppercase tracking-(--tracking-meta) text-(--color-accent) mb-3">
                   {value.number}
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-bold text-(--color-text) mb-3">

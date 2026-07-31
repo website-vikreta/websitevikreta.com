@@ -6,7 +6,7 @@ import Image from 'next/image'
 export function AboutHeroSection() {
   return (
     <section
-      className="relative py-16 md:py-20 bg-(--color-bg)"
+      className="relative pt-28 pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24"
       aria-label="About Hero"
     >
       <div className="container">
@@ -41,8 +41,8 @@ export function AboutHeroSection() {
           <RevealFade delay={0.3}>
             <div className="relative w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-sm overflow-hidden bg-(--color-bg-muted) border border-(--color-border)">
               <Image
-                src="/images/about1.avif"
-                alt="Website Vikreta workspace and strategy"
+                src="/about/team-strategy-meeting.webp"
+                alt="Website Vikreta team in a strategy meeting"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
