@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'r
 // Mirrors the hero reveal: text slides up from behind an overflow-hidden clip,
 // supporting content + cards fade up. One easing curve everywhere (~expo.out).
 export const REVEAL_EASE = [0.16, 1, 0.3, 1] as const
+const REVEAL_EASE_CSS = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 const REVEAL_MARGIN = '0px'
 const VIEWPORT = { once: true, amount: 0.1, margin: REVEAL_MARGIN } as const
@@ -98,23 +99,34 @@ export function RevealImage({
   children: ReactNode
   delay?: number
 }) {
+  // A `clip-path` applied directly to the element that whileInView/onViewportEnter
+  // observes breaks that element's OWN intersection detection in this motion
+  // version — verified by isolating each property (opacity/scale detect and
+  // animate fine; clip-path never fires, even just as a plain style with no
+  // framer-motion animation involved, whenever it's on the observed node
+  // itself). Fix: observe a plain, unclipped wrapper; apply the clip-path to
+  // an inner, unobserved div driven by that wrapper's detected state.
+  const [revealed, setRevealed] = useState(false)
+
   return (
-    <motion.div
-      className={className}
-      initial={{ clipPath: 'inset(0 0 100% 0)' }}
-      whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
-      viewport={VIEWPORT}
-      transition={{ duration: 1.0, ease: REVEAL_EASE, delay }}
-    >
-      <motion.div
-        className="relative h-full w-full"
-        initial={{ scale: 1.08 }}
-        whileInView={{ scale: 1 }}
-        viewport={VIEWPORT}
-        transition={{ duration: 1.4, ease: REVEAL_EASE, delay }}
+    <motion.div className={className} onViewportEnter={() => setRevealed(true)} viewport={VIEWPORT}>
+      <div
+        className="h-full w-full"
+        style={{
+          clipPath: revealed ? 'inset(0 0 0% 0)' : 'inset(0 0 100% 0)',
+          transition: `clip-path 1000ms ${REVEAL_EASE_CSS} ${delay}s`,
+        }}
       >
-        {children}
-      </motion.div>
+        <motion.div
+          className="relative h-full w-full"
+          initial={{ scale: 1.08 }}
+          whileInView={{ scale: 1 }}
+          viewport={VIEWPORT}
+          transition={{ duration: 1.4, ease: REVEAL_EASE, delay }}
+        >
+          {children}
+        </motion.div>
+      </div>
     </motion.div>
   )
 }
