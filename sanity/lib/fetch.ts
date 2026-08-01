@@ -5,15 +5,34 @@ import {
   HOMEPAGE_POSTS_QUERY,
   POST_BY_SLUG_QUERY,
   POSTS_BY_CATEGORY_QUERY,
+  POSTS_BY_TAG_QUERY,
+  ALL_CATEGORIES_QUERY,
   ALL_POST_SLUGS_QUERY,
 } from './queries'
 import { urlFor } from './image'
 import type { PortableTextBlock } from '@portabletext/react'
-import type { Post, FullPost, DisplayPost, SanityImage } from '../types'
+import type { Post, FullPost, DisplayPost, SanityImage, Category } from '../types'
 
 function isSanityConfigured(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
 }
+
+// ── Revalidation strategy ────────────────────────────────────────────────────
+// NEXT_PUBLIC_REVALIDATE overrides the per-environment default. Unset: 10s
+// (Local/Dev/Stage — fast content iteration), 60s (Production).
+const PRODUCTION_REVALIDATE_SECONDS = 60
+const NON_PRODUCTION_REVALIDATE_SECONDS = 10
+
+function resolveRevalidateSeconds(): number {
+  const raw = process.env.NEXT_PUBLIC_REVALIDATE
+  const parsed = raw ? Number(raw) : NaN
+  if (!Number.isNaN(parsed) && parsed >= 0) return parsed
+  return process.env.NODE_ENV === 'production'
+    ? PRODUCTION_REVALIDATE_SECONDS
+    : NON_PRODUCTION_REVALIDATE_SECONDS
+}
+
+export const REVALIDATE_SECONDS = resolveRevalidateSeconds()
 
 function formatDate(iso?: string): string {
   if (!iso) return ''
@@ -40,12 +59,12 @@ function toDisplayPost(post: Post): DisplayPost {
 
 export async function fetchAllPosts(): Promise<Post[]> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
-  return client.fetch<Post[]>(ALL_POSTS_QUERY, {}, { next: { revalidate: 60 } })
+  return client.fetch<Post[]>(ALL_POSTS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
 }
 
 export async function fetchLatestPosts(): Promise<Post[]> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
-  return client.fetch<Post[]>(LATEST_POSTS_QUERY, {}, { next: { revalidate: 60 } })
+  return client.fetch<Post[]>(LATEST_POSTS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
 }
 
 export async function fetchPostsByCategory(categorySlug: string): Promise<Post[]> {
@@ -53,7 +72,25 @@ export async function fetchPostsByCategory(categorySlug: string): Promise<Post[]
   return client.fetch<Post[]>(
     POSTS_BY_CATEGORY_QUERY,
     { categorySlug },
-    { next: { revalidate: 60 } },
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
+}
+
+export async function fetchPostsByTag(tagSlug: string): Promise<Post[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  return client.fetch<Post[]>(
+    POSTS_BY_TAG_QUERY,
+    { tagSlug },
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
+}
+
+export async function fetchAllCategories(): Promise<Category[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  return client.fetch<Category[]>(
+    ALL_CATEGORIES_QUERY,
+    {},
+    { next: { revalidate: REVALIDATE_SECONDS } },
   )
 }
 
@@ -66,9 +103,17 @@ export async function fetchBlogPosts(): Promise<DisplayPost[]> {
 /** Returns up to 3 DisplayPost[] for homepage — featured first, falls back to latest */
 export async function fetchHomepagePosts(): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
-  const featured = await client.fetch<Post[]>(HOMEPAGE_POSTS_QUERY, {}, { next: { revalidate: 60 } })
+  const featured = await client.fetch<Post[]>(
+    HOMEPAGE_POSTS_QUERY,
+    {},
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
   if (featured.length > 0) return featured.map(toDisplayPost)
-  const latest = await client.fetch<Post[]>(LATEST_POSTS_QUERY, {}, { next: { revalidate: 60 } })
+  const latest = await client.fetch<Post[]>(
+    LATEST_POSTS_QUERY,
+    {},
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
   return latest.map(toDisplayPost)
 }
 
@@ -77,12 +122,20 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
   type PostData = (Omit<Post, 'author'> & {
     body?: unknown[]
-    author?: { name: string; image?: SanityImage; bio?: string; linkedinUrl?: string }
+    author?: { name: string; image?: SanityImage; bio?: PortableTextBlock[]; linkedinUrl?: string }
   }) | null
   // Try exact slug; fall back to slug with leading space (Studio data-entry issue)
-  let post = await client.fetch<PostData>(POST_BY_SLUG_QUERY, { slug }, { next: { revalidate: 60 } })
+  let post = await client.fetch<PostData>(
+    POST_BY_SLUG_QUERY,
+    { slug },
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
   if (!post) {
-    post = await client.fetch<PostData>(POST_BY_SLUG_QUERY, { slug: ` ${slug}` }, { next: { revalidate: 60 } })
+    post = await client.fetch<PostData>(
+      POST_BY_SLUG_QUERY,
+      { slug: ` ${slug}` },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
   }
   if (!post) return null
 
@@ -102,6 +155,9 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
       bio: post.author.bio,
       linkedinUrl: post.author.linkedinUrl,
     } : undefined,
+    tags: post.tags,
+    labels: post.labels,
+    canonicalUrl: post.canonicalUrl,
     seoTitle: post.seoTitle,
     seoDescription: post.seoDescription,
     seoKeywords: post.seoKeywords,
