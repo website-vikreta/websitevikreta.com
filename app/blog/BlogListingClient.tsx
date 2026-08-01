@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { TextLink } from '@/components/ui/TextLink'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import type { DisplayPost } from '@/sanity/types'
+import type { DisplayPost, Category } from '@/sanity/types'
 
 const container = {
   hidden: {},
@@ -30,7 +30,15 @@ const cardReveal = {
   }),
 }
 
-export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
+interface BlogListingClientProps {
+  posts: DisplayPost[]
+  // Plumbed through in Phase 3 for the Phase 4 filter-pill UI — not yet
+  // rendered here.
+  categories?: Category[]
+  activeCategory?: string
+}
+
+export function BlogListingClient({ posts }: BlogListingClientProps) {
   return (
     <>
       <ScrollToTop />

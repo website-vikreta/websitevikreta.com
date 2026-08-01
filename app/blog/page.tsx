@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { BlogListingClient } from './BlogListingClient'
 import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
-import { fetchBlogPosts } from '@/sanity/lib/fetch'
-import type { DisplayPost } from '@/sanity/types'
+import { fetchFilteredBlogPosts, fetchAllCategories } from '@/sanity/lib/fetch'
+import type { DisplayPost, Category } from '@/sanity/types'
 
 export const metadata: Metadata = {
   title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
@@ -59,20 +59,8 @@ export const metadata: Metadata = {
   },
 }
 
-async function getPosts(): Promise<DisplayPost[]> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-    // Sanity not yet configured — use static data
-    return staticPosts.map((p) => ({
-      slug: p.slug,
-      category: p.category,
-      title: p.title,
-      description: p.description,
-      publishDate: p.publishDate,
-      readTime: p.readTime,
-      imageUrl: p.imageUrl,
-    }))
-  }
-  const staticFallback = staticPosts.map((p) => ({
+function mapStaticPosts(): DisplayPost[] {
+  return staticPosts.map((p) => ({
     slug: p.slug,
     category: p.category,
     title: p.title,
@@ -81,15 +69,45 @@ async function getPosts(): Promise<DisplayPost[]> {
     readTime: p.readTime,
     imageUrl: p.imageUrl,
   }))
+}
+
+async function getPosts(categorySlug?: string, searchQuery?: string): Promise<DisplayPost[]> {
+  const hasFilters = Boolean(categorySlug || searchQuery)
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+    // Sanity not yet configured — static data has no category/tag metadata
+    // to filter against, so a filtered request just yields no results.
+    return hasFilters ? [] : mapStaticPosts()
+  }
   try {
-    const posts = await fetchBlogPosts()
-    return posts.length > 0 ? posts : staticFallback
+    const posts = await fetchFilteredBlogPosts({ categorySlug, searchQuery })
+    // Only fall back to static data on an *unfiltered* empty result — an
+    // empty filtered result (e.g. a category with no posts) is legitimate
+    // and shouldn't be masked by unrelated static content.
+    if (posts.length > 0 || hasFilters) return posts
+    return mapStaticPosts()
   } catch {
-    return staticFallback
+    return hasFilters ? [] : mapStaticPosts()
   }
 }
 
-export default async function BlogPage() {
-  const posts = await getPosts()
-  return <BlogListingClient posts={posts} />
+async function getCategories(): Promise<Category[]> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
+  try {
+    return await fetchAllCategories()
+  } catch {
+    return []
+  }
+}
+
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; query?: string }>
+}) {
+  const { category, query } = await searchParams
+  const [posts, categories] = await Promise.all([
+    getPosts(category, query),
+    getCategories(),
+  ])
+  return <BlogListingClient posts={posts} categories={categories} activeCategory={category} />
 }
