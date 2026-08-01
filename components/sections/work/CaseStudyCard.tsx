@@ -122,6 +122,7 @@ export function ExternalProjectLink({
   description,
   href,
   image,
+  imageAlt,
   skills,
   className = '',
 }: {
@@ -129,6 +130,7 @@ export function ExternalProjectLink({
   description: string
   href: string
   image: string
+  imageAlt: string
   skills: string
   className?: string
 }) {
@@ -140,15 +142,10 @@ export function ExternalProjectLink({
       className={`group relative flex h-full flex-col bg-(--color-surface) transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${className}`}
     >
       <div className="relative aspect-video overflow-hidden border-b border-(--color-border) bg-(--color-bg-muted)">
-        {/* alt="" on purpose: these are generic service illustrations, not
-            screenshots of the site being linked (webdevelopment.webp backs two
-            different projects). Naming the project here would describe something
-            the image doesn't show — and the project name is in the <h3> below.
-            Give this a real alt once real screenshots replace the stock art. */}
         <RevealImage className="relative h-full w-full">
           <Image
             src={image}
-            alt=""
+            alt={imageAlt}
             fill
             className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             sizes="(max-width: 768px) 100vw, 33vw"
