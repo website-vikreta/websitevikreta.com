@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: opening.metaDescription ?? opening.shortDescription,
       url: `${SITE_URL}/careers/${slug}`,
       siteName: 'WebsiteVikreta',
-      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+      images: [{ url: '/og-image.png', width: 1200, height: 675 }],
     },
     alternates: { canonical: `${SITE_URL}/careers/${slug}` },
   }

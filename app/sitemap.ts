@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { SITE_URL } from '@/config/site'
+import { CASE_STUDIES } from '@/lib/work-data'
 
 const BASE = SITE_URL
 
@@ -65,6 +66,12 @@ const staticRoutes: MetadataRoute.Sitemap = [
     changeFrequency: 'monthly',
     priority: 0.7,
   },
+  ...CASE_STUDIES.map((study) => ({
+    url: `${BASE}/work/${study.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  })),
 
   // Company
   {

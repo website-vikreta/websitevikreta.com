@@ -31,7 +31,7 @@ export const postType = defineType({
       rows: 3,
       group: 'content',
       description: 'Short summary shown on listing pages.',
-      validation: (r) => r.max(250),
+      validation: (r) => r.required().max(250),
     }),
     defineField({
       name: 'publishedAt',
@@ -43,7 +43,7 @@ export const postType = defineType({
     }),
     defineField({
       name: 'featuredImage',
-      title: 'Featured Image',
+      title: 'Cover Image',
       type: 'image',
       group: 'content',
       options: { hotspot: true },
@@ -55,12 +55,14 @@ export const postType = defineType({
           validation: (r) => r.required(),
         }),
       ],
+      validation: (r) => r.required(),
     }),
     defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
       group: 'content',
+      validation: (r) => r.required().min(1),
       of: [
         {
           type: 'block',
@@ -164,6 +166,23 @@ export const postType = defineType({
       type: 'reference',
       group: 'content',
       to: [{ type: 'category' }],
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      group: 'content',
+      of: [{ type: 'reference', to: [{ type: 'tag' }] }],
+      validation: (r) => r.required().min(1),
+    }),
+    defineField({
+      name: 'labels',
+      title: 'Labels',
+      type: 'array',
+      group: 'content',
+      description: 'Frontend placement flags, e.g. "Featured", "Hero". Optional.',
+      of: [{ type: 'reference', to: [{ type: 'label' }] }],
     }),
     defineField({
       name: 'readTime',
@@ -186,7 +205,7 @@ export const postType = defineType({
       type: 'string',
       group: 'seo',
       description: 'Overrides page title in search results. 50–60 chars recommended.',
-      validation: (r) => r.max(70),
+      validation: (r) => r.required().max(70),
     }),
     defineField({
       name: 'seoDescription',
@@ -195,7 +214,7 @@ export const postType = defineType({
       rows: 2,
       group: 'seo',
       description: 'Shown in search results. 150–160 chars recommended.',
-      validation: (r) => r.max(160),
+      validation: (r) => r.required().max(160),
     }),
     defineField({
       name: 'seoKeywords',
@@ -205,6 +224,16 @@ export const postType = defineType({
       group: 'seo',
       description: 'Keywords for search engines. Add as tags.',
       options: { layout: 'tags' },
+      validation: (r) => r.required().min(1),
+    }),
+    defineField({
+      name: 'canonicalUrl',
+      title: 'SEO Canonical URL',
+      type: 'url',
+      group: 'seo',
+      description:
+        'Full canonical URL for this post, e.g. https://www.websitevikreta.com/blog/category-slug/post-slug. Prevents staging-domain indexing.',
+      validation: (r) => r.required().uri({ scheme: ['http', 'https'] }),
     }),
   ],
   orderings: [
