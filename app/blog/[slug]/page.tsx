@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/image'
@@ -293,6 +294,30 @@ export default async function BlogPostPage({
               <PortableTextContent value={post.body} />
             )}
           </div>
+
+          {/* Tags */}
+          {post.source === 'sanity' && post.tags && post.tags.length > 0 && (
+            <div className="mx-auto max-w-[720px] mt-10 pt-8 border-t border-(--color-border)">
+              <div className="flex flex-wrap gap-3">
+                {post.tags.map((tag) => {
+                  // Slug should always resolve to { current: string } per our
+                  // Sanity schema, but handled defensively regardless.
+                  const rawSlug = tag.slug as { current: string } | string | undefined
+                  const slug = typeof rawSlug === 'string' ? rawSlug : rawSlug?.current
+                  if (!slug) return null
+                  return (
+                    <Link
+                      key={tag._id}
+                      href={`/blog/tags/${slug}`}
+                      className="rounded-full border border-(--color-border) px-4 py-1.5 text-sm text-(--color-text-muted) hover:border-(--color-text) hover:text-(--color-text) transition-colors duration-200"
+                    >
+                      {tag.title}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Go back */}
           <div className="flex justify-center mt-16">
