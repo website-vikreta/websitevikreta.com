@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { RevealImage } from '@/components/ui/Reveal'
 import type { CaseStudy } from '@/lib/work-data'
 
 interface CaseStudyCardProps {
@@ -58,13 +59,15 @@ export function CaseStudyVisual({ study }: { study: CaseStudy }) {
           // preview of this client's project — calling it one describes
           // something that isn't in the frame. Restore a real alt with real
           // screenshots. The logo branch below IS the company, so it keeps one.
-          <Image
-            src={study.image}
-            alt=""
-            fill
-            className="object-cover grayscale"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
+          <RevealImage className="relative h-full w-full">
+            <Image
+              src={study.image}
+              alt=""
+              fill
+              className="object-cover grayscale"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </RevealImage>
         ) : (
           <Image
             src={study.logo}
@@ -142,13 +145,15 @@ export function ExternalProjectLink({
             different projects). Naming the project here would describe something
             the image doesn't show — and the project name is in the <h3> below.
             Give this a real alt once real screenshots replace the stock art. */}
-        <Image
-          src={image}
-          alt=""
-          fill
-          className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
+        <RevealImage className="relative h-full w-full">
+          <Image
+            src={image}
+            alt=""
+            fill
+            className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </RevealImage>
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-6 md:p-8">

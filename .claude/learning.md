@@ -346,6 +346,12 @@ _None logged yet._
 - Where: `components/sections/PhotoGallerySection.tsx` — 7 photos with an `id === 4` nested-flex special case became 8 flat entries; the `photo.id === 4` branch is gone. Layout: `[1:2×2][2][3] / [1][4][5] / [6:2×1][7][8]`.
 - Date: 2026-07-31
 
+### [Motion] — case-study + external-project card images now use RevealImage
+- Rule: `CaseStudyVisual` (`CaseStudyCard.tsx`, feeds `FeaturedWorkSection` on home + `/work`) and `ExternalProjectLink` (`WorkWebsitesSection` grid) had headings/copy/card entrance on `RevealText`/`RevealFade` already, but the card thumbnail was a plain `<Image>` — no clip-wipe. Wrapped both in `RevealImage` (`className="relative h-full w-full"` inside the existing `overflow-hidden` container) so every image on the page reveals the same way as About's gallery/hero images. Hover-scale transform on `ExternalProjectLink`'s image stays on the `<Image>` itself, independent of the wrapping reveal.
+- Where: `components/sections/work/CaseStudyCard.tsx`.
+- Why: user asked for uniform text/image/card reveal on `/work` matching other pages; images were the one primitive not yet applied there (and on home, since the component is shared).
+- Date: 2026-08-01
+
 ### [Card] — never number cards 01/02/03
 - Rule: Don't add an index label (`01`, `02`, `03` …) to cards in a feature/service grid. No exceptions for "just a small counter in the corner."
 - Why: user explicitly banned this after seeing it on the AI-automations "Three Things We Fix Most Often" grid — reads as generic template filler, not considered design. Let the image, title, and grid position carry the ordering instead.
