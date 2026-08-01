@@ -18,6 +18,7 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
     if (!ctx) return
 
     let animFrame: number
+    let idle = false
     let lastX = -9999
     let lastY = -9999
 
@@ -111,6 +112,20 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
         }
       }
 
+      // Nothing left fading — the grid is now a static field of identical dots,
+      // so stop redrawing it. A touch device never paints at all and settles
+      // here after one frame instead of running a full-canvas loop forever.
+      if (painted.size === 0) {
+        idle = true
+        return
+      }
+
+      animFrame = requestAnimationFrame(draw)
+    }
+
+    function wake() {
+      if (!idle) return
+      idle = false
       animFrame = requestAnimationFrame(draw)
     }
 
@@ -125,6 +140,7 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
 
       lastX = nx
       lastY = ny
+      wake()
     }
 
     function handleMouseLeave() {
@@ -132,8 +148,13 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
       lastY = -9999
     }
 
+    function handleResize() {
+      resize()
+      wake() // canvas is cleared by the resize — repaint at the new size
+    }
+
     resize()
-    window.addEventListener('resize', resize)
+    window.addEventListener('resize', handleResize)
 
     if (isGlobal) {
       window.addEventListener('mousemove', handleMouseMove)
@@ -147,7 +168,7 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
 
     return () => {
       cancelAnimationFrame(animFrame)
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', handleResize)
       if (isGlobal) {
         window.removeEventListener('mousemove', handleMouseMove)
       } else {

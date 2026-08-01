@@ -198,6 +198,24 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: the hero photo was the 9th team photo on the page and the first one the user saw, so it set a generic "agency stock" tone before the gallery got its moment. Removing it also gives the headline the full viewport width the brand's typography direction asks for ("Large. Bold. Words fill the screen.").
 - Date: 2026-07-31
 
+### [Carousel] — infinite auto-scroll marquee with arrow controls
+- Rule: For a card carousel that needs continuous auto-scroll + manual prev/next (not the switching single-quote pattern in `TestimonialsSection.tsx`), reuse `ClientLogosSection.tsx`'s motion primitives: `useMotionValue` + `useAnimationFrame` moving `x` left at a constant px/s, list duplicated 2x, wrap at `-trackWidth/2`. Add prev/next by animating the same motion value with `animate(x, target, { duration: 0.6, ease: REVEAL_EASE })` stepping by one card width + gap, and pause the auto-scroll frame loop (`isPaused` ref) on hover and for 4s after a manual arrow click so the click doesn't get immediately overridden. Same edge-fade masks (`bg-gradient-to-r/l from-(--color-bg) to-transparent`) as the client-logo marquee. Card: `bg-(--color-surface) border border-(--color-border) hover:border-(--color-border-strong)`, no shadow (Card rule). Label reading "Testimonial"/category tag on a card is plain `text-sm text-(--color-text-faint)`, never uppercase/tracked (see [Anti-pattern] no eyebrow labels — applies to any small card label, not just careers meta).
+- Where: `components/sections/work/WorkTestimonialsSection.tsx` (Work page only — home page keeps the original switching `TestimonialsSection.tsx`).
+- Why: user wanted a 6-card testimonial carousel (name/designation/company/photo) with infinite auto-scroll + explicit left/right controls, which the existing single-quote switcher doesn't provide. Reusing the marquee math instead of a new scroll-snap/library carousel keeps the site to one continuous-scroll motion primitive.
+- Update (2026-08-01) — touch + mobile corrections to the above:
+  - **Card width is never a fixed px constant.** `CARD_W = 380` overflowed the viewport on any phone under 380px. Use `w-[80vw] max-w-[380px] sm:w-[380px]` and *measure* the arrow step (`cardRef.current.offsetWidth + GAP`) into state on mount and on resize — a viewport-relative card makes the step unknowable at author time.
+  - **Add `drag="x"` (`dragMomentum={false} dragElastic={0}`) to the track.** Hover-pause is the only pacing control a mouse user needs, but touch never fires hover — swipe is the equivalent. `onDragStart` pauses, `onDragEnd` re-wraps `x` and resumes after `RESUME_DELAY`. Give the avatar `<Image draggable={false} className="select-none">` so native image-drag doesn't hijack the gesture.
+  - **Wrap continuously, except during an arrow tween.** An `isTweening` ref makes the frame loop skip wrapping while `animate()` owns `x` (wrapping mid-tween yanks the value back toward a stale target); the tween's `onComplete` re-wraps instead. Everything else — drag included — wraps every frame, so no gesture can drag the track past the duplicated copy into empty space.
+  - **Guard with `useReducedMotion()`** — auto-scroll velocity goes to 0 and the arrow tween duration to 0; the arrows keep working.
+  - Import `REVEAL_EASE` from `Reveal.tsx`; don't re-declare `[0.16, 1, 0.3, 1]` inline. Same correction applied to `FaqSection.tsx`, which had drifted to its own `EASE = [0.22, 1, 0.36, 1]` at `duration: 0.35` — now `REVEAL_EASE` at `0.7` / `y: 24`, matching `RevealFade` exactly.
+- Date: 2026-08-01
+
+### [Component] — shared FaqSection for page-specific FAQ subsets
+- Rule: Page-level FAQ blocks (a curated subset of questions relevant to that page, not the full list) use `components/sections/FaqSection.tsx` — `<FaqSection items={someFaqs} viewAllHref="/faq" />`. Don't hand-roll the accordion per page (was duplicated between `app/faq/FaqPageContent.tsx` and `app/services/web-development/WebDevClient.tsx` before this). Heading row is `flex items-end justify-between`: `RevealText` H2 on the left, a "Read all FAQs" arrow-link (`ArrowUpRight`, same hover-lift as the bottom "Get in touch" link) on the right pointing at `viewAllHref` — this is the piece that makes it a page-specific excerpt rather than the full page. All FAQ content (question/answer/id) lives in one place: `lib/faq-data.ts` (`ALL_FAQS`, `FaqItem` type) — the standalone `/faq` page imports `ALL_FAQS` directly (keeps its own bespoke GSAP header + numbered `<h2>`-per-item layout, that page is intentionally NOT `FaqSection` since it's the "view all" destination, not an excerpt), other pages import `ALL_FAQS` and `.filter()` to a relevant subset (or define their own local array typed `FaqItem[]` if the copy is page-specific, e.g. `webDevFaqs` in `WebDevClient.tsx`) and pass it to `FaqSection`.
+- Where: `components/sections/FaqSection.tsx`, `lib/faq-data.ts`; consumed by `lib/work-data.ts` (`WORK_FAQS`, filtered subset of `ALL_FAQS` by id) → `app/work/WorkPageContent.tsx`, and `app/services/web-development/WebDevClient.tsx` (local `webDevFaqs`, replaced its inline duplicate accordion).
+- Why: user asked to reuse the FAQ pattern for the Work page with a "read all" link back to `/faq` — at that point there were two independent hand-rolled copies of the same accordion (full FAQ page + WebDev page), so extracting a shared component now instead of writing a third copy keeps the pattern from drifting further (same reasoning as the earlier PortableText/Reveal-primitive extractions logged above).
+- Date: 2026-08-01
+
 ### [Hero] — proof band instead of decorative filler
 - Rule: If a full-viewport type hero reads empty at the bottom, close it with a hairline-anchored proof band (`border-t border-(--color-border) pt-6`, flex-wrapped `<ul>`, items `text-sm text-(--color-text-muted)`, `gap-x-10 gap-y-2`) carrying real, already-published numbers — never invented figures, and never decorative shapes (see [Anti-pattern] no linework geometry). Source the numbers from an existing section on the same page so they can't drift.
 - Where: `components/sections/AboutHeroSection.tsx` — "Pune, India / Five years in / 68 projects shipped / 6,360 hours given back", all sourced from `StatsCounters.tsx`'s `STATS` array.
@@ -242,6 +260,53 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Where: `components/sections/VisionSection.tsx`.
 - Date: 2026-07-31
 
+### [Component] — ONE case-study section, shared by home and /work
+- Rule: The case-study block (bordered wrapper → featured 2-col card → 2-up grid) exists exactly once, as `components/sections/FeaturedWorkSection.tsx`, and reads its content from `lib/work-data.ts` (`FEATURED_CASE_STUDY` + `CASE_STUDY_GRID`). It renders the card primitives from `components/sections/work/CaseStudyCard.tsx` (`CaseStudyFeaturedLink`, `CaseStudyGridLink`). Only the copy above it varies, via optional `heading` / `subheading` / `id` / `ariaLabel` props defaulting to the home page's wording; `/work` passes `heading="Case studies"`.
+- **Do not build a page-local variant of a block that already exists on another page.** The deleted `WorkCaseStudiesSection.tsx` was a second implementation of this exact layout, and `FeaturedWorkSection` carried its own hardcoded `FEATURED` / `CASE_STUDIES` arrays — so the same three case studies existed as two copies of the copy, already drifting (home had `tags` uppercased into the banned eyebrow style, and all three cards linked to `/work` instead of the case study's own slug).
+- Where: `components/sections/FeaturedWorkSection.tsx`; consumed by `app/page.tsx` and `app/work/WorkPageContent.tsx`.
+- Why: user — "you should not add/create new component here, you should reuse the component used in home page only." Generalises the existing [Reuse] rule from motion primitives to whole sections: if a page needs a block another page already has, parameterise that block, don't fork it.
+- Date: 2026-08-01
+
+### [Rejected] — do NOT swap the FAQ accordion to a forceMount / grid-fr collapse
+- Rule: The FAQ accordion keeps Radix's default behaviour: `AccordionPrimitive.Content` **without** `forceMount`, collapsed by the `accordion-down` / `accordion-up` height keyframes in `app/globals.css`. Answers being absent from the server HTML while collapsed is accepted — `FAQPage` structured data (see the entry below) is what carries them to search and AI engines.
+- Tried 2026-08-01 for SEO: `forceMount` + `.accordion-content { display: grid; grid-template-rows: 0fr }`. User rejected it — the collapsed row didn't fully flatten, leaving one line of the answer visible under every question. Reverted. Don't re-propose the grid-`fr` collapse.
+- Kept from that pass: `defaultValue={items[0]?.id}` on `AccordionPrimitive.Root`, so the **first question renders open** and every other one starts closed (user-requested).
+- Date: 2026-08-01
+
+### [SEO] — FAQPage schema comes from one helper, once per route
+- Rule: `faqPageJsonLd(items)` in `lib/faq-data.ts` builds the schema.org `FAQPage` object; never hand-write the literal. `FaqSection` emits it automatically for any page that renders that component, so **a page using `FaqSection` must not also declare its own** — two `FAQPage` blocks on one URL is invalid. `/faq` is the exception that needs its own call (bespoke layout, doesn't use `FaqSection`) and makes it from inside `FaqPageContent.tsx`, not `page.tsx`.
+- Trap: an audit that greps only `app/**/page.tsx` for `ld+json` will miss schema declared in a co-located `*Content.tsx` client component and wrongly report the page as having none — grep the whole route folder.
+- Where: `lib/faq-data.ts`, `components/sections/FaqSection.tsx`, `app/faq/FaqPageContent.tsx`.
+- Date: 2026-08-01
+
+### [SEO] — alt text describes the image, not the thing it stands in for
+- Rule: When a card uses generic/stock art as a placeholder for a real asset, the alt is `alt=""` (decorative), not the project or client name. `alt="Tocal"` on `/our-services/webdevelopment.webp` describes something not in the frame — and that same file backed two different projects. The name is already in the adjacent `<h3>`, so an empty alt is both accurate and correct a11y. Put a real alt back when real screenshots land.
+- A logo IS the company, so the logo branch of `CaseStudyVisual` keeps `alt={company}`; only the illustration branch goes empty.
+- Where: `components/sections/work/CaseStudyCard.tsx` (`CaseStudyVisual`, `ExternalProjectLink`).
+- Date: 2026-08-01
+
+### [SEO] — declared OG dimensions must match the actual file
+- Rule: `openGraph.images[].width/height` is a claim about the file — check it. `public/og-image.png` was 1672x941 while 21 files declared `1200x630`. Now 1200x675 (16:9, resized not cropped, 1.37 MB → 210 KB via `sharp` `png({ palette: true, quality: 90, effort: 10 })`) with every declaration updated to match. Keep the `.png` filename on re-encode so previously-shared links don't break.
+- Don't blanket sed `height: 630` — `app/opengraph-image.tsx` is Next's runtime `ImageResponse` generator whose own `size` is legitimately 1200x630, and `app/work/[slug]/page.tsx` picks `study.image ?? '/og-image.png'`, where the two branches have genuinely different dimensions (1448x1086 vs 1200x675) and need a per-branch object.
+- Date: 2026-08-01
+
+### [Perf] — canvas ambient loops must idle out, not spin forever
+- Rule: A decorative canvas driven by pointer input has to stop its `requestAnimationFrame` chain once there's nothing left to animate, and restart on the next input. `DotGrid` draws the frame, then `if (painted.size === 0) { idle = true; return }`; `wake()` restarts the chain and is called from `handleMouseMove` and from the resize handler (resizing a canvas clears it, so it needs one repaint at the new size).
+- Where: `components/ui/DotGrid.tsx` — sitewide, `<DotGrid global />` is on most pages.
+- Why: the loop redrew every dot every frame forever. On a 390×844 phone that's ~1,600 `ctx.arc` calls at 60fps — permanently — while `mousemove` never fires on touch, so it could never paint anything. Pure battery and main-thread cost with zero visible output. Mouse users see no difference: the static grid is drawn, then the loop parks until the cursor moves.
+- Date: 2026-08-01
+
+### [Anti-pattern] — never render invented client names as proof
+- Rule: Placeholder brand names in a "who we've built for" marquee (`ClientLogosSection`'s `CLIENTS` = Studio One, UrbanEdge, NovaMed, Brightline, Kinetica, Forsa, Pinnacle) are fabricated social proof. Removed from `/work`, where the page's whole premise is "Proof over promises" and three real client logos plus seven named testimonials sit within one scroll of it. **Still live on `/about` (`app/about/page.tsx:76`) and commented out on the home page — replace with the real logo set or delete there too.**
+- Where: removed from `app/work/WorkPageContent.tsx`.
+- Date: 2026-08-01
+
+### [Rejected] — do NOT restyle /work in the About page's visual language
+- Rule: `/work`'s existing blocks are approved as they are. A pass on 2026-08-01 rebuilt them using the About page's devices — hero proof band, `--color-surface` anchor slabs alternating with `--color-bg`, an editorial ruled-type index replacing the "Selected websites" card grid, big metric numerals on the case-study cards. **User rejected all of it wholesale**: "this is poor all AI slop nothing is good. you used the same elements like about page. i dont want it, whatever it was previously it's very nice." Reverted in full.
+- Follow-ons the user then stated directly: don't touch the `/work` hero copy; **no section backgrounds on this page unless the section genuinely needs one** (`StatsCounters` is passed `bgClassName=""` on `/work` for this reason, unlike home where it keeps its white surface). Section-level reuse across pages is wanted; new page-local components are not.
+- Why: worth keeping because the reasoning behind that pass wasn't wrong on the facts (the stock-image reuse and the invented client names were real problems) — the failure was applying another page's finished visual system to a page that already had its own working one. Fix the specific defect; don't restyle the page around it.
+- Date: 2026-08-01
+
 ## Naming
 _None logged yet._
 
@@ -280,6 +345,12 @@ _None logged yet._
 - Mobile row height should be viewport-relative (`auto-rows-[42vw]`) so a 1×1 cell stays roughly square at any phone width; switch to fixed rows once the grid goes 4-up (`md:auto-rows-[200px] lg:auto-rows-[230px]`). A fixed `auto-rows-[140px]` at 2 columns gives wide-letterbox cells on small phones and near-square on large ones — inconsistent crop across devices.
 - Where: `components/sections/PhotoGallerySection.tsx` — 7 photos with an `id === 4` nested-flex special case became 8 flat entries; the `photo.id === 4` branch is gone. Layout: `[1:2×2][2][3] / [1][4][5] / [6:2×1][7][8]`.
 - Date: 2026-07-31
+
+### [Motion] — case-study + external-project card images now use RevealImage
+- Rule: `CaseStudyVisual` (`CaseStudyCard.tsx`, feeds `FeaturedWorkSection` on home + `/work`) and `ExternalProjectLink` (`WorkWebsitesSection` grid) had headings/copy/card entrance on `RevealText`/`RevealFade` already, but the card thumbnail was a plain `<Image>` — no clip-wipe. Wrapped both in `RevealImage` (`className="relative h-full w-full"` inside the existing `overflow-hidden` container) so every image on the page reveals the same way as About's gallery/hero images. Hover-scale transform on `ExternalProjectLink`'s image stays on the `<Image>` itself, independent of the wrapping reveal.
+- Where: `components/sections/work/CaseStudyCard.tsx`.
+- Why: user asked for uniform text/image/card reveal on `/work` matching other pages; images were the one primitive not yet applied there (and on home, since the component is shared).
+- Date: 2026-08-01
 
 ### [Card] — never number cards 01/02/03
 - Rule: Don't add an index label (`01`, `02`, `03` …) to cards in a feature/service grid. No exceptions for "just a small counter in the corner."
