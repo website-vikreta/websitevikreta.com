@@ -8,15 +8,15 @@ export function WorkWebsitesSection() {
   return (
     <section
       id="websites"
-      className="relative py-16 md:py-20 bg-(--color-surface)"
+      className="relative py-16 md:py-20"
       aria-label="Selected Websites"
     >
       <div className="container">
-        <div className="mb-10 md:mb-14 max-w-2xl">
-          <RevealText as="h2" className="text-h3 font-bold tracking-tight text-(--color-text)">
+        <div className="mb-10 md:mb-14 max-w-3xl">
+          <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
             Selected websites
           </RevealText>
-          <RevealFade className="mt-4" delay={0.1}>
+          <RevealFade className="mt-5" delay={0.1}>
             <p className="text-body-lg leading-relaxed text-(--color-text-muted)">
               Marketing sites and product pages we&apos;ve built for clients across e-commerce,
               consulting, architecture, and engineering.
@@ -36,6 +36,7 @@ export function WorkWebsitesSection() {
                 description={project.description}
                 href={project.href}
                 image={project.image}
+                skills={project.skills}
                 className="h-full"
               />
             </RevealFade>

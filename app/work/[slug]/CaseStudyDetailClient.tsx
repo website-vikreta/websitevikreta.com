@@ -77,7 +77,7 @@ export function CaseStudyDetailClient({ study }: Props) {
 
       <section className="py-16 md:py-20 bg-(--color-surface)" aria-label="Case Study Details">
         <div className="container">
-          <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
+          <div className="grid gap-12">
             <RevealFade delay={0.1}>
               <article>
                 <h2 className={SUBHEAD}>The problem</h2>

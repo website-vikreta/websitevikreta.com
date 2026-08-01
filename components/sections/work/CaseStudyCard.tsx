@@ -115,12 +115,14 @@ export function ExternalProjectLink({
   description,
   href,
   image,
+  skills,
   className = '',
 }: {
   title: string
   description: string
   href: string
   image: string
+  skills: string
   className?: string
 }) {
   return (
@@ -147,6 +149,7 @@ export function ExternalProjectLink({
         <p className="text-base text-(--color-text-muted) leading-relaxed line-clamp-3">
           {description}
         </p>
+        <span className="block text-sm text-(--color-text-muted)">{skills}</span>
         <div className="mt-auto flex items-center gap-1.5 text-base font-medium text-(--color-text)">
           <span className="relative">
             Visit site

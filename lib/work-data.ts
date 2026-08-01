@@ -32,6 +32,7 @@ export interface WebProject {
   description: string
   href: string
   image: string
+  skills: string
 }
 
 export const CASE_STUDIES: CaseStudy[] = [
@@ -128,6 +129,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A sleek product site for DbyT Dynamics with a clean, modern presentation.',
     href: 'https://tocal.in/',
     image: '/our-services/webdevelopment.webp',
+    skills: 'UI/UX Design · Web Development',
   },
   {
     slug: 'earth-by-blancora',
@@ -136,6 +138,7 @@ export const WEB_PROJECTS: WebProject[] = [
       "A sustainable e-commerce storefront for a women's clothing brand.",
     href: 'https://blancoraclothing.com/shop',
     image: '/our-services/ui-ux-design.webp',
+    skills: 'UI/UX Design · E-commerce Development',
   },
   {
     slug: 'archmodal',
@@ -144,6 +147,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
     image: '/our-services/web-mobile-crm.webp',
+    skills: 'UI/UX Design · Web Development',
   },
   {
     slug: 'psilent-ganges',
@@ -152,6 +156,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'An engineering solutions site built for clarity, performance, and trust.',
     href: 'https://psilentganges.netlify.app/',
     image: '/our-services/digital-marketing-seo-geo.webp',
+    skills: 'Web Development · Performance Optimization',
   },
   {
     slug: 'katalyst-consulting',
@@ -160,6 +165,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A professional consulting firm site focused on credibility and growth.',
     href: 'https://www.katalystcs.co.in/',
     image: '/our-services/webdevelopment.webp',
+    skills: 'UI/UX Design · Web Development',
   },
 ]
 
