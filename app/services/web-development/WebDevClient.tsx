@@ -314,7 +314,7 @@ export default function WebDevClient() {
         </div>
       </section>
 
-      <FaqSection items={webDevFaqs} />
+      <FaqSection items={webDevFaqs} ariaLabel="Web Development FAQs" />
 
     </main>
   )
