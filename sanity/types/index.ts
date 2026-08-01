@@ -125,6 +125,8 @@ export interface DisplayPost {
   // Resolved label refs (e.g. "Featured", "Hero") — used to pick which
   // post gets special placement (see FeaturedBlogHero selection logic).
   labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
+  // Resolved tag refs — rendered as pills on the blog card.
+  tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
 }
 
 // ── Backward-compat aliases ───────────────────────────────────────────────────

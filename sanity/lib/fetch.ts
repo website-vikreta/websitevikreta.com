@@ -57,6 +57,7 @@ function toDisplayPost(post: Post): DisplayPost {
       ? urlFor(post.featuredImage).width(800).fit('crop').url()
       : undefined,
     labels: post.labels,
+    tags: post.tags,
   }
 }
 
