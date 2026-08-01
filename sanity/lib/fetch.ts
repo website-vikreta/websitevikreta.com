@@ -6,6 +6,8 @@ import {
   POST_BY_SLUG_QUERY,
   POSTS_BY_CATEGORY_QUERY,
   POSTS_BY_TAG_QUERY,
+  POSTS_BY_AUTHOR_QUERY,
+  FILTERED_POSTS_QUERY,
   ALL_CATEGORIES_QUERY,
   ALL_POST_SLUGS_QUERY,
 } from './queries'
@@ -85,6 +87,15 @@ export async function fetchPostsByTag(tagSlug: string): Promise<Post[]> {
   )
 }
 
+export async function fetchPostsByAuthor(authorSlug: string): Promise<Post[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  return client.fetch<Post[]>(
+    POSTS_BY_AUTHOR_QUERY,
+    { authorSlug },
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
+}
+
 export async function fetchAllCategories(): Promise<Category[]> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
   return client.fetch<Category[]>(
@@ -94,9 +105,17 @@ export async function fetchAllCategories(): Promise<Category[]> {
   )
 }
 
-/** Returns DisplayPost[] — used by blog listing page */
-export async function fetchBlogPosts(): Promise<DisplayPost[]> {
-  const posts = await fetchAllPosts()
+/** Returns DisplayPost[] filtered by optional category slug and/or search query — used by the /blog index. */
+export async function fetchFilteredBlogPosts(filters: {
+  categorySlug?: string
+  searchQuery?: string
+} = {}): Promise<DisplayPost[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  const posts = await client.fetch<Post[]>(
+    FILTERED_POSTS_QUERY,
+    { categorySlug: filters.categorySlug ?? null, searchQuery: filters.searchQuery ?? null },
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
   return posts.map(toDisplayPost)
 }
 

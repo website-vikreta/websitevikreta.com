@@ -58,6 +58,23 @@ export const POSTS_BY_TAG_QUERY = groq`
   }
 `
 
+export const POSTS_BY_AUTHOR_QUERY = groq`
+  *[_type == "post" && author->slug.current == $authorSlug] | order(publishedAt desc) {
+    ${POST_SUMMARY}
+  }
+`
+
+// Powers the /blog index: category and search are both optional — a param
+// left undefined is passed as null, and defined() treats null as "not set".
+export const FILTERED_POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current)
+    && (!defined($categorySlug) || category->slug.current == $categorySlug)
+    && (!defined($searchQuery) || title match $searchQuery + "*" || excerpt match $searchQuery + "*")
+  ] | order(publishedAt desc) {
+    ${POST_SUMMARY}
+  }
+`
+
 export const ALL_CATEGORIES_QUERY = groq`
   *[_type == "category"] | order(title asc) {
     _id,
