@@ -179,6 +179,69 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: user asked for a full responsive-typography audit across all 6 ai-automations sections; the fluid `clamp()` tokens already cover cross-device scaling, so the actual defects were inline styles bypassing the token system (harder to keep consistent) and one missing responsive breakpoint, not the scale itself.
 - Date: 2026-07-04
 
+### [Motion] — RevealImage: editorial clip-wipe image reveal, motion/react port of AI-Automations' `revealClipImage`
+- Rule: `RevealImage` (`components/ui/Reveal.tsx`) is the canonical primitive for image reveals sitewide — clip-path wipes `inset(0 0 100% 0)` → `inset(0 0 0% 0)` on the outer container (same `duration: 1.0, ease: REVEAL_EASE` as `RevealText`), inner wrapper scales `1.08 → 1` over `1.4s` (matches gsap `DUR.crawl`). Pass the image container's own `overflow-hidden`/border/radius classes as `className`; children is the `<Image fill />`. This was previously GSAP-only (`lib/gsap/reveals.ts` `revealClipImage`, used on AI-Automations page); ported to motion/react so non-GSAP pages (About, and any future page using the `Reveal.tsx` primitives) get the same image-reveal language as text reveal already had. Layer it with `RevealFade` on a wrapping grid/card element for entrance-stagger + independent image wipe — same two-trigger layering as `FixesSection.tsx` (`.fix-card` fades, `.fix-card-image` wipes separately).
+- Where: `components/ui/Reveal.tsx` (`RevealImage`), used in `components/sections/AboutHeroSection.tsx` (hero image) and `components/sections/PhotoGallerySection.tsx` (all gallery images, including both id=4 side-by-side images).
+- Why: user asked for the About page to carry the same text + image revealing animations as the AI-Automations page. Text reveal already matched (`RevealText`/`RevealFade` already mirror `revealLines`/`revealFadeUp`); the image clip-wipe was the missing piece — About page images previously only got a plain fade+rise via `RevealFade`, no clip-path/scale treatment.
+- Date: 2026-07-31
+
+### [Hero] — typographic "before → after" hero (About page)
+- Rule: When a page's story is a pivot/change, the hero headline should *enact* the change with type, not describe it with an image beside it. Pattern: line 1 = the dead model at `text-h1 font-normal` in `text-(--color-text-faint)` with the key noun struck through by an animated bar (`absolute left-0 top-[0.56em] h-[0.045em] w-full origin-left bg-(--color-text)`, `motion.span` `scaleX 0→1`, `duration 0.55`, `REVEAL_EASE`, `delay 0.75` so it lands after the line reveal, `aria-hidden`); line 2 = the live model at full `text-display font-bold` in `text-(--color-text)` with the key phrase in `text-(--color-accent)`. Put the weight on the individual lines, NOT `font-bold` on the `<h1>` — the size jump (h1 → display) AND the weight jump (normal → bold) both carry the pivot; don't set both lines at the same step or the same weight. Strike bar stays near-black so yellow remains the single accent moment on the page. Guard with `useReducedMotion()` from motion/react → `initial={{ scaleX: reduced ? 1 : 0 }}` and `delay: reduced ? 0 : 0.75` so the mark is present without animating.
+- Strike bar vertical position: use `top-[0.56em]`, never `top-1/2`. `top-1/2` centres on the line box, which lands the bar visibly above the lowercase letters and reads like an underscore floating in the wrong place; `0.56em` sits on the lowercase x-height centre. Bar thickness `0.045em` — matches a `font-normal` stroke; `0.06em` reads too heavy against light-weight type. Both are `em` units so they scale with the fluid `--text-h1` clamp.
+- Where: `components/sections/AboutHeroSection.tsx`.
+- Why: first pass was headline-left/photo-right at a 5/7 split — user rejected it as "very generic, very hand made, nothing creative". A column-ratio change isn't a design idea; the story (agency killed its old model) had to become the visual. Accent-word-in-display-type matches the existing homepage hero precedent (`HeroSection.tsx` `ACCENT_INDEX` colors one word `--color-accent` at `text-display` on the same `#FAFAF7` bg), so yellow display text is an established pattern here, not a new one.
+- Date: 2026-07-31
+
+### [Hero] — no photo in a hero when the page already has a photo gallery
+- Rule: Don't put a team/office photo in a page hero when a `PhotoGallerySection` (or equivalent) further down already carries that content. The hero goes pure-type at `min-h-svh` with aggressive whitespace instead. Also check `.claude/context/brand.md` photography direction before adding any hero photo — "no stock photo smiles, no handshakes, no laptops on desks" rules out most meeting/workspace shots as a hero anchor.
+- Where: `components/sections/AboutHeroSection.tsx` (dropped `/about/team-strategy-meeting.webp`; the About page's 8 other team photos still run in `PhotoGallerySection`).
+- Why: the hero photo was the 9th team photo on the page and the first one the user saw, so it set a generic "agency stock" tone before the gallery got its moment. Removing it also gives the headline the full viewport width the brand's typography direction asks for ("Large. Bold. Words fill the screen.").
+- Date: 2026-07-31
+
+### [Hero] — proof band instead of decorative filler
+- Rule: If a full-viewport type hero reads empty at the bottom, close it with a hairline-anchored proof band (`border-t border-(--color-border) pt-6`, flex-wrapped `<ul>`, items `text-sm text-(--color-text-muted)`, `gap-x-10 gap-y-2`) carrying real, already-published numbers — never invented figures, and never decorative shapes (see [Anti-pattern] no linework geometry). Source the numbers from an existing section on the same page so they can't drift.
+- Where: `components/sections/AboutHeroSection.tsx` — "Pune, India / Five years in / 68 projects shipped / 6,360 hours given back", all sourced from `StatsCounters.tsx`'s `STATS` array.
+- Date: 2026-07-31
+
+### [Numerals] — big-number treatment (one style sitewide)
+- Rule: Any large numeral used as a design element — stat values, numbered principle/step lists — uses one treatment: `font-mono font-bold leading-none` + `text-5xl md:text-6xl` + `tracking-[-0.05em]`. Colour is `text-(--color-text)` for factual stats and `text-(--color-accent)` for numbered list indices. Never `uppercase` on digits, and never `tracking-(--tracking-meta)` (0.12em) — wide meta tracking is for label text and visibly pulls digits apart. Note `font-mono` is remapped to Utile sans in this project (not a true monospace) — it's kept because `StatsCounters` established it as the numeral face.
+- Where: `components/sections/StatsCounters.tsx` (values, `text-(--color-text)`), `components/sections/CoreValuesSection.tsx` (01–06 indices, `text-(--color-border-strong)` ghost → `--color-accent` on `group-hover`).
+- Why: user asked for the CoreValues 01–06 indices to read like "The Numbers So Far" but in yellow, with the digits tightened. They were `text-xl sm:text-2xl uppercase tracking-(--tracking-meta)` — a different size step, a different weight feel, and letter-spacing pulling the two digits apart.
+- Open item: `StatsCounters` itself still has no explicit tracking (browser default 0). If the tightened digits read better there too, add `tracking-[-0.05em]` to its value span so both fully match — not done yet, wasn't requested.
+- Date: 2026-07-31
+
+### [Exception] — numbered indices ARE allowed on a principles list (user-confirmed twice)
+- Rule: The "never number cards 01/02/03" anti-pattern below applies to **feature/service card grids**, where the number is decorative filler on items with no inherent order. It does NOT apply to `CoreValuesSection`'s "How we decide what to build" 01–06. Indices render `text-(--color-border-strong)` (ghost) at the [Numerals] treatment, going `--color-accent` on `group-hover`, with NO rule above them — the cell is just `<article className="group">`.
+- History — do not re-litigate: user asked for these indices on 2026-07-31, they were removed later the same day as part of a minimal pass, and the user immediately asked for the grid back ("no bring it back i dont want this layout please") and confirmed the numbered version by picking it from three options. **The numbers stay.** Don't propose removing them again.
+- Where: allowed in `components/sections/CoreValuesSection.tsx`; still banned in `app/services/ai-automations/AIAutomationsClient.tsx`.
+- Date: 2026-07-31
+
+### [Section] — surface rhythm: alternate grounds, white slabs only
+- Rule: A long page must not run every section on `--color-bg`. Alternate two grounds so no two adjacent sections read as the same slab: default `--color-bg` (transparent section, no bg class) ↔ `--color-surface` white slab. Give a white slab to the page's densest text block so it lifts off the warm ground either side.
+- Padding exception: an anchor slab (the page's densest block) uses `py-24 md:py-32`, NOT the standard `py-16 md:py-20`. Alongside the already-documented hero/contact-form exceptions, this is the only body-section deviation — transparent sections and ordinary white-surface sections keep `py-16 md:py-20`.
+- **Do NOT use a dark/inverted slab** (`bg-(--color-text) text-(--color-bg)`) as the mid-page anchor. Tried on About's `CoreValuesSection` 2026-07-31 — user rejected it: "not huge fan of dark background all of a sudden in between". A dark band mid-scroll reads as a lurch, not a beat. Don't re-propose it; use `--color-surface` and wider padding instead. (This also removes the need for `--color-bg`-as-ink overrides — light-theme tokens apply normally: `text-(--color-text)`, `text-(--color-text-muted)`, `border-(--color-border)`.)
+- Where: About page — `CoreValuesSection` is the anchor slab (`bg-(--color-surface) py-24 md:py-32`); `StatsCounters` restored to its default `bg-(--color-surface)` (the `bgClassName=""` override in `app/about/page.tsx` was removed, so About now matches home). Sequence: bg → bg → WHITE → bg → WHITE → bg → bg → bg.
+- Why: user flagged the About page as "lot of text to read" with "no room to breathe" — every section was the same padding on the same ground, so the page had one flat texture and nothing to rest against. Ground contrast does the breathing that more padding alone can't; white-on-warm-off-white is enough contrast to do it without a tonal jolt.
+- Date: 2026-07-31
+
+### [Accent] — page budget: one static yellow, hover states only after that
+- Rule: A page gets ONE static `--color-accent` moment. Everything else that wants yellow gets it on hover or not at all. Never colour a *set* of repeated elements (6 principle indices, 3 step circles) in accent — that's 3–6 yellow instances in one section and blows both accent rules ("max once per section", "more than ~3 on a page is too much").
+- Where: About page — the single static yellow is the hero's "we build systems". The Insights accent circles were removed; the `CoreValuesSection` 01–06 indices render ghost (`--color-border-strong`) and only reach accent on `group-hover`, one at a time, so they cost nothing against the static budget.
+- Exception (user-requested 2026-07-31): `VisionSection`'s H2 word "bottleneck" is a second static accent word on the About page. Budget for a *long* page is therefore **one accent word per screenful, max ~2–3 static per page** — both instances are single words in display/H2 type, far apart in the scroll, and never a repeated set. Do not read this as a licence to accent a third heading.
+- Date: 2026-07-31
+
+### [Copy] — density budget: a section carries one idea, not one paragraph per idea
+- Rule: On content pages, cap supporting copy hard — section sub-line ≤ 12 words, card/principle description ≤ 14 words, hero lede ≤ 32 words, CTA subheading ≤ 25 words. When a sentence lists outcomes ("response time, conversion, capacity, cost"), pull the list OUT of the prose and set it as type — a hairline-bordered `grid-cols-2 md:grid-cols-4` row, one term per cell at `text-h3 font-bold`. Words-as-design-elements is the brand rule; it also cuts reading time to a glance.
+- Where: About page pass — hero lede 48w→30w, `VisionSection` two dense paragraphs → lede + 4-term measurables row + one `text-h3 font-normal` closing line, `CoreValuesSection` descriptions ~22w→≤14w, `PhotoGallerySection` 22w subhead → a 4-word meta line right-aligned beside the H2, `InsightsSection` descriptions ~30w→~13w and subhead 20w→6w, `StatsCounters` closing note 22w→11w, About CTA subheading 44w→21w. Page body copy dropped ~45% with the story arc (Tension → Shift → Resolution → Invitation) and section order untouched.
+- Why: user asked to keep intent and flow but said there was "a lot of text to read". Cutting words, not sections, is what preserves the arc.
+- Update (2026-07-31): `VisionSection`'s 4-term measurables row and its `text-h3` closing line were later cut entirely (user-requested) — the section is now heading + 2 short paragraphs left, one `aspect-video` photo right. The list-out-of-prose pattern itself still stands; it just isn't used here anymore.
+- Date: 2026-07-31
+
+### [Layout] — asymmetric heading/body split instead of an equal two-column text block
+- Rule: For a heading + supporting prose section, don't run `grid lg:grid-cols-2 gap-12` with a paragraph in each half — two equal text columns read as twice the reading work. Use `grid lg:grid-cols-12`: heading in `lg:col-span-5`, body in `lg:col-span-6 lg:col-start-7`. The skipped column IS the whitespace — no extra padding needed.
+- Where: `components/sections/VisionSection.tsx`.
+- Date: 2026-07-31
+
 ## Naming
 _None logged yet._
 
@@ -188,6 +251,35 @@ _None logged yet._
 - Why: IntersectionObserver measures the *transformed* bounding box. The inner line starts shifted 110% down, so its observed rect is wrong and the reveal never fires (symptom: headings stay invisible). The wrapper doesn't move → reliable trigger; it drives the inner via variants.
 - Where: `RevealText` in `components/ui/Reveal.tsx`.
 - Date: 2026-06-28
+
+### [Minimal] — no decorative hairline above every item in a grid
+- Rule: Default to NO rule/marker above each cell of a card or step grid — whitespace and type hierarchy do the separating (design-system.md: *"No decorative dividers — whitespace creates separation"*). Also drop small marker glyphs/circles used as bullets. If an item needs a marker to feel designed, the layout is the problem.
+- Where: removed 2026-07-31 from `InsightsSection` (per-item `border-t`, and the accent-bordered numbered circles), `VisionSection` (the measurables row's `border-t`/`border-b`), `AboutHeroSection` (proof band `border-t`).
+- Also removed from `CoreValuesSection` — its per-item `border-t` (and the `pt-6` that spaced content off it) is gone. The `01`–`06` indices there stay (user-chosen, see [Exception] below): the *digits* were wanted, the separator line above them was not. Worth remembering as the distinction — an index label can earn its place; a rule stamped above every cell does not.
+- Why: user reviewed the rendered About page — "I still believe there is tons of AI slop… change it to minimal style, don't add unnecessary markers like separators on top of something."
+- Date: 2026-07-31
+
+### [Minimal] — images are square; radius cap is 4px, no exceptions
+- Rule: Photos and image cards get NO border-radius and no border — `relative h-full w-full overflow-hidden bg-(--color-bg-muted)` is the whole treatment. design-system.md caps container radius at 4px; `rounded-2xl` (16px) violates it and reads soft/generic against the site's hard editorial type. Don't add a hover radius-morph (`transition-[border-radius] … hover:rounded-none`) either — it's an interaction the scroll reveal already covers.
+- Where: `components/sections/PhotoGallerySection.tsx`.
+- Date: 2026-07-31
+
+### [Motion] — all magic happens on scroll; hover stays functional only
+- Rule: Entrance/reveal choreography is scroll-triggered via the `Reveal.tsx` primitives, staggered by index. Hover is reserved for things that are actually interactive (links, buttons, cards you can click) and stays subtle — colour or underline, per motion-system.md. Don't invent hover flourishes on static content (colour-shifting numerals, radius morphs on non-clickable images) to make a section feel "interactive"; it isn't interactive, and the flourish reads as decoration.
+- Where: About page — removed an image radius-morph on non-clickable photos; kept the staggered `RevealText`/`RevealFade`/`RevealImage` scroll reveals. `CoreValuesSection`'s numeral `group-hover` accent stays (user-chosen, see [Exception] above).
+- Why: user — "keep it interactive but don't add unnecessary interactions. all magic should happen on scroll."
+- Date: 2026-07-31
+
+### [Responsive] — never ship two `hidden`-toggled copies of the same content
+- Rule: Don't build a "desktop layout" in `hidden md:block` and a "mobile layout" in `md:hidden` rendering the same items. Every word ends up in the DOM twice — duplicate content for crawlers, double the Reveal components mounting and observing, and two layouts to keep in sync. Build one layout that responds (`grid gap-10 md:grid-cols-3 md:gap-8`). Only duplicate markup when the two versions are genuinely different *components*, never when they're the same data in a different flow direction.
+- Where: `components/sections/InsightsSection.tsx` — had a horizontal desktop timeline and a vertical mobile stack, both mapping the same `INSIGHTS` array. Collapsed to one grid.
+- Date: 2026-07-31
+
+### [Grid] — spans must sum to the column count at every breakpoint; no nested flex to fill a gap
+- Rule: In a `col-span`/`row-span` image grid, pick spans so each row sums exactly to the column count at BOTH breakpoints (4 on desktop, 2 on mobile). If a cell has to split itself with an inner `flex` to fill leftover width, the span math is wrong — fix the spans, don't nest. A nested `w-2/3` + `w-1/3` split inside a `col-span-2` cell collapses the 1/3 child to a ~55px sliver on a phone.
+- Mobile row height should be viewport-relative (`auto-rows-[42vw]`) so a 1×1 cell stays roughly square at any phone width; switch to fixed rows once the grid goes 4-up (`md:auto-rows-[200px] lg:auto-rows-[230px]`). A fixed `auto-rows-[140px]` at 2 columns gives wide-letterbox cells on small phones and near-square on large ones — inconsistent crop across devices.
+- Where: `components/sections/PhotoGallerySection.tsx` — 7 photos with an `id === 4` nested-flex special case became 8 flat entries; the `photo.id === 4` branch is gone. Layout: `[1:2×2][2][3] / [1][4][5] / [6:2×1][7][8]`.
+- Date: 2026-07-31
 
 ### [Card] — never number cards 01/02/03
 - Rule: Don't add an index label (`01`, `02`, `03` …) to cards in a feature/service grid. No exceptions for "just a small counter in the corner."
