@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: 'WebsiteVikreta',
     type: 'website',
     locale: 'en_IN',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Careers at Website Vikreta' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 675, alt: 'Careers at Website Vikreta' }],
   },
   twitter: { card: 'summary_large_image', title: 'Careers | Website Vikreta', description: 'Open internship roles in Pune.', images: ['/og-image.png'] },
   alternates: { canonical: `${SITE_URL}/careers` },

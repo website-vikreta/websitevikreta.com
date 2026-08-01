@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       {
         url: '/og-image.png',
         width: 1200,
-        height: 630,
+        height: 675,
         alt: 'Website Vikreta FAQ | AI Automation & Web Development',
       },
     ],
@@ -51,6 +51,8 @@ export const metadata: Metadata = {
   },
 }
 
+// FAQPage schema for this route is emitted inside FaqPageContent — don't add a
+// second one here, duplicate FAQPage blocks on one URL are invalid.
 export default function FAQPage() {
   return <FaqPageContent />
 }
