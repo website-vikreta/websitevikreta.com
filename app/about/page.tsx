@@ -19,7 +19,7 @@ const jsonLd = {
       url: `${SITE_URL}/about`,
       name: 'About Website Vikreta',
       description:
-        "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
+        'Website Vikreta is an AI automation agency building high-performance Next.js websites and AI workflow automation systems for businesses worldwide.',
       about: { '@id': `${SITE_URL}/#organization` },
       isPartOf: {
         '@type': 'WebSite',
@@ -40,12 +40,12 @@ const jsonLd = {
 }
 
 export const metadata: Metadata = {
-  title: 'About Website Vikreta | AI Automation Agency Pune',
-  description: "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
+  title: 'About Website Vikreta | AI Automation Agency',
+  description: 'Website Vikreta is an AI automation agency building high-performance Next.js websites and AI workflow automation systems for businesses worldwide.',
   keywords: [
-    'AI automation agency Pune',
+    'AI automation agency',
     'about Website Vikreta',
-    'web development agency Pune',
+    'web development agency',
     'Next.js development agency India',
     'AI workflow automation',
     'custom web development',
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
     'Website Vikreta team',
   ],
   openGraph: {
-    title: 'About Website Vikreta | AI Automation Agency Pune',
-    description: "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
+    title: 'About Website Vikreta | AI Automation Agency',
+    description: 'Website Vikreta is an AI automation agency building high-performance Next.js websites and AI workflow automation systems for businesses worldwide.',
     url: `${SITE_URL}/about`,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -65,14 +65,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'About Website Vikreta | AI Automation Agency Pune',
+        alt: 'About Website Vikreta | AI Automation Agency',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Website Vikreta | AI Automation Agency Pune',
-    description: "Website Vikreta is Pune's AI automation agency, building high-performance websites and AI workflow systems.",
+    title: 'About Website Vikreta | AI Automation Agency',
+    description: 'Website Vikreta is an AI automation agency building high-performance websites and AI workflow systems.',
     images: ['/og-image.png'],
   },
   alternates: {
