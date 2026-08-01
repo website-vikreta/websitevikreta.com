@@ -202,6 +202,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Rule: For a card carousel that needs continuous auto-scroll + manual prev/next (not the switching single-quote pattern in `TestimonialsSection.tsx`), reuse `ClientLogosSection.tsx`'s motion primitives: `useMotionValue` + `useAnimationFrame` moving `x` left at a constant px/s, list duplicated 2x, wrap at `-trackWidth/2`. Add prev/next by animating the same motion value with `animate(x, target, { duration: 0.6, ease: REVEAL_EASE })` stepping by one card width + gap, and pause the auto-scroll frame loop (`isPaused` ref) on hover and for 4s after a manual arrow click so the click doesn't get immediately overridden. Same edge-fade masks (`bg-gradient-to-r/l from-(--color-bg) to-transparent`) as the client-logo marquee. Card: `bg-(--color-surface) border border-(--color-border) hover:border-(--color-border-strong)`, no shadow (Card rule). Label reading "Testimonial"/category tag on a card is plain `text-sm text-(--color-text-faint)`, never uppercase/tracked (see [Anti-pattern] no eyebrow labels — applies to any small card label, not just careers meta).
 - Where: `components/sections/work/WorkTestimonialsSection.tsx` (Work page only — home page keeps the original switching `TestimonialsSection.tsx`).
 - Why: user wanted a 6-card testimonial carousel (name/designation/company/photo) with infinite auto-scroll + explicit left/right controls, which the existing single-quote switcher doesn't provide. Reusing the marquee math instead of a new scroll-snap/library carousel keeps the site to one continuous-scroll motion primitive.
+- Update (2026-08-01) — touch + mobile corrections to the above:
+  - **Card width is never a fixed px constant.** `CARD_W = 380` overflowed the viewport on any phone under 380px. Use `w-[80vw] max-w-[380px] sm:w-[380px]` and *measure* the arrow step (`cardRef.current.offsetWidth + GAP`) into state on mount and on resize — a viewport-relative card makes the step unknowable at author time.
+  - **Add `drag="x"` (`dragMomentum={false} dragElastic={0}`) to the track.** Hover-pause is the only pacing control a mouse user needs, but touch never fires hover — swipe is the equivalent. `onDragStart` pauses, `onDragEnd` re-wraps `x` and resumes after `RESUME_DELAY`. Give the avatar `<Image draggable={false} className="select-none">` so native image-drag doesn't hijack the gesture.
+  - **Wrap continuously, except during an arrow tween.** An `isTweening` ref makes the frame loop skip wrapping while `animate()` owns `x` (wrapping mid-tween yanks the value back toward a stale target); the tween's `onComplete` re-wraps instead. Everything else — drag included — wraps every frame, so no gesture can drag the track past the duplicated copy into empty space.
+  - **Guard with `useReducedMotion()`** — auto-scroll velocity goes to 0 and the arrow tween duration to 0; the arrows keep working.
+  - Import `REVEAL_EASE` from `Reveal.tsx`; don't re-declare `[0.16, 1, 0.3, 1]` inline. Same correction applied to `FaqSection.tsx`, which had drifted to its own `EASE = [0.22, 1, 0.36, 1]` at `duration: 0.35` — now `REVEAL_EASE` at `0.7` / `y: 24`, matching `RevealFade` exactly.
 - Date: 2026-08-01
 
 ### [Component] — shared FaqSection for page-specific FAQ subsets
@@ -253,6 +259,30 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Rule: For a heading + supporting prose section, don't run `grid lg:grid-cols-2 gap-12` with a paragraph in each half — two equal text columns read as twice the reading work. Use `grid lg:grid-cols-12`: heading in `lg:col-span-5`, body in `lg:col-span-6 lg:col-start-7`. The skipped column IS the whitespace — no extra padding needed.
 - Where: `components/sections/VisionSection.tsx`.
 - Date: 2026-07-31
+
+### [Component] — ONE case-study section, shared by home and /work
+- Rule: The case-study block (bordered wrapper → featured 2-col card → 2-up grid) exists exactly once, as `components/sections/FeaturedWorkSection.tsx`, and reads its content from `lib/work-data.ts` (`FEATURED_CASE_STUDY` + `CASE_STUDY_GRID`). It renders the card primitives from `components/sections/work/CaseStudyCard.tsx` (`CaseStudyFeaturedLink`, `CaseStudyGridLink`). Only the copy above it varies, via optional `heading` / `subheading` / `id` / `ariaLabel` props defaulting to the home page's wording; `/work` passes `heading="Case studies"`.
+- **Do not build a page-local variant of a block that already exists on another page.** The deleted `WorkCaseStudiesSection.tsx` was a second implementation of this exact layout, and `FeaturedWorkSection` carried its own hardcoded `FEATURED` / `CASE_STUDIES` arrays — so the same three case studies existed as two copies of the copy, already drifting (home had `tags` uppercased into the banned eyebrow style, and all three cards linked to `/work` instead of the case study's own slug).
+- Where: `components/sections/FeaturedWorkSection.tsx`; consumed by `app/page.tsx` and `app/work/WorkPageContent.tsx`.
+- Why: user — "you should not add/create new component here, you should reuse the component used in home page only." Generalises the existing [Reuse] rule from motion primitives to whole sections: if a page needs a block another page already has, parameterise that block, don't fork it.
+- Date: 2026-08-01
+
+### [Perf] — canvas ambient loops must idle out, not spin forever
+- Rule: A decorative canvas driven by pointer input has to stop its `requestAnimationFrame` chain once there's nothing left to animate, and restart on the next input. `DotGrid` draws the frame, then `if (painted.size === 0) { idle = true; return }`; `wake()` restarts the chain and is called from `handleMouseMove` and from the resize handler (resizing a canvas clears it, so it needs one repaint at the new size).
+- Where: `components/ui/DotGrid.tsx` — sitewide, `<DotGrid global />` is on most pages.
+- Why: the loop redrew every dot every frame forever. On a 390×844 phone that's ~1,600 `ctx.arc` calls at 60fps — permanently — while `mousemove` never fires on touch, so it could never paint anything. Pure battery and main-thread cost with zero visible output. Mouse users see no difference: the static grid is drawn, then the loop parks until the cursor moves.
+- Date: 2026-08-01
+
+### [Anti-pattern] — never render invented client names as proof
+- Rule: Placeholder brand names in a "who we've built for" marquee (`ClientLogosSection`'s `CLIENTS` = Studio One, UrbanEdge, NovaMed, Brightline, Kinetica, Forsa, Pinnacle) are fabricated social proof. Removed from `/work`, where the page's whole premise is "Proof over promises" and three real client logos plus seven named testimonials sit within one scroll of it. **Still live on `/about` (`app/about/page.tsx:76`) and commented out on the home page — replace with the real logo set or delete there too.**
+- Where: removed from `app/work/WorkPageContent.tsx`.
+- Date: 2026-08-01
+
+### [Rejected] — do NOT restyle /work in the About page's visual language
+- Rule: `/work`'s existing blocks are approved as they are. A pass on 2026-08-01 rebuilt them using the About page's devices — hero proof band, `--color-surface` anchor slabs alternating with `--color-bg`, an editorial ruled-type index replacing the "Selected websites" card grid, big metric numerals on the case-study cards. **User rejected all of it wholesale**: "this is poor all AI slop nothing is good. you used the same elements like about page. i dont want it, whatever it was previously it's very nice." Reverted in full.
+- Follow-ons the user then stated directly: don't touch the `/work` hero copy; **no section backgrounds on this page unless the section genuinely needs one** (`StatsCounters` is passed `bgClassName=""` on `/work` for this reason, unlike home where it keeps its white surface). Section-level reuse across pages is wanted; new page-local components are not.
+- Why: worth keeping because the reasoning behind that pass wasn't wrong on the facts (the stock-image reuse and the invented client names were real problems) — the failure was applying another page's finished visual system to a page that already had its own working one. Fix the specific defect; don't restyle the page around it.
+- Date: 2026-08-01
 
 ## Naming
 _None logged yet._

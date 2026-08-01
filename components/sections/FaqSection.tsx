@@ -4,10 +4,8 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ArrowUpRight } from 'lucide-react'
-import { RevealText } from '@/components/ui/Reveal'
+import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
 import type { FaqItem } from '@/lib/faq-data'
-
-const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 interface FaqSectionProps {
   items: FaqItem[]
@@ -21,13 +19,13 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
       <div className="container">
         <motion.div
           className="mx-auto max-w-[720px]"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.35, ease: EASE }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.7, ease: REVEAL_EASE }}
         >
-          <div className="mb-12">
-            <RevealText as="h2" className="text-h2 font-bold">
+          <div className="mb-10 md:mb-14">
+            <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
               {heading}
             </RevealText>
           </div>

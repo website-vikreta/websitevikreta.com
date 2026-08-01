@@ -134,13 +134,31 @@ export const WEB_PROJECTS: WebProject[] = [
     skills: 'UI/UX Design · Web Development',
   },
   {
+    slug: 'sustainable-bitcoin-protocol-site',
+    title: 'Sustainable Bitcoin Protocol',
+    description:
+      'The public site for a protocol that needed to read as credible to institutional users.',
+    href: 'https://www.sustainablebtc.org/',
+    image: '/our-services/ui-ux-design.webp',
+    skills: 'UI/UX Design · Design System',
+  },
+  {
     slug: 'earth-by-blancora',
     title: 'Earth by Blancora',
     description:
       "A sustainable e-commerce storefront for a women's clothing brand.",
     href: 'https://blancoraclothing.com/shop',
-    image: '/our-services/ui-ux-design.webp',
+    image: '/our-services/web-mobile-crm.webp',
     skills: 'UI/UX Design · E-commerce Development',
+  },
+  {
+    slug: 'ap-cleanco-site',
+    title: 'AP Cleanco',
+    description:
+      'A local service business taken from no web presence at all to a site built to convert.',
+    href: 'https://apcleanco.com/',
+    image: '/our-services/digital-marketing-seo-geo.webp',
+    skills: 'Web Development · Local SEO',
   },
   {
     slug: 'archmodal',
@@ -148,17 +166,8 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
-    image: '/our-services/web-mobile-crm.webp',
+    image: '/our-services/ai-automation.webp',
     skills: 'UI/UX Design · Web Development',
-  },
-  {
-    slug: 'psilent-ganges',
-    title: 'Psilent Ganges',
-    description:
-      'An engineering solutions site built for clarity, performance, and trust.',
-    href: 'https://psilentganges.netlify.app/',
-    image: '/our-services/digital-marketing-seo-geo.webp',
-    skills: 'Web Development · Performance Optimization',
   },
   {
     slug: 'katalyst-consulting',
