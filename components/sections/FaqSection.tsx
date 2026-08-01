@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ArrowUpRight } from 'lucide-react'
-import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
+import { RevealText } from '@/components/ui/Reveal'
 import { faqPageJsonLd, type FaqItem } from '@/lib/faq-data'
+
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 interface FaqSectionProps {
   items: FaqItem[]
@@ -23,18 +25,18 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
       <div className="container">
         <motion.div
           className="mx-auto max-w-[720px]"
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.7, ease: REVEAL_EASE }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.35, ease: EASE }}
         >
-          <div className="mb-10 md:mb-14">
-            <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
+          <div className="mb-12">
+            <RevealText as="h2" className="text-h2 font-bold">
               {heading}
             </RevealText>
           </div>
 
-          <AccordionPrimitive.Root type="single" collapsible>
+          <AccordionPrimitive.Root type="single" collapsible defaultValue={items[0]?.id}>
             {items.map((faq, index) => (
               <AccordionPrimitive.Item
                 key={faq.id}
@@ -68,11 +70,7 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
                   </h3>
                 </AccordionPrimitive.Header>
 
-                {/* forceMount: Radix unmounts collapsed content by default, which
-                    kept every answer out of the server HTML entirely. The answers
-                    are the rankable text here — `.accordion-content` collapses
-                    them with grid-template-rows instead. */}
-                <AccordionPrimitive.Content forceMount className="accordion-content">
+                <AccordionPrimitive.Content className="accordion-content">
                   <p className="pb-8 text-[1.0625rem] leading-[1.7] text-(--color-text-muted)">
                     {faq.answer}
                   </p>

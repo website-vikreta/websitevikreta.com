@@ -267,9 +267,10 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: user — "you should not add/create new component here, you should reuse the component used in home page only." Generalises the existing [Reuse] rule from motion primitives to whole sections: if a page needs a block another page already has, parameterise that block, don't fork it.
 - Date: 2026-08-01
 
-### [SEO] — collapsed accordion content must still be in the server HTML
-- Rule: Radix `Accordion.Content` unmounts while collapsed, so any answer text is absent from the HTML until a user clicks. On an FAQ that's the entire rankable and AI-citable payload. Pass `forceMount` on `AccordionPrimitive.Content` and collapse with CSS instead: `.accordion-content { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows .25s ease-out }`, `[data-state="open"] { grid-template-rows: 1fr }`, `.accordion-content > * { min-height: 0; overflow: hidden }`, plus a `prefers-reduced-motion` branch killing the transition. Use grid-`fr`, **not** the `height`/`--radix-accordion-content-height` keyframes this replaced — a `transition` doesn't fire on initial render, so nothing flashes open on load, whereas an `animation` does. Verify with `curl | grep` for an answer string, and check Radix isn't emitting a `hidden` attribute (it doesn't, with `forceMount`).
-- Where: `app/globals.css` (`.accordion-content`), `components/sections/FaqSection.tsx`. Measured before: 0 of 8 answers in `/work`'s HTML; after: all rendered.
+### [Rejected] — do NOT swap the FAQ accordion to a forceMount / grid-fr collapse
+- Rule: The FAQ accordion keeps Radix's default behaviour: `AccordionPrimitive.Content` **without** `forceMount`, collapsed by the `accordion-down` / `accordion-up` height keyframes in `app/globals.css`. Answers being absent from the server HTML while collapsed is accepted — `FAQPage` structured data (see the entry below) is what carries them to search and AI engines.
+- Tried 2026-08-01 for SEO: `forceMount` + `.accordion-content { display: grid; grid-template-rows: 0fr }`. User rejected it — the collapsed row didn't fully flatten, leaving one line of the answer visible under every question. Reverted. Don't re-propose the grid-`fr` collapse.
+- Kept from that pass: `defaultValue={items[0]?.id}` on `AccordionPrimitive.Root`, so the **first question renders open** and every other one starts closed (user-requested).
 - Date: 2026-08-01
 
 ### [SEO] — FAQPage schema comes from one helper, once per route
