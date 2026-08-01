@@ -1,3 +1,5 @@
+import { ALL_FAQS } from '@/lib/faq-data'
+
 export interface CaseStudyMetric {
   value: string
   label: string
@@ -169,25 +171,79 @@ export const WEB_PROJECTS: WebProject[] = [
   },
 ]
 
-export const WORK_OUTCOMES = [
+export interface WorkTestimonial {
+  slug: string
+  quote: string
+  name: string
+  designation: string
+  company: string
+  image: string
+}
+
+export const WORK_TESTIMONIALS: WorkTestimonial[] = [
   {
-    id: 'years',
-    display: '5+',
-    useCounter: false,
-    label: 'Years shipping for clients across industries',
+    slug: 'benoit-marcell',
+    quote:
+      "They understood exactly what I wanted and gave it to me. Very stylish designs and also does a lot of research to make sure the work is perfect. I'll recommend them not only because their work is good but they are easy going. They listen to you, they co-operate & communicated.",
+    name: 'Benoit Marcell',
+    designation: 'Owner',
+    company: 'Elevagechiotspug',
+    image: '/our-work/testimonials/Benoit_Marcell.webp',
   },
   {
-    id: 'projects',
-    display: '68+',
-    useCounter: false,
-    label: 'Projects delivered — web, apps, automation, design',
+    slug: 'abhinav-singh',
+    quote:
+      'They have excellent design skills. They quickly prototyped the design I had in mind and then programmed it using modern CSS3/HTML5/SVG technologies. They adjusted well with changing requirements as we iterated through the design work. I look forward to working with Website Vikreta again and highly recommend them for your next frontend project.',
+    name: 'Abhinav Singh',
+    designation: 'Co-founder',
+    company: 'JAXL, India',
+    image: '/our-work/testimonials/Abhinav_Singh.webp',
   },
   {
-    id: 'hours',
-    display: '6360',
-    suffix: 'hrs',
-    useCounter: true,
-    counterValue: 6360,
-    label: 'Manual work removed since we went AI-first',
+    slug: 'fiona-li',
+    quote:
+      'Great to work with. Very skillful. Not a lot of UXUI designers have aesthetic and visual design taste like Website Vikreta!',
+    name: 'Fiona Li',
+    designation: 'Senior Product Designer & Manager',
+    company: '',
+    image: '/our-work/testimonials/Fiona_Li.webp',
   },
-] as const
+  {
+    slug: 'stacey-bae',
+    quote: 'They were very professional. Team was timely, design was great and they did above and beyond my request.',
+    name: 'Stacey Bae',
+    designation: 'Developer',
+    company: 'Archmodal Classrooms',
+    image: '/our-work/testimonials/Stacey_Bae.webp',
+  },
+  {
+    slug: 'john-kim',
+    quote:
+      'Website Vikreta did really nice work. They have really fast hands. They finished our new website design in the given time. They always responded quickly and has a really good sense of design. I will rehire them for future projects for sure.',
+    name: 'John Kim',
+    designation: 'CEO',
+    company: 'Champion Lenders',
+    image: '/our-work/testimonials/John_Kim.webp',
+  },
+  {
+    slug: 'rudra-ghodke',
+    quote:
+      'They provide one of the best web development services out there. The team completes each project by giving personal attention to the smallest details. We really love working with Website Vikreta and will recommend everyone to contact them for any tech development need.',
+    name: 'Rudra Ghodke',
+    designation: 'Founder',
+    company: 'MetaThumbz',
+    image: '/our-work/testimonials/Rudra_Ghodke.webp',
+  },
+  {
+    slug: 'sang-hyun-han',
+    quote:
+      "It was my second time working with Website Vikreta. They finished the project within the given time. Even if I don't explain to them the design I want, they know exactly what style of design I want. I will definitely work again with them on future projects.",
+    name: 'Sang Hyun Han',
+    designation: 'Full Stack Engineer',
+    company: 'Cozmo Realty',
+    image: '/our-work/testimonials/Sang_Hun_Yan.webp',
+  },
+]
+
+// Subset of the master FAQ list relevant to a work/portfolio page — timeline, industries, stack, ongoing support.
+export const WORK_FAQS = ALL_FAQS.filter(f => ['3', '8', '9', '11'].includes(f.id))

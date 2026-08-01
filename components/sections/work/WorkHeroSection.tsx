@@ -13,9 +13,9 @@ export function WorkHeroSection() {
 
           <RevealFade className="mt-5" delay={0.1}>
             <p className="max-w-xl text-body-lg leading-relaxed text-(--color-text-muted)">
-              We don&apos;t pitch what we might do. Here is what we&apos;ve already shipped —
-              websites, automation systems, and product design — and what it changed for the
-              businesses behind it.
+              We don&apos;t pitch what we might do. Here&apos;s what we&apos;ve already shipped:
+              websites, automation systems, product design. And what it changed for the clients
+              we built for.
             </p>
           </RevealFade>
         </div>
