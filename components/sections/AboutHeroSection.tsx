@@ -1,8 +1,8 @@
 'use client'
 
 import { motion, useReducedMotion } from 'motion/react'
-import { RevealText, RevealFade, REVEAL_EASE } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
+import { REVEAL_EASE, RevealFade, RevealText } from '@/components/ui/Reveal'
 
 const META = [
   'Pune, India',
@@ -54,8 +54,8 @@ export function AboutHeroSection() {
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mt-12 lg:mt-16">
           <RevealFade delay={0.4} className="lg:col-span-6">
             <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">
-              A year ago we tore up our own model and rebuilt around AI. You&apos;re
-              not hiring us for a nicer homepage — you&apos;re hiring us to stop the
+              A year ago we became Pune&apos;s AI automation agency. You&apos;re not
+              hiring us for a nicer homepage — you&apos;re hiring us to stop the
               hours your team is quietly bleeding.
             </p>
           </RevealFade>

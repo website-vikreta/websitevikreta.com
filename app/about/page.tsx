@@ -10,12 +10,37 @@ import { VisionSection } from '@/components/sections/VisionSection'
 import { DotGrid } from '@/components/ui/DotGrid'
 import { SITE_URL } from '@/config/site'
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': `${SITE_URL}/about#webpage`,
+      url: `${SITE_URL}/about`,
+      name: 'About Website Vikreta',
+      description:
+        "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
+      about: { '@id': `${SITE_URL}/#organization` },
+      isPartOf: { '@id': SITE_URL },
+      breadcrumb: { '@id': `${SITE_URL}/about#breadcrumb` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${SITE_URL}/about#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'About', item: `${SITE_URL}/about` },
+      ],
+    },
+  ],
+}
+
 export const metadata: Metadata = {
-  title: 'About Us | Website Vikreta',
-  description: 'Learn about Website Vikreta, a Pune-based AI automation and web development agency. We build high-performance Next.js websites and custom AI workflow automation systems for businesses in India and worldwide.',
+  title: 'About Website Vikreta | AI Automation Agency Pune',
+  description: "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
   keywords: [
-    'about Website Vikreta',
     'AI automation agency Pune',
+    'about Website Vikreta',
     'web development agency Pune',
     'Next.js development agency India',
     'AI workflow automation',
@@ -25,8 +50,8 @@ export const metadata: Metadata = {
     'Website Vikreta team',
   ],
   openGraph: {
-    title: 'About Website Vikreta | AI Automation & Web Development Agency',
-    description: 'Learn about Website Vikreta, a Pune-based AI automation and web development agency. We build high-performance Next.js websites and custom AI workflow automation systems for businesses in India and worldwide.',
+    title: 'About Website Vikreta | AI Automation Agency Pune',
+    description: "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
     url: `${SITE_URL}/about`,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -36,14 +61,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'About Website Vikreta | AI Automation & Web Development Agency',
+        alt: 'About Website Vikreta | AI Automation Agency Pune',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Website Vikreta | AI Automation & Web Development Agency',
-    description: 'Learn about Website Vikreta, a Pune-based AI automation and web development agency.',
+    title: 'About Website Vikreta | AI Automation Agency Pune',
+    description: "Website Vikreta is Pune's AI automation agency, building high-performance websites and AI workflow systems.",
     images: ['/og-image.png'],
   },
   alternates: {
@@ -64,6 +89,10 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <DotGrid global />
       {/* Surface rhythm — white `--color-surface` slabs punctuate the warm
           `--color-bg` sections so the page never runs the same ground twice in
