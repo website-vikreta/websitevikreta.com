@@ -54,12 +54,16 @@ export function CaseStudyVisual({ study }: { study: CaseStudy }) {
     <div className="h-full border border-(--color-border) bg-(--color-surface) p-2">
       <div className="relative flex aspect-[14/9] h-full w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)">
         {study.image ? (
+          // alt="": study.image is a generic service illustration, not a
+          // preview of this client's project — calling it one describes
+          // something that isn't in the frame. Restore a real alt with real
+          // screenshots. The logo branch below IS the company, so it keeps one.
           <Image
             src={study.image}
-            alt={`${study.company} project preview`}
+            alt=""
             fill
             className="object-cover grayscale"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
         ) : (
           <Image
@@ -133,9 +137,14 @@ export function ExternalProjectLink({
       className={`group relative flex h-full flex-col bg-(--color-surface) transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${className}`}
     >
       <div className="relative aspect-video overflow-hidden border-b border-(--color-border) bg-(--color-bg-muted)">
+        {/* alt="" on purpose: these are generic service illustrations, not
+            screenshots of the site being linked (webdevelopment.webp backs two
+            different projects). Naming the project here would describe something
+            the image doesn't show — and the project name is in the <h3> below.
+            Give this a real alt once real screenshots replace the stock art. */}
         <Image
           src={image}
-          alt={title}
+          alt=""
           fill
           className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
           sizes="(max-width: 768px) 100vw, 33vw"

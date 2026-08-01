@@ -6,7 +6,7 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { gsap } from '@/lib/gsap'
 import { cn } from '@/lib/utils'
 import { ArrowUpRight } from 'lucide-react'
-import { ALL_FAQS as FAQ_ITEMS } from '@/lib/faq-data'
+import { ALL_FAQS as FAQ_ITEMS, faqPageJsonLd } from '@/lib/faq-data'
 
 export function FaqPageContent() {
   const headerRef = useRef<HTMLDivElement>(null)
@@ -45,15 +45,7 @@ export function FaqPageContent() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: FAQ_ITEMS.map(item => ({
-              '@type': 'Question',
-              name: item.question,
-              acceptedAnswer: { '@type': 'Answer', text: item.answer },
-            })),
-          }),
+          __html: JSON.stringify(faqPageJsonLd(FAQ_ITEMS)),
         }}
       />
 

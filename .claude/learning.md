@@ -267,6 +267,28 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: user — "you should not add/create new component here, you should reuse the component used in home page only." Generalises the existing [Reuse] rule from motion primitives to whole sections: if a page needs a block another page already has, parameterise that block, don't fork it.
 - Date: 2026-08-01
 
+### [SEO] — collapsed accordion content must still be in the server HTML
+- Rule: Radix `Accordion.Content` unmounts while collapsed, so any answer text is absent from the HTML until a user clicks. On an FAQ that's the entire rankable and AI-citable payload. Pass `forceMount` on `AccordionPrimitive.Content` and collapse with CSS instead: `.accordion-content { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows .25s ease-out }`, `[data-state="open"] { grid-template-rows: 1fr }`, `.accordion-content > * { min-height: 0; overflow: hidden }`, plus a `prefers-reduced-motion` branch killing the transition. Use grid-`fr`, **not** the `height`/`--radix-accordion-content-height` keyframes this replaced — a `transition` doesn't fire on initial render, so nothing flashes open on load, whereas an `animation` does. Verify with `curl | grep` for an answer string, and check Radix isn't emitting a `hidden` attribute (it doesn't, with `forceMount`).
+- Where: `app/globals.css` (`.accordion-content`), `components/sections/FaqSection.tsx`. Measured before: 0 of 8 answers in `/work`'s HTML; after: all rendered.
+- Date: 2026-08-01
+
+### [SEO] — FAQPage schema comes from one helper, once per route
+- Rule: `faqPageJsonLd(items)` in `lib/faq-data.ts` builds the schema.org `FAQPage` object; never hand-write the literal. `FaqSection` emits it automatically for any page that renders that component, so **a page using `FaqSection` must not also declare its own** — two `FAQPage` blocks on one URL is invalid. `/faq` is the exception that needs its own call (bespoke layout, doesn't use `FaqSection`) and makes it from inside `FaqPageContent.tsx`, not `page.tsx`.
+- Trap: an audit that greps only `app/**/page.tsx` for `ld+json` will miss schema declared in a co-located `*Content.tsx` client component and wrongly report the page as having none — grep the whole route folder.
+- Where: `lib/faq-data.ts`, `components/sections/FaqSection.tsx`, `app/faq/FaqPageContent.tsx`.
+- Date: 2026-08-01
+
+### [SEO] — alt text describes the image, not the thing it stands in for
+- Rule: When a card uses generic/stock art as a placeholder for a real asset, the alt is `alt=""` (decorative), not the project or client name. `alt="Tocal"` on `/our-services/webdevelopment.webp` describes something not in the frame — and that same file backed two different projects. The name is already in the adjacent `<h3>`, so an empty alt is both accurate and correct a11y. Put a real alt back when real screenshots land.
+- A logo IS the company, so the logo branch of `CaseStudyVisual` keeps `alt={company}`; only the illustration branch goes empty.
+- Where: `components/sections/work/CaseStudyCard.tsx` (`CaseStudyVisual`, `ExternalProjectLink`).
+- Date: 2026-08-01
+
+### [SEO] — declared OG dimensions must match the actual file
+- Rule: `openGraph.images[].width/height` is a claim about the file — check it. `public/og-image.png` was 1672x941 while 21 files declared `1200x630`. Now 1200x675 (16:9, resized not cropped, 1.37 MB → 210 KB via `sharp` `png({ palette: true, quality: 90, effort: 10 })`) with every declaration updated to match. Keep the `.png` filename on re-encode so previously-shared links don't break.
+- Don't blanket sed `height: 630` — `app/opengraph-image.tsx` is Next's runtime `ImageResponse` generator whose own `size` is legitimately 1200x630, and `app/work/[slug]/page.tsx` picks `study.image ?? '/og-image.png'`, where the two branches have genuinely different dimensions (1448x1086 vs 1200x675) and need a per-branch object.
+- Date: 2026-08-01
+
 ### [Perf] — canvas ambient loops must idle out, not spin forever
 - Rule: A decorative canvas driven by pointer input has to stop its `requestAnimationFrame` chain once there's nothing left to animate, and restart on the next input. `DotGrid` draws the frame, then `if (painted.size === 0) { idle = true; return }`; `wake()` restarts the chain and is called from `handleMouseMove` and from the resize handler (resizing a canvas clears it, so it needs one repaint at the new size).
 - Where: `components/ui/DotGrid.tsx` — sitewide, `<DotGrid global />` is on most pages.

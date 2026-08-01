@@ -3,28 +3,31 @@
 @theme inline {
   --font-sans: var(--font-utile);
   --font-mono: var(--font-utile);
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
-@keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
-}
-
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
-}
-
+/* Collapsed via grid-template-rows, not by unmounting: the answers are the
+   rankable/AI-citable text on an FAQ block, so they must be in the server HTML
+   even while closed (Radix Content is `forceMount`ed for the same reason).
+   A transition — unlike the keyframes this replaced — does not run on initial
+   render, so nothing flashes open on page load. */
 .accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
   overflow: hidden;
+  transition: grid-template-rows 0.25s ease-out;
 }
 .accordion-content[data-state="open"] {
-  animation: accordion-down 0.2s ease-out;
+  grid-template-rows: 1fr;
 }
-.accordion-content[data-state="closed"] {
-  animation: accordion-up 0.2s ease-out;
+.accordion-content > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-content {
+    transition: none;
+  }
 }
 
 /* ─── Reset ───────────────────────────────────────────────────── */

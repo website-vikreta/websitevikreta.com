@@ -5,7 +5,7 @@ import { motion } from 'motion/react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ArrowUpRight } from 'lucide-react'
 import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
-import type { FaqItem } from '@/lib/faq-data'
+import { faqPageJsonLd, type FaqItem } from '@/lib/faq-data'
 
 interface FaqSectionProps {
   items: FaqItem[]
@@ -16,6 +16,10 @@ interface FaqSectionProps {
 export function FaqSection({ items, heading = 'Frequently Asked Questions', viewAllHref = '/faq' }: FaqSectionProps) {
   return (
     <section className="py-16 md:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(items)) }}
+      />
       <div className="container">
         <motion.div
           className="mx-auto max-w-[720px]"
@@ -64,7 +68,11 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
                   </h3>
                 </AccordionPrimitive.Header>
 
-                <AccordionPrimitive.Content className="accordion-content">
+                {/* forceMount: Radix unmounts collapsed content by default, which
+                    kept every answer out of the server HTML entirely. The answers
+                    are the rankable text here — `.accordion-content` collapses
+                    them with grid-template-rows instead. */}
+                <AccordionPrimitive.Content forceMount className="accordion-content">
                   <p className="pb-8 text-[1.0625rem] leading-[1.7] text-(--color-text-muted)">
                     {faq.answer}
                   </p>

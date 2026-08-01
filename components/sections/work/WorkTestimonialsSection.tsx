@@ -125,14 +125,21 @@ export function WorkTestimonialsSection() {
             resume(RESUME_DELAY)
           }}
         >
-          {cards.map((testimonial, i) => (
-            <TestimonialCard
-              key={testimonial.slug + i}
-              ref={i === 0 ? cardRef : undefined}
-              testimonial={testimonial}
-              aria-hidden={i >= WORK_TESTIMONIALS.length}
-            />
-          ))}
+          {cards.map((testimonial, i) => {
+            // Second copy exists only so the marquee can loop seamlessly.
+            // aria-hidden keeps it out of the a11y tree; data-nosnippet keeps
+            // Google from reading every quote twice.
+            const isLoopCopy = i >= WORK_TESTIMONIALS.length
+            return (
+              <TestimonialCard
+                key={testimonial.slug + i}
+                ref={i === 0 ? cardRef : undefined}
+                testimonial={testimonial}
+                aria-hidden={isLoopCopy}
+                data-nosnippet={isLoopCopy ? '' : undefined}
+              />
+            )
+          })}
         </motion.div>
 
         <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-(--color-bg) to-transparent z-10" />

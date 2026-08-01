@@ -4,6 +4,23 @@ export interface FaqItem {
   answer: string
 }
 
+/**
+ * schema.org FAQPage for a set of questions. The primary way search engines and
+ * AI answer engines consume an FAQ block — emit it anywhere questions render.
+ * One FAQPage per page: don't call this twice on the same route.
+ */
+export function faqPageJsonLd(items: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  }
+}
+
 export const ALL_FAQS: FaqItem[] = [
   {
     id: '1',
@@ -15,13 +32,13 @@ export const ALL_FAQS: FaqItem[] = [
     id: '2',
     question: 'How much does a project cost?',
     answer:
-      "Depends on scope. A marketing site and a full automation system aren't priced the same, so we won't quote you a number until we know what you're actually building. Most projects land between [$X and $Y]. You'll get a real figure after a short call, not a \"starting from\" line that never holds up.",
+      "Depends on scope. A marketing site and a full automation system aren't priced the same, so we won't quote you a number until we know what you're actually building. You'll get a real figure after a short call, not a \"starting from\" line that never holds up.",
   },
   {
     id: '3',
     question: 'How long does a typical project take?',
     answer:
-      "A focused website usually takes 2 to 4 weeks. Automation projects move differently. One image production pipeline we built cut a client's process from 20 hours to 1 hour per collection, and getting there took about [X weeks] of build and testing. We'll give you a real timeline once we know the scope.",
+      "A focused website usually takes 2 to 4 weeks. Automation projects move differently. One image production pipeline we built cut a client's process from 20 hours to 1 hour per collection, after a stretch of build and testing. We'll give you a real timeline once we know the scope.",
   },
   {
     id: '4',

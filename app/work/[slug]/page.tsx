@@ -33,13 +33,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: 'Website Vikreta',
       type: 'article',
       locale: 'en_IN',
+      // Dimensions differ per branch — the case-study art is 1448x1086, the
+      // shared fallback card is 1200x675. One hardcoded pair was wrong for both.
       images: [
-        {
-          url: study.image ?? '/og-image.png',
-          width: 1200,
-          height: 630,
-          alt: `${study.company} case study`,
-        },
+        study.image
+          ? {
+              url: study.image,
+              width: 1448,
+              height: 1086,
+              alt: `${study.company} case study`,
+            }
+          : {
+              url: '/og-image.png',
+              width: 1200,
+              height: 675,
+              alt: `${study.company} case study`,
+            },
       ],
     },
     twitter: {
