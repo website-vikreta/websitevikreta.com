@@ -9,6 +9,8 @@ const POST_SUMMARY = groq`
   featuredImage { asset, hotspot, alt },
   "author": author->{ _id, name, image },
   "category": category->{ _id, title, slug { current } },
+  "tags": tags[]->{ _id, title, slug { current } },
+  "labels": labels[]->{ _id, title, slug { current } },
   publishedAt,
   readTime
 `
@@ -38,13 +40,34 @@ export const POST_BY_SLUG_QUERY = groq`
     seoTitle,
     seoDescription,
     seoKeywords,
+    canonicalUrl,
     "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl }
   }
 `
 
+// Pre-existing — filters posts by category slug, returns POST_SUMMARY shape.
 export const POSTS_BY_CATEGORY_QUERY = groq`
   *[_type == "post" && category->slug.current == $categorySlug] | order(publishedAt desc) {
     ${POST_SUMMARY}
+  }
+`
+
+export const POSTS_BY_TAG_QUERY = groq`
+  *[_type == "post" && $tagSlug in tags[]->slug.current] | order(publishedAt desc) {
+    ${POST_SUMMARY}
+  }
+`
+
+export const ALL_CATEGORIES_QUERY = groq`
+  *[_type == "category"] | order(title asc) {
+    _id,
+    title,
+    slug { current },
+    description,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    canonicalUrl
   }
 `
 

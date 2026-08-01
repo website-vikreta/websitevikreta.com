@@ -15,11 +15,30 @@ export interface Author {
   name: string
   slug: { current: string }
   image?: SanityImage
-  bio?: string
+  shortBio?: string
+  bio?: PortableTextBlock[]
   linkedinUrl?: string
 }
 
 export interface Category {
+  _id: string
+  title: string
+  slug: { current: string }
+  description?: string
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string[]
+  canonicalUrl?: string
+}
+
+export interface Tag {
+  _id: string
+  title: string
+  slug: { current: string }
+  description?: string
+}
+
+export interface Label {
   _id: string
   title: string
   slug: { current: string }
@@ -36,10 +55,13 @@ export interface Post {
   featuredImage?: SanityImage
   author?: Pick<Author, '_id' | 'name' | 'image'>
   category?: Pick<Category, '_id' | 'title' | 'slug'>
+  tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
+  labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
   readTime?: string
   seoTitle?: string
   seoDescription?: string
   seoKeywords?: string[]
+  canonicalUrl?: string
   featuredOnHomepage?: boolean
 }
 
@@ -72,9 +94,12 @@ export type FullPost =
       author?: {
         name: string
         image?: SanityImage
-        bio?: string
+        bio?: PortableTextBlock[]
         linkedinUrl?: string
       }
+      tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
+      labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
+      canonicalUrl?: string
       seoTitle?: string
       seoDescription?: string
       seoKeywords?: string[]
