@@ -1,12 +1,31 @@
 'use client'
 
+import { useMemo } from 'react'
 import { motion } from 'motion/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { TextLink } from '@/components/ui/TextLink'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
+import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
 import type { DisplayPost, Category } from '@/sanity/types'
+
+// A post carrying any of these label slugs gets the hero treatment. Falls
+// back to the newest post (posts[0] — queries already order by
+// publishedAt desc) when nothing is labeled.
+const FEATURED_LABEL_SLUGS = new Set(['hero-banner', 'featured', 'featured-post'])
+
+function selectFeaturedPost(posts: DisplayPost[]): {
+  featured: DisplayPost | null
+  rest: DisplayPost[]
+} {
+  if (posts.length === 0) return { featured: null, rest: [] }
+  const labeled = posts.find((post) =>
+    (post.labels ?? []).some((label) => FEATURED_LABEL_SLUGS.has(label.slug?.current ?? '')),
+  )
+  const featured = labeled ?? posts[0]
+  return { featured, rest: posts.filter((post) => post.slug !== featured.slug) }
+}
 
 const container = {
   hidden: {},
@@ -41,6 +60,8 @@ interface BlogListingClientProps {
 }
 
 export function BlogListingClient({ posts, breadcrumbSegments }: BlogListingClientProps) {
+  const { featured, rest } = useMemo(() => selectFeaturedPost(posts), [posts])
+
   return (
     <>
       <ScrollToTop />
@@ -50,7 +71,9 @@ export function BlogListingClient({ posts, breadcrumbSegments }: BlogListingClie
 
           <Breadcrumb segments={breadcrumbSegments} className="mb-6 md:mb-8" />
 
-          {/* Hero header */}
+          {featured && <FeaturedBlogHero post={featured} />}
+
+          {/* Page heading */}
           <motion.div
             className="mb-10 md:mb-14"
             variants={container}
@@ -69,7 +92,7 @@ export function BlogListingClient({ posts, breadcrumbSegments }: BlogListingClie
 
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
-            {posts.map((post, i) => (
+            {rest.map((post, i) => (
               <motion.article
                 key={post.slug}
                 custom={i}

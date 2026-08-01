@@ -122,6 +122,9 @@ export interface DisplayPost {
   publishDate: string
   readTime: string
   imageUrl?: string
+  // Resolved label refs (e.g. "Featured", "Hero") — used to pick which
+  // post gets special placement (see FeaturedBlogHero selection logic).
+  labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
 }
 
 // ── Backward-compat aliases ───────────────────────────────────────────────────
