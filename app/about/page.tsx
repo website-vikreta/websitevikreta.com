@@ -21,7 +21,11 @@ const jsonLd = {
       description:
         "Website Vikreta is Pune's AI automation agency, building high-performance Next.js websites and AI workflow automation systems for businesses in India and worldwide.",
       about: { '@id': `${SITE_URL}/#organization` },
-      isPartOf: { '@id': SITE_URL },
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Website Vikreta',
+        url: SITE_URL,
+      },
       breadcrumb: { '@id': `${SITE_URL}/about#breadcrumb` },
     },
     {
