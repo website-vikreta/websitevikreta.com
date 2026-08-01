@@ -174,6 +174,8 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
       bio: post.author.bio,
       linkedinUrl: post.author.linkedinUrl,
     } : undefined,
+    categorySlug: post.category?.slug?.current,
+    categoryTitle: post.category?.title,
     tags: post.tags,
     labels: post.labels,
     canonicalUrl: post.canonicalUrl,

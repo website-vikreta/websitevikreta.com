@@ -6,6 +6,7 @@ import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/image'
 import { Button } from '@/components/ui/Button'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import type { FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -165,15 +166,37 @@ export default async function BlogPostPage({
     ? calcReadTime(post.body)
     : post.readTime
 
+  // Category is only linkable when we have a real Sanity category doc +
+  // slug behind it — static posts and Sanity posts with no category
+  // reference just render the label as plain (unlinked) text.
+  const categorySegment: BreadcrumbSegment =
+    post.source === 'sanity' && post.categorySlug
+      ? { label: post.categoryTitle ?? post.category, href: `/blog/category/${post.categorySlug}` }
+      : { label: post.category }
+
+  const breadcrumbSegments: BreadcrumbSegment[] = [
+    { label: 'Home', href: '/' },
+    { label: 'Blog', href: '/blog' },
+    categorySegment,
+    { label: post.title },
+  ]
+
   return (
     <>
       <ScrollToTop />
       <main>
       <article>
 
+        {/* Breadcrumb — absolute first element, clears the fixed navbar,
+            sits above the cover image (full container width, not
+            constrained to the 720px title column below). */}
+        <div className="container pt-28 pb-4 md:pt-32 md:pb-6 lg:pt-36">
+          <Breadcrumb segments={breadcrumbSegments} />
+        </div>
+
         {/* Cover image — Sanity posts only */}
         {post.source === 'sanity' && post.featuredImage && (
-          <div className="container pt-[150px]">
+          <div className="container">
             <div className="relative w-full overflow-hidden aspect-video lg:aspect-[16/6]">
               <Image
                 src={urlFor(post.featuredImage).width(1200).height(675).url()}
@@ -186,7 +209,7 @@ export default async function BlogPostPage({
           </div>
         )}
 
-        <div className={`container pb-24 md:pb-32 ${hasCover ? 'pt-16 md:pt-20' : 'pt-32 md:pt-40'}`}>
+        <div className={`container pb-24 md:pb-32 ${hasCover ? 'pt-16 md:pt-20' : 'pt-6 md:pt-8'}`}>
 
           {/* Title */}
           <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-8 max-w-[720px] mx-auto">

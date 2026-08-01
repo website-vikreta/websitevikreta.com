@@ -97,6 +97,13 @@ export type FullPost =
         bio?: PortableTextBlock[]
         linkedinUrl?: string
       }
+      // Properly-cased title + slug of the resolved category, alongside the
+      // existing `category` field (uppercased display string, used by the
+      // badge). Needed for breadcrumb links — `category` alone loses the
+      // slug and isn't safe to render as a label (see [Anti-pattern] no
+      // uppercase eyebrow labels in .claude/learning.md).
+      categorySlug?: string
+      categoryTitle?: string
       tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
       labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
       canonicalUrl?: string

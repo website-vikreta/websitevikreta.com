@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { TextLink } from '@/components/ui/TextLink'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import type { DisplayPost, Category } from '@/sanity/types'
 
 const container = {
@@ -36,15 +37,18 @@ interface BlogListingClientProps {
   // rendered here.
   categories?: Category[]
   activeCategory?: string
+  breadcrumbSegments: BreadcrumbSegment[]
 }
 
-export function BlogListingClient({ posts }: BlogListingClientProps) {
+export function BlogListingClient({ posts, breadcrumbSegments }: BlogListingClientProps) {
   return (
     <>
       <ScrollToTop />
       <main>
       <section className="relative overflow-hidden">
         <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
+
+          <Breadcrumb segments={breadcrumbSegments} className="mb-6 md:mb-8" />
 
           {/* Hero header */}
           <motion.div

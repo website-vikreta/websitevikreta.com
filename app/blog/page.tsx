@@ -99,6 +99,11 @@ async function getCategories(): Promise<Category[]> {
   }
 }
 
+const BREADCRUMB_SEGMENTS = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog' },
+]
+
 export default async function BlogPage({
   searchParams,
 }: {
@@ -109,5 +114,12 @@ export default async function BlogPage({
     getPosts(category, query),
     getCategories(),
   ])
-  return <BlogListingClient posts={posts} categories={categories} activeCategory={category} />
+  return (
+    <BlogListingClient
+      posts={posts}
+      categories={categories}
+      activeCategory={category}
+      breadcrumbSegments={BREADCRUMB_SEGMENTS}
+    />
+  )
 }
