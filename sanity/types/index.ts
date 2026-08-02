@@ -15,6 +15,7 @@ export interface Author {
   name: string
   slug: { current: string }
   image?: SanityImage
+  designation?: string
   shortBio?: string
   bio?: PortableTextBlock[]
   linkedinUrl?: string

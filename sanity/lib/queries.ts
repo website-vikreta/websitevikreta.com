@@ -144,6 +144,7 @@ export const AUTHOR_BY_SLUG_QUERY = groq`
     name,
     slug { current },
     image,
+    designation,
     shortBio,
     bio,
     linkedinUrl
