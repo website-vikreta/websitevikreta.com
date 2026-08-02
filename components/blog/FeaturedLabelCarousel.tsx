@@ -7,6 +7,8 @@ import type { DisplayPost } from '@/sanity/types'
 interface FeaturedLabelCarouselProps {
   title: string
   labelSlug: string
+  /** Slug to drop from this row — the post already shown as the page hero, so it isn't duplicated. */
+  excludeSlug?: string
 }
 
 function CarouselCard({ post }: { post: DisplayPost }) {
@@ -37,8 +39,8 @@ function CarouselCard({ post }: { post: DisplayPost }) {
 }
 
 /** Server Component — fetches the top posts for one label and renders them as a snap-scrolling row. Renders nothing if the label has no posts. */
-export async function FeaturedLabelCarousel({ title, labelSlug }: FeaturedLabelCarouselProps) {
-  const posts = await fetchPostsByLabel(labelSlug, 5)
+export async function FeaturedLabelCarousel({ title, labelSlug, excludeSlug }: FeaturedLabelCarouselProps) {
+  const posts = await fetchPostsByLabel(labelSlug, 5, excludeSlug)
   if (posts.length === 0) return null
 
   return (

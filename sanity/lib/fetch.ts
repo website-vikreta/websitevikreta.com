@@ -15,6 +15,7 @@ import {
   AUTHOR_BY_SLUG_QUERY,
   FILTERED_POSTS_QUERY,
   ALL_CATEGORIES_QUERY,
+  CATEGORIES_WITH_POSTS_QUERY,
   ALL_POST_SLUGS_QUERY,
 } from './queries'
 import { urlFor } from './image'
@@ -55,6 +56,7 @@ function toDisplayPost(post: Post): DisplayPost {
   return {
     slug: post.slug.current,
     category: post.category?.title?.toUpperCase() ?? 'GENERAL',
+    categorySlug: post.category?.slug?.current,
     title: post.title,
     description: post.excerpt ?? '',
     publishDate: formatDate(post.publishedAt),
@@ -164,8 +166,12 @@ export async function fetchAuthorBySlug(authorSlug: string): Promise<Author | nu
   }
 }
 
-/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
-export async function fetchPostsByLabel(labelSlug: string, limit = 5): Promise<DisplayPost[]> {
+/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. `excludeSlug` drops one post (e.g. the post already shown as the page's hero) before the limit is applied, so the row still fills up to `limit` distinct posts instead of coming up one short. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
+export async function fetchPostsByLabel(
+  labelSlug: string,
+  limit = 5,
+  excludeSlug?: string,
+): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) return []
   try {
     const posts = await client.fetch<Post[]>(
@@ -173,7 +179,10 @@ export async function fetchPostsByLabel(labelSlug: string, limit = 5): Promise<D
       { labelSlug },
       { next: { revalidate: REVALIDATE_SECONDS } },
     )
-    return posts.slice(0, limit).map(toDisplayPost)
+    return posts
+      .filter((post) => post.slug.current !== excludeSlug)
+      .slice(0, limit)
+      .map(toDisplayPost)
   } catch {
     return []
   }
@@ -214,6 +223,20 @@ export async function fetchAllCategories(): Promise<Category[]> {
     {},
     { next: { revalidate: REVALIDATE_SECONDS } },
   )
+}
+
+/** Categories that have at least one post — powers the /blog index's category filter pills. Never throws: an unconfigured store or query failure just yields no pills. */
+export async function fetchCategoriesWithPosts(): Promise<Category[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    return await client.fetch<Category[]>(
+      CATEGORIES_WITH_POSTS_QUERY,
+      {},
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+  } catch {
+    return []
+  }
 }
 
 /** Returns DisplayPost[] filtered by optional category slug and/or search query — used by the /blog index. */

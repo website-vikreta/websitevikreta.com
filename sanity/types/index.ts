@@ -118,6 +118,10 @@ export type FullPost =
 export interface DisplayPost {
   slug: string
   category: string
+  // Category's own slug (not the uppercased display title above) — needed
+  // to filter/match against a category identity, e.g. the /blog index's
+  // client-side category filter.
+  categorySlug?: string
   title: string
   description: string
   publishDate: string

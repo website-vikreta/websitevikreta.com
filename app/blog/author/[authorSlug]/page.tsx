@@ -5,6 +5,7 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
+import { TextLink } from '@/components/ui/TextLink'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
 import { SITE_URL } from '@/config/site'
@@ -68,25 +69,21 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
               )}
               <div>
                 <h1 className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)">
-                  {author.linkedinUrl ? (
-                    <a
-                      href={author.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={`Visit ${author.name} LinkedIn`}
-                      className="transition-colors duration-300 hover:text-(--color-text-muted)"
-                    >
-                      {author.name}
-                    </a>
-                  ) : (
-                    author.name
-                  )}
+                  {author.name}
                 </h1>
                 {author.shortBio && (
                   <p className="mt-2 text-(--color-text-muted)">{author.shortBio}</p>
                 )}
               </div>
             </div>
+
+            {author.linkedinUrl && (
+              <div className="mb-10 md:mb-14">
+                <TextLink href={author.linkedinUrl} external arrow="diagonal">
+                  LinkedIn
+                </TextLink>
+              </div>
+            )}
 
             {author.bio && author.bio.length > 0 && (
               <div className="mb-10 max-w-[720px] md:mb-14">

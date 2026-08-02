@@ -1,6 +1,9 @@
+import { LabelCarouselSkeleton } from './LabelCarouselSkeleton'
+
 // Fallback for the Suspense boundary around <BlogResults> — mirrors that
-// component's shape (hero, category pills, card grid) so the layout doesn't
-// jump once real content streams in.
+// component's shape (hero, carousel row, category pills, card grid) so the
+// layout doesn't jump once real content streams in. Reuses
+// LabelCarouselSkeleton for the carousel row rather than duplicating its markup.
 export function BlogResultsSkeleton() {
   return (
     <div className="animate-pulse" aria-hidden="true">
@@ -14,6 +17,9 @@ export function BlogResultsSkeleton() {
           <div className="h-4 w-2/3 bg-(--color-bg-muted)" />
         </div>
       </div>
+
+      {/* Carousel row */}
+      <LabelCarouselSkeleton />
 
       {/* Category pills */}
       <div className="mb-10 md:mb-14 flex gap-2">

@@ -150,6 +150,22 @@ export const ALL_CATEGORIES_QUERY = groq`
   }
 `
 
+// Only categories actually attached to at least one post — powers the
+// /blog index's category filter pills, so an empty category never shows
+// as a filterable pill with nothing behind it.
+export const CATEGORIES_WITH_POSTS_QUERY = groq`
+  *[_type == "category" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
+    _id,
+    title,
+    slug { current },
+    description,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    canonicalUrl
+  }
+`
+
 export const ALL_POST_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current)] { "slug": slug.current }
 `
