@@ -25,7 +25,9 @@ export function WorkPageContent() {
       {/* No bg — every section on this page sits on the page ground. */}
       <StatsCounters bgClassName="" />
       <WorkTestimonialsSection />
-      <FaqSection items={WORK_FAQS} ariaLabel="Work FAQs" />
+      {/* WORK_FAQS is a verbatim subset of ALL_FAQS, which /faq already schemas
+          in full — emitting a second FAQPage block here would duplicate it. */}
+      <FaqSection items={WORK_FAQS} ariaLabel="Work FAQs" emitSchema={false} />
       <WorkCTASection />
     </main>
   )
