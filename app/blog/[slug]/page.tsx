@@ -1,11 +1,14 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
+import { Linkedin } from 'react-bootstrap-icons'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/image'
 import { Button } from '@/components/ui/Button'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import type { FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -165,15 +168,37 @@ export default async function BlogPostPage({
     ? calcReadTime(post.body)
     : post.readTime
 
+  // Category is only linkable when we have a real Sanity category doc +
+  // slug behind it — static posts and Sanity posts with no category
+  // reference just render the label as plain (unlinked) text.
+  const categorySegment: BreadcrumbSegment =
+    post.source === 'sanity' && post.categorySlug
+      ? { label: post.categoryTitle ?? post.category, href: `/blog/category/${post.categorySlug}` }
+      : { label: post.category }
+
+  const breadcrumbSegments: BreadcrumbSegment[] = [
+    { label: 'Home', href: '/' },
+    { label: 'Blog', href: '/blog' },
+    categorySegment,
+    { label: post.title },
+  ]
+
   return (
     <>
       <ScrollToTop />
       <main>
       <article>
 
+        {/* Breadcrumb — absolute first element, clears the fixed navbar,
+            sits above the cover image (full container width, not
+            constrained to the 720px title column below). */}
+        <div className="container pt-28 pb-4 md:pt-32 md:pb-6 lg:pt-36">
+          <Breadcrumb segments={breadcrumbSegments} />
+        </div>
+
         {/* Cover image — Sanity posts only */}
         {post.source === 'sanity' && post.featuredImage && (
-          <div className="container pt-[150px]">
+          <div className="container">
             <div className="relative w-full overflow-hidden aspect-video lg:aspect-[16/6]">
               <Image
                 src={urlFor(post.featuredImage).width(1200).height(675).url()}
@@ -186,7 +211,7 @@ export default async function BlogPostPage({
           </div>
         )}
 
-        <div className={`container pb-24 md:pb-32 ${hasCover ? 'pt-16 md:pt-20' : 'pt-32 md:pt-40'}`}>
+        <div className={`container pb-24 md:pb-32 ${hasCover ? 'pt-16 md:pt-20' : 'pt-6 md:pt-8'}`}>
 
           {/* Title */}
           <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-8 max-w-[720px] mx-auto">
@@ -228,21 +253,24 @@ export default async function BlogPostPage({
                         />
                       </div>
                     )}
-                    <div className="flex flex-col">
-                      {post.author.linkedinUrl ? (
+                    <div className="flex flex-col gap-1">
+                      <Link
+                        href={`/blog/author/${post.author.slug}`}
+                        className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-text-muted)] transition-colors duration-200 leading-tight"
+                      >
+                        {post.author.name}
+                      </Link>
+                      {post.author.linkedinUrl && (
                         <a
                           href={post.author.linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           title={`Visit ${post.author.name} LinkedIn`}
-                          className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-200 leading-tight"
+                          className="inline-flex items-center gap-1 text-xs text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors duration-200"
                         >
-                          {post.author.name}
+                          <Linkedin size={11} aria-hidden="true" />
+                          LinkedIn
                         </a>
-                      ) : (
-                        <span className="text-sm font-medium text-[var(--color-text)] leading-tight">
-                          {post.author.name}
-                        </span>
                       )}
                     </div>
                   </div>
@@ -270,6 +298,30 @@ export default async function BlogPostPage({
               <PortableTextContent value={post.body} />
             )}
           </div>
+
+          {/* Tags */}
+          {post.source === 'sanity' && post.tags && post.tags.length > 0 && (
+            <div className="mx-auto max-w-[720px] mt-10 pt-8 border-t border-(--color-border)">
+              <div className="flex flex-wrap gap-3">
+                {post.tags.map((tag) => {
+                  // Slug should always resolve to { current: string } per our
+                  // Sanity schema, but handled defensively regardless.
+                  const rawSlug = tag.slug as { current: string } | string | undefined
+                  const slug = typeof rawSlug === 'string' ? rawSlug : rawSlug?.current
+                  if (!slug) return null
+                  return (
+                    <Link
+                      key={tag._id}
+                      href={`/blog/tags/${slug}`}
+                      className="rounded-full border border-(--color-border) px-4 py-1.5 text-sm text-(--color-text-muted) hover:border-(--color-text) hover:text-(--color-text) transition-colors duration-200"
+                    >
+                      {tag.title}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Go back */}
           <div className="flex justify-center mt-16">

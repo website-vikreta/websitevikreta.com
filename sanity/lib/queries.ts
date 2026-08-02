@@ -75,6 +75,68 @@ export const FILTERED_POSTS_QUERY = groq`
   }
 `
 
+// Powers FeaturedLabelCarousel — up to 100 posts carrying a given label
+// slug, newest first. The carousel/landing-page fetch wrappers slice this
+// down to whatever limit they need client-side.
+export const POSTS_BY_LABEL_QUERY = groq`
+  *[_type == "post" && defined(slug.current) && $labelSlug in labels[]->slug.current] | order(publishedAt desc) [0...100] {
+    ${POST_SUMMARY}
+  }
+`
+
+// Only labels actually attached to at least one post — an empty label
+// shouldn't render an empty carousel row on the blog index.
+export const LABELS_WITH_POSTS_QUERY = groq`
+  *[_type == "label" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) [0...6] {
+    _id,
+    title,
+    slug { current }
+  }
+`
+
+export const LABEL_BY_SLUG_QUERY = groq`
+  *[_type == "label" && slug.current == $labelSlug][0] {
+    _id,
+    title,
+    slug { current },
+    description
+  }
+`
+
+export const TAG_BY_SLUG_QUERY = groq`
+  *[_type == "tag" && slug.current == $tagSlug][0] {
+    _id,
+    title,
+    slug { current },
+    description
+  }
+`
+
+export const AUTHOR_BY_SLUG_QUERY = groq`
+  *[_type == "author" && slug.current == $authorSlug][0] {
+    _id,
+    name,
+    slug { current },
+    image,
+    shortBio,
+    bio,
+    linkedinUrl
+  }
+`
+
+export const CATEGORY_BY_SLUG_QUERY = groq`
+  *[_type == "category" && slug.current == $categorySlug][0] {
+    _id,
+    title,
+    slug { current },
+    description,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    canonicalUrl
+  }
+`
+
 export const ALL_CATEGORIES_QUERY = groq`
   *[_type == "category"] | order(title asc) {
     _id,

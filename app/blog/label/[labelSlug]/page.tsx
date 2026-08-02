@@ -6,45 +6,42 @@ import { BlogCard } from '@/components/blog/BlogCard'
 import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
 import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
 import { SITE_URL } from '@/config/site'
-import { fetchCategoryBySlug, fetchPostsByCategory } from '@/sanity/lib/fetch'
+import { fetchLabelBySlug, fetchPostsByLabel } from '@/sanity/lib/fetch'
 
-interface CategoryPageParams {
-  params: Promise<{ categorySlug: string }>
+interface LabelPageParams {
+  params: Promise<{ labelSlug: string }>
 }
 
-export async function generateMetadata({ params }: CategoryPageParams): Promise<Metadata> {
-  const { categorySlug } = await params
-  const category = await fetchCategoryBySlug(categorySlug)
-  if (!category) return {}
+export async function generateMetadata({ params }: LabelPageParams): Promise<Metadata> {
+  const { labelSlug } = await params
+  const label = await fetchLabelBySlug(labelSlug)
+  if (!label) return {}
 
-  const title = category.seoTitle || `${category.title} | Website Vikreta Blog`
-  const description = category.seoDescription || category.description
+  const title = `${label.title} | Website Vikreta Blog`
   return {
     title,
-    description,
-    keywords: category.seoKeywords,
-    alternates: { canonical: category.canonicalUrl || `${SITE_URL}/blog/category/${categorySlug}` },
-    openGraph: { title, description, url: `${SITE_URL}/blog/category/${categorySlug}` },
+    description: label.description,
+    alternates: { canonical: `${SITE_URL}/blog/label/${labelSlug}` },
+    openGraph: { title, description: label.description, url: `${SITE_URL}/blog/label/${labelSlug}` },
   }
 }
 
-export default async function CategoryLandingPage({ params }: CategoryPageParams) {
-  const { categorySlug } = await params
-  const [category, posts] = await Promise.all([
-    fetchCategoryBySlug(categorySlug),
-    fetchPostsByCategory(categorySlug),
+export default async function LabelLandingPage({ params }: LabelPageParams) {
+  const { labelSlug } = await params
+  const [label, posts] = await Promise.all([
+    fetchLabelBySlug(labelSlug),
+    fetchPostsByLabel(labelSlug, 100),
   ])
-  if (!category) notFound()
+  if (!label) notFound()
 
-  // Hero pick is scoped to this category's own posts — not the sitewide
-  // pick used on /blog — so each category gets its own hero from its own
-  // post list, not whatever happens to be featured globally.
+  // Hero pick is scoped to this label's own posts — not the sitewide pick
+  // used on /blog — so each label gets its own hero from its own post list.
   const { featured, rest } = selectFeaturedPost(posts)
 
   const breadcrumbSegments = [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
-    { label: category.title },
+    { label: label.title },
   ]
 
   return (
@@ -57,17 +54,17 @@ export default async function CategoryLandingPage({ params }: CategoryPageParams
 
             <div className="mb-10 md:mb-14">
               <h1 className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)">
-                {category.title}
+                {label.title}
               </h1>
-              {category.description && (
+              {label.description && (
                 <p className="mt-3 max-w-2xl text-(--color-text-muted) md:mt-4">
-                  {category.description}
+                  {label.description}
                 </p>
               )}
             </div>
 
             {posts.length === 0 ? (
-              <p className="text-(--color-text-muted)">No posts under this category yet.</p>
+              <p className="text-(--color-text-muted)">No posts under this label yet.</p>
             ) : (
               <>
                 {featured && <FeaturedBlogHero post={featured} />}

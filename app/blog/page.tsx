@@ -1,9 +1,23 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import { BlogListingClient } from './BlogListingClient'
+import { BlogPageHeading } from '@/components/blog/BlogPageHeading'
+import { BlogResultsSkeleton } from '@/components/blog/BlogResultsSkeleton'
+import { FeaturedLabelCarousels } from '@/components/blog/FeaturedLabelCarousels'
+import { LabelCarouselSkeleton } from '@/components/blog/LabelCarouselSkeleton'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchFilteredBlogPosts, fetchAllCategories } from '@/sanity/lib/fetch'
 import type { DisplayPost, Category } from '@/sanity/types'
+
+// Reads searchParams, so the page must always render fresh per request —
+// without this, Next.js's client-side Router Cache can serve a stale RSC
+// payload on a searchParams-only router.push navigation (URL updates via
+// history.pushState immediately, but the grid doesn't). Matches the same
+// fix already applied to the sibling app/blog/[slug]/page.tsx.
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
@@ -99,15 +113,62 @@ async function getCategories(): Promise<Category[]> {
   }
 }
 
+const BREADCRUMB_SEGMENTS = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog' },
+]
+
+// Fetches + renders the Sanity-backed part of the index (hero, category
+// pills, card grid) as its own async Server Component so it can sit behind
+// a Suspense boundary — the static shell around it (breadcrumb, heading)
+// paints without waiting on this.
+async function BlogResults({
+  categorySlug,
+  searchQuery,
+}: {
+  categorySlug?: string
+  searchQuery?: string
+}) {
+  const [posts, categories] = await Promise.all([
+    getPosts(categorySlug, searchQuery),
+    getCategories(),
+  ])
+  return <BlogListingClient posts={posts} categories={categories} activeCategory={categorySlug} />
+}
+
 export default async function BlogPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string; query?: string }>
 }) {
   const { category, query } = await searchParams
-  const [posts, categories] = await Promise.all([
-    getPosts(category, query),
-    getCategories(),
-  ])
-  return <BlogListingClient posts={posts} categories={categories} activeCategory={category} />
+  // Label carousels are the unfiltered landing-state feature — hide them
+  // once the visitor is looking at a specific category/search result so the
+  // grid below isn't preceded by rows unrelated to the active filter.
+  const showLabelCarousels = !category && !query
+
+  return (
+    <>
+      <ScrollToTop />
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
+            <Breadcrumb segments={BREADCRUMB_SEGMENTS} className="mb-6 md:mb-8" />
+
+            <BlogPageHeading />
+
+            {showLabelCarousels && (
+              <Suspense fallback={<LabelCarouselSkeleton />}>
+                <FeaturedLabelCarousels />
+              </Suspense>
+            )}
+
+            <Suspense fallback={<BlogResultsSkeleton />}>
+              <BlogResults categorySlug={category} searchQuery={query} />
+            </Suspense>
+          </div>
+        </section>
+      </main>
+    </>
+  )
 }

@@ -1,123 +1,98 @@
 'use client'
 
-import { motion } from 'motion/react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { TextLink } from '@/components/ui/TextLink'
-import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { useMemo } from 'react'
+import { useRouter } from 'next/navigation'
+import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
+import { BlogCard } from '@/components/blog/BlogCard'
+import { Button } from '@/components/ui/Button'
+import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
 import type { DisplayPost, Category } from '@/sanity/types'
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
-}
-
-const lineReveal = {
-  hidden: { y: '110%', opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
-  },
-}
-
-const cardReveal = {
-  hidden: { y: 24, opacity: 0 },
-  visible: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 },
-  }),
-}
 
 interface BlogListingClientProps {
   posts: DisplayPost[]
-  // Plumbed through in Phase 3 for the Phase 4 filter-pill UI — not yet
-  // rendered here.
   categories?: Category[]
   activeCategory?: string
 }
 
-export function BlogListingClient({ posts }: BlogListingClientProps) {
+// Renders the data-dependent part of the blog index — hero, category
+// filter, card grid. Deliberately does NOT render the breadcrumb or page
+// heading; those live in the static page shell (app/blog/page.tsx) so they
+// paint immediately instead of waiting behind this component's Suspense
+// boundary.
+export function BlogListingClient({
+  posts,
+  categories,
+  activeCategory,
+}: BlogListingClientProps) {
+  const router = useRouter()
+  const { featured, rest } = useMemo(() => selectFeaturedPost(posts), [posts])
+
+  function handleCategoryClick(categorySlug: string | null) {
+    if (categorySlug === null) {
+      router.push('/blog', { scroll: false })
+    } else {
+      router.push(`?category=${encodeURIComponent(categorySlug)}`, { scroll: false })
+    }
+  }
+
   return (
     <>
-      <ScrollToTop />
-      <main>
-      <section className="relative overflow-hidden">
-        <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
+      {featured && <FeaturedBlogHero post={featured} />}
 
-          {/* Hero header */}
-          <motion.div
-            className="mb-10 md:mb-14"
-            variants={container}
-            initial="hidden"
-            animate="visible"
+      {/* Category filter pills */}
+      {categories && categories.length > 0 && (
+        <div
+          role="group"
+          aria-label="Filter posts by category"
+          className="mb-10 md:mb-14 flex flex-nowrap gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <button
+            type="button"
+            aria-pressed={!activeCategory}
+            onClick={() => handleCategoryClick(null)}
+            className={`shrink-0 cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
+              !activeCategory
+                ? 'border-(--color-text) bg-(--color-text) text-(--color-bg) font-medium'
+                : 'border-(--color-border) text-(--color-text-muted) hover:border-(--color-text)'
+            }`}
           >
-            <div className="overflow-hidden">
-              <motion.h2
-                className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
-                variants={lineReveal}
+            All
+          </button>
+          {categories.map((category) => {
+            const categorySlug = category.slug.current
+            const isActive = categorySlug === activeCategory
+            return (
+              <button
+                key={category._id}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() => handleCategoryClick(categorySlug)}
+                className={`shrink-0 cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
+                  isActive
+                    ? 'border-(--color-text) bg-(--color-text) text-(--color-bg) font-medium'
+                    : 'border-(--color-border) text-(--color-text-muted) hover:border-(--color-text)'
+                }`}
               >
-                Blogs
-              </motion.h2>
-            </div>
-          </motion.div>
+                {category.title}
+              </button>
+            )
+          })}
+        </div>
+      )}
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
-            {posts.map((post, i) => (
-              <motion.article
-                key={post.slug}
-                custom={i}
-                variants={cardReveal}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.15 }}
-                className="flex flex-col"
-              >
-                {/* Image with category badge */}
-                <Link href={`/blog/${post.slug}`} className="block relative mb-5 group/img">
-                  <div className="relative w-full aspect-video bg-[#121212] overflow-hidden">
-                    {post.imageUrl ? (
-                      <Image
-                        src={post.imageUrl}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-[filter] duration-300 border border-(--color-border)"
-                      />
-                    ) : null}
-                  </div>
-                </Link>
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
+        {rest.map((post, i) => (
+          <BlogCard key={post.slug} post={post} index={i} />
+        ))}
+      </div>
 
-                {/* Title */}
-                <h2
-                  className="font-bold leading-[1.2] tracking-tight text-[var(--color-text)] mb-3"
-                  style={{ fontSize: 'clamp(1.05rem, 1.6vw, 1.35rem)' }}
-                >
-                  {post.title}
-                </h2>
-
-                {/* Description */}
-                <p className="text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5 flex-1">
-                  {post.description}
-                </p>
-
-                {/* Footer: date + readtime | Read more */}
-                <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-4 mt-auto gap-4">
-                  <span className="text-[0.75rem] text-[var(--color-text-faint)] tracking-[0.03em] whitespace-nowrap">
-                    {post.publishDate} · {post.readTime}
-                  </span>
-                  <TextLink href={`/blog/${post.slug}`} arrow="diagonal">
-                    Read more
-                  </TextLink>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-         </div>
-      </section>
-    </main>
+      {/* View all — entry point into the dedicated blog search page */}
+      <div className="mt-14 flex justify-center md:mt-20">
+        <Button href="/blog/search" variant="ghost" size="md" showArrow>
+          View all
+        </Button>
+      </div>
     </>
   )
 }
