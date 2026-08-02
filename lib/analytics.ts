@@ -12,6 +12,7 @@ function getClickEventName(href: string): ClickEventName | null {
 
 /** Fires the matching GA4 click event for a WhatsApp/tel/mailto link. No-ops for any other href. */
 export function trackLinkClick(href: string, buttonLocation: string) {
+  if (typeof window === 'undefined') return
   const event = getClickEventName(href)
   if (!event) return
   sendGAEvent('event', event, {
@@ -22,6 +23,7 @@ export function trackLinkClick(href: string, buttonLocation: string) {
 
 /** Fires contact_form_submit after a lead-gen form's API call succeeds. */
 export function trackFormSubmit(formName: string) {
+  if (typeof window === 'undefined') return
   sendGAEvent('event', 'contact_form_submit', {
     form_name: formName,
     page_location: window.location.href,
