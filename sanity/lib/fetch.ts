@@ -169,13 +169,14 @@ export async function fetchAuthorBySlug(authorSlug: string): Promise<Author | nu
   }
 }
 
-/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. `excludeSlug` drops one post (e.g. the post already shown as the page's hero) before the limit is applied, so the row still fills up to `limit` distinct posts instead of coming up one short. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
+/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. `excludeSlugs` drops posts (e.g. the post(s) already shown as the page's hero) before the limit is applied, so the row still fills up to `limit` distinct posts instead of coming up short. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
 export async function fetchPostsByLabel(
   labelSlug: string,
   limit = 5,
-  excludeSlug?: string,
+  excludeSlugs?: string | string[],
 ): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) return []
+  const exclude = new Set(Array.isArray(excludeSlugs) ? excludeSlugs : excludeSlugs ? [excludeSlugs] : [])
   try {
     const posts = await client.fetch<Post[]>(
       POSTS_BY_LABEL_QUERY,
@@ -183,7 +184,7 @@ export async function fetchPostsByLabel(
       { next: { revalidate: REVALIDATE_SECONDS } },
     )
     return posts
-      .filter((post) => post.slug.current !== excludeSlug)
+      .filter((post) => !exclude.has(post.slug.current))
       .slice(0, limit)
       .map(toDisplayPost)
   } catch {

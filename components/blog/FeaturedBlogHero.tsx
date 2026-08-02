@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'motion/react'
 import { RevealFade } from '@/components/ui/Reveal'
 import { TextLink } from '@/components/ui/TextLink'
+import { postHref } from '@/lib/blog-url'
 import type { DisplayPost } from '@/sanity/types'
 
 interface FeaturedBlogHeroProps {
@@ -21,7 +22,7 @@ export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
       className="mb-10 md:mb-14 border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 lg:grid lg:grid-cols-2 lg:items-stretch"
     >
       <Link
-        href={`/blog/${post.slug}`}
+        href={postHref(post.categorySlug, post.slug)}
         className="group/img block relative aspect-video lg:aspect-auto overflow-hidden"
       >
         {post.imageUrl ? (
@@ -43,20 +44,20 @@ export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
           {post.publishDate} · {post.readTime}
         </span>
 
-        <h3 className="text-3xl sm:text-4xl font-bold leading-[1.1] tracking-tight text-(--color-text) mb-4">
+        <h3 className="h-[3.3em] text-3xl sm:text-4xl font-bold leading-[1.1] tracking-tight text-(--color-text) mb-4">
           <Link
-            href={`/blog/${post.slug}`}
-            className="hover:text-(--color-text-muted) transition-colors duration-300"
+            href={postHref(post.categorySlug, post.slug)}
+            className="line-clamp-3 hover:text-(--color-text-muted) transition-colors duration-300"
           >
             {post.title}
           </Link>
         </h3>
 
-        <p className="text-base text-(--color-text-muted) leading-[1.7] mb-6 max-w-[52ch]">
+        <p className="h-[5.1em] line-clamp-3 text-base text-(--color-text-muted) leading-[1.7] mb-6 max-w-[52ch]">
           {post.description}
         </p>
 
-        <TextLink href={`/blog/${post.slug}`} arrow="diagonal">
+        <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
           Read more
         </TextLink>
       </div>
