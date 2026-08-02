@@ -55,7 +55,7 @@ export function VisionSection() {
             </RevealText>
             <RevealFade delay={0.15}>
               <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">
-                Every project starts with a real problem — leads slipping, hours
+                Every project starts with a real problem: leads slipping, hours
                 disappearing, traffic that never converts. We automate around it
                 until something measurable moves.
               </p>

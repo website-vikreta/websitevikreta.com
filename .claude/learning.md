@@ -311,6 +311,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 _None logged yet._
 
 ## Anti-Patterns (Do NOT Do)
+### [Copy] — no em dashes in body copy
+- Rule: Don't use em dashes (—) to join clauses in section body text. Use a period for two complete thoughts, or a colon when introducing a list/examples.
+- Where: fixed `AboutHeroSection.tsx` ("nicer homepage —" → "nicer homepage."), `VisionSection.tsx` ("real problem —" → "real problem:").
+- Why: user flagged em dashes on the About page as an AI-writing tell.
+- Date: 2026-08-02
+
 ### [Motion] — never observe the moving element for a masked reveal
 - Rule: For a masked slide-up (`overflow-hidden` clip + inner `translateY(110%)`), put `whileInView`/IntersectionObserver on the STATIC clip wrapper, not on the translated inner element.
 - Why: IntersectionObserver measures the *transformed* bounding box. The inner line starts shifted 110% down, so its observed rect is wrong and the reveal never fires (symptom: headings stay invisible). The wrapper doesn't move → reliable trigger; it drives the inner via variants.
