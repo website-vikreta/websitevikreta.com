@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import { trackFormSubmit } from '@/lib/analytics'
 
 // ─── CSS-transition tokens (micro-interactions; per motion-spec §6) ───────────
 
@@ -123,6 +124,7 @@ export default function ContactSection() {
         EMAILJS_PUBLIC_KEY,
       )
       setCtaSubmitted(true)
+      trackFormSubmit('book_audit')
     } catch (err) {
       const e = err as { status?: number; text?: string }
       console.error('[EmailJS] send failed:', e?.status, e?.text, err)

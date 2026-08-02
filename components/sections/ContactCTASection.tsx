@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
+import { trackFormSubmit } from '@/lib/analytics'
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
@@ -106,6 +107,7 @@ export function ContactCTASection({
         EMAILJS_PUBLIC_KEY,
       )
       setSubmitted(true)
+      trackFormSubmit(id)
     } catch (err) {
       const e = err as { status?: number; text?: string }
       console.error('[EmailJS] send failed:', e?.status, e?.text, err)
