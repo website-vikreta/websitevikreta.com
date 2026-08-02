@@ -75,8 +75,109 @@ export const FILTERED_POSTS_QUERY = groq`
   }
 `
 
+// Powers the post detail page's Previous/Next nav — the post published
+// just before / just after the current one, by publish date.
+export const ADJACENT_POSTS_QUERY = groq`
+  {
+    "previous": *[_type == "post" && defined(slug.current) && publishedAt < $publishedAt] | order(publishedAt desc) [0] { title, "slug": slug.current },
+    "next": *[_type == "post" && defined(slug.current) && publishedAt > $publishedAt] | order(publishedAt asc) [0] { title, "slug": slug.current }
+  }
+`
+
+// Powers the post detail page's "Related reads" — other posts sharing the
+// same category, an overlapping tag, or an overlapping SEO keyword.
+// $tagIds and $keywords may be empty arrays; an empty array never matches
+// count(...) > 0, so that clause just contributes nothing.
+export const RELATED_POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current) && slug.current != $slug && (
+    category->slug.current == $categorySlug ||
+    count((tags[]._ref)[@ in $tagIds]) > 0 ||
+    count((seoKeywords[])[@ in $keywords]) > 0
+  )] | order(publishedAt desc) [0...3] {
+    ${POST_SUMMARY}
+  }
+`
+
+// Powers FeaturedLabelCarousel — up to 100 posts carrying a given label
+// slug, newest first. The carousel/landing-page fetch wrappers slice this
+// down to whatever limit they need client-side.
+export const POSTS_BY_LABEL_QUERY = groq`
+  *[_type == "post" && defined(slug.current) && $labelSlug in labels[]->slug.current] | order(publishedAt desc) [0...100] {
+    ${POST_SUMMARY}
+  }
+`
+
+// Only labels actually attached to at least one post — an empty label
+// shouldn't render an empty carousel row on the blog index.
+export const LABELS_WITH_POSTS_QUERY = groq`
+  *[_type == "label" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) [0...6] {
+    _id,
+    title,
+    slug { current }
+  }
+`
+
+export const LABEL_BY_SLUG_QUERY = groq`
+  *[_type == "label" && slug.current == $labelSlug][0] {
+    _id,
+    title,
+    slug { current },
+    description
+  }
+`
+
+export const TAG_BY_SLUG_QUERY = groq`
+  *[_type == "tag" && slug.current == $tagSlug][0] {
+    _id,
+    title,
+    slug { current },
+    description
+  }
+`
+
+export const AUTHOR_BY_SLUG_QUERY = groq`
+  *[_type == "author" && slug.current == $authorSlug][0] {
+    _id,
+    name,
+    slug { current },
+    image,
+    shortBio,
+    bio,
+    linkedinUrl
+  }
+`
+
+export const CATEGORY_BY_SLUG_QUERY = groq`
+  *[_type == "category" && slug.current == $categorySlug][0] {
+    _id,
+    title,
+    slug { current },
+    description,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    canonicalUrl
+  }
+`
+
 export const ALL_CATEGORIES_QUERY = groq`
   *[_type == "category"] | order(title asc) {
+    _id,
+    title,
+    slug { current },
+    description,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    canonicalUrl
+  }
+`
+
+// Only categories actually attached to at least one post — powers the
+// /blog index's category filter pills, so an empty category never shows
+// as a filterable pill with nothing behind it.
+export const CATEGORIES_WITH_POSTS_QUERY = groq`
+  *[_type == "category" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
     _id,
     title,
     slug { current },

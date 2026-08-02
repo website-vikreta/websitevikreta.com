@@ -2,14 +2,16 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
-import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
+import { fetchPostBySlug, fetchAllSlugs, fetchAdjacentPosts, fetchRelatedPosts } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/image'
-import { Button } from '@/components/ui/Button'
+import { BlogCard } from '@/components/blog/BlogCard'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
-import type { FullPost } from '@/sanity/types'
+import type { AdjacentPost } from '@/sanity/lib/fetch'
+import type { DisplayPost, FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
 
 export const dynamic = 'force-dynamic'
@@ -182,6 +184,27 @@ export default async function BlogPostPage({
     { label: post.title },
   ]
 
+  // Previous/Next nav + related reads are Sanity-only — static fallback
+  // posts (used when Sanity isn't configured) have no adjacency/relation
+  // data to query against.
+  let previousPost: AdjacentPost | null = null
+  let nextPost: AdjacentPost | null = null
+  let relatedPosts: DisplayPost[] = []
+  if (post.source === 'sanity') {
+    const [adjacent, related] = await Promise.all([
+      post.publishedAt ? fetchAdjacentPosts(post.publishedAt) : Promise.resolve({ previous: null, next: null }),
+      fetchRelatedPosts({
+        slug: post.slug,
+        categorySlug: post.categorySlug,
+        tagIds: (post.tags ?? []).map((tag) => tag._id),
+        keywords: post.seoKeywords,
+      }),
+    ])
+    previousPost = adjacent.previous
+    nextPost = adjacent.next
+    relatedPosts = related
+  }
+
   return (
     <>
       <ScrollToTop />
@@ -252,23 +275,12 @@ export default async function BlogPostPage({
                         />
                       </div>
                     )}
-                    <div className="flex flex-col">
-                      {post.author.linkedinUrl ? (
-                        <a
-                          href={post.author.linkedinUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title={`Visit ${post.author.name} LinkedIn`}
-                          className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-200 leading-tight"
-                        >
-                          {post.author.name}
-                        </a>
-                      ) : (
-                        <span className="text-sm font-medium text-[var(--color-text)] leading-tight">
-                          {post.author.name}
-                        </span>
-                      )}
-                    </div>
+                    <Link
+                      href={`/blog/author/${post.author.slug}`}
+                      className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-text-muted)] transition-colors duration-200 leading-tight"
+                    >
+                      {post.author.name}
+                    </Link>
                   </div>
                 )}
 
@@ -295,36 +307,82 @@ export default async function BlogPostPage({
             )}
           </div>
 
-          {/* Tags */}
+          {/* Tags — link into the blog search page (not yet built) with the
+              tag pre-filled as the search query, so this is ready to work
+              the moment that page exists. */}
           {post.source === 'sanity' && post.tags && post.tags.length > 0 && (
             <div className="mx-auto max-w-[720px] mt-10 pt-8 border-t border-(--color-border)">
               <div className="flex flex-wrap gap-3">
-                {post.tags.map((tag) => {
-                  // Slug should always resolve to { current: string } per our
-                  // Sanity schema, but handled defensively regardless.
-                  const rawSlug = tag.slug as { current: string } | string | undefined
-                  const slug = typeof rawSlug === 'string' ? rawSlug : rawSlug?.current
-                  if (!slug) return null
-                  return (
-                    <Link
-                      key={tag._id}
-                      href={`/blog/tags/${slug}`}
-                      className="rounded-full border border-(--color-border) px-4 py-1.5 text-sm text-(--color-text-muted) hover:border-(--color-text) hover:text-(--color-text) transition-colors duration-200"
-                    >
-                      {tag.title}
-                    </Link>
-                  )
-                })}
+                {post.tags.map((tag) => (
+                  <Link
+                    key={tag._id}
+                    href={`/blog/search?q=${encodeURIComponent(tag.title)}`}
+                    className="rounded-full border border-(--color-border) px-4 py-1.5 text-sm text-(--color-text-muted) hover:border-(--color-text) hover:text-(--color-text) transition-colors duration-200"
+                  >
+                    {tag.title}
+                  </Link>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Go back */}
-          <div className="flex justify-center mt-16">
-            <Button href="/blog" variant="ghost">
-              ← Go Back
-            </Button>
-          </div>
+          {/* Previous / Next */}
+          {(previousPost || nextPost) && (
+            <div className="mx-auto grid max-w-[720px] grid-cols-1 gap-6 border-t border-(--color-border) pt-8 mt-16 sm:grid-cols-2">
+              {previousPost && (
+                <Link
+                  href={`/blog/${previousPost.slug}`}
+                  className="group flex flex-col gap-2"
+                >
+                  <span className="inline-flex items-center gap-1.5 text-xs text-(--color-text-faint)">
+                    <ArrowLeft
+                      size={14}
+                      strokeWidth={1.75}
+                      className="transition-transform duration-300 ease-out group-hover:-translate-x-1"
+                      aria-hidden="true"
+                    />
+                    Previous
+                  </span>
+                  <span className="font-medium text-(--color-text) transition-colors duration-300 group-hover:text-(--color-text-muted)">
+                    {previousPost.title}
+                  </span>
+                </Link>
+              )}
+              {nextPost && (
+                <Link
+                  href={`/blog/${nextPost.slug}`}
+                  className="group flex flex-col gap-2 sm:items-end sm:text-right"
+                >
+                  <span className="inline-flex items-center gap-1.5 text-xs text-(--color-text-faint)">
+                    Next
+                    <ArrowRight
+                      size={14}
+                      strokeWidth={1.75}
+                      className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="font-medium text-(--color-text) transition-colors duration-300 group-hover:text-(--color-text-muted)">
+                    {nextPost.title}
+                  </span>
+                </Link>
+              )}
+            </div>
+          )}
+
+          {/* Related reads */}
+          {relatedPosts.length > 0 && (
+            <div className="mt-16 md:mt-20">
+              <h2 className="mb-6 text-h3 font-bold tracking-tight text-(--color-text) md:mb-8">
+                Related reads
+              </h2>
+              <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 md:gap-x-10 md:gap-y-20 lg:grid-cols-3">
+                {relatedPosts.map((related, i) => (
+                  <BlogCard key={related.slug} post={related} index={i} />
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
       </article>

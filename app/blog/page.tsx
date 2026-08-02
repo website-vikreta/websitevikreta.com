@@ -1,16 +1,18 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import { BlogListingClient } from './BlogListingClient'
+import { BlogPageHeading } from '@/components/blog/BlogPageHeading'
+import { BlogResultsSkeleton } from '@/components/blog/BlogResultsSkeleton'
+import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
+import { FeaturedLabelCarousels } from '@/components/blog/FeaturedLabelCarousels'
+import { LabelCarouselSkeleton } from '@/components/blog/LabelCarouselSkeleton'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
-import { fetchFilteredBlogPosts, fetchAllCategories } from '@/sanity/lib/fetch'
-import type { DisplayPost, Category } from '@/sanity/types'
-
-// Reads searchParams, so the page must always render fresh per request —
-// without this, Next.js's client-side Router Cache can serve a stale RSC
-// payload on a searchParams-only router.push navigation (URL updates via
-// history.pushState immediately, but the grid doesn't). Matches the same
-// fix already applied to the sibling app/blog/[slug]/page.tsx.
-export const dynamic = 'force-dynamic'
+import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
+import { fetchFilteredBlogPosts, fetchCategoriesWithPosts } from '@/sanity/lib/fetch'
+import type { DisplayPost } from '@/sanity/types'
 
 export const metadata: Metadata = {
   title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
@@ -78,55 +80,72 @@ function mapStaticPosts(): DisplayPost[] {
   }))
 }
 
-async function getPosts(categorySlug?: string, searchQuery?: string): Promise<DisplayPost[]> {
-  const hasFilters = Boolean(categorySlug || searchQuery)
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-    // Sanity not yet configured — static data has no category/tag metadata
-    // to filter against, so a filtered request just yields no results.
-    return hasFilters ? [] : mapStaticPosts()
-  }
+// Category filtering now happens entirely client-side in BlogListingClient
+// (see that file) — this always fetches the full, unfiltered post list.
+async function getPosts(): Promise<DisplayPost[]> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return mapStaticPosts()
   try {
-    const posts = await fetchFilteredBlogPosts({ categorySlug, searchQuery })
-    // Only fall back to static data on an *unfiltered* empty result — an
-    // empty filtered result (e.g. a category with no posts) is legitimate
-    // and shouldn't be masked by unrelated static content.
-    if (posts.length > 0 || hasFilters) return posts
-    return mapStaticPosts()
+    const posts = await fetchFilteredBlogPosts({})
+    return posts.length > 0 ? posts : mapStaticPosts()
   } catch {
-    return hasFilters ? [] : mapStaticPosts()
+    return mapStaticPosts()
   }
 }
 
-async function getCategories(): Promise<Category[]> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
-  try {
-    return await fetchAllCategories()
-  } catch {
-    return []
-  }
-}
+// fetchCategoriesWithPosts already handles the unconfigured/error cases.
+const getCategories = fetchCategoriesWithPosts
 
 const BREADCRUMB_SEGMENTS = [
   { label: 'Home', href: '/' },
   { label: 'Blog' },
 ]
 
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string; query?: string }>
-}) {
-  const { category, query } = await searchParams
-  const [posts, categories] = await Promise.all([
-    getPosts(category, query),
-    getCategories(),
-  ])
+// Fetches + renders the Sanity-backed part of the index — hero, label
+// carousel, category pills, card grid — as its own async Server Component
+// so it can sit behind a single Suspense boundary; the static shell around
+// it (breadcrumb, heading) paints without waiting on this.
+//
+// Netflix-style stack, top to bottom: Hero (the one #1 post, fixed —
+// doesn't change when a category pill is clicked) → label carousel rows →
+// category pills + grid (both client-side, in BlogListingClient). The hero
+// is picked once, here, from the full unfiltered post list, and its slug
+// is threaded into the carousel so the same post never shows twice on
+// screen. The grid gets the hero-excluded list too (BlogListingClient's
+// category filter runs on top of that, client-side).
+async function BlogResults() {
+  const [posts, categories] = await Promise.all([getPosts(), getCategories()])
+  const { featured, rest } = selectFeaturedPost(posts)
+
   return (
-    <BlogListingClient
-      posts={posts}
-      categories={categories}
-      activeCategory={category}
-      breadcrumbSegments={BREADCRUMB_SEGMENTS}
-    />
+    <>
+      {featured && <FeaturedBlogHero post={featured} />}
+
+      <Suspense fallback={<LabelCarouselSkeleton />}>
+        <FeaturedLabelCarousels excludeSlug={featured?.slug} />
+      </Suspense>
+
+      <BlogListingClient posts={rest} categories={categories} />
+    </>
+  )
+}
+
+export default function BlogPage() {
+  return (
+    <>
+      <ScrollToTop />
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
+            <Breadcrumb segments={BREADCRUMB_SEGMENTS} className="mb-6 md:mb-8" />
+
+            <BlogPageHeading />
+
+            <Suspense fallback={<BlogResultsSkeleton />}>
+              <BlogResults />
+            </Suspense>
+          </div>
+        </section>
+      </main>
+    </>
   )
 }
