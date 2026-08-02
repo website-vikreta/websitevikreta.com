@@ -17,6 +17,7 @@ import {
   ALL_CATEGORIES_QUERY,
   CATEGORIES_WITH_POSTS_QUERY,
   ALL_POST_SLUGS_QUERY,
+  ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
   ADJACENT_POSTS_QUERY,
   RELATED_POSTS_QUERY,
 } from './queries'
@@ -326,6 +327,8 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
 export interface AdjacentPost {
   title: string
   slug: string
+  categorySlug?: string
+  categoryTitle?: string
 }
 
 /** Previous/next post by publish date, relative to `publishedAt` — powers the post detail page's Previous/Next nav. Never throws: an unconfigured store or query failure just yields no nav links. */
@@ -374,4 +377,15 @@ export async function fetchAllSlugs(): Promise<string[]> {
   if (!isSanityConfigured()) return []
   const results = await client.fetch<{ slug: string }[]>(ALL_POST_SLUGS_QUERY)
   return results.map((r) => r.slug.trim())
+}
+
+/** { categorySlug, slug } pairs for /blog/{categorySlug}/{postSlug}'s generateStaticParams. A post with no category reference is dropped — it has no static path to prerender and is only reachable once it's given a category. Returns empty array if not configured. */
+export async function fetchAllSlugsWithCategory(): Promise<{ categorySlug: string; slug: string }[]> {
+  if (!isSanityConfigured()) return []
+  const results = await client.fetch<{ slug: string; categorySlug: string | null }[]>(
+    ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
+  )
+  return results
+    .filter((r): r is { slug: string; categorySlug: string } => Boolean(r.categorySlug))
+    .map((r) => ({ categorySlug: r.categorySlug, slug: r.slug.trim() }))
 }

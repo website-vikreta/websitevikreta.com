@@ -76,11 +76,14 @@ export const FILTERED_POSTS_QUERY = groq`
 `
 
 // Powers the post detail page's Previous/Next nav — the post published
-// just before / just after the current one, by publish date.
+// just before / just after the current one, by publish date. Category is
+// joined so the nav can link to /blog/{categorySlug}/{slug} (adjacency is
+// global by date, not scoped to category, so the adjacent post can belong
+// to a different category than the current one).
 export const ADJACENT_POSTS_QUERY = groq`
   {
-    "previous": *[_type == "post" && defined(slug.current) && publishedAt < $publishedAt] | order(publishedAt desc) [0] { title, "slug": slug.current },
-    "next": *[_type == "post" && defined(slug.current) && publishedAt > $publishedAt] | order(publishedAt asc) [0] { title, "slug": slug.current }
+    "previous": *[_type == "post" && defined(slug.current) && publishedAt < $publishedAt] | order(publishedAt desc) [0] { title, "slug": slug.current, "categorySlug": category->slug.current, "categoryTitle": category->title },
+    "next": *[_type == "post" && defined(slug.current) && publishedAt > $publishedAt] | order(publishedAt asc) [0] { title, "slug": slug.current, "categorySlug": category->slug.current, "categoryTitle": category->title }
   }
 `
 
@@ -191,6 +194,14 @@ export const CATEGORIES_WITH_POSTS_QUERY = groq`
 
 export const ALL_POST_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current)] { "slug": slug.current }
+`
+
+// Powers generateStaticParams for /blog/{categorySlug}/{postSlug}.
+export const ALL_POST_SLUGS_WITH_CATEGORY_QUERY = groq`
+  *[_type == "post" && defined(slug.current)] {
+    "slug": slug.current,
+    "categorySlug": category->slug.current
+  }
 `
 
 // Backward-compat aliases
