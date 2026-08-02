@@ -5,6 +5,13 @@ import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchFilteredBlogPosts, fetchAllCategories } from '@/sanity/lib/fetch'
 import type { DisplayPost, Category } from '@/sanity/types'
 
+// Reads searchParams, so the page must always render fresh per request —
+// without this, Next.js's client-side Router Cache can serve a stale RSC
+// payload on a searchParams-only router.push navigation (URL updates via
+// history.pushState immediately, but the grid doesn't). Matches the same
+// fix already applied to the sibling app/blog/[slug]/page.tsx.
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
   description: 'Read practical guides on AI automation, Next.js development, workflow automation, SEO, and business growth. Learn how to build faster websites and automate repetitive work with AI.',
@@ -99,6 +106,11 @@ async function getCategories(): Promise<Category[]> {
   }
 }
 
+const BREADCRUMB_SEGMENTS = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog' },
+]
+
 export default async function BlogPage({
   searchParams,
 }: {
@@ -109,5 +121,12 @@ export default async function BlogPage({
     getPosts(category, query),
     getCategories(),
   ])
-  return <BlogListingClient posts={posts} categories={categories} activeCategory={category} />
+  return (
+    <BlogListingClient
+      posts={posts}
+      categories={categories}
+      activeCategory={category}
+      breadcrumbSegments={BREADCRUMB_SEGMENTS}
+    />
+  )
 }

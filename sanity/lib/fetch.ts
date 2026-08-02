@@ -56,6 +56,8 @@ function toDisplayPost(post: Post): DisplayPost {
     imageUrl: post.featuredImage?.asset
       ? urlFor(post.featuredImage).width(800).fit('crop').url()
       : undefined,
+    labels: post.labels,
+    tags: post.tags,
   }
 }
 
@@ -174,6 +176,8 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
       bio: post.author.bio,
       linkedinUrl: post.author.linkedinUrl,
     } : undefined,
+    categorySlug: post.category?.slug?.current,
+    categoryTitle: post.category?.title,
     tags: post.tags,
     labels: post.labels,
     canonicalUrl: post.canonicalUrl,
