@@ -4,6 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'motion/react'
 import { TextLink } from '@/components/ui/TextLink'
+import { postHref } from '@/lib/blog-url'
+import { cn } from '@/lib/utils'
 import type { DisplayPost } from '@/sanity/types'
 
 const cardReveal = {
@@ -18,9 +20,11 @@ const cardReveal = {
 interface BlogCardProps {
   post: DisplayPost
   index: number
+  /** Extra classes merged onto the outer article — e.g. `h-full` when a fixed-width carousel wrapper needs the card to stretch to match its row's tallest sibling. */
+  className?: string
 }
 
-export function BlogCard({ post, index }: BlogCardProps) {
+export function BlogCard({ post, index, className }: BlogCardProps) {
   // Slug should always resolve to { current: string } per our Sanity
   // schema, but tags come from a separate document reference — handled
   // defensively in case a tag is ever stored/queried as a plain string.
@@ -40,11 +44,11 @@ export function BlogCard({ post, index }: BlogCardProps) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
-      className="flex flex-col"
+      className={cn('flex flex-col', className)}
     >
       {/* Image */}
-      <Link href={`/blog/${post.slug}`} className="block relative mb-5 group/img">
-        <div className="relative w-full aspect-video bg-[#121212] overflow-hidden">
+      <Link href={postHref(post.categorySlug, post.slug)} className="block relative mb-5 group/img">
+        <div className="relative w-full aspect-video bg-(--color-bg-muted) overflow-hidden">
           {post.imageUrl ? (
             <Image
               src={post.imageUrl}
@@ -59,10 +63,15 @@ export function BlogCard({ post, index }: BlogCardProps) {
 
       {/* Title */}
       <h2
-        className="font-bold leading-[1.2] tracking-tight text-[var(--color-text)] mb-3"
+        className="font-bold leading-[1.2] tracking-tight mb-3"
         style={{ fontSize: 'clamp(1.05rem, 1.6vw, 1.35rem)' }}
       >
-        {post.title}
+        <Link
+          href={postHref(post.categorySlug, post.slug)}
+          className="text-[var(--color-text)] hover:text-(--color-text-muted) transition-colors duration-300"
+        >
+          {post.title}
+        </Link>
       </h2>
 
       {/* Description */}
@@ -90,7 +99,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
         <span className="text-[0.75rem] text-[var(--color-text-faint)] tracking-[0.03em] whitespace-nowrap">
           {post.publishDate} · {post.readTime}
         </span>
-        <TextLink href={`/blog/${post.slug}`} arrow="diagonal">
+        <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
           Read more
         </TextLink>
       </div>
