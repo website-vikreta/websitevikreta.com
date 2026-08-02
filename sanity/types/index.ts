@@ -88,6 +88,9 @@ export type FullPost =
       title: string
       description: string
       publishDate: string
+      // Raw ISO publish timestamp, alongside the formatted publishDate above
+      // — needed to query for the previous/next post by publish order.
+      publishedAt?: string
       readTime: string
       body: PortableTextBlock[]
       featuredImage?: SanityImage

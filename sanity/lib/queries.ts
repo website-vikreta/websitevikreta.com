@@ -75,6 +75,29 @@ export const FILTERED_POSTS_QUERY = groq`
   }
 `
 
+// Powers the post detail page's Previous/Next nav — the post published
+// just before / just after the current one, by publish date.
+export const ADJACENT_POSTS_QUERY = groq`
+  {
+    "previous": *[_type == "post" && defined(slug.current) && publishedAt < $publishedAt] | order(publishedAt desc) [0] { title, "slug": slug.current },
+    "next": *[_type == "post" && defined(slug.current) && publishedAt > $publishedAt] | order(publishedAt asc) [0] { title, "slug": slug.current }
+  }
+`
+
+// Powers the post detail page's "Related reads" — other posts sharing the
+// same category, an overlapping tag, or an overlapping SEO keyword.
+// $tagIds and $keywords may be empty arrays; an empty array never matches
+// count(...) > 0, so that clause just contributes nothing.
+export const RELATED_POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current) && slug.current != $slug && (
+    category->slug.current == $categorySlug ||
+    count((tags[]._ref)[@ in $tagIds]) > 0 ||
+    count((seoKeywords[])[@ in $keywords]) > 0
+  )] | order(publishedAt desc) [0...3] {
+    ${POST_SUMMARY}
+  }
+`
+
 // Powers FeaturedLabelCarousel — up to 100 posts carrying a given label
 // slug, newest first. The carousel/landing-page fetch wrappers slice this
 // down to whatever limit they need client-side.

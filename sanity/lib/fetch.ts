@@ -17,6 +17,8 @@ import {
   ALL_CATEGORIES_QUERY,
   CATEGORIES_WITH_POSTS_QUERY,
   ALL_POST_SLUGS_QUERY,
+  ADJACENT_POSTS_QUERY,
+  RELATED_POSTS_QUERY,
 } from './queries'
 import { urlFor } from './image'
 import type { PortableTextBlock } from '@portabletext/react'
@@ -299,6 +301,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
     title: post.title,
     description: post.excerpt ?? '',
     publishDate: formatDate(post.publishedAt),
+    publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
     body: (post.body ?? []) as PortableTextBlock[],
     featuredImage: post.featuredImage,
@@ -318,6 +321,52 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
     seoDescription: post.seoDescription,
     seoKeywords: post.seoKeywords,
   } as Extract<FullPost, { source: 'sanity' }>
+}
+
+export interface AdjacentPost {
+  title: string
+  slug: string
+}
+
+/** Previous/next post by publish date, relative to `publishedAt` — powers the post detail page's Previous/Next nav. Never throws: an unconfigured store or query failure just yields no nav links. */
+export async function fetchAdjacentPosts(
+  publishedAt: string,
+): Promise<{ previous: AdjacentPost | null; next: AdjacentPost | null }> {
+  if (!isSanityConfigured()) return { previous: null, next: null }
+  try {
+    return await client.fetch<{ previous: AdjacentPost | null; next: AdjacentPost | null }>(
+      ADJACENT_POSTS_QUERY,
+      { publishedAt },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+  } catch {
+    return { previous: null, next: null }
+  }
+}
+
+/** Up to 3 DisplayPost[] sharing the current post's category, an overlapping tag, or an overlapping SEO keyword — powers the post detail page's "Related reads". Never throws: an unconfigured store or query failure just yields no related posts. */
+export async function fetchRelatedPosts(params: {
+  slug: string
+  categorySlug?: string
+  tagIds?: string[]
+  keywords?: string[]
+}): Promise<DisplayPost[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    const posts = await client.fetch<Post[]>(
+      RELATED_POSTS_QUERY,
+      {
+        slug: params.slug,
+        categorySlug: params.categorySlug ?? '',
+        tagIds: params.tagIds ?? [],
+        keywords: params.keywords ?? [],
+      },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+    return posts.map(toDisplayPost)
+  } catch {
+    return []
+  }
 }
 
 /** All slugs for generateStaticParams. Returns empty array if not configured. */
