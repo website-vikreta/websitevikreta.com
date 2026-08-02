@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Linkedin } from 'react-bootstrap-icons'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/image'
@@ -252,21 +253,24 @@ export default async function BlogPostPage({
                         />
                       </div>
                     )}
-                    <div className="flex flex-col">
-                      {post.author.linkedinUrl ? (
+                    <div className="flex flex-col gap-1">
+                      <Link
+                        href={`/blog/author/${post.author.slug}`}
+                        className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-text-muted)] transition-colors duration-200 leading-tight"
+                      >
+                        {post.author.name}
+                      </Link>
+                      {post.author.linkedinUrl && (
                         <a
                           href={post.author.linkedinUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           title={`Visit ${post.author.name} LinkedIn`}
-                          className="text-sm font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-200 leading-tight"
+                          className="inline-flex items-center gap-1 text-xs text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors duration-200"
                         >
-                          {post.author.name}
+                          <Linkedin size={11} aria-hidden="true" />
+                          LinkedIn
                         </a>
-                      ) : (
-                        <span className="text-sm font-medium text-[var(--color-text)] leading-tight">
-                          {post.author.name}
-                        </span>
                       )}
                     </div>
                   </div>

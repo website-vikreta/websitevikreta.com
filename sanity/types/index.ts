@@ -93,6 +93,7 @@ export type FullPost =
       featuredImage?: SanityImage
       author?: {
         name: string
+        slug: string
         image?: SanityImage
         bio?: PortableTextBlock[]
         linkedinUrl?: string

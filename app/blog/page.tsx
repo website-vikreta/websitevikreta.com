@@ -1,5 +1,12 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import { BlogListingClient } from './BlogListingClient'
+import { BlogPageHeading } from '@/components/blog/BlogPageHeading'
+import { BlogResultsSkeleton } from '@/components/blog/BlogResultsSkeleton'
+import { FeaturedLabelCarousels } from '@/components/blog/FeaturedLabelCarousels'
+import { LabelCarouselSkeleton } from '@/components/blog/LabelCarouselSkeleton'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { fetchFilteredBlogPosts, fetchAllCategories } from '@/sanity/lib/fetch'
@@ -111,22 +118,57 @@ const BREADCRUMB_SEGMENTS = [
   { label: 'Blog' },
 ]
 
+// Fetches + renders the Sanity-backed part of the index (hero, category
+// pills, card grid) as its own async Server Component so it can sit behind
+// a Suspense boundary — the static shell around it (breadcrumb, heading)
+// paints without waiting on this.
+async function BlogResults({
+  categorySlug,
+  searchQuery,
+}: {
+  categorySlug?: string
+  searchQuery?: string
+}) {
+  const [posts, categories] = await Promise.all([
+    getPosts(categorySlug, searchQuery),
+    getCategories(),
+  ])
+  return <BlogListingClient posts={posts} categories={categories} activeCategory={categorySlug} />
+}
+
 export default async function BlogPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string; query?: string }>
 }) {
   const { category, query } = await searchParams
-  const [posts, categories] = await Promise.all([
-    getPosts(category, query),
-    getCategories(),
-  ])
+  // Label carousels are the unfiltered landing-state feature — hide them
+  // once the visitor is looking at a specific category/search result so the
+  // grid below isn't preceded by rows unrelated to the active filter.
+  const showLabelCarousels = !category && !query
+
   return (
-    <BlogListingClient
-      posts={posts}
-      categories={categories}
-      activeCategory={category}
-      breadcrumbSegments={BREADCRUMB_SEGMENTS}
-    />
+    <>
+      <ScrollToTop />
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
+            <Breadcrumb segments={BREADCRUMB_SEGMENTS} className="mb-6 md:mb-8" />
+
+            <BlogPageHeading />
+
+            {showLabelCarousels && (
+              <Suspense fallback={<LabelCarouselSkeleton />}>
+                <FeaturedLabelCarousels />
+              </Suspense>
+            )}
+
+            <Suspense fallback={<BlogResultsSkeleton />}>
+              <BlogResults categorySlug={category} searchQuery={query} />
+            </Suspense>
+          </div>
+        </section>
+      </main>
+    </>
   )
 }

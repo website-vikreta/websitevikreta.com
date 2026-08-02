@@ -21,10 +21,10 @@ export function Breadcrumb({ segments, className = '' }: BreadcrumbProps) {
               {segment.href && !isLast ? (
                 <Link
                   href={segment.href}
-                  className="group relative inline-block shrink-0 text-(--color-text-muted) hover:text-(--color-text) transition-colors duration-300"
+                  className="group relative inline-block shrink-0 text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) rounded-[2px]"
                 >
                   {segment.label}
-                  <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                  <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" />
                 </Link>
               ) : (
                 <span
