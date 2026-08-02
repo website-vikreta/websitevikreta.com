@@ -26,6 +26,13 @@ export const authorType = defineType({
       description: 'Optional — frontend falls back to a generated avatar when empty.',
     }),
     defineField({
+      name: 'designation',
+      title: 'Designation',
+      type: 'string',
+      description: 'What they do, e.g. "Content Strategist". Optional — falls back to "Author at Website Vikreta" on the frontend when empty.',
+      validation: (r) => r.max(80),
+    }),
+    defineField({
       name: 'shortBio',
       title: 'Short Bio / SEO Description',
       type: 'string',

@@ -13,11 +13,12 @@ interface FaqSectionProps {
   items: FaqItem[]
   heading?: string
   viewAllHref?: string
+  ariaLabel: string
 }
 
-export function FaqSection({ items, heading = 'Frequently Asked Questions', viewAllHref = '/faq' }: FaqSectionProps) {
+export function FaqSection({ items, heading = 'Frequently Asked Questions', viewAllHref = '/faq', ariaLabel }: FaqSectionProps) {
   return (
-    <section className="py-16 md:py-20">
+    <section className="py-16 md:py-20" aria-label={ariaLabel}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(items)) }}

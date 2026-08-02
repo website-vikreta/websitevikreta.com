@@ -25,7 +25,7 @@ export function WorkPageContent() {
       {/* No bg — every section on this page sits on the page ground. */}
       <StatsCounters bgClassName="" />
       <WorkTestimonialsSection />
-      <FaqSection items={WORK_FAQS} />
+      <FaqSection items={WORK_FAQS} ariaLabel="Work FAQs" />
       <WorkCTASection />
     </main>
   )

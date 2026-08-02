@@ -1,9 +1,24 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import { BlogListingClient } from './BlogListingClient'
+import { BlogPageHeading } from '@/components/blog/BlogPageHeading'
+import { BlogResultsSkeleton } from '@/components/blog/BlogResultsSkeleton'
+import { FeaturedBlogHeroCarousel } from '@/components/blog/FeaturedBlogHeroCarousel'
+import { FeaturedLabelCarousels } from '@/components/blog/FeaturedLabelCarousels'
+import { LabelCarouselSkeleton } from '@/components/blog/LabelCarouselSkeleton'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
-import { fetchBlogPosts } from '@/sanity/lib/fetch'
+import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
+import { fetchFilteredBlogPosts, fetchCategoriesWithPosts, fetchPostsByLabel } from '@/sanity/lib/fetch'
 import type { DisplayPost } from '@/sanity/types'
+
+// Label whose posts populate the hero slider — see .claude/learning.md
+// [Hero] entry for why "Featured Articles" (not a literal "Featured Blog"
+// label, which doesn't exist in the Sanity schema) is the source.
+const HERO_LABEL_SLUG = 'featured-articles'
+const HERO_LIMIT = 6
 
 export const metadata: Metadata = {
   title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
@@ -59,20 +74,8 @@ export const metadata: Metadata = {
   },
 }
 
-async function getPosts(): Promise<DisplayPost[]> {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-    // Sanity not yet configured — use static data
-    return staticPosts.map((p) => ({
-      slug: p.slug,
-      category: p.category,
-      title: p.title,
-      description: p.description,
-      publishDate: p.publishDate,
-      readTime: p.readTime,
-      imageUrl: p.imageUrl,
-    }))
-  }
-  const staticFallback = staticPosts.map((p) => ({
+function mapStaticPosts(): DisplayPost[] {
+  return staticPosts.map((p) => ({
     slug: p.slug,
     category: p.category,
     title: p.title,
@@ -81,15 +84,86 @@ async function getPosts(): Promise<DisplayPost[]> {
     readTime: p.readTime,
     imageUrl: p.imageUrl,
   }))
+}
+
+// Category filtering now happens entirely client-side in BlogListingClient
+// (see that file) — this always fetches the full, unfiltered post list.
+async function getPosts(): Promise<DisplayPost[]> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return mapStaticPosts()
   try {
-    const posts = await fetchBlogPosts()
-    return posts.length > 0 ? posts : staticFallback
+    const posts = await fetchFilteredBlogPosts({})
+    return posts.length > 0 ? posts : mapStaticPosts()
   } catch {
-    return staticFallback
+    return mapStaticPosts()
   }
 }
 
-export default async function BlogPage() {
-  const posts = await getPosts()
-  return <BlogListingClient posts={posts} />
+// fetchCategoriesWithPosts already handles the unconfigured/error cases.
+const getCategories = fetchCategoriesWithPosts
+
+const BREADCRUMB_SEGMENTS = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog' },
+]
+
+// Fetches + renders the Sanity-backed part of the index — hero slider,
+// label carousel rows, "All Blogs" heading, category pills, card grid — as
+// its own async Server Component so it can sit behind a single Suspense
+// boundary; the static shell around it (breadcrumb) paints without waiting
+// on this.
+//
+// Netflix-style stack, top to bottom: hero slider (every post carrying the
+// HERO_LABEL_SLUG label, fixed — doesn't change when a category pill is
+// clicked) → label carousel rows → heading → category pills + grid (both
+// client-side, in BlogListingClient). The hero posts are picked once, here,
+// and their slugs threaded into the carousels so none of them shows twice
+// on screen. The grid gets the hero-excluded list too (BlogListingClient's
+// category filter runs on top of that, client-side). Falls back to the
+// single-post selectFeaturedPost pick when no post carries the hero label
+// yet, so the slider never renders empty.
+async function BlogResults() {
+  const [posts, categories, labeledHero] = await Promise.all([
+    getPosts(),
+    getCategories(),
+    fetchPostsByLabel(HERO_LABEL_SLUG, HERO_LIMIT),
+  ])
+
+  const heroPosts = labeledHero.length > 0 ? labeledHero : [selectFeaturedPost(posts).featured].filter(
+    (p): p is DisplayPost => p !== null,
+  )
+  const heroSlugs = heroPosts.map((p) => p.slug)
+  const rest = posts.filter((post) => !heroSlugs.includes(post.slug))
+
+  return (
+    <>
+      <FeaturedBlogHeroCarousel posts={heroPosts} />
+
+      <Suspense fallback={<LabelCarouselSkeleton />}>
+        <FeaturedLabelCarousels excludeSlugs={heroSlugs} />
+      </Suspense>
+
+      <BlogPageHeading />
+
+      <BlogListingClient posts={rest} categories={categories} />
+    </>
+  )
+}
+
+export default function BlogPage() {
+  return (
+    <>
+      <ScrollToTop />
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="container pt-20 pb-16 md:pt-24 md:pb-20">
+            <Breadcrumb segments={BREADCRUMB_SEGMENTS} className="mb-6 md:mb-8" hoverColor="accent" />
+
+            <Suspense fallback={<BlogResultsSkeleton />}>
+              <BlogResults />
+            </Suspense>
+          </div>
+        </section>
+      </main>
+    </>
+  )
 }

@@ -34,6 +34,7 @@ export interface WebProject {
   description: string
   href: string
   image: string
+  imageAlt: string
   skills: string
 }
 
@@ -131,6 +132,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A sleek product site for DbyT Dynamics with a clean, modern presentation.',
     href: 'https://tocal.in/',
     image: '/our-services/webdevelopment.webp',
+    imageAlt: 'Tocal website preview',
     skills: 'UI/UX Design · Web Development',
   },
   {
@@ -140,6 +142,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'The public site for a protocol that needed to read as credible to institutional users.',
     href: 'https://www.sustainablebtc.org/',
     image: '/our-services/ui-ux-design.webp',
+    imageAlt: 'Sustainable Bitcoin Protocol website preview',
     skills: 'UI/UX Design · Design System',
   },
   {
@@ -149,6 +152,7 @@ export const WEB_PROJECTS: WebProject[] = [
       "A sustainable e-commerce storefront for a women's clothing brand.",
     href: 'https://blancoraclothing.com/shop',
     image: '/our-services/web-mobile-crm.webp',
+    imageAlt: 'Earth by Blancora website preview',
     skills: 'UI/UX Design · E-commerce Development',
   },
   {
@@ -158,6 +162,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A local service business taken from no web presence at all to a site built to convert.',
     href: 'https://apcleanco.com/',
     image: '/our-services/digital-marketing-seo-geo.webp',
+    imageAlt: 'AP Cleanco website preview',
     skills: 'Web Development · Local SEO',
   },
   {
@@ -167,6 +172,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
     image: '/our-services/ai-automation.webp',
+    imageAlt: 'Archmodal website preview',
     skills: 'UI/UX Design · Web Development',
   },
   {
@@ -176,6 +182,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A professional consulting firm site focused on credibility and growth.',
     href: 'https://www.katalystcs.co.in/',
     image: '/our-services/webdevelopment.webp',
+    imageAlt: 'Katalyst Consulting website preview',
     skills: 'UI/UX Design · Web Development',
   },
 ]

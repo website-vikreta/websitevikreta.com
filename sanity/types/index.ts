@@ -15,11 +15,31 @@ export interface Author {
   name: string
   slug: { current: string }
   image?: SanityImage
-  bio?: string
+  designation?: string
+  shortBio?: string
+  bio?: PortableTextBlock[]
   linkedinUrl?: string
 }
 
 export interface Category {
+  _id: string
+  title: string
+  slug: { current: string }
+  description?: string
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string[]
+  canonicalUrl?: string
+}
+
+export interface Tag {
+  _id: string
+  title: string
+  slug: { current: string }
+  description?: string
+}
+
+export interface Label {
   _id: string
   title: string
   slug: { current: string }
@@ -36,10 +56,13 @@ export interface Post {
   featuredImage?: SanityImage
   author?: Pick<Author, '_id' | 'name' | 'image'>
   category?: Pick<Category, '_id' | 'title' | 'slug'>
+  tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
+  labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
   readTime?: string
   seoTitle?: string
   seoDescription?: string
   seoKeywords?: string[]
+  canonicalUrl?: string
   featuredOnHomepage?: boolean
 }
 
@@ -66,15 +89,29 @@ export type FullPost =
       title: string
       description: string
       publishDate: string
+      // Raw ISO publish timestamp, alongside the formatted publishDate above
+      // — needed to query for the previous/next post by publish order.
+      publishedAt?: string
       readTime: string
       body: PortableTextBlock[]
       featuredImage?: SanityImage
       author?: {
         name: string
+        slug: string
         image?: SanityImage
-        bio?: string
+        bio?: PortableTextBlock[]
         linkedinUrl?: string
       }
+      // Properly-cased title + slug of the resolved category, alongside the
+      // existing `category` field (uppercased display string, used by the
+      // badge). Needed for breadcrumb links — `category` alone loses the
+      // slug and isn't safe to render as a label (see [Anti-pattern] no
+      // uppercase eyebrow labels in .claude/learning.md).
+      categorySlug?: string
+      categoryTitle?: string
+      tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
+      labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
+      canonicalUrl?: string
       seoTitle?: string
       seoDescription?: string
       seoKeywords?: string[]
@@ -85,11 +122,20 @@ export type FullPost =
 export interface DisplayPost {
   slug: string
   category: string
+  // Category's own slug (not the uppercased display title above) — needed
+  // to filter/match against a category identity, e.g. the /blog index's
+  // client-side category filter.
+  categorySlug?: string
   title: string
   description: string
   publishDate: string
   readTime: string
   imageUrl?: string
+  // Resolved label refs (e.g. "Featured", "Hero") — used to pick which
+  // post gets special placement (see FeaturedBlogHero selection logic).
+  labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
+  // Resolved tag refs — rendered as pills on the blog card.
+  tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
 }
 
 // ── Backward-compat aliases ───────────────────────────────────────────────────
