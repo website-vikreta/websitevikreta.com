@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
 import { BlogCard } from '@/components/blog/BlogCard'
+import { Button } from '@/components/ui/Button'
 import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
 import type { DisplayPost, Category } from '@/sanity/types'
 
@@ -84,6 +85,13 @@ export function BlogListingClient({
         {rest.map((post, i) => (
           <BlogCard key={post.slug} post={post} index={i} />
         ))}
+      </div>
+
+      {/* View all — entry point into the dedicated blog search page */}
+      <div className="mt-14 flex justify-center md:mt-20">
+        <Button href="/blog/search" variant="ghost" size="md" showArrow>
+          View all
+        </Button>
       </div>
     </>
   )
