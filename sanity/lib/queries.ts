@@ -75,6 +75,32 @@ export const FILTERED_POSTS_QUERY = groq`
   }
 `
 
+// Powers the post detail page's Previous/Next nav — the post published
+// just before / just after the current one, by publish date. Category is
+// joined so the nav can link to /blog/{categorySlug}/{slug} (adjacency is
+// global by date, not scoped to category, so the adjacent post can belong
+// to a different category than the current one).
+export const ADJACENT_POSTS_QUERY = groq`
+  {
+    "previous": *[_type == "post" && defined(slug.current) && publishedAt < $publishedAt] | order(publishedAt desc) [0] { title, "slug": slug.current, "categorySlug": category->slug.current, "categoryTitle": category->title },
+    "next": *[_type == "post" && defined(slug.current) && publishedAt > $publishedAt] | order(publishedAt asc) [0] { title, "slug": slug.current, "categorySlug": category->slug.current, "categoryTitle": category->title }
+  }
+`
+
+// Powers the post detail page's "Related reads" — other posts sharing the
+// same category, an overlapping tag, or an overlapping SEO keyword.
+// $tagIds and $keywords may be empty arrays; an empty array never matches
+// count(...) > 0, so that clause just contributes nothing.
+export const RELATED_POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current) && slug.current != $slug && (
+    category->slug.current == $categorySlug ||
+    count((tags[]._ref)[@ in $tagIds]) > 0 ||
+    count((seoKeywords[])[@ in $keywords]) > 0
+  )] | order(publishedAt desc) [0...3] {
+    ${POST_SUMMARY}
+  }
+`
+
 // Powers FeaturedLabelCarousel — up to 100 posts carrying a given label
 // slug, newest first. The carousel/landing-page fetch wrappers slice this
 // down to whatever limit they need client-side.
@@ -118,6 +144,7 @@ export const AUTHOR_BY_SLUG_QUERY = groq`
     name,
     slug { current },
     image,
+    designation,
     shortBio,
     bio,
     linkedinUrl
@@ -150,8 +177,32 @@ export const ALL_CATEGORIES_QUERY = groq`
   }
 `
 
+// Only categories actually attached to at least one post — powers the
+// /blog index's category filter pills, so an empty category never shows
+// as a filterable pill with nothing behind it.
+export const CATEGORIES_WITH_POSTS_QUERY = groq`
+  *[_type == "category" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
+    _id,
+    title,
+    slug { current },
+    description,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    canonicalUrl
+  }
+`
+
 export const ALL_POST_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current)] { "slug": slug.current }
+`
+
+// Powers generateStaticParams for /blog/{categorySlug}/{postSlug}.
+export const ALL_POST_SLUGS_WITH_CATEGORY_QUERY = groq`
+  *[_type == "post" && defined(slug.current)] {
+    "slug": slug.current,
+    "categorySlug": category->slug.current
+  }
 `
 
 // Backward-compat aliases

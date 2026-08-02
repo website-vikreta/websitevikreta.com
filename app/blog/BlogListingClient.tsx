@@ -1,44 +1,40 @@
 'use client'
 
-import { useMemo } from 'react'
-import { useRouter } from 'next/navigation'
-import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
+import { useMemo, useState } from 'react'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { Button } from '@/components/ui/Button'
-import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
 import type { DisplayPost, Category } from '@/sanity/types'
 
 interface BlogListingClientProps {
+  /** Already hero-excluded — the single page hero is picked and rendered upstream in app/blog/page.tsx, not here. */
   posts: DisplayPost[]
   categories?: Category[]
-  activeCategory?: string
 }
 
-// Renders the data-dependent part of the blog index — hero, category
-// filter, card grid. Deliberately does NOT render the breadcrumb or page
-// heading; those live in the static page shell (app/blog/page.tsx) so they
-// paint immediately instead of waiting behind this component's Suspense
-// boundary.
-export function BlogListingClient({
-  posts,
-  categories,
-  activeCategory,
-}: BlogListingClientProps) {
-  const router = useRouter()
-  const { featured, rest } = useMemo(() => selectFeaturedPost(posts), [posts])
+// Renders the interactive tail of the blog index — category filter pills +
+// card grid. Deliberately does NOT render the breadcrumb, page heading, hero,
+// or label carousel; those are static/server-rendered above this in the page
+// shell (app/blog/page.tsx) so they paint without waiting on this, and so
+// the hero stays a single fixed pick that never changes when a pill is
+// clicked (Netflix-style: the masthead doesn't react to the row filters).
+//
+// Category filtering is pure client-side state — no router.push, no
+// searchParams. The URL stays /blog at all times; deep-linkable per-category
+// URLs live at /blog/category/[slug] instead.
+export function BlogListingClient({ posts, categories }: BlogListingClientProps) {
+  const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined)
+
+  const filteredPosts = useMemo(
+    () => (activeCategory ? posts.filter((post) => post.categorySlug === activeCategory) : posts),
+    [posts, activeCategory],
+  )
 
   function handleCategoryClick(categorySlug: string | null) {
-    if (categorySlug === null) {
-      router.push('/blog', { scroll: false })
-    } else {
-      router.push(`?category=${encodeURIComponent(categorySlug)}`, { scroll: false })
-    }
+    setActiveCategory(categorySlug ?? undefined)
   }
 
   return (
     <>
-      {featured && <FeaturedBlogHero post={featured} />}
-
       {/* Category filter pills */}
       {categories && categories.length > 0 && (
         <div
@@ -82,7 +78,7 @@ export function BlogListingClient({
 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
-        {rest.map((post, i) => (
+        {filteredPosts.map((post, i) => (
           <BlogCard key={post.slug} post={post} index={i} />
         ))}
       </div>

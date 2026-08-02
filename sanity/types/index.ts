@@ -15,6 +15,7 @@ export interface Author {
   name: string
   slug: { current: string }
   image?: SanityImage
+  designation?: string
   shortBio?: string
   bio?: PortableTextBlock[]
   linkedinUrl?: string
@@ -88,6 +89,9 @@ export type FullPost =
       title: string
       description: string
       publishDate: string
+      // Raw ISO publish timestamp, alongside the formatted publishDate above
+      // — needed to query for the previous/next post by publish order.
+      publishedAt?: string
       readTime: string
       body: PortableTextBlock[]
       featuredImage?: SanityImage
@@ -118,6 +122,10 @@ export type FullPost =
 export interface DisplayPost {
   slug: string
   category: string
+  // Category's own slug (not the uppercased display title above) — needed
+  // to filter/match against a category identity, e.g. the /blog index's
+  // client-side category filter.
+  categorySlug?: string
   title: string
   description: string
   publishDate: string

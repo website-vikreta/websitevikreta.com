@@ -15,7 +15,11 @@ import {
   AUTHOR_BY_SLUG_QUERY,
   FILTERED_POSTS_QUERY,
   ALL_CATEGORIES_QUERY,
+  CATEGORIES_WITH_POSTS_QUERY,
   ALL_POST_SLUGS_QUERY,
+  ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
+  ADJACENT_POSTS_QUERY,
+  RELATED_POSTS_QUERY,
 } from './queries'
 import { urlFor } from './image'
 import type { PortableTextBlock } from '@portabletext/react'
@@ -55,6 +59,7 @@ function toDisplayPost(post: Post): DisplayPost {
   return {
     slug: post.slug.current,
     category: post.category?.title?.toUpperCase() ?? 'GENERAL',
+    categorySlug: post.category?.slug?.current,
     title: post.title,
     description: post.excerpt ?? '',
     publishDate: formatDate(post.publishedAt),
@@ -164,16 +169,24 @@ export async function fetchAuthorBySlug(authorSlug: string): Promise<Author | nu
   }
 }
 
-/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
-export async function fetchPostsByLabel(labelSlug: string, limit = 5): Promise<DisplayPost[]> {
+/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. `excludeSlugs` drops posts (e.g. the post(s) already shown as the page's hero) before the limit is applied, so the row still fills up to `limit` distinct posts instead of coming up short. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
+export async function fetchPostsByLabel(
+  labelSlug: string,
+  limit = 5,
+  excludeSlugs?: string | string[],
+): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) return []
+  const exclude = new Set(Array.isArray(excludeSlugs) ? excludeSlugs : excludeSlugs ? [excludeSlugs] : [])
   try {
     const posts = await client.fetch<Post[]>(
       POSTS_BY_LABEL_QUERY,
       { labelSlug },
       { next: { revalidate: REVALIDATE_SECONDS } },
     )
-    return posts.slice(0, limit).map(toDisplayPost)
+    return posts
+      .filter((post) => !exclude.has(post.slug.current))
+      .slice(0, limit)
+      .map(toDisplayPost)
   } catch {
     return []
   }
@@ -214,6 +227,20 @@ export async function fetchAllCategories(): Promise<Category[]> {
     {},
     { next: { revalidate: REVALIDATE_SECONDS } },
   )
+}
+
+/** Categories that have at least one post — powers the /blog index's category filter pills. Never throws: an unconfigured store or query failure just yields no pills. */
+export async function fetchCategoriesWithPosts(): Promise<Category[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    return await client.fetch<Category[]>(
+      CATEGORIES_WITH_POSTS_QUERY,
+      {},
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+  } catch {
+    return []
+  }
 }
 
 /** Returns DisplayPost[] filtered by optional category slug and/or search query — used by the /blog index. */
@@ -276,6 +303,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
     title: post.title,
     description: post.excerpt ?? '',
     publishDate: formatDate(post.publishedAt),
+    publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
     body: (post.body ?? []) as PortableTextBlock[],
     featuredImage: post.featuredImage,
@@ -297,9 +325,68 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
   } as Extract<FullPost, { source: 'sanity' }>
 }
 
+export interface AdjacentPost {
+  title: string
+  slug: string
+  categorySlug?: string
+  categoryTitle?: string
+}
+
+/** Previous/next post by publish date, relative to `publishedAt` — powers the post detail page's Previous/Next nav. Never throws: an unconfigured store or query failure just yields no nav links. */
+export async function fetchAdjacentPosts(
+  publishedAt: string,
+): Promise<{ previous: AdjacentPost | null; next: AdjacentPost | null }> {
+  if (!isSanityConfigured()) return { previous: null, next: null }
+  try {
+    return await client.fetch<{ previous: AdjacentPost | null; next: AdjacentPost | null }>(
+      ADJACENT_POSTS_QUERY,
+      { publishedAt },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+  } catch {
+    return { previous: null, next: null }
+  }
+}
+
+/** Up to 3 DisplayPost[] sharing the current post's category, an overlapping tag, or an overlapping SEO keyword — powers the post detail page's "Related reads". Never throws: an unconfigured store or query failure just yields no related posts. */
+export async function fetchRelatedPosts(params: {
+  slug: string
+  categorySlug?: string
+  tagIds?: string[]
+  keywords?: string[]
+}): Promise<DisplayPost[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    const posts = await client.fetch<Post[]>(
+      RELATED_POSTS_QUERY,
+      {
+        slug: params.slug,
+        categorySlug: params.categorySlug ?? '',
+        tagIds: params.tagIds ?? [],
+        keywords: params.keywords ?? [],
+      },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+    return posts.map(toDisplayPost)
+  } catch {
+    return []
+  }
+}
+
 /** All slugs for generateStaticParams. Returns empty array if not configured. */
 export async function fetchAllSlugs(): Promise<string[]> {
   if (!isSanityConfigured()) return []
   const results = await client.fetch<{ slug: string }[]>(ALL_POST_SLUGS_QUERY)
   return results.map((r) => r.slug.trim())
+}
+
+/** { categorySlug, slug } pairs for /blog/{categorySlug}/{postSlug}'s generateStaticParams. A post with no category reference is dropped — it has no static path to prerender and is only reachable once it's given a category. Returns empty array if not configured. */
+export async function fetchAllSlugsWithCategory(): Promise<{ categorySlug: string; slug: string }[]> {
+  if (!isSanityConfigured()) return []
+  const results = await client.fetch<{ slug: string; categorySlug: string | null }[]>(
+    ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
+  )
+  return results
+    .filter((r): r is { slug: string; categorySlug: string } => Boolean(r.categorySlug))
+    .map((r) => ({ categorySlug: r.categorySlug, slug: r.slug.trim() }))
 }

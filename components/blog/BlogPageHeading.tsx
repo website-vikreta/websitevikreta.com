@@ -12,7 +12,7 @@ export function BlogPageHeading() {
         as="h1"
         className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)"
       >
-        Blogs
+        All Blogs
       </RevealText>
     </div>
   )

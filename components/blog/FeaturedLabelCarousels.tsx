@@ -3,8 +3,13 @@ import { fetchLabelsWithPosts } from '@/sanity/lib/fetch'
 import { FeaturedLabelCarousel } from './FeaturedLabelCarousel'
 import { LabelCarouselSkeleton } from './LabelCarouselSkeleton'
 
+interface FeaturedLabelCarouselsProps {
+  /** Slugs of the posts already shown as the page hero — dropped from every row so they aren't duplicated. */
+  excludeSlugs?: string[]
+}
+
 /** Server Component — one snap-scrolling row per Sanity label that has posts (e.g. "Top Reads", "WV Recommendations"). Each row streams in independently via its own Suspense boundary. Renders nothing if no labels have posts yet. */
-export async function FeaturedLabelCarousels() {
+export async function FeaturedLabelCarousels({ excludeSlugs }: FeaturedLabelCarouselsProps) {
   const labels = await fetchLabelsWithPosts()
   if (labels.length === 0) return null
 
@@ -12,7 +17,11 @@ export async function FeaturedLabelCarousels() {
     <>
       {labels.map((label) => (
         <Suspense key={label._id} fallback={<LabelCarouselSkeleton />}>
-          <FeaturedLabelCarousel title={label.title} labelSlug={label.slug.current} />
+          <FeaturedLabelCarousel
+            title={label.title}
+            labelSlug={label.slug.current}
+            excludeSlugs={excludeSlugs}
+          />
         </Suspense>
       ))}
     </>

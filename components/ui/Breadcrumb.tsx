@@ -8,9 +8,12 @@ export interface BreadcrumbSegment {
 interface BreadcrumbProps {
   segments: BreadcrumbSegment[]
   className?: string
+  /** Link hover color — 'muted' (default, text-(--color-text)) or 'accent' for pages that want the brand yellow hover. */
+  hoverColor?: 'muted' | 'accent'
 }
 
-export function Breadcrumb({ segments, className = '' }: BreadcrumbProps) {
+export function Breadcrumb({ segments, className = '', hoverColor = 'muted' }: BreadcrumbProps) {
+  const hoverClass = hoverColor === 'accent' ? 'hover:text-(--color-accent)' : 'hover:text-(--color-text)'
   return (
     <nav aria-label="Breadcrumb" className={className}>
       <ol className="flex items-center flex-wrap gap-x-2 text-sm text-(--color-text-muted)">
@@ -21,7 +24,7 @@ export function Breadcrumb({ segments, className = '' }: BreadcrumbProps) {
               {segment.href && !isLast ? (
                 <Link
                   href={segment.href}
-                  className="group relative inline-block shrink-0 text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) rounded-[2px]"
+                  className={`group relative inline-block shrink-0 text-(--color-text-muted) transition-colors duration-300 ${hoverClass} focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) rounded-[2px]`}
                 >
                   {segment.label}
                   <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" />
