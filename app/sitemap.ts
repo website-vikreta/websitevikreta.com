@@ -3,6 +3,7 @@ import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { SITE_URL } from '@/config/site'
 import { CASE_STUDIES } from '@/lib/work-data'
+import { postHref } from '@/lib/blog-url'
 
 const BASE = SITE_URL
 
@@ -131,6 +132,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
 const BLOG_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] {
     "slug": slug.current,
+    "categorySlug": category->slug.current,
     _updatedAt
   }
 `
@@ -149,7 +151,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const [posts, openings] = await Promise.all([
-      client.fetch<{ slug: string; _updatedAt: string }[]>(
+      client.fetch<{ slug: string; categorySlug: string | null; _updatedAt: string }[]>(
         BLOG_SLUGS_QUERY,
         {},
         { next: { revalidate: 3600 } },
@@ -162,7 +164,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ])
 
     const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-      url: `${BASE}/blog/${post.slug}`,
+      url: `${BASE}${postHref(post.categorySlug, post.slug)}`,
       lastModified: new Date(post._updatedAt),
       changeFrequency: 'daily',
       priority: 0.6,
