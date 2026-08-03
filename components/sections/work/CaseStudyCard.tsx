@@ -53,11 +53,17 @@ export function CaseStudyCardContent({ study, showReadLink = true }: CaseStudyCa
   )
 }
 
-export function CaseStudyVisual({ study }: { study: CaseStudy }) {
+export function CaseStudyVisual({
+  study,
+  showImage = true,
+}: {
+  study: CaseStudy
+  showImage?: boolean
+}) {
   return (
     <div className="h-full border border-(--color-border) bg-(--color-surface) p-2">
       <div className="relative flex aspect-[14/9] h-full w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)">
-        {study.image ? (
+        {showImage && study.image ? (
           // alt="": study.image is a generic service illustration, not a
           // preview of this client's project — calling it one describes
           // something that isn't in the frame. Restore a real alt with real
@@ -87,7 +93,13 @@ export function CaseStudyVisual({ study }: { study: CaseStudy }) {
   )
 }
 
-export function CaseStudyFeaturedLink({ study }: { study: CaseStudy }) {
+export function CaseStudyFeaturedLink({
+  study,
+  showImage = true,
+}: {
+  study: CaseStudy
+  showImage?: boolean
+}) {
   return (
     <Link
       href={`/work/${study.slug}`}
@@ -97,7 +109,7 @@ export function CaseStudyFeaturedLink({ study }: { study: CaseStudy }) {
         <CaseStudyCardContent study={study} />
       </div>
       <div className="py-10 lg:py-14">
-        <CaseStudyVisual study={study} />
+        <CaseStudyVisual study={study} showImage={showImage} />
       </div>
     </Link>
   )

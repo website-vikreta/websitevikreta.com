@@ -148,7 +148,7 @@ export default function Home() {
       <StatsCounters />
       <ServicesBentoGrid />
       {/* <ClientLogosSection /> */}
-      <FeaturedWorkSection />
+      <FeaturedWorkSection showImage={false} />
       <TechnologiesSection />
       <TestimonialsSection />
       <BlogPreviewSection />
