@@ -270,15 +270,28 @@ export async function fetchCategoriesWithPosts(): Promise<Category[]> {
   }
 }
 
+// /blog's own index grid is a "recent posts" preview, not the complete
+// list — the page's "View all" button already sends to the fully
+// server-paginated /blog/search for that. Capping here is what keeps this
+// query from pulling every post in the blog on every request as the blog
+// grows; BLOG_INDEX_DEFAULT_LIMIT is generous enough that it's invisible at
+// today's post count.
+const BLOG_INDEX_DEFAULT_LIMIT = 24
+
 /** Returns DisplayPost[] filtered by optional category slug and/or search query — used by the /blog index. */
 export async function fetchFilteredBlogPosts(filters: {
   categorySlug?: string
   searchQuery?: string
+  limit?: number
 } = {}): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
   const posts = await client.fetch<Post[]>(
     FILTERED_POSTS_QUERY,
-    { categorySlug: filters.categorySlug ?? null, searchQuery: filters.searchQuery ?? null },
+    {
+      categorySlug: filters.categorySlug ?? null,
+      searchQuery: filters.searchQuery ?? null,
+      limit: filters.limit ?? BLOG_INDEX_DEFAULT_LIMIT,
+    },
     { next: { revalidate: REVALIDATE_SECONDS } },
   )
   return posts.map(toDisplayPost)

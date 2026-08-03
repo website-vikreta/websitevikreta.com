@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useOptimistic, useRef, useState, useTransition } from 'react'
+import { useCallback, useEffect, useOptimistic, useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, ChevronDown } from 'lucide-react'
 import {
@@ -60,12 +60,11 @@ export function BlogSearchFilters({ params, categories, tags, labels, children }
   const [pending, startTransition] = useTransition()
   const [optimistic, setOptimistic] = useOptimistic(params)
 
-  // The one piece of genuinely local state: the raw input value. Typing
-  // never navigates — only the search form's onSubmit does (Enter, or the
-  // icon button) — so this just tracks what's in the box. Re-synced from the
-  // URL whenever it changes underneath us (back/forward, "Clear filters", a
-  // pasted link), adjusted during render per the React-documented "resetting
-  // state when a prop changes" pattern.
+  // The raw input value. Typing schedules a debounced navigation (see below);
+  // submit (Enter / icon click) fires immediately instead of waiting out the
+  // debounce. Re-synced from the URL whenever it changes underneath us
+  // (back/forward, "Clear filters", a pasted link), adjusted during render
+  // per the React-documented "resetting state when a prop changes" pattern.
   const [text, setText] = useState(params.query)
   const [syncedQuery, setSyncedQuery] = useState(params.query)
   if (syncedQuery !== params.query) {
@@ -73,24 +72,47 @@ export function BlogSearchFilters({ params, categories, tags, labels, children }
     setText(params.query)
   }
 
-  function navigate(next: Partial<BlogSearchParams>, mode: 'push' | 'replace' = 'push') {
-    // Any change to *what* is matched invalidates the current page number —
-    // without this reset, narrowing a filter from page 5 lands on an empty
-    // (404ing) page instead of the new page 1.
-    const merged: BlogSearchParams = { ...params, page: 1, ...next }
-    startTransition(() => {
-      setOptimistic(merged)
-      const href = buildBlogSearchHref(merged)
-      // scroll:false keeps the filter bar under the cursor; paginating (which
-      // uses real <a> links in the results below) does jump to the top.
-      if (mode === 'replace') router.replace(href, { scroll: false })
-      else router.push(href, { scroll: false })
-    })
-  }
+  const navigate = useCallback(
+    (next: Partial<BlogSearchParams>, mode: 'push' | 'replace' = 'push') => {
+      // Any change to *what* is matched invalidates the current page number —
+      // without this reset, narrowing a filter from page 5 lands on an empty
+      // (404ing) page instead of the new page 1.
+      const merged: BlogSearchParams = { ...params, page: 1, ...next }
+      startTransition(() => {
+        setOptimistic(merged)
+        const href = buildBlogSearchHref(merged)
+        // scroll:false keeps the filter bar under the cursor; paginating (which
+        // uses real <a> links in the results below) does jump to the top.
+        if (mode === 'replace') router.replace(href, { scroll: false })
+        else router.push(href, { scroll: false })
+      })
+    },
+    [params, router, setOptimistic],
+  )
+
+  // Type-to-search: debounce keystrokes so a fresh GROQ query fires once
+  // typing pauses, not on every character — an un-debounced query-per-keystroke
+  // would multiply Sanity reads and dim/rerender the grid mid-word, costing
+  // more than it gives back. 400ms is short enough to feel live, long enough
+  // that a normal typing cadence never fires mid-word. Guarded on `text !==
+  // params.query` so it never fires for the sync-from-URL case (back/forward,
+  // "Clear filters", a pasted link) — only genuine local edits schedule a
+  // request, and an explicit submit below (Enter / icon click) cancels any
+  // timer already in flight so a submitted query is never re-fetched a
+  // second time once the debounce catches up.
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  useEffect(() => {
+    const trimmed = text.trim()
+    if (trimmed === params.query) return
+    debounceRef.current = setTimeout(() => navigate({ query: trimmed }, 'replace'), 400)
+    return () => clearTimeout(debounceRef.current)
+  }, [text, params.query, navigate])
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault()
-    navigate({ query: text })
+    clearTimeout(debounceRef.current)
+    navigate({ query: text.trim() })
   }
 
   const showClear = hasActiveFilters(params)
@@ -101,9 +123,8 @@ export function BlogSearchFilters({ params, categories, tags, labels, children }
       {/* Unified filter bar — every control shares CONTROL_CLASS, one row on
           desktop, wraps cleanly on mobile. */}
       <div className="flex flex-wrap items-center gap-3">
-        {/* Runs only on submit — Enter in the input, or the search icon
-            button — never on keystroke. Typing just updates local `text`;
-            nothing is fetched until the form fires. */}
+        {/* Typing schedules a debounced search (see the effect above); Enter
+            or the search icon submits immediately, bypassing the debounce. */}
         <form
           role="search"
           onSubmit={handleSearchSubmit}
