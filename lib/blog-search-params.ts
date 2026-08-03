@@ -150,7 +150,7 @@ export function buildBlogSearchHref(params: Partial<BlogSearchParams> = {}): str
 /** True when the URL narrows or reorders the default result set. Drives both
  * the "Clear filters" control and the noindex decision — a filtered or
  * re-sorted permutation is a near-duplicate of a page that's already indexed
- * (/blog, /blog/category/…, /blog/label/…), so it must not compete with it. */
+ * (/blog, /blog/categories/…, /blog/labels/…), so it must not compete with it. */
 export function hasActiveFilters(p: BlogSearchParams): boolean {
   return Boolean(
     p.query ||

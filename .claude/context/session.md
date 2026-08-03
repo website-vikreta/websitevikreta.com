@@ -6,7 +6,7 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Homepage — Navbar + HeroSection + Button component done. Next: remaining homepage sections.
+Blog taxonomy routing fix — DONE. All 4 taxonomy routes are now plural (`/blog/categories`, `/blog/tags`, `/blog/labels`, `/blog/authors`), breadcrumbs match, index pages exist, and the 4 `[slug]` post-listing pages use a uniform lazy-loaded card grid (no featured hero). See learning.md [Nav]/[Page] entries dated 2026-08-03.
 
 ## Locked Decisions
 <!-- Things decided and not up for debate again -->

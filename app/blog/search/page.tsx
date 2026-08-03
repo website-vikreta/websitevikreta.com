@@ -38,8 +38,8 @@ const BREADCRUMB_SEGMENTS = [
  * - Bare `/blog/search` and its `?page=N` walk are indexable. They're a real,
  *   crawlable path to every post, and each page is genuinely distinct content.
  * - Any *filtered* or *re-sorted* permutation is `noindex, follow`. Those URLs
- *   are near-duplicates of pages that already rank — /blog, /blog/category/…,
- *   /blog/label/…, /blog/tags/… — and letting a facet combinatorial explosion
+ *   are near-duplicates of pages that already rank — /blog, /blog/categories/…,
+ *   /blog/labels/…, /blog/tags/… — and letting a facet combinatorial explosion
  *   into the index would have them competing with the pages we actually want
  *   ranked. `follow` keeps the link equity flowing through to the posts.
  * - Every variant canonicalises to `buildBlogSearchHref()`, which drops

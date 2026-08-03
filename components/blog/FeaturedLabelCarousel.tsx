@@ -21,7 +21,7 @@ export async function FeaturedLabelCarousel({ title, labelSlug, excludeSlugs }: 
         <h2 className="text-h3 font-bold tracking-tight text-(--color-text)">{title}</h2>
         {/* Every "View all" on the blog lands on /blog/search with the row's
             filter pre-applied — one place to browse, and the filter state is
-            in the URL. (/blog/label/[labelSlug] still exists as the indexable
+            in the URL. (/blog/labels/[labelSlug] still exists as the indexable
             landing page for that label; the search page is noindex when
             filtered, so the two don't compete.) */}
         <TextLink href={buildBlogSearchHref({ labels: [labelSlug] })} arrow="right" className="shrink-0">

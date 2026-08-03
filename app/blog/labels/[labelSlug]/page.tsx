@@ -2,9 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
-import { BlogCard } from '@/components/blog/BlogCard'
-import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
-import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
+import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
 import { SITE_URL } from '@/config/site'
 import { fetchLabelBySlug, fetchPostsByLabel } from '@/sanity/lib/fetch'
 
@@ -21,8 +19,8 @@ export async function generateMetadata({ params }: LabelPageParams): Promise<Met
   return {
     title,
     description: label.description,
-    alternates: { canonical: `${SITE_URL}/blog/label/${labelSlug}` },
-    openGraph: { title, description: label.description, url: `${SITE_URL}/blog/label/${labelSlug}` },
+    alternates: { canonical: `${SITE_URL}/blog/labels/${labelSlug}` },
+    openGraph: { title, description: label.description, url: `${SITE_URL}/blog/labels/${labelSlug}` },
   }
 }
 
@@ -34,17 +32,10 @@ export default async function LabelLandingPage({ params }: LabelPageParams) {
   ])
   if (!label) notFound()
 
-  // Hero pick is scoped to this label's own posts — not the sitewide pick
-  // used on /blog — so each label gets its own hero from its own post list.
-  const { featured, rest } = selectFeaturedPost(posts)
-
-  // "Label" carries no href — /blog/label (the bare intermediate segment)
-  // 404s, there's no landing page at that path. See the [Breadcrumb] entry
-  // in .claude/learning.md.
   const breadcrumbSegments = [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
-    { label: 'Label' },
+    { label: 'Labels', href: '/blog/labels' },
     { label: label.title },
   ]
 
@@ -70,16 +61,10 @@ export default async function LabelLandingPage({ params }: LabelPageParams) {
             {posts.length === 0 ? (
               <p className="text-(--color-text-muted)">No posts under this label yet.</p>
             ) : (
-              <>
-                {featured && <FeaturedBlogHero post={featured} />}
-                {rest.length > 0 && (
-                  <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 md:gap-x-10 md:gap-y-20 lg:grid-cols-3">
-                    {rest.map((post) => (
-                      <BlogCard key={post.slug} post={post} />
-                    ))}
-                  </div>
-                )}
-              </>
+              <InfiniteBlogGrid
+                posts={posts}
+                endMessage="You've reached the end — that's every post under this label."
+              />
             )}
           </div>
         </section>

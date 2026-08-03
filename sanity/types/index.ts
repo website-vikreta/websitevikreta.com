@@ -19,6 +19,8 @@ export interface Author {
   shortBio?: string
   bio?: PortableTextBlock[]
   linkedinUrl?: string
+  /** Only populated by ALL_AUTHORS_QUERY (powers the /blog/authors index grid). */
+  postCount?: number
 }
 
 export interface Category {
@@ -30,6 +32,8 @@ export interface Category {
   seoDescription?: string
   seoKeywords?: string[]
   canonicalUrl?: string
+  /** Only populated by ALL_CATEGORIES_QUERY (powers the /blog/categories index grid). */
+  postCount?: number
 }
 
 export interface Tag {
@@ -37,6 +41,8 @@ export interface Tag {
   title: string
   slug: { current: string }
   description?: string
+  /** Only populated by ALL_TAGS_QUERY (powers the /blog/tags index grid). */
+  postCount?: number
 }
 
 export interface Label {
@@ -44,6 +50,8 @@ export interface Label {
   title: string
   slug: { current: string }
   description?: string
+  /** Only populated by ALL_LABELS_QUERY (powers the /blog/labels index grid). */
+  postCount?: number
 }
 
 export interface Post {
