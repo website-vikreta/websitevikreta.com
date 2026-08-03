@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
 import { SITE_URL } from '@/config/site'
@@ -61,7 +61,7 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
       <main>
         <section className="relative overflow-hidden">
           <div className="container pt-20 pb-16 md:pt-24 md:pb-20">
-            <Breadcrumb segments={breadcrumbSegments} className="mb-6 md:mb-8" />
+            <BlogHeaderBar segments={breadcrumbSegments} />
 
             <div className="mx-auto max-w-[720px]">
               {/* Author identity — image, name, designation, LinkedIn */}

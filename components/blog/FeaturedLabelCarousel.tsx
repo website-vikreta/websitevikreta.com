@@ -1,4 +1,5 @@
 import { TextLink } from '@/components/ui/TextLink'
+import { buildBlogSearchHref } from '@/lib/blog-search-params'
 import { fetchPostsByLabel } from '@/sanity/lib/fetch'
 import { BlogCard } from './BlogCard'
 
@@ -18,14 +19,19 @@ export async function FeaturedLabelCarousel({ title, labelSlug, excludeSlugs }: 
     <div className="mb-10 md:mb-14">
       <div className="mb-6 flex items-end justify-between gap-4 md:mb-8">
         <h2 className="text-h3 font-bold tracking-tight text-(--color-text)">{title}</h2>
-        <TextLink href={`/blog/labels/${labelSlug}`} arrow="right" className="shrink-0">
+        {/* Every "View all" on the blog lands on /blog/search with the row's
+            filter pre-applied — one place to browse, and the filter state is
+            in the URL. (/blog/labels/[labelSlug] still exists as the indexable
+            landing page for that label; the search page is noindex when
+            filtered, so the two don't compete.) */}
+        <TextLink href={buildBlogSearchHref({ labels: [labelSlug] })} arrow="right" className="shrink-0">
           View all
         </TextLink>
       </div>
       <div className="flex snap-x snap-mandatory flex-row gap-6 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {posts.map((post, i) => (
+        {posts.map((post) => (
           <div key={post.slug} className="w-72 shrink-0 snap-start sm:w-80">
-            <BlogCard post={post} index={i} className="h-full" />
+            <BlogCard post={post} className="h-full" />
           </div>
         ))}
       </div>

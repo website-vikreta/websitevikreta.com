@@ -377,8 +377,8 @@ export default async function BlogPostPage({
                 Related reads
               </h2>
               <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2">
-                {relatedPosts.map((related, i) => (
-                  <BlogCard key={related.slug} post={related} index={i} />
+                {relatedPosts.map((related) => (
+                  <BlogCard key={related.slug} post={related} />
                 ))}
               </div>
             </div>
