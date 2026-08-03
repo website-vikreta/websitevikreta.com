@@ -153,7 +153,7 @@ export function Counter({ value, duration = 1400 }: { value: number; duration?: 
     const tick = (t: number) => {
       const p = Math.min((t - start) / duration, 1)
       const eased = 1 - Math.pow(1 - p, 2) // power2.out
-      setN(Math.floor(eased * value)) // p=0 on the first frame, so this starts the visible count at 0
+      setN(Math.floor(eased * value))
       if (p < 1) raf = requestAnimationFrame(tick)
       else setN(value)
     }
