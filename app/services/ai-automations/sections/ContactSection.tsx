@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
-import { trackFormSubmit } from '@/lib/analytics'
+import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
 
 // ─── CSS-transition tokens (micro-interactions; per motion-spec §6) ───────────
 
@@ -355,7 +355,11 @@ export default function ContactSection() {
                         role="alert"
                       >
                         Something went wrong. Email us at{' '}
-                        <a href="mailto:contact@websitevikreta.com" style={{ textDecoration: 'underline' }}>
+                        <a
+                          href="mailto:contact@websitevikreta.com"
+                          style={{ textDecoration: 'underline' }}
+                          onClick={() => trackLinkClick('mailto:contact@websitevikreta.com', 'ai_automations_contact_form')}
+                        >
                           contact@websitevikreta.com
                         </a>
                       </p>
