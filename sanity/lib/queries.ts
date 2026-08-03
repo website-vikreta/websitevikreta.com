@@ -1,4 +1,5 @@
 import { groq } from 'next-sanity'
+import type { SortField, SortOrder } from '@/lib/blog-search-params'
 
 const POST_SUMMARY = groq`
   _id,
@@ -193,16 +194,50 @@ export const CATEGORIES_WITH_POSTS_QUERY = groq`
   }
 `
 
-// Powers the /search page's initial load + "Load more" pagination — a
-// straight newest-first slice, no filters. Filtering/sorting on top of the
-// loaded posts happens client-side in SearchClient.
-export const PAGINATED_POSTS_QUERY = groq`
-  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) [$start...$end] {
-    ${POST_SUMMARY}
-  }
+// ── /blog/search ─────────────────────────────────────────────────────────────
+// One filter expression, interpolated into BOTH the count and the page slice
+// so the reported total can never drift from the rows actually returned.
+//
+// Every facet is optional and self-neutralising: an undefined param or an
+// empty array contributes nothing to the predicate. Facets combine with AND
+// (category AND tag AND label AND text); values *within* a facet combine with
+// OR — the standard faceted-search convention.
+const POST_SEARCH_FILTER = `
+  _type == "post" && defined(slug.current)
+  && (!defined($categorySlug) || category->slug.current == $categorySlug)
+  && (count($tagSlugs) == 0 || count((tags[]->slug.current)[@ in $tagSlugs]) > 0)
+  && (count($labelSlugs) == 0 || count((labels[]->slug.current)[@ in $labelSlugs]) > 0)
+  && (!defined($searchQuery)
+      || title match $searchQuery
+      || excerpt match $searchQuery
+      || category->title match $searchQuery
+      || author->name match $searchQuery
+      || count((tags[]->title)[@ match $searchQuery]) > 0
+      || count((labels[]->title)[@ match $searchQuery]) > 0)
 `
 
-// Only tags actually attached to at least one post — powers the /search
+// GROQ's `order()` cannot take a parameter, so the clause is *selected* from
+// this table rather than interpolated from user input — sort/sortOrder are
+// already whitelisted enums in lib/blog-search-params.ts, and this keeps the
+// only string concatenation in the query away from anything user-controlled.
+const SEARCH_ORDER_CLAUSE: Record<SortField, Record<SortOrder, string>> = {
+  'publish-date': { desc: 'publishedAt desc', asc: 'publishedAt asc' },
+  title: { desc: 'lower(title) desc', asc: 'lower(title) asc' },
+}
+
+/** Builds the /blog/search query for one sort combination. Returns
+ * `{ total, items }` in a single round trip — the page needs the unpaginated
+ * total to render pagination, and a second query could disagree with the first. */
+export function buildBlogSearchQuery(sort: SortField, sortOrder: SortOrder): string {
+  return groq`{
+    "total": count(*[${POST_SEARCH_FILTER}]),
+    "items": *[${POST_SEARCH_FILTER}] | order(${SEARCH_ORDER_CLAUSE[sort][sortOrder]}) [$start...$end] {
+      ${POST_SUMMARY}
+    }
+  }`
+}
+
+// Only tags actually attached to at least one post — powers the /blog/search
 // page's tag filter (mirrors CATEGORIES_WITH_POSTS_QUERY).
 export const TAGS_WITH_POSTS_QUERY = groq`
   *[_type == "tag" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
@@ -212,9 +247,9 @@ export const TAGS_WITH_POSTS_QUERY = groq`
   }
 `
 
-// All labels with at least one post, uncapped — powers the /search page's
-// label filter. Distinct from LABELS_WITH_POSTS_QUERY above, which caps at
-// 6 for the blog index's carousel rows.
+// All labels with at least one post, uncapped — powers the /blog/search
+// page's label filter. Distinct from LABELS_WITH_POSTS_QUERY above, which
+// caps at 6 for the blog index's carousel rows.
 export const ALL_LABELS_WITH_POSTS_QUERY = groq`
   *[_type == "label" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
     _id,

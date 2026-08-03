@@ -1,9 +1,5 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'motion/react'
-import { RevealFade } from '@/components/ui/Reveal'
 import { TextLink } from '@/components/ui/TextLink'
 import { postHref } from '@/lib/blog-url'
 import type { DisplayPost } from '@/sanity/types'
@@ -12,15 +8,13 @@ interface FeaturedBlogHeroProps {
   post: DisplayPost
 }
 
+// Server Component, no reveal. This is the LCP element on /blog and on the
+// category/label/tag landing pages — its image is `priority`, so gating the
+// whole card behind a fade-in observer was actively fighting that. See the
+// [Anti-pattern] entry in .claude/learning.md.
 export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
   return (
-    // as={motion.article} — pass the actual motion component, not the string
-    // "article". RevealFade only casts its `as` prop's *type*; a plain
-    // string renders an inert, non-animated tag with motion props dropped.
-    <RevealFade
-      as={motion.article}
-      className="mb-10 md:mb-14 border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 lg:grid lg:grid-cols-2 lg:items-stretch"
-    >
+    <article className="mb-10 md:mb-14 border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 lg:grid lg:grid-cols-2 lg:items-stretch">
       <Link
         href={postHref(post.categorySlug, post.slug)}
         className="group/img block relative aspect-video lg:aspect-auto overflow-hidden"
@@ -61,6 +55,6 @@ export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
           Read more
         </TextLink>
       </div>
-    </RevealFade>
+    </article>
   )
 }

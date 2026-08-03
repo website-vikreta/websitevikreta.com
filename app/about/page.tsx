@@ -106,7 +106,7 @@ export default function AboutPage() {
       <CoreValuesSection />
       <PhotoGallerySection />
       <StatsCounters />
-      <ClientLogosSection />
+      {/* <ClientLogosSection /> */}
       <InsightsSection />
       <ContactCTASection
         id="book-a-call"

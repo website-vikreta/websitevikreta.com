@@ -50,8 +50,8 @@ export function AuthorArticlesList({ posts }: AuthorArticlesListProps) {
   return (
     <div>
       <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2">
-        {visiblePosts.map((post, i) => (
-          <BlogCard key={post.slug} post={post} index={i % pageSize} />
+        {visiblePosts.map((post) => (
+          <BlogCard key={post.slug} post={post} />
         ))}
       </div>
       {hasMore && <div ref={sentinelRef} aria-hidden="true" className="h-1" />}

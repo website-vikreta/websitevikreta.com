@@ -11,17 +11,35 @@ export function BlogResultsSkeleton() {
           classes as the real title/description in FeaturedBlogHero(Carousel), so
           the em-based fixed heights resolve identically and swapping in real
           content never shifts the layout. */}
-      <div className="mb-10 md:mb-14 border border-(--color-border) lg:grid lg:grid-cols-2 lg:items-stretch">
-        <div className="aspect-video lg:aspect-auto bg-(--color-bg-muted)" />
-        <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
-          <div className="h-4 w-32 bg-(--color-bg-muted) mb-4" />
-          <div className="h-[3.3em] text-3xl sm:text-4xl leading-[1.1] mb-4">
-            <div className="h-full w-3/4 bg-(--color-bg-muted)" />
+      <div className="mb-10 md:mb-14">
+        <div className="border border-(--color-border) lg:grid lg:grid-cols-2 lg:items-stretch">
+          <div className="aspect-video lg:aspect-auto bg-(--color-bg-muted)" />
+          <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
+            <div className="h-4 w-32 bg-(--color-bg-muted) mb-4" />
+            <div className="h-[3.3em] text-3xl sm:text-4xl leading-[1.1] mb-4">
+              <div className="h-full w-3/4 bg-(--color-bg-muted)" />
+            </div>
+            <div className="h-[5.1em] text-base leading-[1.7] mb-6 max-w-[52ch]">
+              <div className="h-full w-full bg-(--color-bg-muted)" />
+            </div>
+            <div className="h-4 w-28 bg-(--color-bg-muted)" />
           </div>
-          <div className="h-[5.1em] text-base leading-[1.7] mb-6 max-w-[52ch]">
-            <div className="h-full w-full bg-(--color-bg-muted)" />
+        </div>
+
+        {/* Carousel dot/arrow controls — mt-4 + h-9. Without this row the
+            skeleton is 52px shorter than the real FeaturedBlogHeroCarousel and
+            everything below jumps when the hero streams in. */}
+        <div className="mt-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="h-1.5 w-6 rounded-full bg-(--color-border-strong)" />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-1.5 w-1.5 rounded-full bg-(--color-border-strong)" />
+            ))}
           </div>
-          <div className="h-4 w-28 bg-(--color-bg-muted)" />
+          <div className="flex shrink-0 items-center gap-2">
+            <div className="h-9 w-9 border border-(--color-border)" />
+            <div className="h-9 w-9 border border-(--color-border)" />
+          </div>
         </div>
       </div>
 

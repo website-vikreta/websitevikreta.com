@@ -1,30 +1,23 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'motion/react'
 import { TextLink } from '@/components/ui/TextLink'
 import { postHref } from '@/lib/blog-url'
 import { cn } from '@/lib/utils'
 import type { DisplayPost } from '@/sanity/types'
 
-const cardReveal = {
-  hidden: { y: 24, opacity: 0 },
-  visible: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 },
-  }),
-}
-
+// Server Component — no scroll reveal, no motion, no client JS. See the
+// [Anti-pattern] entry in .claude/learning.md: /blog/* is a reading surface,
+// and an IntersectionObserver-gated `opacity: 0` on every card costs LCP,
+// blocks text from being readable until a scroll event, and can strand
+// results invisible when a grid swaps content in place. Loading state is
+// carried by the skeletons, never by hiding real content.
 interface BlogCardProps {
   post: DisplayPost
-  index: number
   /** Extra classes merged onto the outer article — e.g. `h-full` when a fixed-width carousel wrapper needs the card to stretch to match its row's tallest sibling. */
   className?: string
 }
 
-export function BlogCard({ post, index, className }: BlogCardProps) {
+export function BlogCard({ post, className }: BlogCardProps) {
   // Slug should always resolve to { current: string } per our Sanity
   // schema, but tags come from a separate document reference — handled
   // defensively in case a tag is ever stored/queried as a plain string.
@@ -38,14 +31,7 @@ export function BlogCard({ post, index, className }: BlogCardProps) {
     .filter((tag): tag is { _id: string; title: string; slug: string } => tag !== null)
 
   return (
-    <motion.article
-      custom={index}
-      variants={cardReveal}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
-      className={cn('flex flex-col', className)}
-    >
+    <article className={cn('flex flex-col', className)}>
       {/* Image */}
       <Link href={postHref(post.categorySlug, post.slug)} className="block relative mb-5 group/img">
         <div className="relative w-full aspect-video bg-(--color-bg-muted) overflow-hidden">
@@ -103,6 +89,6 @@ export function BlogCard({ post, index, className }: BlogCardProps) {
           Read more
         </TextLink>
       </div>
-    </motion.article>
+    </article>
   )
 }
