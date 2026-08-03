@@ -16,6 +16,9 @@ import {
   FILTERED_POSTS_QUERY,
   ALL_CATEGORIES_QUERY,
   CATEGORIES_WITH_POSTS_QUERY,
+  PAGINATED_POSTS_QUERY,
+  TAGS_WITH_POSTS_QUERY,
+  ALL_LABELS_WITH_POSTS_QUERY,
   ALL_POST_SLUGS_QUERY,
   ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
   ADJACENT_POSTS_QUERY,
@@ -63,12 +66,14 @@ function toDisplayPost(post: Post): DisplayPost {
     title: post.title,
     description: post.excerpt ?? '',
     publishDate: formatDate(post.publishedAt),
+    publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
     imageUrl: post.featuredImage?.asset
       ? urlFor(post.featuredImage).width(800).fit('crop').url()
       : undefined,
     labels: post.labels,
     tags: post.tags,
+    author: post.author ? { name: post.author.name } : undefined,
   }
 }
 
@@ -255,6 +260,41 @@ export async function fetchFilteredBlogPosts(filters: {
     { next: { revalidate: REVALIDATE_SECONDS } },
   )
   return posts.map(toDisplayPost)
+}
+
+/** DisplayPost[] slice [offset, offset+limit), newest first, no filters — powers the /search page's initial load and "Load more" pagination. Never throws: an unconfigured store or query failure just yields an empty page (the caller treats that as "no more posts"). */
+export async function fetchPaginatedPosts(offset: number, limit: number): Promise<DisplayPost[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    const posts = await client.fetch<Post[]>(
+      PAGINATED_POSTS_QUERY,
+      { start: offset, end: offset + limit },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+    return posts.map(toDisplayPost)
+  } catch {
+    return []
+  }
+}
+
+/** Tags that have at least one post — powers the /search page's tag filter. Never throws: an unconfigured store or query failure just yields no filter options. */
+export async function fetchTagsWithPosts(): Promise<Tag[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    return await client.fetch<Tag[]>(TAGS_WITH_POSTS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
+  } catch {
+    return []
+  }
+}
+
+/** All labels with at least one post, uncapped — powers the /search page's label filter (LABELS_WITH_POSTS_QUERY above stays capped at 6 for the blog index carousels). Never throws: an unconfigured store or query failure just yields no filter options. */
+export async function fetchAllLabelsWithPosts(): Promise<Label[]> {
+  if (!isSanityConfigured()) return []
+  try {
+    return await client.fetch<Label[]>(ALL_LABELS_WITH_POSTS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
+  } catch {
+    return []
+  }
 }
 
 /** Returns up to 3 DisplayPost[] for homepage — featured first, falls back to latest */
