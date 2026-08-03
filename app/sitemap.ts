@@ -4,6 +4,7 @@ import { groq } from 'next-sanity'
 import { SITE_URL } from '@/config/site'
 import { CASE_STUDIES } from '@/lib/work-data'
 import { postHref } from '@/lib/blog-url'
+import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 
 const BASE = SITE_URL
 
@@ -106,6 +107,15 @@ const staticRoutes: MetadataRoute.Sitemap = [
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
+  },
+  // Unfiltered search only — filtered permutations are noindex (see the
+  // indexing-policy comment in app/blog/search/page.tsx), so listing them
+  // here would just contradict the page's own robots directive.
+  {
+    url: `${BASE}${BLOG_SEARCH_PATH}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.5,
   },
 
   // Legal

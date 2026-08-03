@@ -16,15 +16,16 @@ import {
   FILTERED_POSTS_QUERY,
   ALL_CATEGORIES_QUERY,
   CATEGORIES_WITH_POSTS_QUERY,
-  PAGINATED_POSTS_QUERY,
   TAGS_WITH_POSTS_QUERY,
   ALL_LABELS_WITH_POSTS_QUERY,
   ALL_POST_SLUGS_QUERY,
   ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
   ADJACENT_POSTS_QUERY,
   RELATED_POSTS_QUERY,
+  buildBlogSearchQuery,
 } from './queries'
 import { urlFor } from './image'
+import { BLOG_SEARCH_PAGE_SIZE, type BlogSearchParams } from '@/lib/blog-search-params'
 import type { PortableTextBlock } from '@portabletext/react'
 import type { Post, FullPost, DisplayPost, SanityImage, Category, Label, Tag, Author } from '../types'
 
@@ -262,22 +263,51 @@ export async function fetchFilteredBlogPosts(filters: {
   return posts.map(toDisplayPost)
 }
 
-/** DisplayPost[] slice [offset, offset+limit), newest first, no filters — powers the /search page's initial load and "Load more" pagination. Never throws: an unconfigured store or query failure just yields an empty page (the caller treats that as "no more posts"). */
-export async function fetchPaginatedPosts(offset: number, limit: number): Promise<DisplayPost[]> {
-  if (!isSanityConfigured()) return []
+export interface BlogSearchResult {
+  posts: DisplayPost[]
+  /** Matches across ALL pages, not just this slice — drives the result count and pagination. */
+  total: number
+}
+
+/**
+ * One page of /blog/search results. Every filter (text, category, tags,
+ * labels, sort, page) is applied server-side in GROQ, so page N is *fetched*,
+ * never sliced out of a client-side pool — a crawler hitting
+ * `?category=x&page=3` gets exactly those posts in the HTML.
+ *
+ * Never throws: an unconfigured store or a failed query yields zero results
+ * and the page renders its empty state instead of a 500.
+ */
+export async function fetchBlogSearchResults(params: BlogSearchParams): Promise<BlogSearchResult> {
+  if (!isSanityConfigured()) return { posts: [], total: 0 }
+  const start = (params.page - 1) * BLOG_SEARCH_PAGE_SIZE
   try {
-    const posts = await client.fetch<Post[]>(
-      PAGINATED_POSTS_QUERY,
-      { start: offset, end: offset + limit },
+    const { total, items } = await client.fetch<{ total: number; items: Post[] }>(
+      buildBlogSearchQuery(params.sort, params.sortOrder),
+      {
+        // GROQ's defined() treats null as "not set", which is how each of
+        // these clauses neutralises itself when the facet is unused.
+        categorySlug: params.category || null,
+        tagSlugs: params.tags,
+        labelSlugs: params.labels,
+        // Named searchQuery, not query — `query` is reserved on Sanity's
+        // QueryParams type. Trailing wildcard = prefix search on the last
+        // token, so "ai autom" matches "AI automation" while the earlier
+        // tokens stay exact.
+        searchQuery: params.query ? `${params.query}*` : null,
+        start,
+        end: start + BLOG_SEARCH_PAGE_SIZE,
+      },
       { next: { revalidate: REVALIDATE_SECONDS } },
     )
-    return posts.map(toDisplayPost)
-  } catch {
-    return []
+    return { posts: items.map(toDisplayPost), total }
+  } catch (err) {
+    console.error('[blog/search] Sanity query failed:', err)
+    return { posts: [], total: 0 }
   }
 }
 
-/** Tags that have at least one post — powers the /search page's tag filter. Never throws: an unconfigured store or query failure just yields no filter options. */
+/** Tags that have at least one post — powers the /blog/search page's tag filter. Never throws: an unconfigured store or query failure just yields no filter options. */
 export async function fetchTagsWithPosts(): Promise<Tag[]> {
   if (!isSanityConfigured()) return []
   try {
@@ -287,7 +317,7 @@ export async function fetchTagsWithPosts(): Promise<Tag[]> {
   }
 }
 
-/** All labels with at least one post, uncapped — powers the /search page's label filter (LABELS_WITH_POSTS_QUERY above stays capped at 6 for the blog index carousels). Never throws: an unconfigured store or query failure just yields no filter options. */
+/** All labels with at least one post, uncapped — powers the /blog/search page's label filter (LABELS_WITH_POSTS_QUERY above stays capped at 6 for the blog index carousels). Never throws: an unconfigured store or query failure just yields no filter options. */
 export async function fetchAllLabelsWithPosts(): Promise<Label[]> {
   if (!isSanityConfigured()) return []
   try {

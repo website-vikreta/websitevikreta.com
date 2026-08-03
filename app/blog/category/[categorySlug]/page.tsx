@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
 import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
@@ -41,9 +41,13 @@ export default async function CategoryLandingPage({ params }: CategoryPageParams
   // post list, not whatever happens to be featured globally.
   const { featured, rest } = selectFeaturedPost(posts)
 
+  // "Category" carries no href — /blog/category (the bare intermediate
+  // segment) 404s, there's no landing page at that path, so the breadcrumb
+  // must not link to it. See the [Breadcrumb] entry in .claude/learning.md.
   const breadcrumbSegments = [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
+    { label: 'Category' },
     { label: category.title },
   ]
 
@@ -52,8 +56,8 @@ export default async function CategoryLandingPage({ params }: CategoryPageParams
       <ScrollToTop />
       <main>
         <section className="relative overflow-hidden">
-          <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
-            <Breadcrumb segments={breadcrumbSegments} className="mb-6 md:mb-8" />
+          <div className="container pt-20 pb-16 md:pt-24 md:pb-20">
+            <BlogHeaderBar segments={breadcrumbSegments} />
 
             <div className="mb-10 md:mb-14">
               <h1 className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)">
@@ -73,8 +77,8 @@ export default async function CategoryLandingPage({ params }: CategoryPageParams
                 {featured && <FeaturedBlogHero post={featured} />}
                 {rest.length > 0 && (
                   <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 md:gap-x-10 md:gap-y-20 lg:grid-cols-3">
-                    {rest.map((post, i) => (
-                      <BlogCard key={post.slug} post={post} index={i} />
+                    {rest.map((post) => (
+                      <BlogCard key={post.slug} post={post} />
                     ))}
                   </div>
                 )}
