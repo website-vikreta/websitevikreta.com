@@ -7,7 +7,6 @@ import type { CaseStudy } from '@/lib/work-data'
 interface CaseStudyCardProps {
   study: CaseStudy
   showReadLink?: boolean
-  showExcerpt?: boolean
 }
 
 export function CaseStudyReadLink() {
@@ -27,11 +26,7 @@ export function CaseStudyReadLink() {
   )
 }
 
-export function CaseStudyCardContent({
-  study,
-  showReadLink = true,
-  showExcerpt = true,
-}: CaseStudyCardProps) {
+export function CaseStudyCardContent({ study, showReadLink = true }: CaseStudyCardProps) {
   return (
     <>
       <Image
@@ -45,17 +40,10 @@ export function CaseStudyCardContent({
       />
       <div>
         <span className="block text-sm text-(--color-text-muted)">{study.tags}</span>
-        <h3
-          className={`mt-4 text-2xl font-bold leading-snug tracking-tight text-balance sm:text-3xl text-(--color-text) ${showExcerpt ? 'mb-3' : 'mb-6'}`}
-        >
+        <h3 className="mt-4 mb-6 text-2xl font-bold leading-snug tracking-tight text-balance sm:text-3xl text-(--color-text)">
           {study.title}{' '}
           <span className="font-semibold text-(--color-text-faint)">{study.subtitle}</span>
         </h3>
-        {showExcerpt ? (
-          <p className="mb-6 text-base leading-relaxed text-(--color-text-muted)">
-            {study.excerpt}
-          </p>
-        ) : null}
         {showReadLink ? <CaseStudyReadLink /> : null}
       </div>
     </>
@@ -102,25 +90,17 @@ export function CaseStudyVisual({
   )
 }
 
-export function CaseStudyFeaturedLink({
-  study,
-  showImage = true,
-  showExcerpt = true,
-}: {
-  study: CaseStudy
-  showImage?: boolean
-  showExcerpt?: boolean
-}) {
+export function CaseStudyFeaturedLink({ study }: { study: CaseStudy }) {
   return (
     <Link
       href={`/work/${study.slug}`}
       className="group grid gap-8 bg-(--color-bg) px-6 transition-colors duration-300 ease-out hover:bg-(--color-surface) md:px-10 lg:grid-cols-2 lg:gap-16"
     >
       <div className="flex flex-col justify-between gap-8 pt-10 md:pt-14 lg:pb-14">
-        <CaseStudyCardContent study={study} showExcerpt={showExcerpt} />
+        <CaseStudyCardContent study={study} />
       </div>
       <div className="py-10 lg:py-14">
-        <CaseStudyVisual study={study} showImage={showImage} />
+        <CaseStudyVisual study={study} showImage={false} />
       </div>
     </Link>
   )
@@ -129,18 +109,16 @@ export function CaseStudyFeaturedLink({
 export function CaseStudyGridLink({
   study,
   className = '',
-  showExcerpt = true,
 }: {
   study: CaseStudy
   className?: string
-  showExcerpt?: boolean
 }) {
   return (
     <Link
       href={`/work/${study.slug}`}
       className={`group flex flex-col justify-between gap-12 px-6 py-10 transition-colors duration-300 ease-out hover:bg-(--color-surface) md:px-10 md:py-14 xl:gap-16 ${className}`}
     >
-      <CaseStudyCardContent study={study} showExcerpt={showExcerpt} />
+      <CaseStudyCardContent study={study} />
     </Link>
   )
 }
