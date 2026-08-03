@@ -149,6 +149,7 @@ export function Counter({ value, duration = 1400 }: { value: number; duration?: 
       raf = requestAnimationFrame(() => setN(value))
       return () => cancelAnimationFrame(raf)
     }
+    setN(0)
     const start = performance.now()
     const tick = (t: number) => {
       const p = Math.min((t - start) / duration, 1)
