@@ -138,7 +138,9 @@ export function RevealImage({
 export function Counter({ value, duration = 1400 }: { value: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.1, margin: REVEAL_MARGIN })
-  const [n, setN] = useState(0)
+  // Starts at the real value (not 0) so SSR/first-paint text is crawlable —
+  // the count-up below is a progressive-enhancement replay for JS visitors.
+  const [n, setN] = useState(value)
 
   useEffect(() => {
     if (!inView) return
@@ -147,6 +149,7 @@ export function Counter({ value, duration = 1400 }: { value: number; duration?: 
       raf = requestAnimationFrame(() => setN(value))
       return () => cancelAnimationFrame(raf)
     }
+    setN(0)
     const start = performance.now()
     const tick = (t: number) => {
       const p = Math.min((t - start) / duration, 1)

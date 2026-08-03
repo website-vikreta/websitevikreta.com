@@ -12,15 +12,6 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  keywords: [
-    'web development portfolio',
-    'AI automation projects',
-    'Website Vikreta portfolio',
-    'client work',
-    'case studies',
-    'Next.js agency work',
-    'AI workflow automation examples',
-  ],
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,

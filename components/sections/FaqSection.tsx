@@ -14,15 +14,19 @@ interface FaqSectionProps {
   heading?: string
   viewAllHref?: string
   ariaLabel: string
+  /** Skip when `items` is a verbatim subset already schema'd on another page (e.g. /faq) — two FAQPage blocks for the same Q&As is duplicate content. */
+  emitSchema?: boolean
 }
 
-export function FaqSection({ items, heading = 'Frequently Asked Questions', viewAllHref = '/faq', ariaLabel }: FaqSectionProps) {
+export function FaqSection({ items, heading = 'Frequently Asked Questions', viewAllHref = '/faq', ariaLabel, emitSchema = true }: FaqSectionProps) {
   return (
     <section className="py-16 md:py-20" aria-label={ariaLabel}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(items)) }}
-      />
+      {emitSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(items)) }}
+        />
+      )}
       <div className="container">
         <motion.div
           className="mx-auto max-w-[720px]"
@@ -71,7 +75,7 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
                   </h3>
                 </AccordionPrimitive.Header>
 
-                <AccordionPrimitive.Content className="accordion-content">
+                <AccordionPrimitive.Content className="accordion-content" forceMount>
                   <p className="pb-8 text-[1.0625rem] leading-[1.7] text-(--color-text-muted)">
                     {faq.answer}
                   </p>
