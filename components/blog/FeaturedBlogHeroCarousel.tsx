@@ -2,16 +2,33 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { RevealFade, REVEAL_EASE } from '@/components/ui/Reveal'
 import { TextLink } from '@/components/ui/TextLink'
 import { postHref } from '@/lib/blog-url'
 import { FeaturedBlogHero } from './FeaturedBlogHero'
 import type { DisplayPost } from '@/sanity/types'
 
 const AUTO_INTERVAL = 7000
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+
+function subscribeReducedMotion(onChange: () => void) {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY)
+  mq.addEventListener('change', onChange)
+  return () => mq.removeEventListener('change', onChange)
+}
+
+/** Replaces motion/react's `useReducedMotion` so no /blog route has to pull
+ * the animation library in just to read one media query. Server snapshot is
+ * `false`; autoplay only ever starts after mount anyway. */
+function usePrefersReducedMotion(): boolean {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => false,
+  )
+}
 
 interface FeaturedBlogHeroCarouselProps {
   posts: DisplayPost[]
@@ -24,7 +41,7 @@ interface FeaturedBlogHeroCarouselProps {
 export function FeaturedBlogHeroCarousel({ posts }: FeaturedBlogHeroCarouselProps) {
   const [index, setIndex] = useState(0)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const reduced = useReducedMotion()
+  const reduced = usePrefersReducedMotion()
 
   const startInterval = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current)
@@ -62,16 +79,15 @@ export function FeaturedBlogHeroCarousel({ posts }: FeaturedBlogHeroCarouselProp
       }}
       onMouseLeave={startInterval}
     >
-      <RevealFade className="relative border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 overflow-hidden">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.article
-            key={post.slug}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: REVEAL_EASE }}
-            className="lg:grid lg:grid-cols-2 lg:items-stretch"
-          >
+      {/* Slides swap by re-rendering one persistent <article>, not by
+          unmounting it. The previous crossfade used AnimatePresence
+          mode="wait", which left the container empty for the length of the
+          exit animation — the card collapsed to zero height and everything
+          below it jumped. The em-based fixed heights on the title/description
+          keep this element the same size for every post, so the swap is
+          shift-free. */}
+      <div className="relative border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 overflow-hidden">
+        <article className="lg:grid lg:grid-cols-2 lg:items-stretch">
             <Link
               href={postHref(post.categorySlug, post.slug)}
               className="group/img block relative aspect-video lg:aspect-auto overflow-hidden"
@@ -112,9 +128,8 @@ export function FeaturedBlogHeroCarousel({ posts }: FeaturedBlogHeroCarouselProp
                 Read more
               </TextLink>
             </div>
-          </motion.article>
-        </AnimatePresence>
-      </RevealFade>
+        </article>
+      </div>
 
       <div className="mt-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">

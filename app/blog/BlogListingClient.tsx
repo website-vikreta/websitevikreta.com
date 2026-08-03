@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { Button } from '@/components/ui/Button'
+import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 import type { DisplayPost, Category } from '@/sanity/types'
 
 interface BlogListingClientProps {
@@ -20,7 +21,7 @@ interface BlogListingClientProps {
 //
 // Category filtering is pure client-side state — no router.push, no
 // searchParams. The URL stays /blog at all times; deep-linkable per-category
-// URLs live at /blog/category/[slug] instead.
+// URLs live at /blog/categories/[slug] instead.
 export function BlogListingClient({ posts, categories }: BlogListingClientProps) {
   const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined)
 
@@ -78,14 +79,14 @@ export function BlogListingClient({ posts, categories }: BlogListingClientProps)
 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
-        {filteredPosts.map((post, i) => (
-          <BlogCard key={post.slug} post={post} index={i} />
+        {filteredPosts.map((post) => (
+          <BlogCard key={post.slug} post={post} />
         ))}
       </div>
 
       {/* View all — entry point into the dedicated blog search page */}
       <div className="mt-14 flex justify-center md:mt-20">
-        <Button href="/search" variant="ghost" size="md" showArrow>
+        <Button href={BLOG_SEARCH_PATH} variant="ghost" size="md" showArrow>
           View all
         </Button>
       </div>

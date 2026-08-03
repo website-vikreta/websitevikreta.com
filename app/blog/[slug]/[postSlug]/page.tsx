@@ -202,7 +202,7 @@ export default async function BlogPostPage({
   // reference just render the label as plain (unlinked) text.
   const categorySegment: BreadcrumbSegment =
     post.source === 'sanity' && post.categorySlug
-      ? { label: post.categoryTitle ?? post.category, href: `/blog/category/${post.categorySlug}` }
+      ? { label: post.categoryTitle ?? post.category, href: `/blog/categories/${post.categorySlug}` }
       : { label: post.category }
 
   const breadcrumbSegments: BreadcrumbSegment[] = [
@@ -279,7 +279,7 @@ export default async function BlogPostPage({
                   {post.category && (
                     post.categorySlug ? (
                       <Link
-                        href={`/blog/category/${post.categorySlug}`}
+                        href={`/blog/categories/${post.categorySlug}`}
                         className="bg-(--color-accent) px-3 py-1 text-sm font-medium text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent-dark)"
                       >
                         {post.categoryTitle ?? post.category}
@@ -303,7 +303,7 @@ export default async function BlogPostPage({
                 {/* Right: author — whole block is one link, not just the name */}
                 {post.author && (
                   <Link
-                    href={`/blog/author/${post.author.slug}`}
+                    href={`/blog/authors/${post.author.slug}`}
                     className="group flex items-center gap-3 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text)"
                   >
                     {post.author.image && (
@@ -377,8 +377,8 @@ export default async function BlogPostPage({
                 Related reads
               </h2>
               <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2">
-                {relatedPosts.map((related, i) => (
-                  <BlogCard key={related.slug} post={related} index={i} />
+                {relatedPosts.map((related) => (
+                  <BlogCard key={related.slug} post={related} />
                 ))}
               </div>
             </div>

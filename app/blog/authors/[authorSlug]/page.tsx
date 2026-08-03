@@ -2,9 +2,9 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
 import PortableTextContent from '@/components/ui/PortableTextContent'
-import { AuthorArticlesList } from '@/components/blog/AuthorArticlesList'
+import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
 import { SITE_URL } from '@/config/site'
 import { urlFor } from '@/sanity/lib/image'
 import { fetchAuthorBySlug, fetchPostsByAuthor } from '@/sanity/lib/fetch'
@@ -35,8 +35,8 @@ export async function generateMetadata({ params }: AuthorPageParams): Promise<Me
   return {
     title,
     description: author.shortBio,
-    alternates: { canonical: `${SITE_URL}/blog/author/${authorSlug}` },
-    openGraph: { title, description: author.shortBio, url: `${SITE_URL}/blog/author/${authorSlug}` },
+    alternates: { canonical: `${SITE_URL}/blog/authors/${authorSlug}` },
+    openGraph: { title, description: author.shortBio, url: `${SITE_URL}/blog/authors/${authorSlug}` },
   }
 }
 
@@ -51,6 +51,7 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
   const breadcrumbSegments = [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
+    { label: 'Authors', href: '/blog/authors' },
     { label: author.name },
   ]
 
@@ -60,7 +61,7 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
       <main>
         <section className="relative overflow-hidden">
           <div className="container pt-20 pb-16 md:pt-24 md:pb-20">
-            <Breadcrumb segments={breadcrumbSegments} className="mb-6 md:mb-8" />
+            <BlogHeaderBar segments={breadcrumbSegments} />
 
             <div className="mx-auto max-w-[720px]">
               {/* Author identity — image, name, designation, LinkedIn */}
@@ -120,7 +121,11 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
                 {posts.length === 0 ? (
                   <p className="text-(--color-text-muted)">No posts from this author yet.</p>
                 ) : (
-                  <AuthorArticlesList posts={posts} />
+                  <InfiniteBlogGrid
+                    posts={posts}
+                    gridClassName="sm:grid-cols-2"
+                    endMessage="You've reached the end — that's every article from this author."
+                  />
                 )}
               </div>
             </div>

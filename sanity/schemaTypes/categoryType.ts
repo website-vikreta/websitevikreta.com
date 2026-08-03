@@ -64,7 +64,7 @@ export const categoryType = defineType({
       type: 'url',
       group: 'seo',
       description:
-        'Full canonical URL for this category landing page, e.g. https://www.websitevikreta.com/blog/category/category-slug. Prevents staging-domain indexing.',
+        'Full canonical URL for this category landing page, e.g. https://www.websitevikreta.com/blog/categories/category-slug. Prevents staging-domain indexing.',
       validation: (r) => r.required().uri({ scheme: ['http', 'https'] }),
     }),
   ],

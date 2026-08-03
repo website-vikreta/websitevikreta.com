@@ -2,17 +2,31 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { BlogCard } from '@/components/blog/BlogCard'
+import { cn } from '@/lib/utils'
 import type { DisplayPost } from '@/sanity/types'
 
 const DESKTOP_QUERY = '(min-width: 768px)'
 const PAGE_SIZE_MOBILE = 4
 const PAGE_SIZE_DESKTOP = 6
 
-interface AuthorArticlesListProps {
+interface InfiniteBlogGridProps {
   posts: DisplayPost[]
+  /** Column classes above the shared `grid grid-cols-1 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20` base — narrow single-column pages (e.g. author, constrained to a 720px column) pass `sm:grid-cols-2`; wide taxonomy landing pages pass the sitewide 3-up `sm:grid-cols-2 lg:grid-cols-3`. */
+  gridClassName?: string
+  /** Shown once every post has loaded. */
+  endMessage: string
 }
 
-export function AuthorArticlesList({ posts }: AuthorArticlesListProps) {
+/**
+ * Uniform card grid with scroll-triggered lazy loading — no featured/hero
+ * post, every item renders as the same BlogCard. Initial batch + each
+ * subsequent batch is 6 posts on desktop (>=768px) / 4 on mobile, sliced
+ * client-side from the already-fetched `posts` array (no separate paginated
+ * query — taxonomy landing pages fetch their full post list up front).
+ * An IntersectionObserver on a sentinel div (rootMargin 400px, fires before
+ * the user hits bottom) grows the visible count by one page size at a time.
+ */
+export function InfiniteBlogGrid({ posts, gridClassName = 'sm:grid-cols-2 lg:grid-cols-3', endMessage }: InfiniteBlogGridProps) {
   const [pageSize, setPageSize] = useState(PAGE_SIZE_MOBILE)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE_MOBILE)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -49,16 +63,14 @@ export function AuthorArticlesList({ posts }: AuthorArticlesListProps) {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2">
-        {visiblePosts.map((post, i) => (
-          <BlogCard key={post.slug} post={post} index={i % pageSize} />
+      <div className={cn('grid grid-cols-1 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20', gridClassName)}>
+        {visiblePosts.map((post) => (
+          <BlogCard key={post.slug} post={post} />
         ))}
       </div>
       {hasMore && <div ref={sentinelRef} aria-hidden="true" className="h-1" />}
       {!hasMore && (
-        <p className="mt-12 text-center text-sm text-(--color-text-faint)">
-          You&apos;ve reached the end — that&apos;s every article from this author.
-        </p>
+        <p className="mt-12 text-center text-sm text-(--color-text-faint)">{endMessage}</p>
       )}
     </div>
   )

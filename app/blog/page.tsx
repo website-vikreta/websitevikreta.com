@@ -1,13 +1,13 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import { BlogListingClient } from './BlogListingClient'
+import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
 import { BlogPageHeading } from '@/components/blog/BlogPageHeading'
 import { BlogResultsSkeleton } from '@/components/blog/BlogResultsSkeleton'
 import { FeaturedBlogHeroCarousel } from '@/components/blog/FeaturedBlogHeroCarousel'
 import { FeaturedLabelCarousels } from '@/components/blog/FeaturedLabelCarousels'
 import { LabelCarouselSkeleton } from '@/components/blog/LabelCarouselSkeleton'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { SITE_URL } from '@/config/site'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
 import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
@@ -156,7 +156,7 @@ export default function BlogPage() {
       <main>
         <section className="relative overflow-hidden">
           <div className="container pt-20 pb-16 md:pt-24 md:pb-20">
-            <Breadcrumb segments={BREADCRUMB_SEGMENTS} className="mb-6 md:mb-8" hoverColor="accent" />
+            <BlogHeaderBar segments={BREADCRUMB_SEGMENTS} />
 
             <Suspense fallback={<BlogResultsSkeleton />}>
               <BlogResults />
