@@ -40,24 +40,27 @@ export function CaseStudyCardContent({ study, showReadLink = true }: CaseStudyCa
       />
       <div>
         <span className="block text-sm text-(--color-text-muted)">{study.tags}</span>
-        <h3 className="mt-4 mb-3 text-2xl font-bold leading-snug tracking-tight text-balance sm:text-3xl text-(--color-text)">
+        <h3 className="mt-4 mb-6 text-2xl font-bold leading-snug tracking-tight text-balance sm:text-3xl text-(--color-text)">
           {study.title}{' '}
           <span className="font-semibold text-(--color-text-faint)">{study.subtitle}</span>
         </h3>
-        <p className="mb-6 text-base leading-relaxed text-(--color-text-muted)">
-          {study.excerpt}
-        </p>
         {showReadLink ? <CaseStudyReadLink /> : null}
       </div>
     </>
   )
 }
 
-export function CaseStudyVisual({ study }: { study: CaseStudy }) {
+export function CaseStudyVisual({
+  study,
+  showImage = true,
+}: {
+  study: CaseStudy
+  showImage?: boolean
+}) {
   return (
     <div className="h-full border border-(--color-border) bg-(--color-surface) p-2">
       <div className="relative flex aspect-[14/9] h-full w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)">
-        {study.image ? (
+        {showImage && study.image ? (
           // alt="": study.image is a generic service illustration, not a
           // preview of this client's project — calling it one describes
           // something that isn't in the frame. Restore a real alt with real
@@ -97,7 +100,7 @@ export function CaseStudyFeaturedLink({ study }: { study: CaseStudy }) {
         <CaseStudyCardContent study={study} />
       </div>
       <div className="py-10 lg:py-14">
-        <CaseStudyVisual study={study} />
+        <CaseStudyVisual study={study} showImage={false} />
       </div>
     </Link>
   )

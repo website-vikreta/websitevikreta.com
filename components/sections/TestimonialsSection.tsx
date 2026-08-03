@@ -64,7 +64,7 @@ export function TestimonialsSection() {
   }
 
   return (
-    <section className="py-16 md:py-20 bg-(--color-surface)">
+    <section className="py-16 md:py-20">
       <div className="container max-w-2xl text-center">
 
         {/* Heading */}

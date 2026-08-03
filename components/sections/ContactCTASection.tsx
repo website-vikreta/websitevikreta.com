@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
-import { trackFormSubmit } from '@/lib/analytics'
+import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
@@ -286,7 +286,11 @@ export function ContactCTASection({
                     {sendError && (
                       <p className="text-xs" style={{ color: '#FF4444', fontFamily: 'monospace' }} role="alert">
                         Something went wrong. Email us at{' '}
-                        <a href="mailto:contact@websitevikreta.com" style={{ textDecoration: 'underline' }}>
+                        <a
+                          href="mailto:contact@websitevikreta.com"
+                          style={{ textDecoration: 'underline' }}
+                          onClick={() => trackLinkClick('mailto:contact@websitevikreta.com', id)}
+                        >
                           contact@websitevikreta.com
                         </a>
                       </p>

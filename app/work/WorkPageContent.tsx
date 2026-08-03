@@ -18,7 +18,7 @@ export function WorkPageContent() {
       <FeaturedWorkSection
         id="case-studies"
         heading="Case studies"
-        subheading="Real client work with measurable outcomes — not mockups, not concept decks."
+        subheading="Real client work with measurable outcomes: not mockups, not concept decks."
         ariaLabel="Case Studies"
       />
       <WorkWebsitesSection />

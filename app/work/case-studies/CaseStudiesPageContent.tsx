@@ -23,7 +23,7 @@ export function CaseStudiesPageContent() {
             </RevealText>
             <RevealFade className="mt-5" delay={0.1}>
               <p className="max-w-xl text-body-lg leading-relaxed text-(--color-text-muted)">
-                Before-and-after stories from real engagements — what was broken, what we
+                Before-and-after stories from real engagements: what was broken, what we
                 built, and what changed for the client.
               </p>
             </RevealFade>
