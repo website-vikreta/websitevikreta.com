@@ -264,10 +264,12 @@ export default async function BlogPostPage({
         <div className="container pb-24 pt-6 md:pb-32 md:pt-8">
 
           {/* Title — same pt-6/8 gap above (from breadcrumb or cover image)
-              as below (to byline/body), matching the compact rhythm above. */}
-          <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-6 max-w-[720px] mx-auto md:mb-8">
+              as below (to byline/body), matching the compact rhythm above.
+              This is the page's only <h1> — everything else on the post
+              (Related reads, card titles) nests under it. */}
+          <h1 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-6 max-w-[720px] mx-auto md:mb-8">
             {post.title}
-          </h2>
+          </h1>
 
           {/* Byline — Sanity posts only */}
           {post.source === 'sanity' && (

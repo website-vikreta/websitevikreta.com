@@ -86,8 +86,13 @@ function mapStaticPosts(): DisplayPost[] {
   }))
 }
 
-// Category filtering now happens entirely client-side in BlogListingClient
-// (see that file) — this always fetches the full, unfiltered post list.
+// Category filtering happens entirely client-side in BlogListingClient (see
+// that file), over whatever this returns — fetchFilteredBlogPosts caps at
+// BLOG_INDEX_DEFAULT_LIMIT (24) rather than the whole blog, since this index
+// is a recent-posts preview whose own "View all" button already leads to the
+// fully server-paginated /blog/search. A prolific category's older posts past
+// the cap won't show under its pill here, but are still fully browsable via
+// /blog/categories/[slug] or /blog/search?category=….
 async function getPosts(): Promise<DisplayPost[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return mapStaticPosts()
   try {

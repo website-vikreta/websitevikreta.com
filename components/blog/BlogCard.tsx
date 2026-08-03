@@ -47,10 +47,13 @@ export function BlogCard({ post, className }: BlogCardProps) {
         </div>
       </Link>
 
-      {/* Title */}
-      <h2
-        className="font-bold leading-[1.2] tracking-tight mb-3"
-        style={{ fontSize: 'clamp(1.05rem, 1.6vw, 1.35rem)' }}
+      {/* Title — h3: this card sits under a page/section h1/h2 everywhere
+          it's used (grid, label carousel row, related reads). Size is its
+          own smaller step, not the sitewide text-2xl/3xl card-title tier —
+          this card packs image + title + description + tags + footer in a
+          dense 3-up grid, where that tier would crowd out the rest. */}
+      <h3
+        className="mb-3 text-[clamp(1.05rem,1.6vw,1.35rem)] font-bold leading-[1.2] tracking-tight"
       >
         <Link
           href={postHref(post.categorySlug, post.slug)}
@@ -58,7 +61,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
         >
           {post.title}
         </Link>
-      </h2>
+      </h3>
 
       {/* Description */}
       <p className="text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5 flex-1">
