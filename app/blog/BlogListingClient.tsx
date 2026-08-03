@@ -20,7 +20,7 @@ interface BlogListingClientProps {
 //
 // Category filtering is pure client-side state — no router.push, no
 // searchParams. The URL stays /blog at all times; deep-linkable per-category
-// URLs live at /blog/category/[slug] instead.
+// URLs live at /blog/categories/[slug] instead.
 export function BlogListingClient({ posts, categories }: BlogListingClientProps) {
   const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined)
 

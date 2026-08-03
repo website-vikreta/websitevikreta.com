@@ -18,7 +18,10 @@ import {
   CATEGORIES_WITH_POSTS_QUERY,
   PAGINATED_POSTS_QUERY,
   TAGS_WITH_POSTS_QUERY,
+  ALL_TAGS_QUERY,
   ALL_LABELS_WITH_POSTS_QUERY,
+  ALL_LABELS_QUERY,
+  ALL_AUTHORS_QUERY,
   ALL_POST_SLUGS_QUERY,
   ALL_POST_SLUGS_WITH_CATEGORY_QUERY,
   ADJACENT_POSTS_QUERY,
@@ -87,7 +90,7 @@ export async function fetchLatestPosts(): Promise<Post[]> {
   return client.fetch<Post[]>(LATEST_POSTS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
 }
 
-/** DisplayPost[] for a category slug, newest first — powers the /blog/category landing page. Never throws: an unconfigured store or query failure just yields an empty list. */
+/** DisplayPost[] for a category slug, newest first — powers the /blog/categories landing page. Never throws: an unconfigured store or query failure just yields an empty list. */
 export async function fetchPostsByCategory(categorySlug: string): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) return []
   try {
@@ -102,7 +105,7 @@ export async function fetchPostsByCategory(categorySlug: string): Promise<Displa
   }
 }
 
-/** Single category by slug — powers the /blog/category/[categorySlug] landing page's heading + metadata. */
+/** Single category by slug — powers the /blog/categories/[categorySlug] landing page's heading + metadata. */
 export async function fetchCategoryBySlug(categorySlug: string): Promise<Category | null> {
   if (!isSanityConfigured()) return null
   try {
@@ -145,7 +148,7 @@ export async function fetchTagBySlug(tagSlug: string): Promise<Tag | null> {
   }
 }
 
-/** DisplayPost[] for an author slug, newest first — powers the /blog/author landing page. Never throws: an unconfigured store or query failure just yields an empty list. */
+/** DisplayPost[] for an author slug, newest first — powers the /blog/authors landing page. Never throws: an unconfigured store or query failure just yields an empty list. */
 export async function fetchPostsByAuthor(authorSlug: string): Promise<DisplayPost[]> {
   if (!isSanityConfigured()) return []
   try {
@@ -160,7 +163,7 @@ export async function fetchPostsByAuthor(authorSlug: string): Promise<DisplayPos
   }
 }
 
-/** Single author by slug — powers the /blog/author/[authorSlug] landing page's heading + metadata. */
+/** Single author by slug — powers the /blog/authors/[authorSlug] landing page's heading + metadata. */
 export async function fetchAuthorBySlug(authorSlug: string): Promise<Author | null> {
   if (!isSanityConfigured()) return null
   try {
@@ -174,7 +177,7 @@ export async function fetchAuthorBySlug(authorSlug: string): Promise<Author | nu
   }
 }
 
-/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/label landing page. `excludeSlugs` drops posts (e.g. the post(s) already shown as the page's hero) before the limit is applied, so the row still fills up to `limit` distinct posts instead of coming up short. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
+/** Up to `limit` DisplayPost[] carrying a given label slug, newest first — powers FeaturedLabelCarousel and the /blog/labels landing page. `excludeSlugs` drops posts (e.g. the post(s) already shown as the page's hero) before the limit is applied, so the row still fills up to `limit` distinct posts instead of coming up short. Never throws: an unconfigured store or query failure just yields an empty carousel row. */
 export async function fetchPostsByLabel(
   labelSlug: string,
   limit = 5,
@@ -211,7 +214,7 @@ export async function fetchLabelsWithPosts(): Promise<Label[]> {
   }
 }
 
-/** Single label by slug — powers the /blog/label/[labelSlug] landing page's heading + metadata. */
+/** Single label by slug — powers the /blog/labels/[labelSlug] landing page's heading + metadata. */
 export async function fetchLabelBySlug(labelSlug: string): Promise<Label | null> {
   if (!isSanityConfigured()) return null
   try {
@@ -232,6 +235,24 @@ export async function fetchAllCategories(): Promise<Category[]> {
     {},
     { next: { revalidate: REVALIDATE_SECONDS } },
   )
+}
+
+/** Every tag regardless of post count, with postCount — powers the /blog/tags index page. */
+export async function fetchAllTags(): Promise<Tag[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  return client.fetch<Tag[]>(ALL_TAGS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
+}
+
+/** Every label regardless of post count, with postCount — powers the /blog/labels index page. */
+export async function fetchAllLabels(): Promise<Label[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  return client.fetch<Label[]>(ALL_LABELS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
+}
+
+/** Every author, with postCount — powers the /blog/authors index page. */
+export async function fetchAllAuthors(): Promise<Author[]> {
+  if (!isSanityConfigured()) throw new Error('Sanity not configured')
+  return client.fetch<Author[]>(ALL_AUTHORS_QUERY, {}, { next: { revalidate: REVALIDATE_SECONDS } })
 }
 
 /** Categories that have at least one post — powers the /blog index's category filter pills. Never throws: an unconfigured store or query failure just yields no pills. */

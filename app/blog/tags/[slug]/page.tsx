@@ -2,9 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
-import { BlogCard } from '@/components/blog/BlogCard'
-import { FeaturedBlogHero } from '@/components/blog/FeaturedBlogHero'
-import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
+import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
 import { SITE_URL } from '@/config/site'
 import { fetchTagBySlug, fetchPostsByTag } from '@/sanity/lib/fetch'
 
@@ -34,13 +32,10 @@ export default async function TagLandingPage({ params }: TagPageParams) {
   ])
   if (!tag) notFound()
 
-  // Hero pick is scoped to this tag's own posts — not the sitewide pick
-  // used on /blog — so each tag gets its own hero from its own post list.
-  const { featured, rest } = selectFeaturedPost(posts)
-
   const breadcrumbSegments = [
     { label: 'Home', href: '/' },
     { label: 'Blog', href: '/blog' },
+    { label: 'Tags', href: '/blog/tags' },
     { label: tag.title },
   ]
 
@@ -66,16 +61,10 @@ export default async function TagLandingPage({ params }: TagPageParams) {
             {posts.length === 0 ? (
               <p className="text-(--color-text-muted)">No posts under this tag yet.</p>
             ) : (
-              <>
-                {featured && <FeaturedBlogHero post={featured} />}
-                {rest.length > 0 && (
-                  <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 md:gap-x-10 md:gap-y-20 lg:grid-cols-3">
-                    {rest.map((post, i) => (
-                      <BlogCard key={post.slug} post={post} index={i} />
-                    ))}
-                  </div>
-                )}
-              </>
+              <InfiniteBlogGrid
+                posts={posts}
+                endMessage="You've reached the end — that's every post with this tag."
+              />
             )}
           </div>
         </section>

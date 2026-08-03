@@ -36,7 +36,7 @@ Analytics:     Vercel Analytics + Google Search Console
 /work/[slug]               Individual case study
 /blog                      Blog index (paginated)
 /blog/[slug]               Blog post
-/blog/category/[slug]      Category archive
+/blog/categories/[slug]    Category archive
 /contact                   Contact + lead form
 /tools/[slug]              Tool review pages (SEO)
 /glossary/[term]           Glossary (GEO — AI answer optimization)

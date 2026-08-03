@@ -129,12 +129,38 @@ export const LABEL_BY_SLUG_QUERY = groq`
   }
 `
 
+// Powers the /blog/labels index page's grid — every label regardless of
+// post count, with postCount so each card can show how many posts sit
+// under it (unlike LABELS_WITH_POSTS_QUERY / ALL_LABELS_WITH_POSTS_QUERY
+// above, which both filter to labels that already have posts).
+export const ALL_LABELS_QUERY = groq`
+  *[_type == "label"] | order(title asc) {
+    _id,
+    title,
+    slug { current },
+    description,
+    "postCount": count(*[_type == "post" && defined(slug.current) && references(^._id)])
+  }
+`
+
 export const TAG_BY_SLUG_QUERY = groq`
   *[_type == "tag" && slug.current == $tagSlug][0] {
     _id,
     title,
     slug { current },
     description
+  }
+`
+
+// Powers the /blog/tags index page's grid — every tag regardless of post
+// count, with postCount (unlike TAGS_WITH_POSTS_QUERY above).
+export const ALL_TAGS_QUERY = groq`
+  *[_type == "tag"] | order(title asc) {
+    _id,
+    title,
+    slug { current },
+    description,
+    "postCount": count(*[_type == "post" && defined(slug.current) && references(^._id)])
   }
 `
 
@@ -151,6 +177,19 @@ export const AUTHOR_BY_SLUG_QUERY = groq`
   }
 `
 
+// Powers the /blog/authors index page's grid — every author, with
+// postCount so each card can show how many articles they've written.
+export const ALL_AUTHORS_QUERY = groq`
+  *[_type == "author"] | order(name asc) {
+    _id,
+    name,
+    slug { current },
+    image,
+    designation,
+    "postCount": count(*[_type == "post" && defined(slug.current) && references(^._id)])
+  }
+`
+
 export const CATEGORY_BY_SLUG_QUERY = groq`
   *[_type == "category" && slug.current == $categorySlug][0] {
     _id,
@@ -164,6 +203,8 @@ export const CATEGORY_BY_SLUG_QUERY = groq`
   }
 `
 
+// Powers the /blog/categories index page's grid — includes postCount so
+// each card can show how many posts sit under that category.
 export const ALL_CATEGORIES_QUERY = groq`
   *[_type == "category"] | order(title asc) {
     _id,
@@ -173,7 +214,8 @@ export const ALL_CATEGORIES_QUERY = groq`
     seoTitle,
     seoDescription,
     seoKeywords,
-    canonicalUrl
+    canonicalUrl,
+    "postCount": count(*[_type == "post" && defined(slug.current) && references(^._id)])
   }
 `
 

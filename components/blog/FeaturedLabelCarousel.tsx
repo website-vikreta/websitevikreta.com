@@ -18,7 +18,7 @@ export async function FeaturedLabelCarousel({ title, labelSlug, excludeSlugs }: 
     <div className="mb-10 md:mb-14">
       <div className="mb-6 flex items-end justify-between gap-4 md:mb-8">
         <h2 className="text-h3 font-bold tracking-tight text-(--color-text)">{title}</h2>
-        <TextLink href={`/blog/label/${labelSlug}`} arrow="right" className="shrink-0">
+        <TextLink href={`/blog/labels/${labelSlug}`} arrow="right" className="shrink-0">
           View all
         </TextLink>
       </div>
