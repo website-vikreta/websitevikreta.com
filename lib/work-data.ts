@@ -53,7 +53,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     metric: { value: '11 hrs', label: 'Saved per week' },
     image: '/our-services/ai-automation.webp',
     challenge:
-      'The media team was spending hours on repetitive bulk content generation inside Figma — resizing, exporting, and organizing assets collection by collection.',
+      'The media team was spending hours on repetitive bulk content generation inside Figma: resizing, exporting, and organizing assets collection by collection.',
     approach:
       'We audited the full production workflow, identified the repeat steps, and wired automation inside Figma Buzz so bulk generation could run without manual intervention at each stage.',
     result:
@@ -79,7 +79,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     challenge:
       'The product had rough user flows, no consistent design system, and an interface that did not match the credibility the protocol needed in market.',
     approach:
-      'We started at the foundation — information architecture, core flows, and a scalable design system — then shipped iteratively as the product matured.',
+      'We started at the foundation: information architecture, core flows, and a scalable design system. Then we shipped iteratively as the product matured.',
     result:
       'A product experience that institutional users could trust, with a design system the team could extend without starting from scratch each release.',
     testimonial: {
@@ -103,7 +103,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     challenge:
       'AP Cleanco had no website, no search visibility, and no system for turning local enquiries into booked jobs.',
     approach:
-      'We built a custom Next.js marketing site from scratch — fast loads, local SEO structure, and conversion-focused copy for a garage cleaning service.',
+      'We built a custom Next.js marketing site from scratch: fast loads, local SEO structure, and conversion-focused copy for a garage cleaning service.',
     result:
       'A credible online presence live in three weeks, with a site built to rank locally and convert visitors into leads.',
     testimonial: {
