@@ -40,10 +40,13 @@ export function CaseStudyCardContent({ study, showReadLink = true }: CaseStudyCa
       />
       <div>
         <span className="block text-sm text-(--color-text-muted)">{study.tags}</span>
-        <h3 className="mt-4 mb-6 text-2xl font-bold leading-snug tracking-tight text-balance sm:text-3xl text-(--color-text)">
+        <h3 className="mt-4 mb-3 text-2xl font-bold leading-snug tracking-tight text-balance sm:text-3xl text-(--color-text)">
           {study.title}{' '}
           <span className="font-semibold text-(--color-text-faint)">{study.subtitle}</span>
         </h3>
+        <p className="mb-6 text-base leading-relaxed text-(--color-text-muted)">
+          {study.excerpt}
+        </p>
         {showReadLink ? <CaseStudyReadLink /> : null}
       </div>
     </>
