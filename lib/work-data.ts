@@ -43,7 +43,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'simpli-home',
     company: 'Simpli Home',
     logo: '/client-logos/simpli-home.svg',
-    tags: 'AI automation · Media ops',
+    tags: 'AI AUTOMATION / MEDIA OPS',
     title: 'Bulk media generation, automated.',
     subtitle:
       'A media team doing bulk content generation by hand. We automated the whole pipeline inside Figma Buzz. The work just started happening faster.',
@@ -67,7 +67,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'sustainable-bitcoin-protocol',
     company: 'Sustainable Bitcoin Protocol',
     logo: '/client-logos/sustainable-bitcoin-protocol.svg',
-    tags: 'UI/UX design · Design system',
+    tags: 'UI/UX DESIGN / DESIGN SYSTEM',
     title: 'From MVP to a product people actually use.',
     subtitle:
       'Rough flows, no design system, unclear product. We went in at the foundation and rebuilt everything.',
@@ -92,7 +92,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'ap-cleanco',
     company: 'AP Cleanco',
     logo: '/client-logos/ap-cleanco.svg',
-    tags: 'Website · Marketing',
+    tags: 'WEBSITE / MARKETING',
     title: 'Zero to online. Properly.',
     subtitle:
       'Garage cleaning company, no web presence at all. We built the marketing site from scratch. Local SEO baked in, loads fast, written to convert.',
