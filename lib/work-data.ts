@@ -133,7 +133,7 @@ export const WEB_PROJECTS: WebProject[] = [
     href: 'https://tocal.in/',
     image: '/our-services/webdevelopment.webp',
     imageAlt: 'Tocal website preview',
-    skills: 'UI/UX Design · Web Development',
+    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
   {
     slug: 'sustainable-bitcoin-protocol-site',
@@ -143,7 +143,7 @@ export const WEB_PROJECTS: WebProject[] = [
     href: 'https://www.sustainablebtc.org/',
     image: '/our-services/ui-ux-design.webp',
     imageAlt: 'Sustainable Bitcoin Protocol website preview',
-    skills: 'UI/UX Design · Design System',
+    skills: 'UI/UX DESIGN / DESIGN SYSTEM',
   },
   {
     slug: 'earth-by-blancora',
@@ -153,7 +153,7 @@ export const WEB_PROJECTS: WebProject[] = [
     href: 'https://blancoraclothing.com/shop',
     image: '/our-services/web-mobile-crm.webp',
     imageAlt: 'Earth by Blancora website preview',
-    skills: 'UI/UX Design · E-commerce Development',
+    skills: 'UI/UX DESIGN / E-COMMERCE DEVELOPMENT',
   },
   {
     slug: 'ap-cleanco-site',
@@ -163,7 +163,7 @@ export const WEB_PROJECTS: WebProject[] = [
     href: 'https://apcleanco.com/',
     image: '/our-services/digital-marketing-seo-geo.webp',
     imageAlt: 'AP Cleanco website preview',
-    skills: 'Web Development · Local SEO',
+    skills: 'WEB DEVELOPMENT / LOCAL SEO',
   },
   {
     slug: 'archmodal',
@@ -173,7 +173,7 @@ export const WEB_PROJECTS: WebProject[] = [
     href: 'https://www.archmodal.com/',
     image: '/our-services/ai-automation.webp',
     imageAlt: 'Archmodal website preview',
-    skills: 'UI/UX Design · Web Development',
+    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
   {
     slug: 'katalyst-consulting',
@@ -183,7 +183,7 @@ export const WEB_PROJECTS: WebProject[] = [
     href: 'https://www.katalystcs.co.in/',
     image: '/our-services/webdevelopment.webp',
     imageAlt: 'Katalyst Consulting website preview',
-    skills: 'UI/UX Design · Web Development',
+    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
 ]
 
