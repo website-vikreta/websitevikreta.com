@@ -6,6 +6,7 @@ import { Instagram, Linkedin, Whatsapp } from 'react-bootstrap-icons'
 import { FooterSection } from '@/components/sections/FooterSection'
 import { Button } from '@/components/ui/Button'
 import { TextLink } from '@/components/ui/TextLink'
+import { trackLinkClick } from '@/lib/analytics'
 
 const SOCIAL = [
    {
@@ -94,25 +95,26 @@ export function ComingSoonPage({ pageName, showFooter = false }: ComingSoonPageP
                   </span>
 
                   {/* Icons */}
-                  <div className="flex items-center" role="list">
+                  <ul className="flex items-center list-none">
                      {SOCIAL.map(({ label, href, Icon }) => (
-                        <a
-                           key={label}
-                           href={href}
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           aria-label={label}
-                           role="listitem"
-                           className="group flex items-center justify-center min-w-[44px] min-h-[44px] text-neutral-400 transition-colors duration-200 hover:text-(--color-text)"
-                        >
-                           <Icon
-                              size={20}
-                              aria-hidden="true"
-                              className="transition-transform duration-200 group-hover:scale-110"
-                           />
-                        </a>
+                        <li key={label}>
+                           <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => trackLinkClick(href, 'coming_soon_page')}
+                              aria-label={label}
+                              className="group flex items-center justify-center min-w-[44px] min-h-[44px] text-neutral-400 transition-colors duration-200 hover:text-(--color-text)"
+                           >
+                              <Icon
+                                 size={20}
+                                 aria-hidden="true"
+                                 className="transition-transform duration-200 group-hover:scale-110"
+                              />
+                           </a>
+                        </li>
                      ))}
-                  </div>
+                  </ul>
 
                   {/* Divider */}
                   <span

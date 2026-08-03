@@ -7,6 +7,7 @@ import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { Linkedin, Instagram, Whatsapp } from 'react-bootstrap-icons'
 import { FOOTER_LINKS, FOOTER_CONFIG } from '@/config/footer-links'
+import { trackLinkClick } from '@/lib/analytics'
 
 const ICON_MAP = {
   Linkedin,
@@ -16,18 +17,20 @@ const ICON_MAP = {
 
 function SlotText({ children }: { children: string }) {
   return (
-    <span aria-label={children} role="text">
-      {children.split('').map((char, i) => (
-        <span
-          key={i}
-          className="slot-char-wrap"
-          style={{ '--char-i': i } as React.CSSProperties}
-          aria-hidden="true"
-        >
-          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
-        </span>
-      ))}
-    </span>
+    <>
+      <span className="sr-only">{children}</span>
+      <span aria-hidden="true">
+        {children.split('').map((char, i) => (
+          <span
+            key={i}
+            className="slot-char-wrap"
+            style={{ '--char-i': i } as React.CSSProperties}
+          >
+            <span className="slot-char">{char === ' ' ? ' ' : char}</span>
+          </span>
+        ))}
+      </span>
+    </>
   )
 }
 
@@ -69,6 +72,7 @@ export function FooterSection() {
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
                   rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  onClick={() => trackLinkClick(item.href, 'footer')}
                   className="text-black/50 hover:text-black transition-colors duration-200"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
@@ -189,6 +193,7 @@ export function FooterSection() {
             <p className="text-xs font-bold uppercase tracking-widest text-black/40 font-mono mb-1.5">Contact Us</p>
             <a
               href="mailto:contact@websitevikreta.com"
+              onClick={() => trackLinkClick('mailto:contact@websitevikreta.com', 'footer')}
               className="footer-anim font-sans text-xl md:text-3xl font-semibold text-black hover:text-[#FFD600] transition-colors duration-300"
             >
               <span className="btn-label"><SlotText>contact@websitevikreta.com</SlotText></span>
@@ -196,6 +201,7 @@ export function FooterSection() {
           </div>
           <a
             href="tel:+919970445198"
+            onClick={() => trackLinkClick('tel:+919970445198', 'footer')}
             className="font-mono text-black/50 hover:text-[#FFD600] text-sm transition-colors duration-300"
           >
             +91 99704 45198
