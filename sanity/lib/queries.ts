@@ -193,6 +193,36 @@ export const CATEGORIES_WITH_POSTS_QUERY = groq`
   }
 `
 
+// Powers the /search page's initial load + "Load more" pagination — a
+// straight newest-first slice, no filters. Filtering/sorting on top of the
+// loaded posts happens client-side in SearchClient.
+export const PAGINATED_POSTS_QUERY = groq`
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) [$start...$end] {
+    ${POST_SUMMARY}
+  }
+`
+
+// Only tags actually attached to at least one post — powers the /search
+// page's tag filter (mirrors CATEGORIES_WITH_POSTS_QUERY).
+export const TAGS_WITH_POSTS_QUERY = groq`
+  *[_type == "tag" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
+    _id,
+    title,
+    slug { current }
+  }
+`
+
+// All labels with at least one post, uncapped — powers the /search page's
+// label filter. Distinct from LABELS_WITH_POSTS_QUERY above, which caps at
+// 6 for the blog index's carousel rows.
+export const ALL_LABELS_WITH_POSTS_QUERY = groq`
+  *[_type == "label" && count(*[_type == "post" && defined(slug.current) && references(^._id)]) > 0] | order(title asc) {
+    _id,
+    title,
+    slug { current }
+  }
+`
+
 export const ALL_POST_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current)] { "slug": slug.current }
 `

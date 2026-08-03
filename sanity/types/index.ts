@@ -129,6 +129,11 @@ export interface DisplayPost {
   title: string
   description: string
   publishDate: string
+  // Raw ISO publish timestamp, alongside the formatted publishDate above —
+  // needed for chronological sort (e.g. the /search page's Newest/Oldest
+  // toggle), since publishDate's "MMM D, YYYY" format doesn't sort
+  // correctly as a plain string.
+  publishedAt?: string
   readTime: string
   imageUrl?: string
   // Resolved label refs (e.g. "Featured", "Hero") — used to pick which
@@ -136,6 +141,9 @@ export interface DisplayPost {
   labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
   // Resolved tag refs — rendered as pills on the blog card.
   tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
+  // Author name only — enough for the /search page's free-text search to
+  // match against the byline without pulling in the author's image/bio.
+  author?: { name: string }
 }
 
 // ── Backward-compat aliases ───────────────────────────────────────────────────
