@@ -111,7 +111,7 @@ export default function AboutPage() {
       <ContactCTASection
         id="book-a-call"
         heading="Tell Us What's Broken"
-        subheading="No pitch deck, no commitment. Tell us what isn't working — and we'll tell you what we'd actually do about it."
+        subheading="No pitch deck, no commitment. Tell us what isn't working, and we'll tell you what we'd actually do about it."
         formHeading="Book a Free Call"
         className="pt-16 pb-24 md:pt-20 md:pb-32"
       />

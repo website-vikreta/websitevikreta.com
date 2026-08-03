@@ -55,8 +55,8 @@ export function AboutHeroSection() {
           <RevealFade delay={0.4} className="lg:col-span-6">
             <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">
               A year ago we became the AI automation agency businesses call
-              first. You&apos;re not hiring us for a nicer homepage —
-              you&apos;re hiring us to stop the hours your team is quietly
+              first. You&apos;re not hiring us for a nicer homepage.
+              You&apos;re hiring us to stop the hours your team is quietly
               bleeding.
             </p>
           </RevealFade>
