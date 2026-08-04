@@ -80,7 +80,7 @@ export function CaseStudyVisual({
             alt={`${study.company} logo`}
             height={48}
             width={200}
-            className="opacity-80 grayscale"
+            className="opacity-80"
             style={{ height: '48px', width: 'auto' }}
             unoptimized
           />
