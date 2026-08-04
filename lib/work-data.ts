@@ -51,7 +51,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       'Simpli Home needed to produce large volumes of product visuals without adding headcount. We mapped the manual Figma workflow and rebuilt it as an automated pipeline.',
     featured: true,
     metric: { value: '11 hrs', label: 'Saved per week' },
-    image: '/our-services/ai-automation.webp',
     challenge:
       'The media team was spending hours on repetitive bulk content generation inside Figma: resizing, exporting, and organizing assets collection by collection.',
     approach:
@@ -74,7 +73,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     excerpt:
       'An early-stage protocol product with fragmented UX and no design foundation. We rebuilt the experience layer and stayed on as the product evolved.',
     metric: { value: '3+ yrs', label: 'Ongoing partnership' },
-    image: '/our-services/ui-ux-design.webp',
     externalUrl: 'https://www.sustainablebtc.org/',
     challenge:
       'The product had rough user flows, no consistent design system, and an interface that did not match the credibility the protocol needed in market.',
@@ -99,7 +97,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     excerpt:
       'A local service business with no digital presence. We built a fast marketing site with local SEO and copy written to convert enquiries.',
     metric: { value: '3 weeks', label: 'Concept to launch' },
-    image: '/our-services/webdevelopment.webp',
     challenge:
       'AP Cleanco had no website, no search visibility, and no system for turning local enquiries into booked jobs.',
     approach:
