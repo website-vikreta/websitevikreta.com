@@ -5,7 +5,7 @@ export function WorkCTASection() {
     <ContactCTASection
       id="work-cta"
       heading="Have a problem like these?"
-      subheading="Free call. No commitment. Tell us what isn't working and we'll tell you what we'd actually do about it — before any proposal."
+      subheading="Free call. No commitment. Tell us what isn't working and we'll tell you what we'd actually do about it, before any proposal."
       formHeading="Book a Free Call"
       subjectLabel="What isn't working?"
       subjectPlaceholder="e.g. leads going cold, manual reporting, slow site"

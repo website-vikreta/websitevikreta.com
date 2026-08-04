@@ -20,6 +20,11 @@ import type { DisplayPost } from '@/sanity/types'
 const HERO_LABEL_SLUG = 'featured-articles'
 const HERO_LIMIT = 6
 
+// "All Blogs" grid shows this many posts, after hero posts are excluded —
+// see getPosts()/BlogResults() below for why the raw fetch pulls more than
+// this.
+const GRID_LIMIT = 6
+
 export const metadata: Metadata = {
   title: 'AI Automation, Next.js & Web Development Blog | Website Vikreta',
   description: 'Read practical guides on AI automation, Next.js development, workflow automation, SEO, and business growth. Learn how to build faster websites and automate repetitive work with AI.',
@@ -86,12 +91,20 @@ function mapStaticPosts(): DisplayPost[] {
   }))
 }
 
-// Category filtering now happens entirely client-side in BlogListingClient
-// (see that file) — this always fetches the full, unfiltered post list.
+// Category filtering happens entirely client-side in BlogListingClient (see
+// that file), over whatever this returns. The fetch pulls GRID_LIMIT +
+// HERO_LIMIT posts, not just GRID_LIMIT — BlogResults below excludes
+// whichever of these are already shown as the hero, then slices to
+// GRID_LIMIT, so the "All Blogs" grid still ends up with a full 6 even in
+// the (normal) case where some of the newest posts are also hero posts.
+// This index is a top-6 preview whose own "View all" button already leads
+// to the fully server-paginated /blog/search — a category's posts past the
+// cap won't show under its pill here, but are still fully browsable via
+// /blog/categories/[slug] or /blog/search?category=….
 async function getPosts(): Promise<DisplayPost[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return mapStaticPosts()
   try {
-    const posts = await fetchFilteredBlogPosts({})
+    const posts = await fetchFilteredBlogPosts({ limit: GRID_LIMIT + HERO_LIMIT })
     return posts.length > 0 ? posts : mapStaticPosts()
   } catch {
     return mapStaticPosts()
@@ -132,7 +145,7 @@ async function BlogResults() {
     (p): p is DisplayPost => p !== null,
   )
   const heroSlugs = heroPosts.map((p) => p.slug)
-  const rest = posts.filter((post) => !heroSlugs.includes(post.slug))
+  const rest = posts.filter((post) => !heroSlugs.includes(post.slug)).slice(0, GRID_LIMIT)
 
   return (
     <>

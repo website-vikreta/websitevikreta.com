@@ -116,7 +116,7 @@ export default async function BlogSearchPage({ searchParams }: PageProps) {
               </div>
 
               {posts.length > 0 ? (
-                <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 md:mt-14 md:gap-x-10 md:gap-y-20 lg:grid-cols-3">
+                <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 md:mt-14 md:gap-x-[3.125rem] md:gap-y-[6.25rem] lg:grid-cols-3">
                   {posts.map((post) => (
                     <BlogCard key={post.slug} post={post} />
                   ))}

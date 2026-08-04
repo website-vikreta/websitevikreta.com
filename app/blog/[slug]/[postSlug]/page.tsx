@@ -264,10 +264,12 @@ export default async function BlogPostPage({
         <div className="container pb-24 pt-6 md:pb-32 md:pt-8">
 
           {/* Title — same pt-6/8 gap above (from breadcrumb or cover image)
-              as below (to byline/body), matching the compact rhythm above. */}
-          <h2 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-6 max-w-[720px] mx-auto md:mb-8">
+              as below (to byline/body), matching the compact rhythm above.
+              This is the page's only <h1> — everything else on the post
+              (Related reads, card titles) nests under it. */}
+          <h1 className="text-h2 font-bold text-[var(--color-text)] tracking-tight mb-6 max-w-[720px] mx-auto md:mb-8">
             {post.title}
-          </h2>
+          </h1>
 
           {/* Byline — Sanity posts only */}
           {post.source === 'sanity' && (
@@ -376,7 +378,7 @@ export default async function BlogPostPage({
               <h2 className="mb-6 text-h3 font-bold tracking-tight text-(--color-text) md:mb-8">
                 Related reads
               </h2>
-              <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2">
                 {relatedPosts.map((related) => (
                   <BlogCard key={related.slug} post={related} />
                 ))}

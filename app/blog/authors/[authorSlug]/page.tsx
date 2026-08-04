@@ -5,8 +5,11 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
+import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
 import { SITE_URL } from '@/config/site'
 import { urlFor } from '@/sanity/lib/image'
+import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 import { fetchAuthorBySlug, fetchPostsByAuthor } from '@/sanity/lib/fetch'
 
 const FALLBACK_DESIGNATION = 'Author at Website Vikreta'
@@ -115,9 +118,14 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
 
               {/* Articles by this author */}
               <div className="border-t border-(--color-border) pt-8 md:pt-10">
-                <h2 className="mb-6 text-h3 font-bold tracking-tight text-(--color-text) md:mb-8">
-                  Articles
-                </h2>
+                <div className="mb-6 flex items-end justify-between gap-4 md:mb-8">
+                  <h2 className="text-h3 font-bold tracking-tight text-(--color-text)">
+                    Articles
+                  </h2>
+                  <TextLink href={BLOG_SEARCH_PATH} arrow="right" className="shrink-0">
+                    View all blogs
+                  </TextLink>
+                </div>
                 {posts.length === 0 ? (
                   <p className="text-(--color-text-muted)">No posts from this author yet.</p>
                 ) : (
@@ -127,6 +135,12 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
                     endMessage="You've reached the end — that's every article from this author."
                   />
                 )}
+
+                <div className="mt-14 flex justify-center md:mt-20">
+                  <Button href={BLOG_SEARCH_PATH} variant="ghost" size="md" showArrow>
+                    View all blogs
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

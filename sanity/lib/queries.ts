@@ -71,7 +71,7 @@ export const FILTERED_POSTS_QUERY = groq`
   *[_type == "post" && defined(slug.current)
     && (!defined($categorySlug) || category->slug.current == $categorySlug)
     && (!defined($searchQuery) || title match $searchQuery + "*" || excerpt match $searchQuery + "*")
-  ] | order(publishedAt desc) {
+  ] | order(publishedAt desc) [0...$limit] {
     ${POST_SUMMARY}
   }
 `
@@ -97,7 +97,7 @@ export const RELATED_POSTS_QUERY = groq`
     category->slug.current == $categorySlug ||
     count((tags[]._ref)[@ in $tagIds]) > 0 ||
     count((seoKeywords[])[@ in $keywords]) > 0
-  )] | order(publishedAt desc) [0...3] {
+  )] | order(publishedAt desc) [0...2] {
     ${POST_SUMMARY}
   }
 `
