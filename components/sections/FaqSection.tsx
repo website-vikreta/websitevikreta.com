@@ -75,7 +75,7 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
                   </h3>
                 </AccordionPrimitive.Header>
 
-                <AccordionPrimitive.Content className="accordion-content" forceMount>
+                <AccordionPrimitive.Content className="accordion-content-seo" forceMount>
                   <p className="pb-8 text-[1.0625rem] leading-[1.7] text-(--color-text-muted)">
                     {faq.answer}
                   </p>

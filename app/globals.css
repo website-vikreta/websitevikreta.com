@@ -5,27 +5,101 @@
   --font-mono: var(--font-utile);
 }
 
-/* Grid-`fr` collapse instead of animating height: a `height` keyframe forces
-   layout recalculation every frame; grid-template-rows 0fr->1fr is cheap to
-   animate and doesn't fight Radix's forceMount (content stays in the DOM,
-   collapsed rows just take zero space) — needed since forceMount keeps every
-   answer in the server HTML for SEO. */
+/* Two accordion consumers, two different Radix Content lifecycles — each
+   needs its own collapse mechanism, not one shared class:
+
+   .accordion-content (app/faq/FaqPageContent.tsx) — Radix's default
+   mount/unmount Content. Radix's Presence only detects a CSS *animation*
+   (not a *transition*) to time when it's safe to unmount after closing, so
+   this needs the accordion-down/up keyframes below; a transition here would
+   make Presence unmount the node instantly, killing the close animation.
+
+   .accordion-content-seo (components/sections/FaqSection.tsx, forceMount) —
+   every answer stays in the DOM/server HTML for SEO, open or closed, so a
+   `transition` against Radix's own measured --radix-accordion-content-height
+   is correct here and preferred: it only runs on a data-state *change*, not
+   on initial mount, so closed items don't replay a close animation on first
+   paint (which forceMount + the animation above would do, since every closed
+   item matches [data-state="closed"] from first paint).
+   grid-template-rows: 0fr->1fr was tried instead (9978276, after 84bf8d2 was
+   reverted at 040da0e for the same reason) — `fr` isn't reliably
+   interpolatable across browsers, so the transition often just snaps
+   instantly with no visible animation, AND can fail to collapse fully,
+   leaving one line of the answer visible under its closed question. Same bug
+   both times; don't reintroduce it. */
 .accordion-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s ease-out;
+  overflow: hidden;
 }
 .accordion-content[data-state="open"] {
-  grid-template-rows: 1fr;
+  animation: accordion-down 0.2s ease-out;
 }
-.accordion-content > * {
+.accordion-content[data-state="closed"] {
+  height: 0;
+  animation: accordion-up 0.2s ease-out;
+}
+
+.accordion-content-seo {
   overflow: hidden;
-  min-height: 0;
+  height: 0;
+  transition: height 0.25s ease-out;
+}
+.accordion-content-seo[data-state="open"] {
+  height: var(--radix-accordion-content-height);
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+/* Above-the-fold reveals — CSS twins of RevealText/RevealFade's motion
+   animations (components/ui/Reveal.tsx, `immediate` prop).
+
+   Why CSS and not framer here: framer's whileInView writes its `initial`
+   state (opacity:0 / translateY(110%)) into the *server* HTML as an inline
+   style, and only clears it once JS hydrates and an IntersectionObserver
+   fires. For content already in the first viewport that gap IS the LCP
+   "element render delay" — it measured 5.6s on /work under Lighthouse's
+   throttled mobile profile. These keyframes are identical in shape, easing
+   and duration, but start at first paint with no JS in the path.
+
+   Keep the timing values in sync with REVEAL_EASE / the duration defaults in
+   Reveal.tsx — same motion language, two implementations. */
+@keyframes reveal-line {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+@keyframes reveal-fade {
+  from { opacity: 0; transform: translateY(var(--reveal-y, 24px)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal-line-immediate {
+  animation: reveal-line var(--reveal-duration, 0.9s) cubic-bezier(0.16, 1, 0.3, 1)
+    var(--reveal-delay, 0s) both;
+}
+.reveal-fade-immediate {
+  animation: reveal-fade var(--reveal-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1)
+    var(--reveal-delay, 0s) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .accordion-content {
+  .accordion-content,
+  .accordion-content-seo {
     transition: none;
+    animation: none;
+  }
+  /* `animation: none` alone would leave the element at its `both` fill state.
+     These reset the transform/opacity so the content is simply present. */
+  .reveal-line-immediate,
+  .reveal-fade-immediate {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 

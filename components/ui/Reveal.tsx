@@ -1,7 +1,14 @@
 'use client'
 
 import { motion, useInView } from 'motion/react'
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ElementType,
+  type ReactNode,
+} from 'react'
 
 // Shared motion language for the whole site.
 // Mirrors the hero reveal: text slides up from behind an overflow-hidden clip,
@@ -23,13 +30,41 @@ export function RevealText({
   children,
   delay = 0,
   duration = 0.9,
+  immediate = false,
 }: {
   as?: ElementType
   className?: string
   children: ReactNode
   delay?: number
   duration?: number
+  /** Above-the-fold content (hero h1s, etc.). Runs the SAME reveal, but as a
+   * CSS animation starting at first paint instead of a framer whileInView.
+   * framer writes its `initial` state as an inline style into the server HTML
+   * and only clears it after hydration + IntersectionObserver — for content
+   * already in the first viewport that gap is the LCP "render delay"
+   * (5.6s on /work under Lighthouse throttling). Animation is unchanged. */
+  immediate?: boolean
 }) {
+  if (immediate) {
+    return (
+      <Tag className={className}>
+        <span className="block overflow-hidden pb-[0.14em] -mb-[0.14em]">
+          <span
+            className="block reveal-line-immediate"
+            style={
+              {
+                '--reveal-duration': `${duration}s`,
+                '--reveal-delay': `${delay}s`,
+              } as CSSProperties
+            }
+          >
+            {children}
+          </span>
+        </span>
+      </Tag>
+    )
+  }
+
   // Trigger off the STATIC clip wrapper — IntersectionObserver measures the
   // transformed box, so observing the moving inner line would never fire reliably.
   return (
@@ -63,6 +98,7 @@ export function RevealFade({
   delay = 0,
   y = 24,
   duration = 0.7,
+  immediate = false,
 }: {
   as?: ElementType
   className?: string
@@ -70,7 +106,28 @@ export function RevealFade({
   delay?: number
   y?: number
   duration?: number
+  /** See RevealText's `immediate` — same fade-up, run from CSS at first paint
+   * instead of a JS-gated whileInView. No caller overrides `as` on this
+   * component, so the immediate branch renders a plain <div>. */
+  immediate?: boolean
 }) {
+  if (immediate) {
+    return (
+      <div
+        className={`reveal-fade-immediate${className ? ` ${className}` : ''}`}
+        style={
+          {
+            '--reveal-duration': `${duration}s`,
+            '--reveal-delay': `${delay}s`,
+            '--reveal-y': `${y}px`,
+          } as CSSProperties
+        }
+      >
+        {children}
+      </div>
+    )
+  }
+
   const MotionTag = Tag as typeof motion.div
   return (
     <MotionTag

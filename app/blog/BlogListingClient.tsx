@@ -31,11 +31,20 @@ export function BlogListingClient({ posts, categories }: BlogListingClientProps)
           aria-label="Browse posts by category"
           className="mb-10 md:mb-14 flex flex-nowrap gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
+          {/* "All" is always the current state on this page (the grid below
+              is never filtered) — a static label, not a link: nothing to
+              navigate to that isn't already here. */}
+          <span
+            aria-current="true"
+            className="shrink-0 rounded-full border border-(--color-text) bg-(--color-text) px-4 py-2 text-sm font-medium text-(--color-bg)"
+          >
+            All
+          </span>
           {categories.map((category) => (
             <Link
               key={category._id}
               href={buildBlogSearchHref({ category: category.slug.current })}
-              className="shrink-0 rounded-full border border-(--color-border) px-4 py-2 text-sm text-(--color-text-muted) transition-colors duration-200 ease-out hover:border-(--color-text) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text)"
+              className="shrink-0 rounded-full border border-(--color-border) px-4 py-2 text-sm text-(--color-text-muted) transition-colors duration-200 ease-out hover:border-(--color-text) hover:bg-(--color-text) hover:text-(--color-bg) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text)"
             >
               {category.title}
             </Link>

@@ -20,6 +20,7 @@ export function WorkPageContent() {
         heading="Case studies"
         subheading="Real client work with measurable outcomes: not mockups, not concept decks."
         ariaLabel="Case Studies"
+        aboveFold
       />
       <WorkWebsitesSection />
       {/* No bg — every section on this page sits on the page ground. */}
