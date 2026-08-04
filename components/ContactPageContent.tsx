@@ -7,25 +7,28 @@ import { Loader2, ArrowUpRight } from 'lucide-react'
 import { Linkedin, Whatsapp, Instagram, Envelope, Telephone } from 'react-bootstrap-icons'
 import emailjs from '@emailjs/browser'
 import { Button } from '@/components/ui/Button'
+import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
 
 function SlotText({ children }: { children: string }) {
   return (
-    <span aria-label={children} role="text">
-      {children.split('').map((char, i) =>
-        char === ' ' ? (
-          <span key={i} aria-hidden="true" style={{ display: 'inline-block', width: '0.3em' }} />
-        ) : (
-          <span
-            key={i}
-            className="slot-char-wrap"
-            style={{ '--char-i': i } as React.CSSProperties}
-            aria-hidden="true"
-          >
-            <span className="slot-char">{char}</span>
-          </span>
-        )
-      )}
-    </span>
+    <>
+      <span className="sr-only">{children}</span>
+      <span aria-hidden="true">
+        {children.split('').map((char, i) =>
+          char === ' ' ? (
+            <span key={i} style={{ display: 'inline-block', width: '0.3em' }} />
+          ) : (
+            <span
+              key={i}
+              className="slot-char-wrap"
+              style={{ '--char-i': i } as React.CSSProperties}
+            >
+              <span className="slot-char">{char}</span>
+            </span>
+          )
+        )}
+      </span>
+    </>
   )
 }
 
@@ -47,6 +50,7 @@ function SocialLink({
     <a
       href={href}
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      onClick={() => trackLinkClick(href, 'contact_page')}
       className="footer-anim group inline-flex items-center gap-2 w-fit"
       style={{ color: 'var(--color-text)', textDecoration: 'none', fontSize: '1rem', fontWeight: 500 }}
       aria-label={ariaLabel}
@@ -162,7 +166,7 @@ export function ContactPageContent() {
       }
 
       // h1 words start hidden via .word-inner CSS; form elements start hidden via inline style
-      gsap.set(h1Els, { y: '110%' })
+      gsap.set(h1Els, { y: '130%' })
       gsap.set([btnRef.current, socialsRef.current, mobileSocRef.current], { opacity: 0, y: 18 })
 
       const tl = gsap.timeline({ delay: 0.1 })
@@ -229,6 +233,7 @@ export function ContactPageContent() {
         EMAILJS_PUBLIC_KEY,
       )
       setSubmitted(true)
+      trackFormSubmit('contact_us')
     } catch (err) {
       const e = err as { status?: number; text?: string }
       console.error('[EmailJS] send failed:', e?.status, e?.text, err)

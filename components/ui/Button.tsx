@@ -5,18 +5,20 @@ import { ArrowRight } from 'lucide-react'
 function SlotText({ children }: { children: React.ReactNode }) {
   if (typeof children !== 'string') return <>{children}</>
   return (
-    <span aria-label={children} role="text">
-      {children.split('').map((char, i) => (
-        <span
-          key={i}
-          className="slot-char-wrap"
-          style={{ '--char-i': i } as React.CSSProperties}
-          aria-hidden="true"
-        >
-          <span className="slot-char">{char === ' ' ? ' ' : char}</span>
-        </span>
-      ))}
-    </span>
+    <>
+      <span className="sr-only">{children}</span>
+      <span aria-hidden="true">
+        {children.split('').map((char, i) => (
+          <span
+            key={i}
+            className="slot-char-wrap"
+            style={{ '--char-i': i } as React.CSSProperties}
+          >
+            <span className="slot-char">{char === ' ' ? ' ' : char}</span>
+          </span>
+        ))}
+      </span>
+    </>
   )
 }
 

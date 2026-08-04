@@ -1,113 +1,70 @@
-'use client'
-
-import { motion } from 'motion/react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { TextLink } from '@/components/ui/TextLink'
-import type { DisplayPost } from '@/sanity/types'
+import { BlogCard } from '@/components/blog/BlogCard'
+import { Button } from '@/components/ui/Button'
+import { BLOG_SEARCH_PATH, buildBlogSearchHref } from '@/lib/blog-search-params'
+import type { DisplayPost, Category } from '@/sanity/types'
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+interface BlogListingClientProps {
+  /** Already hero-excluded — the single page hero is picked and rendered upstream in app/blog/page.tsx, not here. */
+  posts: DisplayPost[]
+  categories?: Category[]
 }
 
-const lineReveal = {
-  hidden: { y: '110%', opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
-  },
-}
-
-const cardReveal = {
-  hidden: { y: 24, opacity: 0 },
-  visible: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 },
-  }),
-}
-
-export function BlogListingClient({ posts }: { posts: DisplayPost[] }) {
+// Renders the tail of the blog index — category pills + card grid.
+// Deliberately does NOT render the breadcrumb, page heading, hero, or label
+// carousel; those are static/server-rendered above this in the page shell
+// (app/blog/page.tsx) so they paint without waiting on this.
+//
+// Category pills are plain links to /blog/search?category=… — no in-place
+// filtering. Was client-side pill state filtering this same grid in place;
+// removed per user request ("when i click on any category instead of
+// isotope, remove that functionality completely. it should redirect to
+// search page with category filter selected"). The grid below always shows
+// the unfiltered top-6 "All Blogs" preview.
+export function BlogListingClient({ posts, categories }: BlogListingClientProps) {
   return (
-    <main>
-      <section className="relative overflow-hidden">
-        <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
-
-          {/* Hero header */}
-          <motion.div
-            className="mb-10 md:mb-14"
-            variants={container}
-            initial="hidden"
-            animate="visible"
+    <>
+      {/* Category pills */}
+      {categories && categories.length > 0 && (
+        <div
+          role="group"
+          aria-label="Browse posts by category"
+          className="mb-10 md:mb-14 flex flex-nowrap gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {/* "All" is always the current state on this page (the grid below
+              is never filtered) — a static label, not a link: nothing to
+              navigate to that isn't already here. */}
+          <span
+            aria-current="true"
+            className="shrink-0 rounded-full border border-(--color-text) bg-(--color-text) px-4 py-2 text-sm font-medium text-(--color-bg)"
           >
-            <div className="overflow-hidden">
-              <motion.h2
-                className="text-h2 font-bold leading-[1.1] tracking-tight text-[var(--color-text)]"
-                variants={lineReveal}
-              >
-                Blogs
-              </motion.h2>
-            </div>
-          </motion.div>
+            All
+          </span>
+          {categories.map((category) => (
+            <Link
+              key={category._id}
+              href={buildBlogSearchHref({ category: category.slug.current })}
+              className="shrink-0 rounded-full border border-(--color-border) px-4 py-2 text-sm text-(--color-text-muted) transition-colors duration-200 ease-out hover:border-(--color-text) hover:bg-(--color-text) hover:text-(--color-bg) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text)"
+            >
+              {category.title}
+            </Link>
+          ))}
+        </div>
+      )}
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
-            {posts.map((post, i) => (
-              <motion.article
-                key={post.slug}
-                custom={i}
-                variants={cardReveal}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.15 }}
-                className="flex flex-col"
-              >
-                {/* Image with category badge */}
-                <Link href={`/blog/${post.slug}`} className="block relative mb-5 group/img">
-                  <div className="relative w-full aspect-video bg-[#121212] overflow-hidden">
-                    {post.imageUrl ? (
-                      <Image
-                        src={post.imageUrl}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-[filter] duration-300 border border-(--color-border)"
-                      />
-                    ) : null}
-                  </div>
-                </Link>
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 md:gap-x-[3.125rem] md:gap-y-[6.25rem]">
+        {posts.map((post) => (
+          <BlogCard key={post.slug} post={post} />
+        ))}
+      </div>
 
-                {/* Title */}
-                <h2
-                  className="font-bold leading-[1.2] tracking-tight text-[var(--color-text)] mb-3"
-                  style={{ fontSize: 'clamp(1.05rem, 1.6vw, 1.35rem)' }}
-                >
-                  {post.title}
-                </h2>
-
-                {/* Description */}
-                <p className="text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5 flex-1">
-                  {post.description}
-                </p>
-
-                {/* Footer: date + readtime | Read more */}
-                <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-4 mt-auto gap-4">
-                  <span className="text-[0.75rem] text-[var(--color-text-faint)] tracking-[0.03em] whitespace-nowrap">
-                    {post.publishDate} · {post.readTime}
-                  </span>
-                  <TextLink href={`/blog/${post.slug}`} arrow="diagonal">
-                    Read more
-                  </TextLink>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-
-
-</div>
-      </section>
-    </main>
+      {/* View all — entry point into the dedicated blog search page */}
+      <div className="mt-14 flex justify-center md:mt-20">
+        <Button href={BLOG_SEARCH_PATH} variant="ghost" size="md" showArrow>
+          View all
+        </Button>
+      </div>
+    </>
   )
 }

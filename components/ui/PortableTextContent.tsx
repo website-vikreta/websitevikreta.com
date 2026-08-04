@@ -76,7 +76,7 @@ export const ptComponents: any = {
       const rows: { cells?: string[] }[] = value?.rows ?? []
       if (!rows.length) return null
       return (
-        <div className="overflow-x-auto my-8">
+        <div className="overflow-x-auto my-8 border border-[var(--color-border)]">
           <table className="w-full border-collapse text-sm">
             <tbody>
               {rows.map((row, i) => (
@@ -84,8 +84,8 @@ export const ptComponents: any = {
                   key={i}
                   className={
                     i === 0
-                      ? 'border-b-2 border-[#FFD600] bg-neutral-900'
-                      : 'border-b border-neutral-800'
+                      ? 'border-b-2 border-[#FFD600] bg-[var(--color-bg-muted)]'
+                      : 'border-b border-[var(--color-border)]'
                   }
                 >
                   {(row.cells ?? []).map((cell, j) => {
@@ -93,7 +93,7 @@ export const ptComponents: any = {
                     return (
                       <Tag
                         key={j}
-                        className="px-4 py-2 text-left text-[var(--color-text)] font-normal"
+                        className="px-4 py-3 text-left text-[var(--color-text)] font-normal"
                       >
                         {cell}
                       </Tag>

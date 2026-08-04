@@ -1,13 +1,13 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
-import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { Button } from '@/components/ui/Button'
 import { RevealText } from '@/components/ui/Reveal'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { FaqSection } from '@/components/sections/FaqSection'
+import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { FaqItem } from '@/lib/faq-data'
 
 // ─── Shared constants ──────────────────────────────────────────────────────────
 
@@ -102,33 +102,39 @@ const projects = [
 
 // ─── FAQ data ──────────────────────────────────────────────────────────────────
 
-const webDevFaqs = [
+const webDevFaqs: FaqItem[] = [
   {
+    id: 'webdev-1',
     question: 'How long does it take to build a website?',
     answer:
       'Most business websites take 3–6 weeks from kickoff to launch, depending on the number of pages, content readiness, and how quickly feedback comes back during review. Larger builds with custom features or CMS integration can take longer — we\'ll give you a realistic timeline upfront, not an aggressive one we can\'t hit.',
   },
   {
+    id: 'webdev-2',
     question: 'Do you build custom websites or use templates?',
     answer:
       'Every site we build is custom-coded from scratch using Next.js and Tailwind CSS — not a theme with your logo swapped in. That means your site is built around your brand and goals, not squeezed into someone else\'s layout, and it\'s faster and more flexible to extend later.',
   },
   {
+    id: 'webdev-3',
     question: 'Will my website be optimized for SEO and mobile from day one?',
     answer:
       'Yes. Every site we ship includes proper metadata, sitemaps, semantic HTML, fast load times, and mobile-first responsive design as standard — not as an add-on. SEO isn\'t something we bolt on after launch; it\'s part of how the site is built.',
   },
   {
+    id: 'webdev-4',
     question: 'How much does a custom website cost?',
     answer:
       'Pricing depends on scope — number of pages, custom functionality, and CMS needs all factor in. We\'ll give you a clear, itemized quote after understanding your requirements, with no hidden costs added later.',
   },
   {
+    id: 'webdev-5',
     question: 'Do I own the code and content after the project is delivered?',
     answer:
       'Yes, completely. Once the project is delivered, the code and content are yours — no licensing fees, no lock-in, and no dependency on us to keep the site running.',
   },
   {
+    id: 'webdev-6',
     question: 'Do you offer support or maintenance after launch?',
     answer:
       'Yes. We offer post-launch support for bug fixes, content updates, and ongoing maintenance, so your site keeps running smoothly as your business grows. We can walk you through options once your site is live.',
@@ -308,91 +314,7 @@ export default function WebDevClient() {
         </div>
       </section>
 
-      {/* ─── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-20">
-        <div className="container">
-
-          <motion.div
-            className="mx-auto max-w-[720px]"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.35, ease: EASE }}
-          >
-            <div className="text-center mb-12">
-              <RevealText as="h2" className="text-h2 font-bold">
-                Frequently Asked Questions
-              </RevealText>
-            </div>
-
-            <AccordionPrimitive.Root type="single" collapsible>
-              {webDevFaqs.map((faq, index) => (
-                <AccordionPrimitive.Item
-                  key={faq.question}
-                  value={`item-${index}`}
-                  className="border-t"
-                  style={{ borderColor: 'var(--color-border)' }}
-                >
-                  <AccordionPrimitive.Header asChild>
-                    <h3>
-                      <AccordionPrimitive.Trigger
-                        className="group flex w-full items-start justify-between gap-6 py-6 text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4"
-                        style={{ outlineColor: 'var(--color-accent)' }}
-                      >
-                        <div className="flex gap-4">
-                          <span
-                            className="mt-2 flex-shrink-0 font-mono text-xs"
-                            style={{ color: 'var(--color-text-faint)', letterSpacing: '0.06em' }}
-                            aria-hidden="true"
-                          >
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                          <span className="text-xl md:text-2xl font-semibold leading-snug tracking-tight text-[var(--color-text-muted)] group-data-[state=open]:text-[var(--color-text)]">
-                            {faq.question}
-                          </span>
-                        </div>
-                        <span
-                          className="mt-2 flex-shrink-0 text-xl font-light text-[var(--color-text-muted)] transition-opacity duration-150 select-none"
-                          aria-hidden="true"
-                        >
-                          <span className="group-data-[state=open]:hidden">+</span>
-                          <span className="group-data-[state=closed]:hidden">&#8722;</span>
-                        </span>
-                      </AccordionPrimitive.Trigger>
-                    </h3>
-                  </AccordionPrimitive.Header>
-
-                  <AccordionPrimitive.Content className="accordion-content">
-                    <p
-                      className="pb-8 text-[1.0625rem] leading-[1.7]"
-                      style={{ color: 'var(--color-text-muted)' }}
-                    >
-                      {faq.answer}
-                    </p>
-                  </AccordionPrimitive.Content>
-                </AccordionPrimitive.Item>
-              ))}
-              <div className="border-t" style={{ borderColor: 'var(--color-border)' }} />
-            </AccordionPrimitive.Root>
-
-            <p
-              className="mt-12 text-[1.0625rem] leading-[1.8] text-center"
-              style={{ color: 'var(--color-text-muted)' }}
-            >
-              Still have questions?{' '}
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-1 font-medium transition-colors duration-200 hover:opacity-70"
-                style={{ color: 'var(--color-text)', textDecoration: 'underline', textUnderlineOffset: '3px' }}
-              >
-                Get in touch
-                <ArrowUpRight size={13} strokeWidth={2} aria-hidden="true" />
-              </Link>
-            </p>
-          </motion.div>
-
-        </div>
-      </section>
+      <FaqSection items={webDevFaqs} ariaLabel="Web Development FAQs" />
 
     </main>
   )

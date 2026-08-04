@@ -10,21 +10,26 @@ interface StatItem {
 }
 
 const STATS: StatItem[] = [
-  { id: 1, value: 5,    suffix: '+',  label: 'Working with clients across the globe' },
-  { id: 2, value: 68,   suffix: '+',  label: 'Projects shipped: web, apps, automation, design' },
-  { id: 3, value: 6360, suffix: 'hrs', label: 'Saved since we went AI-first' },
+  { id: 1, value: 5,    suffix: '+',  label: 'Years working with founders and teams across the globe' },
+  { id: 2, value: 68,   suffix: '+',  label: 'Projects shipped: websites, apps, automation, design' },
+  { id: 3, value: 6360, suffix: '+hrs', label: 'Saved for clients since we went AI-first' },
   { id: 4, value: null, suffix: '',   label: 'Tools we can use: no limitation, only solutions', isInfinity: true },
 ]
 
-export function StatsCounters() {
+interface StatsCountersProps {
+  /** Full literal Tailwind bg class — defaults to the surface treatment used on the home page. */
+  bgClassName?: string
+}
+
+export function StatsCounters({ bgClassName = 'bg-(--color-surface)' }: StatsCountersProps = {}) {
   return (
     <section
-      className="relative py-16 md:py-20 overflow-hidden"
+      className={`relative py-16 md:py-20 ${bgClassName} overflow-hidden`}
       aria-label="Impact Statistics"
     >
       <div className="container relative z-10">
         <RevealText as="h2" className="text-h2 font-bold text-[var(--color-text)] mb-10 md:mb-14">
-          The Impact We&rsquo;ve Delivered
+          The Numbers So Far
         </RevealText>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
@@ -47,7 +52,7 @@ export function StatsCounters() {
                       aria-hidden="true"
                     />
                   ) : (
-                    <span className="text-5xl md:text-6xl">
+                    <span className="text-5xl md:text-6xl tracking-[-0.05em]">
                       <Counter value={stat.value ?? 0} />
                       <span className="text-3xl md:text-4xl ml-1">{stat.suffix}</span>
                     </span>
@@ -66,7 +71,7 @@ export function StatsCounters() {
         {/* Note below stats */}
         <RevealFade className="mt-10 md:mt-14" delay={0.4}>
           <p className="text-[var(--color-text-muted)] text-sm md:text-base leading-relaxed max-w-2xl">
-            That last number is one year old. We made the shift, measured everything, and haven't looked back.
+            That last number is a year old. It has only gone up since.
           </p>
         </RevealFade>
       </div>

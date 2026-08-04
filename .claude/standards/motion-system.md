@@ -42,7 +42,7 @@ const stagger = {
 > For any scroll-triggered reveal, import from `components/ui/Reveal.tsx`. Do **not** hand-roll GSAP/motion `whileInView` per section. This keeps one easing, timing, and trigger across the whole site. GSAP (below) is reserved for bespoke, load-triggered moments like the hero.
 
 ```tsx
-import { RevealText, RevealFade, Counter } from '@/components/ui/Reveal'
+import { RevealText, RevealFade, RevealImage, Counter } from '@/components/ui/Reveal'
 
 // Headings + titles — masked slide-up (overflow-hidden clip + inner translateY 110%→0)
 <RevealText as="h2" className="text-h2 font-bold">Section heading</RevealText>
@@ -51,6 +51,13 @@ import { RevealText, RevealFade, Counter } from '@/components/ui/Reveal'
 
 // Cards + supporting text — fade-up. Stagger a group with delay={i * 0.1}
 <RevealFade delay={i * 0.1}>{card}</RevealFade>
+
+// Images — clip-path wipe up + inner 1.08→1 scale settle. className carries the image
+// container's own overflow-hidden/border/radius; children is the <Image fill />.
+// Layer with a wrapping RevealFade for card-entrance stagger, same as GSAP's fix-card pattern.
+<RevealImage delay={0.3} className="relative w-full h-[400px] overflow-hidden rounded-sm">
+  <Image src="..." alt="..." fill className="object-cover" />
+</RevealImage>
 
 // Numbers — count 0→value on scroll-in
 <Counter value={68} />

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       {
         url: '/og-image.png',
         width: 1200,
-        height: 630,
+        height: 675,
         alt: 'Website Vikreta Services | AI Automation & Web Development',
       },
     ],
