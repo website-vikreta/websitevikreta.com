@@ -12,9 +12,9 @@ export function BlogResultsSkeleton() {
           the em-based fixed heights resolve identically and swapping in real
           content never shifts the layout. */}
       <div className="mb-10 md:mb-14">
-        <div className="border border-(--color-border) lg:grid lg:grid-cols-2 lg:items-stretch">
+        <div className="border border-(--color-border) lg:grid lg:grid-cols-2 lg:items-stretch lg:aspect-[32/9]">
           <div className="aspect-video lg:aspect-auto bg-(--color-bg-muted)" />
-          <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
+          <div className="flex flex-col justify-center overflow-hidden p-6 sm:p-8 lg:px-12 lg:py-8">
             <div className="h-4 w-32 bg-(--color-bg-muted) mb-4" />
             <div className="h-[3.3em] text-3xl sm:text-4xl leading-[1.1] mb-4">
               <div className="h-full w-3/4 bg-(--color-bg-muted)" />
@@ -57,7 +57,7 @@ export function BlogResultsSkeleton() {
       </div>
 
       {/* Card grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 md:gap-x-[3.125rem] md:gap-y-[6.25rem]">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex flex-col">
             <div className="mb-5 aspect-video w-full bg-(--color-bg-muted)" />

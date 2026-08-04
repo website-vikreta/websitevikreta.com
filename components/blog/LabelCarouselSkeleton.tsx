@@ -6,7 +6,7 @@ export function LabelCarouselSkeleton() {
         <div className="h-7 w-40 bg-(--color-bg-muted)" />
         <div className="h-5 w-16 bg-(--color-bg-muted)" />
       </div>
-      <div className="flex flex-row gap-6 overflow-hidden">
+      <div className="flex flex-row gap-[1.875rem] overflow-hidden">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="flex w-72 shrink-0 flex-col sm:w-80">
             <div className="mb-5 aspect-video w-full bg-(--color-bg-muted)" />

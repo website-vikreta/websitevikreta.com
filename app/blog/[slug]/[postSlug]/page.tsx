@@ -378,7 +378,7 @@ export default async function BlogPostPage({
               <h2 className="mb-6 text-h3 font-bold tracking-tight text-(--color-text) md:mb-8">
                 Related reads
               </h2>
-              <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2">
                 {relatedPosts.map((related) => (
                   <BlogCard key={related.slug} post={related} />
                 ))}

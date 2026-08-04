@@ -6,10 +6,12 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Full `/blog/*` audit + fixes — DONE for the contained items. Found via a full routing/UI/perf pass: (1) post detail page had no `<h1>` (title was `<h2>`) — fixed. (2) `BlogCard.tsx` titles were `<h2>` sitewide (should be `<h3>`) — fixed, plus its inline `style={{fontSize}}` moved to a Tailwind arbitrary-value class. (3) `/blog` index fetched every post in the blog unconditionally — capped at 24 via a new `limit` param on `fetchFilteredBlogPosts`/`FILTERED_POSTS_QUERY`. See learning.md 2026-08-04 entries for each.
+`/blog` featured hero image made strict `aspect-video` (16:9) at every breakpoint — DONE. Was `lg:aspect-auto` (stretched to match text column height); now `lg:items-center` instead of `lg:items-stretch`, image sits at its own fixed 16:9 height. Skeleton mirrors it. See learning.md [Hero] entry dated 2026-08-04.
+
+Previous: Full `/blog/*` audit + fixes — DONE for the contained items. Found via a full routing/UI/perf pass: (1) post detail page had no `<h1>` (title was `<h2>`) — fixed. (2) `BlogCard.tsx` titles were `<h2>` sitewide (should be `<h3>`) — fixed, plus its inline `style={{fontSize}}` moved to a Tailwind arbitrary-value class. (3) `/blog` index fetched every post in the blog unconditionally — capped at 24 via a new `limit` param on `fetchFilteredBlogPosts`/`FILTERED_POSTS_QUERY`. See learning.md 2026-08-04 entries for each.
 **Open, explicitly scoped out:** `/blog/categories|tags|authors/[slug]` still fetch their full matching post list unbounded (only labels caps at 100) — `InfiniteBlogGrid` needs converting to fetch-on-scroll via a server action. Not started.
 
-Previous: `/blog/search` type-to-search restored — `BlogSearchFilters.tsx` debounces the text input (400ms, `router.replace`) instead of requiring Enter/submit; explicit submit still bypasses the debounce. Reused the existing `navigate()`/GROQ-match/CDN-cache pipeline built 2026-08-03.
+Before that: `/blog/search` type-to-search restored — `BlogSearchFilters.tsx` debounces the text input (400ms, `router.replace`) instead of requiring Enter/submit; explicit submit still bypasses the debounce. Reused the existing `navigate()`/GROQ-match/CDN-cache pipeline built 2026-08-03.
 
 Before that: Blog taxonomy routing fix — DONE. All 4 taxonomy routes are now plural (`/blog/categories`, `/blog/tags`, `/blog/labels`, `/blog/authors`), breadcrumbs match, index pages exist, and the 4 `[slug]` post-listing pages use a uniform lazy-loaded card grid (no featured hero). See learning.md [Nav]/[Page] entries dated 2026-08-03.
 

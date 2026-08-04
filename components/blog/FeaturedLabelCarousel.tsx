@@ -2,6 +2,7 @@ import { TextLink } from '@/components/ui/TextLink'
 import { buildBlogSearchHref } from '@/lib/blog-search-params'
 import { fetchPostsByLabel } from '@/sanity/lib/fetch'
 import { BlogCard } from './BlogCard'
+import { ScrollableRow } from './ScrollableRow'
 
 interface FeaturedLabelCarouselProps {
   title: string
@@ -28,13 +29,13 @@ export async function FeaturedLabelCarousel({ title, labelSlug, excludeSlugs }: 
           View all
         </TextLink>
       </div>
-      <div className="flex snap-x snap-mandatory flex-row gap-6 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <ScrollableRow ariaLabel={title} gapClassName="gap-[1.875rem]">
         {posts.map((post) => (
           <div key={post.slug} className="w-72 shrink-0 snap-start sm:w-80">
             <BlogCard post={post} className="h-full" />
           </div>
         ))}
-      </div>
+      </ScrollableRow>
     </div>
   )
 }

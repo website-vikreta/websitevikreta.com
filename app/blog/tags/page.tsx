@@ -2,9 +2,12 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { SITE_URL } from '@/config/site'
 import { fetchAllTags } from '@/sanity/lib/fetch'
+import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 
 export const metadata: Metadata = {
   title: 'All Tags | Website Vikreta Blog',
@@ -34,10 +37,13 @@ export default async function TagsIndexPage() {
           <div className="container pt-32 pb-20 md:pt-40 md:pb-28">
             <Breadcrumb segments={breadcrumbSegments} className="mb-6 md:mb-8" />
 
-            <div className="mb-10 md:mb-14">
+            <div className="mb-10 flex items-end justify-between gap-4 md:mb-14">
               <RevealText as="h1" className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)">
                 All Tags
               </RevealText>
+              <TextLink href={BLOG_SEARCH_PATH} arrow="right" className="shrink-0">
+                View all blogs
+              </TextLink>
             </div>
 
             {tags.length === 0 ? (
@@ -68,6 +74,12 @@ export default async function TagsIndexPage() {
                 ))}
               </div>
             )}
+
+            <div className="mt-14 flex justify-center md:mt-20">
+              <Button href={BLOG_SEARCH_PATH} variant="ghost" size="md" showArrow>
+                View all blogs
+              </Button>
+            </div>
           </div>
         </section>
       </main>

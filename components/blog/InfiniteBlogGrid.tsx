@@ -11,7 +11,7 @@ const PAGE_SIZE_DESKTOP = 6
 
 interface InfiniteBlogGridProps {
   posts: DisplayPost[]
-  /** Column classes above the shared `grid grid-cols-1 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20` base — narrow single-column pages (e.g. author, constrained to a 720px column) pass `sm:grid-cols-2`; wide taxonomy landing pages pass the sitewide 3-up `sm:grid-cols-2 lg:grid-cols-3`. */
+  /** Column classes above the shared `grid grid-cols-1 gap-x-10 gap-y-20 md:gap-x-[3.125rem] md:gap-y-[6.25rem]` base — narrow single-column pages (e.g. author, constrained to a 720px column) pass `sm:grid-cols-2`; wide taxonomy landing pages pass the sitewide 3-up `sm:grid-cols-2 lg:grid-cols-3`. */
   gridClassName?: string
   /** Shown once every post has loaded. */
   endMessage: string
@@ -63,7 +63,7 @@ export function InfiniteBlogGrid({ posts, gridClassName = 'sm:grid-cols-2 lg:gri
 
   return (
     <div>
-      <div className={cn('grid grid-cols-1 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20', gridClassName)}>
+      <div className={cn('grid grid-cols-1 gap-x-10 gap-y-20 md:gap-x-[3.125rem] md:gap-y-[6.25rem]', gridClassName)}>
         {visiblePosts.map((post) => (
           <BlogCard key={post.slug} post={post} />
         ))}

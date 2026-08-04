@@ -270,13 +270,10 @@ export async function fetchCategoriesWithPosts(): Promise<Category[]> {
   }
 }
 
-// /blog's own index grid is a "recent posts" preview, not the complete
+// /blog's own index grid ("All Blogs") is a top-N preview, not the complete
 // list — the page's "View all" button already sends to the fully
-// server-paginated /blog/search for that. Capping here is what keeps this
-// query from pulling every post in the blog on every request as the blog
-// grows; BLOG_INDEX_DEFAULT_LIMIT is generous enough that it's invisible at
-// today's post count.
-const BLOG_INDEX_DEFAULT_LIMIT = 24
+// server-paginated /blog/search for that.
+const BLOG_INDEX_DEFAULT_LIMIT = 6
 
 /** Returns DisplayPost[] filtered by optional category slug and/or search query — used by the /blog index. */
 export async function fetchFilteredBlogPosts(filters: {

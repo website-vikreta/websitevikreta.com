@@ -1,9 +1,7 @@
-'use client'
-
-import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { Button } from '@/components/ui/Button'
-import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
+import { BLOG_SEARCH_PATH, buildBlogSearchHref } from '@/lib/blog-search-params'
 import type { DisplayPost, Category } from '@/sanity/types'
 
 interface BlogListingClientProps {
@@ -12,74 +10,42 @@ interface BlogListingClientProps {
   categories?: Category[]
 }
 
-// Renders the interactive tail of the blog index — category filter pills +
-// card grid. Deliberately does NOT render the breadcrumb, page heading, hero,
-// or label carousel; those are static/server-rendered above this in the page
-// shell (app/blog/page.tsx) so they paint without waiting on this, and so
-// the hero stays a single fixed pick that never changes when a pill is
-// clicked (Netflix-style: the masthead doesn't react to the row filters).
+// Renders the tail of the blog index — category pills + card grid.
+// Deliberately does NOT render the breadcrumb, page heading, hero, or label
+// carousel; those are static/server-rendered above this in the page shell
+// (app/blog/page.tsx) so they paint without waiting on this.
 //
-// Category filtering is pure client-side state — no router.push, no
-// searchParams. The URL stays /blog at all times; deep-linkable per-category
-// URLs live at /blog/categories/[slug] instead.
+// Category pills are plain links to /blog/search?category=… — no in-place
+// filtering. Was client-side pill state filtering this same grid in place;
+// removed per user request ("when i click on any category instead of
+// isotope, remove that functionality completely. it should redirect to
+// search page with category filter selected"). The grid below always shows
+// the unfiltered top-6 "All Blogs" preview.
 export function BlogListingClient({ posts, categories }: BlogListingClientProps) {
-  const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined)
-
-  const filteredPosts = useMemo(
-    () => (activeCategory ? posts.filter((post) => post.categorySlug === activeCategory) : posts),
-    [posts, activeCategory],
-  )
-
-  function handleCategoryClick(categorySlug: string | null) {
-    setActiveCategory(categorySlug ?? undefined)
-  }
-
   return (
     <>
-      {/* Category filter pills */}
+      {/* Category pills */}
       {categories && categories.length > 0 && (
         <div
           role="group"
-          aria-label="Filter posts by category"
+          aria-label="Browse posts by category"
           className="mb-10 md:mb-14 flex flex-nowrap gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          <button
-            type="button"
-            aria-pressed={!activeCategory}
-            onClick={() => handleCategoryClick(null)}
-            className={`shrink-0 cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
-              !activeCategory
-                ? 'border-(--color-text) bg-(--color-text) text-(--color-bg) font-medium'
-                : 'border-(--color-border) text-(--color-text-muted) hover:border-(--color-text)'
-            }`}
-          >
-            All
-          </button>
-          {categories.map((category) => {
-            const categorySlug = category.slug.current
-            const isActive = categorySlug === activeCategory
-            return (
-              <button
-                key={category._id}
-                type="button"
-                aria-pressed={isActive}
-                onClick={() => handleCategoryClick(categorySlug)}
-                className={`shrink-0 cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
-                  isActive
-                    ? 'border-(--color-text) bg-(--color-text) text-(--color-bg) font-medium'
-                    : 'border-(--color-border) text-(--color-text-muted) hover:border-(--color-text)'
-                }`}
-              >
-                {category.title}
-              </button>
-            )
-          })}
+          {categories.map((category) => (
+            <Link
+              key={category._id}
+              href={buildBlogSearchHref({ category: category.slug.current })}
+              className="shrink-0 rounded-full border border-(--color-border) px-4 py-2 text-sm text-(--color-text-muted) transition-colors duration-200 ease-out hover:border-(--color-text) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text)"
+            >
+              {category.title}
+            </Link>
+          ))}
         </div>
       )}
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 md:gap-x-10 md:gap-y-20">
-        {filteredPosts.map((post) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20 md:gap-x-[3.125rem] md:gap-y-[6.25rem]">
+        {posts.map((post) => (
           <BlogCard key={post.slug} post={post} />
         ))}
       </div>
