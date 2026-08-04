@@ -3,8 +3,11 @@ import { notFound } from 'next/navigation'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { BlogHeaderBar } from '@/components/blog/BlogHeaderBar'
 import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
+import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
 import { SITE_URL } from '@/config/site'
 import { fetchTagBySlug, fetchPostsByTag } from '@/sanity/lib/fetch'
+import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 
 interface TagPageParams {
   params: Promise<{ slug: string }>
@@ -48,9 +51,14 @@ export default async function TagLandingPage({ params }: TagPageParams) {
             <BlogHeaderBar segments={breadcrumbSegments} />
 
             <div className="mb-10 md:mb-14">
-              <h1 className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)">
-                {tag.title}
-              </h1>
+              <div className="flex items-end justify-between gap-4">
+                <h1 className="text-h2 font-bold leading-[1.1] tracking-tight text-(--color-text)">
+                  {tag.title}
+                </h1>
+                <TextLink href={BLOG_SEARCH_PATH} arrow="right" className="shrink-0">
+                  View all blogs
+                </TextLink>
+              </div>
               {tag.description && (
                 <p className="mt-3 max-w-2xl text-(--color-text-muted) md:mt-4">
                   {tag.description}
@@ -66,6 +74,12 @@ export default async function TagLandingPage({ params }: TagPageParams) {
                 endMessage="You've reached the end — that's every post with this tag."
               />
             )}
+
+            <div className="mt-14 flex justify-center md:mt-20">
+              <Button href={BLOG_SEARCH_PATH} variant="ghost" size="md" showArrow>
+                View all blogs
+              </Button>
+            </div>
           </div>
         </section>
       </main>

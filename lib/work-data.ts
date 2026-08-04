@@ -198,6 +198,23 @@ export interface WorkTestimonial {
 
 export const WORK_TESTIMONIALS: WorkTestimonial[] = [
   {
+    slug: 'fiona-li',
+    quote:
+      'Great to work with. Very skillful. Not a lot of UXUI designers have aesthetic and visual design taste like Website Vikreta!',
+    name: 'Fiona Li',
+    designation: 'Senior Product Designer & Manager',
+    company: '',
+    image: '/our-work/testimonials/Fiona_Li.webp',
+  },
+  {
+    slug: 'stacey-bae',
+    quote: 'They were very professional. Team was timely, design was great and they did above and beyond my request.',
+    name: 'Stacey Bae',
+    designation: 'Developer',
+    company: 'Archmodal Classrooms',
+    image: '/our-work/testimonials/Stacey_Bae.webp',
+  },
+  {
     slug: 'benoit-marcell',
     quote:
       "They understood exactly what I wanted and gave it to me. Very stylish designs and also does a lot of research to make sure the work is perfect. I'll recommend them not only because their work is good but they are easy going. They listen to you, they co-operate & communicated.",
@@ -214,23 +231,6 @@ export const WORK_TESTIMONIALS: WorkTestimonial[] = [
     designation: 'Co-founder',
     company: 'JAXL, India',
     image: '/our-work/testimonials/Abhinav_Singh.webp',
-  },
-  {
-    slug: 'fiona-li',
-    quote:
-      'Great to work with. Very skillful. Not a lot of UXUI designers have aesthetic and visual design taste like Website Vikreta!',
-    name: 'Fiona Li',
-    designation: 'Senior Product Designer & Manager',
-    company: '',
-    image: '/our-work/testimonials/Fiona_Li.webp',
-  },
-  {
-    slug: 'stacey-bae',
-    quote: 'They were very professional. Team was timely, design was great and they did above and beyond my request.',
-    name: 'Stacey Bae',
-    designation: 'Developer',
-    company: 'Archmodal Classrooms',
-    image: '/our-work/testimonials/Stacey_Bae.webp',
   },
   {
     slug: 'john-kim',

@@ -14,7 +14,7 @@ interface FeaturedBlogHeroProps {
 // [Anti-pattern] entry in .claude/learning.md.
 export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
   return (
-    <article className="mb-10 md:mb-14 border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 lg:grid lg:grid-cols-2 lg:items-stretch">
+    <article className="mb-10 md:mb-14 border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 lg:grid lg:grid-cols-2 lg:items-stretch lg:aspect-[32/9]">
       <Link
         href={postHref(post.categorySlug, post.slug)}
         className="group/img block relative aspect-video lg:aspect-auto overflow-hidden"
@@ -33,7 +33,7 @@ export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
         )}
       </Link>
 
-      <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-12">
+      <div className="flex flex-col justify-center overflow-hidden p-6 sm:p-8 lg:px-12 lg:py-8">
         <span className="text-sm text-(--color-text-faint) mb-4">
           {post.publishDate} · {post.readTime}
         </span>
