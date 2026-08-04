@@ -56,50 +56,11 @@
   to { height: 0; }
 }
 
-/* Above-the-fold reveals — CSS twins of RevealText/RevealFade's motion
-   animations (components/ui/Reveal.tsx, `immediate` prop).
-
-   Why CSS and not framer here: framer's whileInView writes its `initial`
-   state (opacity:0 / translateY(110%)) into the *server* HTML as an inline
-   style, and only clears it once JS hydrates and an IntersectionObserver
-   fires. For content already in the first viewport that gap IS the LCP
-   "element render delay" — it measured 5.6s on /work under Lighthouse's
-   throttled mobile profile. These keyframes are identical in shape, easing
-   and duration, but start at first paint with no JS in the path.
-
-   Keep the timing values in sync with REVEAL_EASE / the duration defaults in
-   Reveal.tsx — same motion language, two implementations. */
-@keyframes reveal-line {
-  from { transform: translateY(110%); }
-  to { transform: translateY(0); }
-}
-@keyframes reveal-fade {
-  from { opacity: 0; transform: translateY(var(--reveal-y, 24px)); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.reveal-line-immediate {
-  animation: reveal-line var(--reveal-duration, 0.9s) cubic-bezier(0.16, 1, 0.3, 1)
-    var(--reveal-delay, 0s) both;
-}
-.reveal-fade-immediate {
-  animation: reveal-fade var(--reveal-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1)
-    var(--reveal-delay, 0s) both;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .accordion-content,
   .accordion-content-seo {
     transition: none;
     animation: none;
-  }
-  /* `animation: none` alone would leave the element at its `both` fill state.
-     These reset the transform/opacity so the content is simply present. */
-  .reveal-line-immediate,
-  .reveal-fade-immediate {
-    animation: none;
-    opacity: 1;
-    transform: none;
   }
 }
 

@@ -9,10 +9,6 @@ interface FeaturedWorkSectionProps {
   heading?: string
   subheading?: string
   ariaLabel?: string
-  /** /work's hero is short enough that this section's heading + featured card
-   * sit in the initial viewport — set on that page only. Home's taller hero
-   * pushes this section below the fold, so it keeps the scroll reveal. */
-  aboveFold?: boolean
 }
 
 /**
@@ -26,20 +22,15 @@ export function FeaturedWorkSection({
   heading = 'Proof over promises.',
   subheading = "We don't pitch what we might do. Here is what we've already shipped, and what it changed for the businesses behind it.",
   ariaLabel = 'Featured Work',
-  aboveFold = false,
 }: FeaturedWorkSectionProps = {}) {
   return (
     <section id={id} className="relative py-16 md:py-20" aria-label={ariaLabel}>
       <div className="container">
         <div className="mb-10 md:mb-14 max-w-3xl">
-          <RevealText
-            as="h2"
-            className="text-h2 font-bold tracking-tight text-(--color-text)"
-            immediate={aboveFold}
-          >
+          <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
             {heading}
           </RevealText>
-          <RevealFade className="mt-5" delay={0.1} immediate={aboveFold}>
+          <RevealFade className="mt-5" delay={0.1}>
             <p className="text-body-lg leading-relaxed text-(--color-text-muted) max-w-xl">
               {subheading}
             </p>
@@ -47,7 +38,7 @@ export function FeaturedWorkSection({
         </div>
 
         <div className="border border-(--color-border)">
-          <RevealFade delay={0.15} immediate={aboveFold}>
+          <RevealFade delay={0.15}>
             <CaseStudyFeaturedLink study={FEATURED_CASE_STUDY} />
           </RevealFade>
 

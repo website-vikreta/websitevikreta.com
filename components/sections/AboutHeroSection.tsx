@@ -24,11 +24,7 @@ export function AboutHeroSection() {
         <h1 className="text-(--color-text)">
           {/* Past tense, struck through — the model we killed. Light weight against
               the display line below so the size AND weight jump carry the pivot. */}
-          <RevealText
-            as="span"
-            className="block text-h1 font-normal text-(--color-text-faint)"
-            immediate
-          >
+          <RevealText as="span" className="block text-h1 font-normal text-(--color-text-faint)">
             We used to build{' '}
             <span className="relative inline-block">
               pages
@@ -50,14 +46,13 @@ export function AboutHeroSection() {
             as="span"
             className="block text-display font-bold mt-3 md:mt-5"
             delay={0.15}
-            immediate
           >
             Now <span className="text-(--color-accent)">we build systems</span>.
           </RevealText>
         </h1>
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mt-12 lg:mt-16">
-          <RevealFade delay={0.4} immediate className="lg:col-span-6">
+          <RevealFade delay={0.4} className="lg:col-span-6">
             <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">
               A year ago we became the AI automation agency businesses call
               first. You&apos;re not hiring us for a nicer homepage.
@@ -68,7 +63,6 @@ export function AboutHeroSection() {
 
           <RevealFade
             delay={0.5}
-            immediate
             className="lg:col-span-6 flex flex-wrap items-end gap-3 lg:justify-end"
           >
             <Button href="/contact" variant="primary" size="lg" showArrow>
@@ -83,7 +77,7 @@ export function AboutHeroSection() {
 
       {/* Proof band — quiet, real numbers only. */}
       <div className="container mt-16 lg:mt-24">
-        <RevealFade delay={0.6} immediate>
+        <RevealFade delay={0.6}>
           <ul className="flex flex-wrap gap-x-10 gap-y-2">
             {META.map((item) => (
               <li key={item} className="text-sm text-(--color-text-muted)">
