@@ -145,7 +145,7 @@ export default function Home() {
       />
       <DotGrid global />
       <HeroSection />
-      <StatsCounters />
+      <StatsCounters bgClassName="" />
       <ServicesBentoGrid />
       {/* <ClientLogosSection /> */}
       <FeaturedWorkSection />
