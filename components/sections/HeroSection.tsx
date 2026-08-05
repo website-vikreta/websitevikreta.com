@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef, useEffect } from 'react'
-import { gsap } from '@/lib/gsap'
+import type { gsap } from 'gsap'
 import { Button } from '@/components/ui/Button'
 import { UpworkBadge } from '@/components/ui/UpworkBadge'
 
@@ -31,41 +31,49 @@ export function HeroSection() {
     )
 
     let cancelled = false
+    let ctx: gsap.Context | undefined
 
-    const ctx = gsap.context(() => {
-      if (prefersReducedMotion) {
-        gsap.set(
-          [labelRef.current, subheadRef.current, ctaRef.current],
-          { opacity: 1 },
-        )
-        gsap.set(wordEls, { y: '0%' })
-        return
-      }
+    // Load GSAP (+ ScrollTrigger/SplitText plugins) lazily so it isn't part of
+    // the JS the browser must parse/execute before this section can hydrate —
+    // that main-thread work was delaying paint of the above-the-fold content.
+    import('@/lib/gsap').then(({ gsap }) => {
+      if (cancelled) return
 
-      gsap.set(labelRef.current, { opacity: 0, y: 14 })
-      gsap.set(wordEls, { y: '130%' })
-      gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
-    }, sectionRef)
+      ctx = gsap.context(() => {
+        if (prefersReducedMotion) {
+          gsap.set(
+            [labelRef.current, subheadRef.current, ctaRef.current],
+            { opacity: 1 },
+          )
+          gsap.set(wordEls, { y: '0%' })
+          return
+        }
 
-    if (!prefersReducedMotion) {
-      // Wait for the headline webfont before sliding words in. Otherwise the
-      // reveal can run mid font-swap (fallback font -> Utile), clipping
-      // glyphs at the wrong metrics inside the overflow-hidden word mask.
-      document.fonts.ready.then(() => {
-        if (cancelled) return
-        ctx.add(() => {
-          gsap.timeline()
-            .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
-            .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
-            .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
-            .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
+        gsap.set(labelRef.current, { opacity: 0, y: 14 })
+        gsap.set(wordEls, { y: '130%' })
+        gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
+      }, sectionRef)
+
+      if (!prefersReducedMotion) {
+        // Wait for the headline webfont before sliding words in. Otherwise the
+        // reveal can run mid font-swap (fallback font -> Utile), clipping
+        // glyphs at the wrong metrics inside the overflow-hidden word mask.
+        document.fonts.ready.then(() => {
+          if (cancelled) return
+          ctx?.add(() => {
+            gsap.timeline()
+              .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+              .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
+              .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
+              .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
+          })
         })
-      })
-    }
+      }
+    })
 
     return () => {
       cancelled = true
-      ctx.revert()
+      ctx?.revert()
     }
   }, [])
 

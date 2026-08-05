@@ -8,7 +8,7 @@ import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { DeferredGoogleAnalytics } from '@/components/ui/DeferredGoogleAnalytics'
 import { SITE_URL } from '@/config/site'
 
 const utile = localFont({
@@ -59,7 +59,7 @@ export default function RootLayout({
         <ConditionalNavbar />
         {children}
         {/* <GoToTop /> */}
-        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+        {process.env.NEXT_PUBLIC_GA_ID && <DeferredGoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
 
       <ConditionalShell>
         <CTASection

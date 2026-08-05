@@ -38,8 +38,8 @@ function isSanityConfigured(): boolean {
 
 // ── Revalidation strategy ────────────────────────────────────────────────────
 // NEXT_PUBLIC_REVALIDATE overrides the per-environment default. Unset: 10s
-// (Local/Dev/Stage — fast content iteration), 60s (Production).
-const PRODUCTION_REVALIDATE_SECONDS = 60
+// (Local/Dev/Stage — fast content iteration), 3600s (Production).
+const PRODUCTION_REVALIDATE_SECONDS = 3600
 const NON_PRODUCTION_REVALIDATE_SECONDS = 10
 
 function resolveRevalidateSeconds(): number {
