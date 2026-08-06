@@ -1,6 +1,6 @@
 import { notFound, permanentRedirect } from 'next/navigation'
 import { blogPosts as staticPosts } from '@/lib/blog-data'
-import { fetchPostBySlug, fetchAllSlugs } from '@/sanity/lib/fetch'
+import { fetchPostBySlug, fetchPostByPreviousSlug, fetchAllSlugs } from '@/sanity/lib/fetch'
 import { postHref, slugifyCategory, FALLBACK_CATEGORY_SLUG } from '@/lib/blog-url'
 
 // Legacy /blog/{postSlug} route. The canonical post URL is now
@@ -46,6 +46,18 @@ export default async function LegacyBlogPostRedirect({
     if (post) {
       const categorySlug = post.source === 'sanity' ? post.categorySlug : undefined
       permanentRedirect(postHref(categorySlug || FALLBACK_CATEGORY_SLUG, post.slug))
+    }
+
+    // Slug wasn't found as-is — it may have been renamed since. Check
+    // previousSlugs before giving up.
+    let renamed: Awaited<ReturnType<typeof fetchPostByPreviousSlug>> = null
+    try {
+      renamed = await fetchPostByPreviousSlug(slug)
+    } catch (err) {
+      console.error('[blog/[slug]] previousSlugs lookup failed:', slug, err)
+    }
+    if (renamed) {
+      permanentRedirect(postHref(renamed.categorySlug || FALLBACK_CATEGORY_SLUG, renamed.slug))
     }
   }
 

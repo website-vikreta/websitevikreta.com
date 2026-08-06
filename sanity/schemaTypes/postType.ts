@@ -25,6 +25,15 @@ export const postType = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: 'previousSlugs',
+      title: 'Previous Slugs',
+      type: 'array',
+      group: 'content',
+      of: [{ type: 'string' }],
+      description:
+        'Old slug values this post was published under. Add the old slug here whenever you rename it, so /blog/{oldSlug} keeps 308-redirecting instead of 404ing.',
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
