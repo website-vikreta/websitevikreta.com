@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { SITE_URL } from '@/config/site'
 import { CASE_STUDIES, getCaseStudyBySlug } from '@/lib/work-data'
 import { CaseStudyDetailClient } from './CaseStudyDetailClient'
+import { breadcrumbListNode } from '@/lib/schema'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -79,22 +80,33 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   if (!study) notFound()
 
+  const pageUrl = `${SITE_URL}/work/${study.slug}`
+
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: study.title,
-    description: study.excerpt,
-    author: {
-      '@type': 'Organization',
-      name: 'Website Vikreta',
-      url: SITE_URL,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Website Vikreta',
-      url: SITE_URL,
-    },
-    mainEntityOfPage: `${SITE_URL}/work/${study.slug}`,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: study.title,
+        description: study.excerpt,
+        author: {
+          '@type': 'Organization',
+          name: 'Website Vikreta',
+          url: SITE_URL,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Website Vikreta',
+          url: SITE_URL,
+        },
+        mainEntityOfPage: pageUrl,
+      },
+      breadcrumbListNode(`${pageUrl}#breadcrumb`, [
+        { name: 'Home', url: SITE_URL },
+        { name: 'Work', url: `${SITE_URL}/work` },
+        { name: study.title },
+      ]),
+    ],
   }
 
   return (

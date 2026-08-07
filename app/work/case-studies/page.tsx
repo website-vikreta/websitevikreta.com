@@ -1,6 +1,16 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/config/site'
 import { CaseStudiesPageContent } from './CaseStudiesPageContent'
+import { breadcrumbListNode } from '@/lib/schema'
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  ...breadcrumbListNode(`${SITE_URL}/work/case-studies#breadcrumb`, [
+    { name: 'Home', url: SITE_URL },
+    { name: 'Work', url: `${SITE_URL}/work` },
+    { name: 'Case Studies', url: `${SITE_URL}/work/case-studies` },
+  ]),
+}
 
 export const metadata: Metadata = {
   title: 'Case Studies | AI Automation & Web Development Results | Website Vikreta',
@@ -53,5 +63,13 @@ export const metadata: Metadata = {
 }
 
 export default function CaseStudiesPage() {
-  return <CaseStudiesPageContent />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <CaseStudiesPageContent />
+    </>
+  )
 }

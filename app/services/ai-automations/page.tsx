@@ -1,6 +1,30 @@
 import type { Metadata } from 'next'
 import AIAutomationsClient from './AIAutomationsClient'
 import { SITE_URL } from '@/config/site'
+import { breadcrumbListNode, ORGANIZATION_REF } from '@/lib/schema'
+
+const PAGE_URL = `${SITE_URL}/services/ai-automations`
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${PAGE_URL}#service`,
+      name: 'AI Automation Services',
+      serviceType: 'AI Workflow Automation',
+      description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+      url: PAGE_URL,
+      provider: ORGANIZATION_REF,
+      areaServed: { '@type': 'Country', name: 'India' },
+    },
+    breadcrumbListNode(`${PAGE_URL}#breadcrumb`, [
+      { name: 'Home', url: SITE_URL },
+      { name: 'Services', url: `${SITE_URL}/services` },
+      { name: 'AI Automations', url: PAGE_URL },
+    ]),
+  ],
+}
 
 export const metadata: Metadata = {
   title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
@@ -53,5 +77,13 @@ export const metadata: Metadata = {
 }
 
 export default function AIAutomationsPage() {
-  return <AIAutomationsClient />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <AIAutomationsClient />
+    </>
+  )
 }
