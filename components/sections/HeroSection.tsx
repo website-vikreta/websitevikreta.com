@@ -1,7 +1,4 @@
-'use client'
-
-import React, { useRef, useEffect } from 'react'
-import { gsap } from '@/lib/gsap'
+import React from 'react'
 import { Button } from '@/components/ui/Button'
 import { UpworkBadge } from '@/components/ui/UpworkBadge'
 
@@ -15,53 +12,8 @@ const BREAK_BEFORE = new Set([4])
 const ACCENT_INDEX = 5
 
 export function HeroSection() {
-  const sectionRef   = useRef<HTMLElement>(null)
-  const wordMaskRefs = useRef<(HTMLSpanElement | null)[]>([])
-
-  // Label, subhead, CTA (`.hero-fade-in`, see globals.css) and now the
-  // headline too are all real, fully-painted content from the first frame —
-  // nothing above the fold sits behind opacity:0/transform-hidden waiting on
-  // JS. The headline's word-by-word "rise up" look is faked by animating an
-  // opaque decorative `.word-mask` OVER each already-visible word instead of
-  // animating the word itself — GSAP/document.fonts.ready only gate that
-  // decorative mask now, so a slow font load can no longer delay LCP the way
-  // it did when the real text was the thing being hidden and revealed.
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
-
-    if (prefersReducedMotion) return // masks are display:none via CSS media query
-
-    const maskEls = wordMaskRefs.current.filter(
-      (el): el is HTMLSpanElement => el !== null,
-    )
-
-    let cancelled = false
-
-    const ctx = gsap.context(() => {
-      gsap.set(maskEls, { yPercent: 0 })
-    }, sectionRef)
-
-    // Wait for the headline webfont so the mask's box matches the word's
-    // final layout — same reasoning as before, just no longer a risk to the
-    // real text since the real text isn't what's being clipped/moved.
-    document.fonts.ready.then(() => {
-      if (cancelled) return
-      ctx.add(() => {
-        gsap.to(maskEls, { yPercent: -100, duration: 1.05, ease: 'expo.out', stagger: 0.065 })
-      })
-    })
-
-    return () => {
-      cancelled = true
-      ctx.revert()
-    }
-  }, [])
-
   return (
     <section
-      ref={sectionRef}
       id="main-content"
       className="relative flex flex-col justify-center min-h-svh overflow-x-clip"
       aria-label="Hero Website Vikreta"
@@ -80,7 +32,10 @@ export function HeroSection() {
           </span>
         </span>
 
-        {/* Headline — display scale, word-masked reveal */}
+        {/* Headline — display scale, word-masked reveal.
+            Real text (.word-inner) is always static/painted from first frame.
+            .word-mask is a pure-CSS, no-JS decorative cover (see globals.css)
+            that retreats over it to fake the word-by-word "rise up" look. */}
         <h1
           className="text-display font-semibold text-(--color-text) font-sans mb-12 lg:mb-14"
           aria-label={HEADLINE}
@@ -97,7 +52,7 @@ export function HeroSection() {
                 </span>
                 <span
                   className="word-mask"
-                  ref={(el) => { wordMaskRefs.current[i] = el }}
+                  style={{ '--word-i': i } as React.CSSProperties}
                 />
               </span>
               {i < WORDS.length - 1 ? ' ' : null}

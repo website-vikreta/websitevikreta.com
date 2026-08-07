@@ -254,21 +254,24 @@ body {
 
 /* Decorative cover, NOT the real text — the real word (.word-inner) is
    always fully painted in its final position from first frame, so it can't
-   delay LCP the way animating the text itself used to. This mask retreats
-   upward (yPercent 0 → -100, driven by GSAP in HeroSection.tsx) over the
-   already-static word to fake the old "rises up from below" look without
-   ever hiding the real text node. */
+   delay LCP the way animating the text itself used to. Pure CSS, no JS: it
+   auto-resizes with .word-wrapper (inset:0) regardless of font-swap timing,
+   so — unlike the old translateY(130%)-on-the-real-text version — there's
+   nothing left that depends on waiting for document.fonts.ready. Retreats
+   upward (translateY 0 → -100%) to fake the old "rises up from below" look
+   without ever hiding the real text node. --word-i staggers each word, same
+   convention as --char-i in Button.tsx. */
+@keyframes word-mask-retreat {
+  to { transform: translateY(-100%); }
+}
+
 .word-mask {
   position: absolute;
   inset: 0;
   background-color: var(--color-bg);
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .word-mask {
-    display: none;
-  }
+  animation: word-mask-retreat 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--word-i, 0) * 65ms);
 }
 
 /* ─── Hero Animation – CSS-only fade (label / subhead / CTA) ────
@@ -288,10 +291,11 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .word-mask {
+    display: none;
+  }
   .hero-fade-in {
     animation: none;
-    opacity: 1;
-    transform: none;
   }
 }
 
