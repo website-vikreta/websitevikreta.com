@@ -79,22 +79,37 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   if (!study) notFound()
 
+  const pageUrl = `${SITE_URL}/work/${study.slug}`
+
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: study.title,
-    description: study.excerpt,
-    author: {
-      '@type': 'Organization',
-      name: 'Website Vikreta',
-      url: SITE_URL,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Website Vikreta',
-      url: SITE_URL,
-    },
-    mainEntityOfPage: `${SITE_URL}/work/${study.slug}`,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: study.title,
+        description: study.excerpt,
+        author: {
+          '@type': 'Organization',
+          name: 'Website Vikreta',
+          url: SITE_URL,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Website Vikreta',
+          url: SITE_URL,
+        },
+        mainEntityOfPage: pageUrl,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Work', item: `${SITE_URL}/work` },
+          { '@type': 'ListItem', position: 3, name: study.title },
+        ],
+      },
+    ],
   }
 
   return (

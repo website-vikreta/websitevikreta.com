@@ -213,6 +213,21 @@ export default async function BlogPostPage({
     { label: post.title },
   ]
 
+  // Same segments that render the visible Breadcrumb UI below, converted to
+  // an absolute-URL BreadcrumbList so schema can never drift from what's on
+  // screen. `item` is omitted for unlinked segments (last one, or a category
+  // with no Sanity slug) per Google's breadcrumb spec.
+  const breadcrumbJsonLd = {
+    '@type': 'BreadcrumbList',
+    '@id': `${SITE_URL}${postHref(canonicalSlug, post.slug)}#breadcrumb`,
+    itemListElement: breadcrumbSegments.map((segment, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: segment.label,
+      ...(segment.href ? { item: `${SITE_URL}${segment.href}` } : {}),
+    })),
+  }
+
   // Previous/Next nav + related reads are Sanity-only — static fallback
   // posts (used when Sanity isn't configured) have no adjacency/relation
   // data to query against.
@@ -236,6 +251,10 @@ export default async function BlogPostPage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', ...breadcrumbJsonLd }) }}
+      />
       <ScrollToTop />
       <main>
       <article>
