@@ -44,7 +44,10 @@ const PLATFORMS = [
 ] as const
 
 const ICON_BUTTON =
-  'flex h-9 w-9 items-center justify-center border border-(--color-border) text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent)'
+  'group relative flex h-9 w-9 items-center justify-center border border-(--color-border) text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent)'
+
+const TOOLTIP =
+  'pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap bg-(--color-text) px-2 py-1 text-xs text-(--color-bg) opacity-0 transition-opacity duration-200 group-hover:opacity-100'
 
 /** UTM-tagged social share row. `path` is the page's canonical path (e.g. `/careers/frontend-intern`); `campaign` groups clicks by content type in GA4 (e.g. `careers`, `blog`). */
 export function SocialShare({ path, title, campaign }: { path: string; title: string; campaign: string }) {
@@ -70,10 +73,12 @@ export function SocialShare({ path, title, campaign }: { path: string; title: st
           aria-label={`Share on ${label}`}
           className={ICON_BUTTON}
         >
+          <span className={TOOLTIP}>{label}</span>
           <Icon size={15} />
         </a>
       ))}
       <button type="button" onClick={copyLink} aria-label="Copy link" className={ICON_BUTTON}>
+        <span className={TOOLTIP}>{copied ? 'Copied!' : 'Copy link'}</span>
         {copied ? <Check size={15} /> : <Copy size={15} />}
       </button>
     </div>
