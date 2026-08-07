@@ -16,52 +16,42 @@ const ACCENT_INDEX = 5
 
 export function HeroSection() {
   const sectionRef   = useRef<HTMLElement>(null)
-  const labelRef     = useRef<HTMLSpanElement>(null)
-  const wordInnerRefs = useRef<(HTMLSpanElement | null)[]>([])
-  const subheadRef   = useRef<HTMLParagraphElement>(null)
-  const ctaRef       = useRef<HTMLDivElement>(null)
+  const wordMaskRefs = useRef<(HTMLSpanElement | null)[]>([])
 
+  // Label, subhead, CTA (`.hero-fade-in`, see globals.css) and now the
+  // headline too are all real, fully-painted content from the first frame —
+  // nothing above the fold sits behind opacity:0/transform-hidden waiting on
+  // JS. The headline's word-by-word "rise up" look is faked by animating an
+  // opaque decorative `.word-mask` OVER each already-visible word instead of
+  // animating the word itself — GSAP/document.fonts.ready only gate that
+  // decorative mask now, so a slow font load can no longer delay LCP the way
+  // it did when the real text was the thing being hidden and revealed.
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches
 
-    const wordEls = wordInnerRefs.current.filter(
+    if (prefersReducedMotion) return // masks are display:none via CSS media query
+
+    const maskEls = wordMaskRefs.current.filter(
       (el): el is HTMLSpanElement => el !== null,
     )
 
     let cancelled = false
 
     const ctx = gsap.context(() => {
-      if (prefersReducedMotion) {
-        gsap.set(
-          [labelRef.current, subheadRef.current, ctaRef.current],
-          { opacity: 1 },
-        )
-        gsap.set(wordEls, { y: '0%' })
-        return
-      }
-
-      gsap.set(labelRef.current, { opacity: 0, y: 14 })
-      gsap.set(wordEls, { y: '130%' })
-      gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
+      gsap.set(maskEls, { yPercent: 0 })
     }, sectionRef)
 
-    if (!prefersReducedMotion) {
-      // Wait for the headline webfont before sliding words in. Otherwise the
-      // reveal can run mid font-swap (fallback font -> Utile), clipping
-      // glyphs at the wrong metrics inside the overflow-hidden word mask.
-      document.fonts.ready.then(() => {
-        if (cancelled) return
-        ctx.add(() => {
-          gsap.timeline()
-            .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
-            .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
-            .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
-            .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
-        })
+    // Wait for the headline webfont so the mask's box matches the word's
+    // final layout — same reasoning as before, just no longer a risk to the
+    // real text since the real text isn't what's being clipped/moved.
+    document.fonts.ready.then(() => {
+      if (cancelled) return
+      ctx.add(() => {
+        gsap.to(maskEls, { yPercent: -100, duration: 1.05, ease: 'expo.out', stagger: 0.065 })
       })
-    }
+    })
 
     return () => {
       cancelled = true
@@ -81,9 +71,8 @@ export function HeroSection() {
 
         {/* Label — kicker badge, tight to headline */}
         <span
-          ref={labelRef}
-          data-hero-anim
-          className="inline-flex items-center gap-2 border border-(--color-border) bg-white px-3 py-1.5 rounded-sm mb-6"
+          style={{ '--fade-y': '14px', '--fade-duration': '0.5s' } as React.CSSProperties}
+          className="hero-fade-in inline-flex items-center gap-2 border border-(--color-border) bg-white px-3 py-1.5 rounded-sm mb-6"
         >
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-(--color-accent)" />
           <span className="font-mono text-meta-label tracking-(--tracking-meta) text-(--color-text) uppercase">
@@ -103,30 +92,33 @@ export function HeroSection() {
                 <span
                   className="word-inner"
                   style={i === ACCENT_INDEX ? { color: 'var(--color-accent)' } : undefined}
-                  ref={(el) => { wordInnerRefs.current[i] = el }}
                 >
                   {word}
                 </span>
+                <span
+                  className="word-mask"
+                  ref={(el) => { wordMaskRefs.current[i] = el }}
+                />
               </span>
               {i < WORDS.length - 1 ? ' ' : null}
             </React.Fragment>
           ))}
         </h1>
 
-        {/* Subheadline — constrained width for ideal line length */}
+        {/* Subheadline — constrained width for ideal line length.
+            This is the LCP element on mobile PSI runs — CSS-only fade
+            (`.hero-fade-in`), never gated behind JS/font-load. */}
         <p
-          ref={subheadRef}
-          data-hero-anim
-          className="text-body-lg text-(--color-text-muted) max-w-lg leading-relaxed mb-10 lg:mb-12"
+          style={{ '--fade-y': '18px', '--fade-duration': '0.65s', '--fade-delay': '1.05s' } as React.CSSProperties}
+          className="hero-fade-in text-body-lg text-(--color-text-muted) max-w-lg leading-relaxed mb-10 lg:mb-12"
         >
           Website Vikreta works with businesses that want to go digital properly, or want to figure out where AI fits in what they already do. Websites, apps, automation, design. We use every relevant tool available. And we listen before we touch anything.
         </p>
 
         {/* CTAs */}
         <div
-          ref={ctaRef}
-          data-hero-anim
-          className="flex flex-wrap gap-3 items-center"
+          style={{ '--fade-y': '18px', '--fade-duration': '0.6s', '--fade-delay': '1.25s' } as React.CSSProperties}
+          className="hero-fade-in flex flex-wrap gap-3 items-center"
         >
           <Button href="/contact" variant="primary" size="lg" showArrow>
             Talk to Us, it&apos;s Free

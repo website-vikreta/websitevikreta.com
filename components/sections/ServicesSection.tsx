@@ -183,7 +183,7 @@ function ServiceCard({ service }: { service: Service }) {
       >
         <div className="absolute inset-0 bg-white/5" />
         {service.image && (
-          <Image src={service.image} alt={service.title} fill className="object-cover" sizes="42vw" />
+          <Image src={service.image} alt={service.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
         )}
       </motion.div>
     </motion.div>
