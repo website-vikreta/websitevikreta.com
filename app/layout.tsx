@@ -8,7 +8,7 @@ import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import Script from 'next/script'
 import { SITE_URL } from '@/config/site'
 
 const utile = localFont({
@@ -59,7 +59,31 @@ export default function RootLayout({
         <ConditionalNavbar />
         {children}
         {/* <GoToTop /> */}
-        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            {/* @next/third-parties' GoogleAnalytics hardcodes strategy="afterInteractive" (no way to
+                override it) — that eager load was the single biggest TBT contributor on mobile
+                Lighthouse (92ms+ main-thread time) and tripped the Best Practices "third-party cookies"
+                check. Hand-rolled here so it can load on strategy="lazyOnload" instead. */}
+            <Script
+              id="ga-init"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                `,
+              }}
+            />
+            <Script
+              id="ga-src"
+              strategy="lazyOnload"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+          </>
+        )}
 
       <ConditionalShell>
         <CTASection
