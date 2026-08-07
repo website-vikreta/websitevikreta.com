@@ -43,11 +43,8 @@ const PLATFORMS = [
   },
 ] as const
 
-const ICON_BUTTON =
-  'group relative flex h-9 w-9 items-center justify-center border border-(--color-border) text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent)'
-
-const TOOLTIP =
-  'pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap bg-(--color-text) px-2 py-1 text-xs text-(--color-bg) opacity-0 transition-opacity duration-200 group-hover:opacity-100'
+const SHARE_PILL =
+  'inline-flex items-center gap-1.5 rounded-full border border-(--color-border) px-3.5 py-1.5 text-sm text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent)'
 
 /** UTM-tagged social share row. `path` is the page's canonical path (e.g. `/careers/frontend-intern`); `campaign` groups clicks by content type in GA4 (e.g. `careers`, `blog`). */
 export function SocialShare({ path, title, campaign }: { path: string; title: string; campaign: string }) {
@@ -61,8 +58,7 @@ export function SocialShare({ path, title, campaign }: { path: string; title: st
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-(--color-text-muted)">Share:</span>
+    <div className="flex flex-wrap items-center gap-2">
       {PLATFORMS.map(({ key, label, Icon, shareUrl }) => (
         <a
           key={key}
@@ -71,15 +67,15 @@ export function SocialShare({ path, title, campaign }: { path: string; title: st
           rel="noopener noreferrer"
           onClick={() => trackShareClick(key, campaign)}
           aria-label={`Share on ${label}`}
-          className={ICON_BUTTON}
+          className={SHARE_PILL}
         >
-          <span className={TOOLTIP}>{label}</span>
-          <Icon size={15} />
+          <Icon size={14} />
+          {label}
         </a>
       ))}
-      <button type="button" onClick={copyLink} aria-label="Copy link" className={ICON_BUTTON}>
-        <span className={TOOLTIP}>{copied ? 'Copied!' : 'Copy link'}</span>
-        {copied ? <Check size={15} /> : <Copy size={15} />}
+      <button type="button" onClick={copyLink} aria-label="Copy link" className={SHARE_PILL}>
+        {copied ? <Check size={14} /> : <Copy size={14} />}
+        {copied ? 'Copied!' : 'Copy link'}
       </button>
     </div>
   )
