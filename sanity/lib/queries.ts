@@ -46,6 +46,16 @@ export const POST_BY_SLUG_QUERY = groq`
   }
 `
 
+// Fallback lookup for the legacy /blog/{slug} redirect when $slug no longer
+// matches any post's current slug — the post may have been renamed and had
+// its old slug recorded in previousSlugs.
+export const POST_BY_PREVIOUS_SLUG_QUERY = groq`
+  *[_type == "post" && $slug in previousSlugs][0] {
+    "slug": slug.current,
+    "categorySlug": category->slug.current
+  }
+`
+
 // Pre-existing — filters posts by category slug, returns POST_SUMMARY shape.
 export const POSTS_BY_CATEGORY_QUERY = groq`
   *[_type == "post" && category->slug.current == $categorySlug] | order(publishedAt desc) {
