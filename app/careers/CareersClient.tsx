@@ -14,6 +14,7 @@ interface Opening {
   stipend: string
   positions: number
   flag?: string
+  isActive: boolean
   shortDescription: string
   prerequisites: string[]
   skills: string[]
@@ -29,19 +30,22 @@ const FLAG_STYLES: Record<string, string> = {
 }
 
 const ALL_FILTER = 'All'
+const ACTIVE_FILTER = 'Active Roles'
 
 export default function CareersClient({ openings }: Props) {
   const filters = useMemo(() => {
     const flags = Array.from(new Set(openings.map(o => o.flag).filter((f): f is string => !!f)))
-    return [ALL_FILTER, ...flags]
+    const hasClosedRoles = openings.some(o => !o.isActive)
+    return [ALL_FILTER, ...(hasClosedRoles ? [ACTIVE_FILTER] : []), ...flags]
   }, [openings])
 
   const [activeFilter, setActiveFilter] = useState(ALL_FILTER)
 
-  const filteredOpenings = useMemo(
-    () => (activeFilter === ALL_FILTER ? openings : openings.filter(o => o.flag === activeFilter)),
-    [openings, activeFilter]
-  )
+  const filteredOpenings = useMemo(() => {
+    if (activeFilter === ALL_FILTER) return openings
+    if (activeFilter === ACTIVE_FILTER) return openings.filter(o => o.isActive)
+    return openings.filter(o => o.flag === activeFilter)
+  }, [openings, activeFilter])
 
   return (
     <>
@@ -119,6 +123,7 @@ export default function CareersClient({ openings }: Props) {
 
                   <span className="text-sm text-(--color-text-muted)">
                     {opening.type} · {opening.positions} {opening.positions === 1 ? 'opening' : 'openings'}
+                    {!opening.isActive && ' · Not hiring right now'}
                   </span>
 
                   <h3 className="text-2xl font-bold leading-snug tracking-tight text-(--color-text)">
