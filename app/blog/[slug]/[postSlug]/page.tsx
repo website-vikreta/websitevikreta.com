@@ -16,6 +16,7 @@ import { PostNavigation } from '@/components/blog/PostNavigation'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
+import { SocialShare } from '@/components/ui/SocialShare'
 import type { AdjacentPost } from '@/sanity/lib/fetch'
 import type { DisplayPost, FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -329,6 +330,9 @@ export default async function BlogPostPage({
 
               </div>
               <hr className="mt-6 border-[var(--color-border)]" />
+              <div className="mt-6">
+                <SocialShare path={postHref(canonicalSlug, post.slug)} title={post.title} campaign="blog" />
+              </div>
             </div>
           )}
 

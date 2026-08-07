@@ -29,3 +29,13 @@ export function trackFormSubmit(formName: string) {
     page_location: window.location.href,
   })
 }
+
+/** Fires `share_click` when a visitor uses one of the UTM-tagged social share buttons (see components/ui/SocialShare.tsx). */
+export function trackShareClick(platform: string, campaign: string) {
+  if (typeof window === 'undefined') return
+  sendGAEvent('event', 'share_click', {
+    platform,
+    campaign,
+    page_location: window.location.href,
+  })
+}
