@@ -1,15 +1,16 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/config/site'
 import { CaseStudiesPageContent } from './CaseStudiesPageContent'
-import { breadcrumbListNode } from '@/lib/schema'
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  ...breadcrumbListNode(`${SITE_URL}/work/case-studies#breadcrumb`, [
-    { name: 'Home', url: SITE_URL },
-    { name: 'Work', url: `${SITE_URL}/work` },
-    { name: 'Case Studies', url: `${SITE_URL}/work/case-studies` },
-  ]),
+  '@type': 'BreadcrumbList',
+  '@id': `${SITE_URL}/work/case-studies#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Work', item: `${SITE_URL}/work` },
+    { '@type': 'ListItem', position: 3, name: 'Case Studies', item: `${SITE_URL}/work/case-studies` },
+  ],
 }
 
 export const metadata: Metadata = {

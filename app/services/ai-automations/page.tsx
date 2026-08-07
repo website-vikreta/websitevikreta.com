@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import AIAutomationsClient from './AIAutomationsClient'
 import { SITE_URL } from '@/config/site'
-import { breadcrumbListNode, ORGANIZATION_REF } from '@/lib/schema'
 
 const PAGE_URL = `${SITE_URL}/services/ai-automations`
 
@@ -15,14 +14,18 @@ const jsonLd = {
       serviceType: 'AI Workflow Automation',
       description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
       url: PAGE_URL,
-      provider: ORGANIZATION_REF,
+      provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
     },
-    breadcrumbListNode(`${PAGE_URL}#breadcrumb`, [
-      { name: 'Home', url: SITE_URL },
-      { name: 'Services', url: `${SITE_URL}/services` },
-      { name: 'AI Automations', url: PAGE_URL },
-    ]),
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${PAGE_URL}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
+        { '@type': 'ListItem', position: 3, name: 'AI Automations', item: PAGE_URL },
+      ],
+    },
   ],
 }
 

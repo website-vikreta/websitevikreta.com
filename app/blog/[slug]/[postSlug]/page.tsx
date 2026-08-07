@@ -17,7 +17,6 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
-import { breadcrumbListNode } from '@/lib/schema'
 import type { AdjacentPost } from '@/sanity/lib/fetch'
 import type { DisplayPost, FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -218,13 +217,16 @@ export default async function BlogPostPage({
   // an absolute-URL BreadcrumbList so schema can never drift from what's on
   // screen. `item` is omitted for unlinked segments (last one, or a category
   // with no Sanity slug) per Google's breadcrumb spec.
-  const breadcrumbJsonLd = breadcrumbListNode(
-    `${SITE_URL}${postHref(canonicalSlug, post.slug)}#breadcrumb`,
-    breadcrumbSegments.map((segment) => ({
+  const breadcrumbJsonLd = {
+    '@type': 'BreadcrumbList',
+    '@id': `${SITE_URL}${postHref(canonicalSlug, post.slug)}#breadcrumb`,
+    itemListElement: breadcrumbSegments.map((segment, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
       name: segment.label,
-      ...(segment.href ? { url: `${SITE_URL}${segment.href}` } : {}),
-    }))
-  )
+      ...(segment.href ? { item: `${SITE_URL}${segment.href}` } : {}),
+    })),
+  }
 
   // Previous/Next nav + related reads are Sanity-only — static fallback
   // posts (used when Sanity isn't configured) have no adjacency/relation
