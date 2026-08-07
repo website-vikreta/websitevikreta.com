@@ -4,6 +4,7 @@ import {
   LATEST_POSTS_QUERY,
   HOMEPAGE_POSTS_QUERY,
   POST_BY_SLUG_QUERY,
+  POST_BY_PREVIOUS_SLUG_QUERY,
   POSTS_BY_CATEGORY_QUERY,
   POSTS_BY_TAG_QUERY,
   POSTS_BY_AUTHOR_QUERY,
@@ -475,6 +476,20 @@ export async function fetchRelatedPosts(params: {
 }
 
 /** All slugs for generateStaticParams. Returns empty array if not configured. */
+/** Fallback for the legacy /blog/{slug} redirect: finds a post whose previousSlugs (recorded when it was renamed) includes this slug. */
+export async function fetchPostByPreviousSlug(
+  slug: string,
+): Promise<{ slug: string; categorySlug?: string } | null> {
+  if (!isSanityConfigured()) return null
+  const post = await client.fetch<{ slug: string; categorySlug: string | null } | null>(
+    POST_BY_PREVIOUS_SLUG_QUERY,
+    { slug },
+    { next: { revalidate: REVALIDATE_SECONDS } },
+  )
+  if (!post) return null
+  return { slug: post.slug, categorySlug: post.categorySlug ?? undefined }
+}
+
 export async function fetchAllSlugs(): Promise<string[]> {
   if (!isSanityConfigured()) return []
   const results = await client.fetch<{ slug: string }[]>(ALL_POST_SLUGS_QUERY)

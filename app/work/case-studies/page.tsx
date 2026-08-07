@@ -2,6 +2,17 @@ import type { Metadata } from 'next'
 import { SITE_URL } from '@/config/site'
 import { CaseStudiesPageContent } from './CaseStudiesPageContent'
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${SITE_URL}/work/case-studies#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Work', item: `${SITE_URL}/work` },
+    { '@type': 'ListItem', position: 3, name: 'Case Studies', item: `${SITE_URL}/work/case-studies` },
+  ],
+}
+
 export const metadata: Metadata = {
   title: 'Case Studies | AI Automation & Web Development Results | Website Vikreta',
   description:
@@ -53,5 +64,13 @@ export const metadata: Metadata = {
 }
 
 export default function CaseStudiesPage() {
-  return <CaseStudiesPageContent />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <CaseStudiesPageContent />
+    </>
+  )
 }
