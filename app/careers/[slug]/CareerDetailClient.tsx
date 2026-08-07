@@ -16,6 +16,7 @@ interface Opening {
   type: string
   stipend: string
   positions: number
+  isActive: boolean
   shortDescription: string
   description?: PortableTextBlock[]
   prerequisites: string[]
@@ -161,7 +162,17 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
           {/* RIGHT — Application Form */}
           <div className="bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
-            {submitted ? (
+            {!opening.isActive ? (
+              <div>
+                <h2 className={SUBHEAD}>Applications closed</h2>
+                <p className="text-base text-(--color-text-muted) leading-relaxed">
+                  We&apos;re not accepting applications for this role right now. Check back later or browse other open roles.
+                </p>
+                <Button href="/careers" variant="primary" size="md" showArrow className="mt-6 w-fit">
+                  Browse open roles
+                </Button>
+              </div>
+            ) : submitted ? (
               <div>
                 <p
                   style={{
