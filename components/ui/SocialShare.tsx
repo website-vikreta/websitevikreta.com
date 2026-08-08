@@ -62,6 +62,7 @@ export function SocialShare({ path, title, campaign }: { path: string; title: st
 
   return (
     <div className="flex items-center gap-3">
+      <span className="text-sm text-(--color-text-muted)">Share on:</span>
       {PLATFORMS.map(({ key, tooltip, Icon, shareUrl }) => (
         <a
           key={key}
