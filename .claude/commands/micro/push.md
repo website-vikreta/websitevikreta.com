@@ -1,5 +1,5 @@
-# Command: /open-pr
-> Turn the current working-tree changes into a new branch, logically-split commits, and a detailed PR against the active `releases/**` branch.
+# Command: /push
+> Turn the current working-tree changes into logically-split commits and push. Opens a new PR against the active `releases/**` branch if none exists yet for this branch; otherwise just updates the existing one.
 
 ## Load
 - Nothing from the design pipeline — this is a git/GitHub workflow command, not a design task.
@@ -21,10 +21,15 @@ current_branch=$(git branch --show-current)
 - `git status --porcelain` — if empty, stop and say there's nothing to open a PR for.
 - `git status` — confirm no unrelated stray files (build artifacts, `.env`, etc.) are about to get swept into `git add`. Flag anything suspicious before staging.
 
-### 3. Create the branch
-- Read the diff (`git diff`, `git status`) to understand what changed.
-- Pick a type prefix from the change's dominant nature: `feat` / `fix` / `refactor` / `perf` / `chore` / `docs` / `style` — same convention as this repo's recent branches (`feat/mobile-performance`, `fix/ga-hostname-gate`).
-- `git checkout -b <type>/<kebab-slug>` off the current HEAD (this carries the uncommitted changes over automatically — no stash needed).
+### 3. Decide mode: new branch+PR, or update an existing one
+**Never branch off a branch that isn't the release branch.** Determine mode from where you currently are:
+
+- **`current_branch` IS the target release branch** (fresh work, straight off `releases/**`) → **New PR mode**.
+  - Pick a type prefix from the change's dominant nature: `feat` / `fix` / `refactor` / `perf` / `chore` / `docs` / `style` — same convention as this repo's recent branches (`feat/mobile-performance`, `fix/ga-hostname-gate`).
+  - `git checkout -b <type>/<kebab-slug>` off current HEAD (carries uncommitted changes over — no stash needed).
+- **`current_branch` is anything else** (you're already on a feature branch — either from an earlier `/push` run or created manually) → **stay on it, do not create another branch.** Then check `gh pr list --head <current_branch> --state open --json number,url`:
+  - **Open PR exists** → **Update mode**: this run only commits + pushes to the existing branch. Skip branch creation and skip `gh pr create` entirely — the push updates the existing PR automatically. Report its URL, don't open a new one.
+  - **No open PR yet** → **New PR mode, existing branch**: commit + push on this same branch, then run `gh pr create` for the first time (§6-7).
 
 ### 4. Split into logical commits
 - Group the changed files/hunks by concern, not by file count. One commit per logical change, not one giant commit and not one commit per file if several files belong to the same change.
@@ -32,10 +37,11 @@ current_branch=$(git branch --show-current)
 - Use as many commits as the diff genuinely supports — don't force a split that doesn't reflect real separate concerns.
 
 ### 5. STOP — show a preview and ask for confirmation
-Before pushing or creating the PR, show the user:
-- New branch name
+Before pushing (and before creating a PR, if this run is opening one), show the user:
+- Mode (new branch+PR / new PR on existing branch / update existing PR), and branch name
 - `git log <target-base>..HEAD --oneline` (the commits just made)
-- The full PR title + description draft (see §6)
+- **Update mode**: nothing else needed — no PR draft to show, it's just a push.
+- **New PR mode**: the full PR title + description draft (see §6)
 
 Wait for explicit go-ahead. Do not push or run `gh pr create` before the user confirms.
 
@@ -64,9 +70,10 @@ Body must include:
 - Blast radius of this change, and how to revert if something breaks
 ```
 
-### 7. Push and open the PR
-- `git push -u origin <branch>`
-- `gh pr create --base <target-release-branch> --head <branch> --title "..." --body "$(cat <<'EOF' ... EOF)"`
+### 7. Push, and open the PR only if this is its first push
+- First push on a new branch: `git push -u origin <branch>`. Subsequent push on an already-tracked branch: `git push`.
+- **Update mode**: stop here. The push alone updates the existing open PR — do not call `gh pr create`.
+- **New PR mode only**: `gh pr create --base <target-release-branch> --head <branch> --title "..." --body "$(cat <<'EOF' ... EOF)"`. Re-check `gh pr list --head <branch> --state open` immediately before this call — if one now exists, skip creating and report that URL instead.
 - Never force-push, never skip hooks, never target `main` — only the active `releases/**` branch from step 1.
 
 ## Output
