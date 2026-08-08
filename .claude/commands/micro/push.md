@@ -6,6 +6,7 @@
 
 ## Input Required
 - Nothing required. Optional: a short hint about what the change is for for a better branch slug / PR title.
+- Optional flag: `--confirm` (or the user says "ask first" / "confirm before opening") → enables the confirmation gate in §5. Default (flag absent): run straight through, no gate.
 
 ## Process
 
@@ -36,14 +37,15 @@ current_branch=$(git branch --show-current)
 - For each group: `git add <specific files>` then commit with a conventional message matching this repo's style, e.g. `fix(perf): ...`, `refactor(hero): ...` — subject line + short body if the "why" isn't obvious from the diff alone.
 - Use as many commits as the diff genuinely supports — don't force a split that doesn't reflect real separate concerns.
 
-### 5. Confirmation gate
-- **Update mode**: no confirmation needed. Commit, push immediately (§7), and report the commit + PR URL. Don't stop to ask first — there's no PR draft to review, it's just a push to an already-open PR.
-- **New PR mode**: STOP once, right before `gh pr create` — never earlier. Show the user:
+### 5. Confirmation gate — opt-in only
+Default (no `--confirm` flag): run straight through, no stop.
+- **Update mode**: commit, push immediately (§7), report the commit + PR URL. No stop, `--confirm` has nothing to gate here — there's no PR draft to review.
+- **New PR mode**: commit, push, then `gh pr create` (§6-7) — no stop. After creation, report:
   - Mode (new branch+PR / new PR on existing branch), and branch name
   - `git log <target-base>..HEAD --oneline` (the commits just made)
-  - The full PR title + description draft (see §6)
+  - The PR title + URL
 
-  Wait for explicit go-ahead at this single point. Commit and push can happen before asking (§7) — only opening the PR waits on confirmation.
+If `--confirm` was passed (New PR mode only): commit + push (§7), then STOP right before `gh pr create` and show the same info (mode, branch, commit log, full PR title + description draft from §6). Wait for explicit go-ahead before opening the PR.
 
 ### 6. PR title & description
 Title: conventional-commit-style, concise, under 70 chars.
@@ -72,8 +74,8 @@ Body must include:
 
 ### 7. Push, and open the PR only if this is its first push
 - First push on a new branch: `git push -u origin <branch>`. Subsequent push on an already-tracked branch: `git push`.
-- **Update mode**: push immediately after committing (§5) — no gate. The push alone updates the existing open PR — do not call `gh pr create`.
-- **New PR mode only**: push can happen right after committing; then hit the §5 confirmation gate before `gh pr create --base <target-release-branch> --head <branch> --title "..." --body "$(cat <<'EOF' ... EOF)"`. Re-check `gh pr list --head <branch> --state open` immediately before this call — if one now exists, skip creating and report that URL instead.
+- **Update mode**: push immediately after committing — no gate, no `gh pr create`. The push alone updates the existing open PR.
+- **New PR mode only**: push right after committing, then immediately call `gh pr create --base <target-release-branch> --head <branch> --title "..." --body "$(cat <<'EOF' ... EOF)"` — no gate. Re-check `gh pr list --head <branch> --state open` immediately before this call — if one now exists, skip creating and report that URL instead.
 - Never force-push, never skip hooks, never target `main` — only the active `releases/**` branch from step 1.
 
 ## Output
