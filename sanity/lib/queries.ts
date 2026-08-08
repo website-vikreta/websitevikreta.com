@@ -43,7 +43,14 @@ export const POST_BY_SLUG_QUERY = groq`
     seoDescription,
     seoKeywords,
     canonicalUrl,
-    "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl }
+    "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl },
+    "comments": *[_type == "comment" && post._ref == ^._id] | order(_createdAt asc) {
+      _id,
+      name,
+      message,
+      _createdAt,
+      "parentId": parentComment._ref
+    }
   }
 `
 
