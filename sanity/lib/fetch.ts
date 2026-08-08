@@ -65,6 +65,7 @@ function formatDate(iso?: string): string {
 
 function toDisplayPost(post: Post): DisplayPost {
   return {
+    _id: post._id,
     slug: post.slug.current,
     category: post.category?.title?.toUpperCase() ?? 'GENERAL',
     categorySlug: post.category?.slug?.current,
@@ -73,6 +74,7 @@ function toDisplayPost(post: Post): DisplayPost {
     publishDate: formatDate(post.publishedAt),
     publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
+    likes: post.likes,
     imageUrl: post.featuredImage?.asset
       ? urlFor(post.featuredImage).width(800).fit('crop').url()
       : undefined,
@@ -400,6 +402,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
 
   return {
     source: 'sanity',
+    _id: post._id,
     slug: post.slug.current,
     category: post.category?.title?.toUpperCase() ?? 'GENERAL',
     title: post.title,
@@ -407,6 +410,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
     publishDate: formatDate(post.publishedAt),
     publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
+    likes: post.likes ?? 0,
     body: (post.body ?? []) as PortableTextBlock[],
     featuredImage: post.featuredImage,
     author: post.author ? {

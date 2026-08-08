@@ -17,6 +17,7 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
+import { LikeButton } from '@/components/blog/LikeButton'
 import type { AdjacentPost } from '@/sanity/lib/fetch'
 import type { DisplayPost, FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -349,8 +350,9 @@ export default async function BlogPostPage({
 
               </div>
               <hr className="mt-6 border-[var(--color-border)]" />
-              <div className="mt-6">
+              <div className="mt-6 flex items-center justify-between gap-4">
                 <SocialShare path={postHref(canonicalSlug, post.slug)} title={post.title} campaign="blog" />
+                <LikeButton postId={post._id} initialLikes={post.likes} />
               </div>
             </div>
           )}

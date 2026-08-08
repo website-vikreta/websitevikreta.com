@@ -67,6 +67,12 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Where: converted Testimonials hardcoded hex → tokens.
 - Date: 2026-06-28
 
+### [Reverted] — LikeButton liked state: pink → solid black/white fill toggle
+- Rule: `LikeButton` (`components/blog/LikeButton.tsx`) liked state is `fill-(--color-text)` / `text-(--color-text)` — a solid heart in ink black vs. the default outline in `--color-text-muted`. No color at all, just filled vs. outline.
+- History: briefly shipped as `text-pink-500`/`fill-pink-500` after the user was shown the single-accent conflict and picked pink anyway (2026-08-08) — reverted the same day when the user asked for something on-theme instead. Accent yellow (`--color-accent`) was considered and rejected: `#FFD600` text/icon on a white card fails contrast (same reason the category badge uses dark text ON a yellow chip, never yellow text on white — see design-system precedent), and coloring every liked heart across a page of cards would also blow the separately-logged "max ~1-3 accent instances per page" budget. A plain fill/outline toggle sidesteps both problems and needs no new token.
+- Where: `components/blog/LikeButton.tsx`, used on the blog post detail page and every `BlogCard`.
+- Date: 2026-08-08
+
 ## Components & Patterns
 ### [Reveal] — shared motion primitives
 - Rule: Use `components/ui/Reveal.tsx` for ALL scroll reveals. Never hand-roll GSAP/motion per section.
