@@ -5,6 +5,9 @@ opening random markdown files in the repo looking for answers.
 
 That's fine. That's what the duck is for.
 
+
+
+
 Explain the bug to the duck, out loud, one line at a time, like it
 has never seen code before. By the time you reach the part where you
 say "and then obviously it just—" you will have found it.
