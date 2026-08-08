@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { TextLink } from '@/components/ui/TextLink'
+import { LikeButton } from '@/components/blog/LikeButton'
 import { postHref } from '@/lib/blog-url'
 import { cn } from '@/lib/utils'
 import type { DisplayPost } from '@/sanity/types'
@@ -88,9 +89,12 @@ export function BlogCard({ post, className }: BlogCardProps) {
         <span className="text-[0.75rem] text-[var(--color-text-faint)] tracking-[0.03em] whitespace-nowrap">
           {post.publishDate} · {post.readTime}
         </span>
-        <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
-          Read more
-        </TextLink>
+        <div className="flex items-center gap-4">
+          <LikeButton postId={post._id} initialLikes={post.likes} size="sm" />
+          <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
+            Read more
+          </TextLink>
+        </div>
       </div>
     </article>
   )

@@ -13,7 +13,8 @@ const POST_SUMMARY = groq`
   "tags": tags[]->{ _id, title, slug { current } },
   "labels": labels[]->{ _id, title, slug { current } },
   publishedAt,
-  readTime
+  readTime,
+  "likes": coalesce(likes, 0)
 `
 
 export const ALL_POSTS_QUERY = groq`

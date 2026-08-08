@@ -67,6 +67,7 @@ export interface Post {
   tags?: Pick<Tag, '_id' | 'title' | 'slug'>[]
   labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
   readTime?: string
+  likes: number
   seoTitle?: string
   seoDescription?: string
   seoKeywords?: string[]
@@ -92,6 +93,7 @@ export type FullPost =
     }
   | {
       source: 'sanity'
+      _id: string
       slug: string
       category: string
       title: string
@@ -101,6 +103,7 @@ export type FullPost =
       // — needed to query for the previous/next post by publish order.
       publishedAt?: string
       readTime: string
+      likes: number
       body: PortableTextBlock[]
       featuredImage?: SanityImage
       author?: {
@@ -128,6 +131,7 @@ export type FullPost =
 // ── Blog listing UI ───────────────────────────────────────────────────────────
 
 export interface DisplayPost {
+  _id: string
   slug: string
   category: string
   // Category's own slug (not the uppercased display title above) — needed
@@ -143,6 +147,7 @@ export interface DisplayPost {
   // correctly as a plain string.
   publishedAt?: string
   readTime: string
+  likes: number
   imageUrl?: string
   // Resolved label refs (e.g. "Featured", "Hero") — used to pick which
   // post gets special placement (see FeaturedBlogHero selection logic).
