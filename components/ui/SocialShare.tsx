@@ -18,33 +18,36 @@ function withUtm(path: string, source: string, campaign: string): string {
 const PLATFORMS = [
   {
     key: 'linkedin',
-    label: 'LinkedIn',
+    tooltip: 'Post on LinkedIn',
     Icon: Linkedin,
     shareUrl: (url: string) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   },
   {
     key: 'twitter',
-    label: 'X',
+    tooltip: 'Post on X',
     Icon: TwitterX,
     shareUrl: (url: string, title: string) =>
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
   },
   {
     key: 'facebook',
-    label: 'Facebook',
+    tooltip: 'Share on Facebook',
     Icon: Facebook,
     shareUrl: (url: string) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
   },
   {
     key: 'whatsapp',
-    label: 'WhatsApp',
+    tooltip: 'Share on WhatsApp',
     Icon: Whatsapp,
     shareUrl: (url: string, title: string) => `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`,
   },
 ] as const
 
 const ICON_BUTTON =
-  'flex h-9 w-9 items-center justify-center border border-(--color-border) text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent)'
+  'group relative flex h-9 w-9 items-center justify-center border border-(--color-border) text-(--color-text) transition-colors duration-300 hover:bg-(--color-accent)'
+
+const TOOLTIP =
+  'pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap bg-(--color-text) px-2 py-1 text-xs text-(--color-bg) opacity-0 transition-opacity duration-200 group-hover:opacity-100'
 
 /** UTM-tagged social share row. `path` is the page's canonical path (e.g. `/careers/frontend-intern`); `campaign` groups clicks by content type in GA4 (e.g. `careers`, `blog`). */
 export function SocialShare({ path, title, campaign }: { path: string; title: string; campaign: string }) {
@@ -59,21 +62,23 @@ export function SocialShare({ path, title, campaign }: { path: string; title: st
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm text-(--color-text-muted)">Share:</span>
-      {PLATFORMS.map(({ key, label, Icon, shareUrl }) => (
+      <span className="text-sm text-(--color-text-muted)">Share on:</span>
+      {PLATFORMS.map(({ key, tooltip, Icon, shareUrl }) => (
         <a
           key={key}
           href={shareUrl(withUtm(path, key, campaign), title)}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackShareClick(key, campaign)}
-          aria-label={`Share on ${label}`}
+          aria-label={tooltip}
           className={ICON_BUTTON}
         >
+          <span className={TOOLTIP}>{tooltip}</span>
           <Icon size={15} />
         </a>
       ))}
       <button type="button" onClick={copyLink} aria-label="Copy link" className={ICON_BUTTON}>
+        <span className={TOOLTIP}>{copied ? 'Copied!' : 'Copy link'}</span>
         {copied ? <Check size={15} /> : <Copy size={15} />}
       </button>
     </div>
