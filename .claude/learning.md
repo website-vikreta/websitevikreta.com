@@ -306,9 +306,10 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Date: 2026-08-01
 
 ### [Anti-pattern] — never render invented client names as proof
-- Rule: Placeholder brand names in a "who we've built for" marquee (`ClientLogosSection`'s `CLIENTS` = Studio One, UrbanEdge, NovaMed, Brightline, Kinetica, Forsa, Pinnacle) are fabricated social proof. Removed from `/work`, where the page's whole premise is "Proof over promises" and three real client logos plus seven named testimonials sit within one scroll of it. **Still live on `/about` (`app/about/page.tsx:76`) and commented out on the home page — replace with the real logo set or delete there too.**
-- Where: removed from `app/work/WorkPageContent.tsx`.
-- Date: 2026-08-01
+- Rule: Placeholder brand names in a "who we've built for" marquee are fabricated social proof — never ship them. `ClientLogosSection`'s `CLIENTS` array now holds real client logo files only (`public/client-logos/*`), no invented names.
+- Placement: live on `/` (`app/page.tsx`) and `/about` (`app/about/page.tsx`). Deliberately **not** on `/work` — that page's premise is "Proof over promises" via named testimonials (`WorkTestimonialsSection`), and a logo marquee there would be redundant within the same scroll.
+- Where: `components/sections/ClientLogosSection.tsx`.
+- Date: 2026-08-10
 
 ### [Rejected] — do NOT restyle /work in the About page's visual language
 - Rule: `/work`'s existing blocks are approved as they are. A pass on 2026-08-01 rebuilt them using the About page's devices — hero proof band, `--color-surface` anchor slabs alternating with `--color-bg`, an editorial ruled-type index replacing the "Selected websites" card grid, big metric numerals on the case-study cards. **User rejected all of it wholesale**: "this is poor all AI slop nothing is good. you used the same elements like about page. i dont want it, whatever it was previously it's very nice." Reverted in full.

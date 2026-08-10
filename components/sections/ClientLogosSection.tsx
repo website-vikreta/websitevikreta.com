@@ -21,6 +21,9 @@ const CLIENTS = [
   { src: '/client-logos/champion-lenders.svg', alt: 'Champion Lenders' },
   { src: '/client-logos/cozmo-realty.svg', alt: 'Cozmo Realty' },
   { src: '/client-logos/archmodal.svg', alt: 'Archmodal' },
+  { src: '/client-logos/limra-events.png', alt: 'Limra Events' },
+  { src: '/client-logos/workik.svg', alt: 'Workik' },
+  { src: '/client-logos/katalyst.png', alt: 'Katalyst' },
 ]
 
 const FAST = 90   // px / s  — base speed
