@@ -45,6 +45,15 @@ export interface Tag {
   postCount?: number
 }
 
+export interface Comment {
+  _id: string
+  name: string
+  message: string
+  _createdAt: string
+  /** Set when this comment is a reply — the `_id` of the comment it replies to. Never nested more than one level (a reply's own parentId always points at a top-level comment). */
+  parentId?: string
+}
+
 export interface Label {
   _id: string
   title: string
@@ -104,6 +113,7 @@ export type FullPost =
       publishedAt?: string
       readTime: string
       likes: number
+      comments: Comment[]
       body: PortableTextBlock[]
       featuredImage?: SanityImage
       author?: {

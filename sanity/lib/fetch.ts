@@ -31,7 +31,7 @@ import {
 import { urlFor } from './image'
 import { BLOG_SEARCH_PAGE_SIZE, type BlogSearchParams } from '@/lib/blog-search-params'
 import type { PortableTextBlock } from '@portabletext/react'
-import type { Post, FullPost, DisplayPost, SanityImage, Category, Label, Tag, Author } from '../types'
+import type { Post, FullPost, DisplayPost, SanityImage, Category, Label, Tag, Author, Comment } from '../types'
 
 function isSanityConfigured(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
@@ -383,6 +383,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
   if (!isSanityConfigured()) throw new Error('Sanity not configured')
   type PostData = (Omit<Post, 'author'> & {
     body?: unknown[]
+    comments?: Comment[]
     author?: { name: string; slug: string; image?: SanityImage; bio?: PortableTextBlock[]; linkedinUrl?: string }
   }) | null
   // Try exact slug; fall back to slug with leading space (Studio data-entry issue)
@@ -411,6 +412,7 @@ export async function fetchPostBySlug(slug: string): Promise<FullPost | null> {
     publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
     likes: post.likes ?? 0,
+    comments: post.comments ?? [],
     body: (post.body ?? []) as PortableTextBlock[],
     featuredImage: post.featuredImage,
     author: post.author ? {

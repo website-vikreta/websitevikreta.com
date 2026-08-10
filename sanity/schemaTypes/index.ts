@@ -5,6 +5,7 @@ import { tagType } from './tagType'
 import { labelType } from './labelType'
 import { openingType } from './openingType'
 import { submissionType } from './submissionType'
+import { commentType } from './commentType'
 
 export const schemaTypes = [
   postType,
@@ -14,4 +15,5 @@ export const schemaTypes = [
   labelType,
   openingType,
   submissionType,
+  commentType,
 ]
