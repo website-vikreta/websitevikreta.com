@@ -1,12 +1,29 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { motion, useAnimationFrame, useMotionValue } from 'motion/react'
 import { RevealText } from '@/components/ui/Reveal'
 
+// Real client logos only — see learning.md [Anti-pattern] fabricated social proof.
 const CLIENTS = [
-  'Harvestt', 'Studio One', 'UrbanEdge', 'NovaMed',
-  'Brightline', 'Kinetica', 'Forsa', 'Pinnacle',
+  { src: '/client-logos/sustainable-bitcoin-protocol.svg', alt: 'Sustainable Bitcoin Protocol' },
+  { src: '/client-logos/simpli-home.svg', alt: 'Simpli Home' },
+  { src: '/client-logos/blancora.svg', alt: 'Blancora' },
+  { src: '/client-logos/boompanda.png', alt: 'Boompanda' },
+  { src: '/client-logos/ap-cleanco.svg', alt: 'AP Cleanco' },
+  { src: '/client-logos/tocal.svg', alt: 'Tocal' },
+  { src: '/client-logos/strandzboost.svg', alt: 'Strandzboost' },
+  { src: '/client-logos/raicoon.svg', alt: 'Raicoon' },
+  { src: '/client-logos/sr-design-hub.svg', alt: 'SR Design Hub' },
+  { src: '/client-logos/ambrosia.svg', alt: 'Ambrosia Life Sciences' },
+  { src: '/client-logos/budget-renovations.svg', alt: 'Budget Renovations' },
+  { src: '/client-logos/champion-lenders.svg', alt: 'Champion Lenders' },
+  { src: '/client-logos/cozmo-realty.svg', alt: 'Cozmo Realty' },
+  { src: '/client-logos/archmodal.svg', alt: 'Archmodal' },
+  { src: '/client-logos/limra-events.png', alt: 'Limra Events' },
+  { src: '/client-logos/workik.svg', alt: 'Workik' },
+  { src: '/client-logos/katalyst.png', alt: 'Katalyst' },
 ]
 
 const FAST = 90   // px / s  — base speed
@@ -36,36 +53,44 @@ export function ClientLogosSection() {
         </RevealText>
       </div>
 
-      <div
-        className="relative"
-        onMouseEnter={() => { isHovered.current = true }}
-        onMouseLeave={() => { isHovered.current = false }}
-      >
-        <motion.div
-          ref={trackRef}
-          className="flex items-center gap-10 w-max"
-          style={{ x }}
+      <div className="container">
+        <div
+          className="relative overflow-hidden"
+          onMouseEnter={() => { isHovered.current = true }}
+          onMouseLeave={() => { isHovered.current = false }}
         >
-          {[...CLIENTS, ...CLIENTS].map((name, i) => (
-            <LogoSlot key={i} name={name} />
-          ))}
-        </motion.div>
+          <motion.div
+            ref={trackRef}
+            className="flex items-center gap-10 md:gap-14 w-max"
+            style={{ x }}
+          >
+            {[...CLIENTS, ...CLIENTS].map((client, i) => (
+              <LogoSlot key={i} src={client.src} alt={client.alt} eager={i < CLIENTS.length} />
+            ))}
+          </motion.div>
 
-        {/* Edge fade masks */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-[var(--color-bg)] to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-[var(--color-bg)] to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-linear-to-r from-(--color-bg) to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-linear-to-l from-(--color-bg) to-transparent z-10" />
+        </div>
       </div>
 
     </section>
   )
 }
 
-function LogoSlot({ name }: { name: string }) {
+function LogoSlot({ src, alt, eager }: { src: string; alt: string; eager?: boolean }) {
   return (
-    <div className="flex-shrink-0 h-11 px-7 flex items-center justify-center rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
-      <span className="text-sm font-semibold text-[var(--color-text-muted)] whitespace-nowrap">
-        {name}
-      </span>
+    <div className="shrink-0 flex items-center justify-center group" title={alt}>
+      <Image
+        src={src}
+        alt={alt}
+        width={0}
+        height={40}
+        unoptimized
+        loading={eager ? 'eager' : 'lazy'}
+        style={{ width: 'auto' }}
+        className="object-contain h-9 md:h-12 grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+      />
     </div>
   )
 }
