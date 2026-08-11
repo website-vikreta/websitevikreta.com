@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Heart, MessageCircle } from 'lucide-react'
 import { TextLink } from '@/components/ui/TextLink'
-import { LikeButton } from '@/components/blog/LikeButton'
 import { postHref } from '@/lib/blog-url'
 import { cn } from '@/lib/utils'
 import type { DisplayPost } from '@/sanity/types'
@@ -64,8 +64,13 @@ export function BlogCard({ post, className }: BlogCardProps) {
         </Link>
       </h3>
 
-      {/* Description */}
-      <p className="text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5 flex-1">
+      {/* Description — clamped to 2 lines (same h-[Ne] + line-clamp-N pairing
+          as FeaturedBlogHero/Carousel) so cards in a row stay the same
+          height regardless of how long a post's description runs. No
+          flex-1 here: flex items get an implicit min-height:auto that lets
+          content escape the line-clamp's -webkit-box clip, so the fixed
+          h-[3.4em] has to be the only thing sizing this. */}
+      <p className="h-[3.4em] line-clamp-2 text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5">
         {post.description}
       </p>
 
@@ -84,17 +89,28 @@ export function BlogCard({ post, className }: BlogCardProps) {
         </div>
       )}
 
-      {/* Footer: date + readtime | Read more */}
+      {/* Footer: like/comment counts (read-only — liking only happens on the
+          post's own page) | Read more */}
       <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-4 mt-auto gap-4">
-        <span className="text-[0.75rem] text-[var(--color-text-faint)] tracking-[0.03em] whitespace-nowrap">
-          {post.publishDate} · {post.readTime}
-        </span>
-        <div className="flex items-center gap-4">
-          <LikeButton postId={post._id} initialLikes={post.likes} size="sm" />
-          <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
-            Read more
-          </TextLink>
+        <div className="flex items-center gap-4 text-[0.8125rem] text-(--color-text-faint)">
+          <span
+            className="inline-flex items-center gap-1.5"
+            aria-label={`${post.likes} like${post.likes === 1 ? '' : 's'}`}
+          >
+            <Heart size={14} strokeWidth={1.75} aria-hidden="true" />
+            {post.likes}
+          </span>
+          <span
+            className="inline-flex items-center gap-1.5"
+            aria-label={`${post.commentsCount} comment${post.commentsCount === 1 ? '' : 's'}`}
+          >
+            <MessageCircle size={14} strokeWidth={1.75} aria-hidden="true" />
+            {post.commentsCount}
+          </span>
         </div>
+        <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
+          Read more
+        </TextLink>
       </div>
     </article>
   )
