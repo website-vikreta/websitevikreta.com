@@ -55,7 +55,10 @@ export function Navbar() {
   const isHome = pathname === '/'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    // Once revealed by scrolling, the navbar stays revealed — never re-hide on scroll-up.
+    const onScroll = () => {
+      if (window.scrollY > 40) setScrolled(true)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
