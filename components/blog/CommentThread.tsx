@@ -86,7 +86,7 @@ export function CommentThread({ postId, comment, replies }: CommentThreadProps) 
         )}
 
         {replies.length > 0 && (
-          <ul className="mt-4 flex flex-col gap-4 border-l border-(--color-border) pl-4">
+          <ul className="mt-4 flex flex-col gap-4 border-l-2 border-(--color-border) pl-5">
             {replies.map((reply) => (
               <li key={reply._id}>
                 <CommentRow comment={reply} />

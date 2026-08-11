@@ -71,6 +71,9 @@
     margin: 0;
     padding: 0;
 }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* ─── Design Tokens ───────────────────────────────────────────── */

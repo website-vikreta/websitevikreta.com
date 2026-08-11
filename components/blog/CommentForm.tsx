@@ -3,7 +3,6 @@
 import { useActionState, useEffect, useId, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
 import { submitComment, type SubmitCommentResult } from '@/actions/submit-comment'
 import { getCommentIdentity, setCommentIdentity, clearCommentIdentity, type CommentIdentity } from '@/lib/comment-identity'
 
@@ -168,13 +167,10 @@ export function CommentForm({ postId, parentId, onPosted, onCancel }: CommentFor
       )}
 
       <div className="flex items-center gap-3">
-        <Button
+        <button
           type="submit"
-          variant="primary"
-          size="md"
-          showArrow={!isPending}
           disabled={isPending}
-          className="w-fit"
+          className="btn btn-primary w-fit py-[0.8125rem] px-[1.625rem] text-[0.9375rem] disabled:opacity-60"
         >
           {isPending ? (
             <span className="inline-flex items-center gap-2">
@@ -184,13 +180,13 @@ export function CommentForm({ postId, parentId, onPosted, onCancel }: CommentFor
           ) : (
             parentId ? 'Post reply' : 'Post comment'
           )}
-        </Button>
+        </button>
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
             disabled={isPending}
-            className="text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+            className="btn btn-ghost py-2.5 px-5 text-sm disabled:opacity-60"
           >
             Cancel
           </button>
