@@ -1,16 +1,23 @@
 import { sendGAEvent } from '@next/third-parties/google'
 
-type ClickEventName = 'whatsapp_click' | 'call_click' | 'email_click'
+type ClickEventName =
+  | 'whatsapp_click'
+  | 'call_click'
+  | 'email_click'
+  | 'linkedin_click'
+  | 'instagram_click'
 
-/** Classifies a WhatsApp/tel/mailto href into its GA4 click-event name, or null for anything else (e.g. LinkedIn, Instagram). */
+/** Classifies a WhatsApp/tel/mailto/LinkedIn/Instagram href into its GA4 click-event name, or null for anything else. */
 function getClickEventName(href: string): ClickEventName | null {
   if (href.startsWith('https://wa.me/')) return 'whatsapp_click'
   if (href.startsWith('tel:')) return 'call_click'
   if (href.startsWith('mailto:')) return 'email_click'
+  if (href.includes('linkedin.com/')) return 'linkedin_click'
+  if (href.includes('instagram.com/')) return 'instagram_click'
   return null
 }
 
-/** Fires the matching GA4 click event for a WhatsApp/tel/mailto link. No-ops for any other href. */
+/** Fires the matching GA4 click event for a WhatsApp/tel/mailto/LinkedIn/Instagram link. No-ops for any other href. */
 export function trackLinkClick(href: string, buttonLocation: string) {
   if (typeof window === 'undefined') return
   const event = getClickEventName(href)
