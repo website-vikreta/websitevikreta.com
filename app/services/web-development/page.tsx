@@ -51,6 +51,6 @@ export const metadata: Metadata = {
 }
 
 export default function WebDevelopmentPage() {
-  // return <WebDevClient />
-  return <ComingSoonPage pageName="Web Development" />
+  return <WebDevClient />
+  // return <ComingSoonPage pageName="Web Development" />
 }
