@@ -143,9 +143,11 @@ export const openingType = defineType({
     }),
     defineField({
       name: 'isActive',
-      title: 'Active (visible on site)',
+      title: 'Accepting Applications',
       type: 'boolean',
       group: 'details',
+      description:
+        'Turn off when you are no longer hiring for this role. The listing and detail page stay live, but the apply form is replaced with a "not accepting applications" message — use this instead of unpublishing so closed roles stop generating resumes without losing the page.',
       initialValue: true,
     }),
     defineField({

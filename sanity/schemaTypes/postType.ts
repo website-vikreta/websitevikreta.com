@@ -201,6 +201,14 @@ export const postType = defineType({
       description: 'e.g. 5 min read',
     }),
     defineField({
+      name: 'likes',
+      title: 'Likes',
+      type: 'number',
+      group: 'content',
+      initialValue: 0,
+      description: 'Total number of likes. Do not edit manually unless necessary.',
+    }),
+    defineField({
       name: 'featuredOnHomepage',
       title: 'Featured on Homepage',
       type: 'boolean',
