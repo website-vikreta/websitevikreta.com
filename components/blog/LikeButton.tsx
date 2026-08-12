@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useOptimistic, useState, useTransition } from 'react'
+import { useEffect, useOptimistic, useRef, useState, useTransition } from 'react'
 import { usePathname } from 'next/navigation'
 import { Heart } from 'lucide-react'
 import { likePost, unlikePost } from '@/actions/like-post'
@@ -36,32 +36,53 @@ export function LikeButton({ postId, initialLikes, size = 'md' }: LikeButtonProp
     initialLikes,
     (state: number, delta: number) => Math.max(0, state + delta),
   )
+  // `isPending` is React state — it only becomes true on the next render,
+  // not the instant startTransition is called. A spammed click can land in
+  // that gap and start a second action before this one settles. A ref is
+  // synchronous, so it closes the gap the state-based check can't.
+  const isMutatingRef = useRef(false)
 
   // Liked state lives in localStorage, not Sanity — there's no per-user
   // auth on this site, so "has this browser liked this post" is the only
   // notion of "liked" we can track. Read after mount so server and first
-  // client render agree (no hydration mismatch).
+  // client render agree (no hydration mismatch). Also listen for `storage`
+  // events (fired in *other* tabs on the same origin, never the tab that
+  // wrote the change) so liking a post in one tab updates the heart icon in
+  // any other tab that has it open, instead of leaving it stale.
   useEffect(() => {
     setIsLiked(getLikedPostIds().includes(postId))
+
+    function onStorage(e: StorageEvent) {
+      if (e.key === LIKED_POSTS_KEY) setIsLiked(getLikedPostIds().includes(postId))
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
   }, [postId])
 
   function handleClick() {
-    if (isPending) return
+    if (isMutatingRef.current) return
+    isMutatingRef.current = true
     // Re-read localStorage fresh, not just the `isLiked` state captured at
     // mount — the same post can render in more than one card on a page
     // (e.g. also in "Related reads"), each its own component instance.
     const next = !getLikedPostIds().includes(postId)
     setIsLiked(next)
+    // Write synchronously, before the action fires — a rapid second click
+    // must see this updated value so it correctly unlikes instead of also
+    // liking, which previously double-counted the like server-side.
+    setLikedPostId(postId, next)
     startTransition(async () => {
       addOptimisticDelta(next ? 1 : -1)
       try {
         await (next ? likePost(postId, pathname) : unlikePost(postId, pathname))
-        setLikedPostId(postId, next)
       } catch {
         // Rate-limited or the write failed — undo the optimistic flip
         // instead of leaving the button stuck showing a state the server
         // never actually recorded.
         setIsLiked(!next)
+        setLikedPostId(postId, !next)
+      } finally {
+        isMutatingRef.current = false
       }
     })
   }
