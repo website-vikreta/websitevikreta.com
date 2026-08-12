@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import type { PortableTextBlock } from '@portabletext/react'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -102,6 +103,12 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
     <>
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="container pt-[150px] pb-16">
+        <Link
+          href="/careers"
+          className="mb-8 inline-flex text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+        >
+          ← Back to careers
+        </Link>
         <h1 className="text-h2 font-bold tracking-tight text-(--color-text) mb-6">
           {opening.title}
         </h1>
