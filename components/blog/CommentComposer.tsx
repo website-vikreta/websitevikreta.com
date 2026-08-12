@@ -21,7 +21,7 @@ export function CommentComposer({ postId }: { postId: string }) {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex w-full items-center gap-3 border border-(--color-border) px-4 py-3 text-left text-sm text-(--color-text-faint) transition-colors duration-300 hover:border-(--color-border-strong) hover:text-(--color-text-muted)"
+        className="flex w-full items-center gap-3 border-b border-(--color-border) py-3 text-left text-sm text-(--color-text-faint) transition-colors duration-300 hover:border-(--color-border-strong) hover:text-(--color-text-muted)"
       >
         <span
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-(--color-text) text-sm font-semibold text-(--color-bg)"
