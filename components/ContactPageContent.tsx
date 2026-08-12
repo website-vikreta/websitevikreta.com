@@ -576,7 +576,11 @@ export function ContactPageContent() {
                       role="alert"
                     >
                       Something went wrong. Email us at{' '}
-                      <a href="mailto:contact@websitevikreta.com" style={{ textDecoration: 'underline' }}>
+                      <a
+                        href="mailto:contact@websitevikreta.com"
+                        style={{ textDecoration: 'underline' }}
+                        onClick={() => trackLinkClick('mailto:contact@websitevikreta.com', 'contact_page_error')}
+                      >
                         contact@websitevikreta.com
                       </a>
                     </p>

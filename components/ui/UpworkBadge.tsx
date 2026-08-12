@@ -2,6 +2,7 @@
 
 import React, { useEffect, useId, useRef } from 'react'
 import { gsap } from '@/lib/gsap'
+import { trackLinkClick } from '@/lib/analytics'
 
 const BADGE_TEXT = 'TOP RATED ON UPWORK ✱ 100% JOB SUCCESS ✱ CLICK TO HIRE ✱ '
 
@@ -104,6 +105,7 @@ export function UpworkBadge() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Top rated on Upwork with 100% Job Success Score — view agency profile"
+      onClick={() => trackLinkClick('http://upwork.com/ag/websitevikreta', 'upwork_badge')}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="group relative flex items-center justify-center w-[120px] h-[120px] md:w-[150px] md:h-[150px] lg:w-[180px] lg:h-[180px] cursor-pointer select-none"
