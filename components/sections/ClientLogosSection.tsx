@@ -41,7 +41,11 @@ export function ClientLogosSection() {
     const halfW = trackRef.current ? trackRef.current.offsetWidth / 2 : 0
     if (!halfW) return
     const next = x.get() - (vel.current * delta) / 1000
-    x.set(next <= -halfW ? next + halfW : next)           // reset at exactly half = one full copy
+    // modulo wrap (not a single conditional add) — after a tab-switch/minimize,
+    // `delta` can spike to seconds, overshooting halfW by several multiples in
+    // one frame; `% halfW` corrects any overshoot in one step so the marquee
+    // keeps rotating instead of landing off-track and appearing to "restart"
+    x.set(next % halfW)
   })
 
   return (
