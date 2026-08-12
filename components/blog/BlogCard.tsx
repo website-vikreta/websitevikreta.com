@@ -16,9 +16,11 @@ interface BlogCardProps {
   post: DisplayPost
   /** Extra classes merged onto the outer article — e.g. `h-full` when a fixed-width carousel wrapper needs the card to stretch to match its row's tallest sibling. */
   className?: string
+  /** Clamp the description to 2 lines — only for fixed-width carousel/horizontal-scroll rows (label rows, hero), where every card in the row must match height. Grid usages show the description in full. */
+  clampDescription?: boolean
 }
 
-export function BlogCard({ post, className }: BlogCardProps) {
+export function BlogCard({ post, className, clampDescription = false }: BlogCardProps) {
   // Slug should always resolve to { current: string } per our Sanity
   // schema, but tags come from a separate document reference — handled
   // defensively in case a tag is ever stored/queried as a plain string.
@@ -64,13 +66,20 @@ export function BlogCard({ post, className }: BlogCardProps) {
         </Link>
       </h3>
 
-      {/* Description — clamped to 2 lines (same h-[Ne] + line-clamp-N pairing
-          as FeaturedBlogHero/Carousel) so cards in a row stay the same
-          height regardless of how long a post's description runs. No
-          flex-1 here: flex items get an implicit min-height:auto that lets
-          content escape the line-clamp's -webkit-box clip, so the fixed
-          h-[3.4em] has to be the only thing sizing this. */}
-      <p className="h-[3.4em] line-clamp-2 text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5">
+      {/* Description — clamped to 2 lines only in carousel/horizontal-scroll
+          rows (same h-[Ne] + line-clamp-N pairing as FeaturedBlogHero/
+          Carousel), so cards in that row stay the same height regardless of
+          how long a post's description runs. No flex-1 here: flex items get
+          an implicit min-height:auto that lets content escape the
+          line-clamp's -webkit-box clip, so the fixed h-[3.4em] has to be the
+          only thing sizing this when clamped. Grid usages render the
+          description in full, unclamped. */}
+      <p
+        className={cn(
+          'text-sm text-[var(--color-text-muted)] leading-[1.7] mb-5',
+          clampDescription ? 'h-[3.4em] line-clamp-2' : ''
+        )}
+      >
         {post.description}
       </p>
 
