@@ -1,6 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
+import { trackLinkClick } from '@/lib/analytics'
 
 function SlotText({ children }: { children: React.ReactNode }) {
   if (typeof children !== 'string') return <>{children}</>
@@ -107,7 +110,9 @@ export function Button({
       <Link
         href={href}
         className={classes}
-        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        {...(external
+          ? { target: '_blank', rel: 'noopener noreferrer', onClick: () => trackLinkClick(href, 'button') }
+          : {})}
       >
         {inner}
       </Link>
