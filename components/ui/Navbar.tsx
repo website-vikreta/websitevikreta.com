@@ -67,6 +67,8 @@ export function Navbar() {
     setMobileOpen(false)
     setMobileExpanded(null)
     setActiveDropdown(null)
+    // Each page starts fresh — don't carry the scrolled state over from the previous page.
+    setScrolled(window.scrollY > 40)
   }, [pathname])
 
   useEffect(() => {
