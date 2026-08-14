@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft } from 'lucide-react'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
 import type { CaseStudy } from '@/lib/work-data'
@@ -23,10 +22,9 @@ export function CaseStudyDetailClient({ study }: Props) {
           <RevealFade delay={0}>
             <Link
               href="/work"
-              className="mb-8 inline-flex items-center gap-1.5 text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+              className="mb-8 inline-flex text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
             >
-              <ArrowLeft className="h-4 w-4" />
-              Back to work
+              ← Back to work
             </Link>
           </RevealFade>
 

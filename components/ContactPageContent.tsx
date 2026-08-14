@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
 import { gsap } from '@/lib/gsap'
-import { Loader2, ArrowUpRight, ArrowLeft } from 'lucide-react'
+import { Loader2, ArrowUpRight } from 'lucide-react'
 import { Linkedin, Whatsapp, Instagram, Envelope, Telephone } from 'react-bootstrap-icons'
 import emailjs from '@emailjs/browser'
 import { Button } from '@/components/ui/Button'
@@ -379,10 +379,9 @@ export function ContactPageContent() {
                     router.push('/')
                   }
                 }}
-                className="mb-8 inline-flex items-center gap-1.5 text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+                className="mb-8 inline-flex text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
               >
-                <ArrowLeft className="h-4 w-4" />
-                Back
+                ← Back
               </button>
               {/* H1 — word-by-word masked reveal, same as HeroSection */}
               <h1
