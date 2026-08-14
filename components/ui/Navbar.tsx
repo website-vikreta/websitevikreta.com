@@ -51,13 +51,18 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
+  // Home-only: once the nav links are revealed by scrolling down, keep them
+  // visible even after scrolling back to top (unlike `scrolled`, which tracks
+  // the bar's bg/height live in both directions).
+  const [linksRevealed, setLinksRevealed] = useState(false)
   const pathname = usePathname()
   const isHome = pathname === '/'
 
   useEffect(() => {
-    // Once revealed by scrolling, the navbar stays revealed — never re-hide on scroll-up.
     const onScroll = () => {
-      if (window.scrollY > 40) setScrolled(true)
+      const isScrolled = window.scrollY > 40
+      setScrolled(isScrolled)
+      if (isScrolled) setLinksRevealed(true)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -67,8 +72,9 @@ export function Navbar() {
     setMobileOpen(false)
     setMobileExpanded(null)
     setActiveDropdown(null)
-    // Each page starts fresh — don't carry the scrolled state over from the previous page.
-    setScrolled(window.scrollY > 40)
+    const isScrolled = window.scrollY > 40
+    setScrolled(isScrolled)
+    setLinksRevealed(isScrolled)
   }, [pathname])
 
   useEffect(() => {
@@ -104,7 +110,7 @@ export function Navbar() {
           {/* Desktop nav — hidden at top on home page only, visible on scroll */}
           <ul
             className={`hidden lg:flex items-center gap-10 list-none transition-all duration-300 ${
-              isHome && !scrolled
+              isHome && !linksRevealed
                 ? 'opacity-0 pointer-events-none -translate-y-1'
                 : 'opacity-100 pointer-events-auto translate-y-0'
             }`}
