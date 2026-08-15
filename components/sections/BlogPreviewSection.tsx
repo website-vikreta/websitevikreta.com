@@ -15,6 +15,7 @@ function staticFallback(): DisplayPost[] {
     publishDate: p.publishDate,
     readTime: p.readTime,
     likes: 0,
+    commentsCount: 0,
     imageUrl: p.imageUrl,
   }))
 }
