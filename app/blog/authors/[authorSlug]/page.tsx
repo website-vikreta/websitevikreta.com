@@ -7,6 +7,7 @@ import PortableTextContent from '@/components/ui/PortableTextContent'
 import { InfiniteBlogGrid } from '@/components/blog/InfiniteBlogGrid'
 import { Button } from '@/components/ui/Button'
 import { TextLink } from '@/components/ui/TextLink'
+import { AuthorLinkedInLink } from './AuthorLinkedInLink'
 import { SITE_URL } from '@/config/site'
 import { urlFor } from '@/sanity/lib/image'
 import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
@@ -88,15 +89,13 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
                     {author.designation || FALLBACK_DESIGNATION}
                   </p>
                   {author.linkedinUrl && (
-                    <a
+                    <AuthorLinkedInLink
                       href={author.linkedinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-(--color-border) bg-(--color-surface) px-3.5 py-1.5 text-sm font-medium text-(--color-text) transition-colors duration-200 hover:border-(--color-text) hover:bg-(--color-bg-muted)"
                     >
                       <LinkedinIcon className="h-4 w-4" />
                       View on LinkedIn
-                    </a>
+                    </AuthorLinkedInLink>
                   )}
                 </div>
               </div>

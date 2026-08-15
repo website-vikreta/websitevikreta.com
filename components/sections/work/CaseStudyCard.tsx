@@ -1,7 +1,10 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { RevealImage } from '@/components/ui/Reveal'
+import { trackLinkClick } from '@/lib/analytics'
 import type { CaseStudy } from '@/lib/work-data'
 
 interface CaseStudyCardProps {
@@ -145,6 +148,7 @@ export function ExternalProjectLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackLinkClick(href, 'work_websites_section')}
       className={`group relative flex h-full flex-col bg-(--color-surface) transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${className}`}
     >
       <div className="relative aspect-video overflow-hidden border-b border-(--color-border) bg-(--color-bg-muted)">

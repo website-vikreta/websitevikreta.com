@@ -41,7 +41,11 @@ export function ClientLogosSection() {
     const halfW = trackRef.current ? trackRef.current.offsetWidth / 2 : 0
     if (!halfW) return
     const next = x.get() - (vel.current * delta) / 1000
-    x.set(next <= -halfW ? next + halfW : next)           // reset at exactly half = one full copy
+    // modulo wrap (not a single conditional add) — after a tab-switch/minimize,
+    // `delta` can spike to seconds, overshooting halfW by several multiples in
+    // one frame; `% halfW` corrects any overshoot in one step so the marquee
+    // keeps rotating instead of landing off-track and appearing to "restart"
+    x.set(next % halfW)
   })
 
   return (
@@ -80,7 +84,7 @@ export function ClientLogosSection() {
 
 function LogoSlot({ src, alt, eager }: { src: string; alt: string; eager?: boolean }) {
   return (
-    <div className="shrink-0 flex items-center justify-center group" title={alt}>
+    <div className="shrink-0 flex items-center justify-center w-24 h-9 md:w-32 md:h-12 group" title={alt}>
       <Image
         src={src}
         alt={alt}
@@ -88,8 +92,7 @@ function LogoSlot({ src, alt, eager }: { src: string; alt: string; eager?: boole
         height={40}
         unoptimized
         loading={eager ? 'eager' : 'lazy'}
-        style={{ width: 'auto' }}
-        className="object-contain h-9 md:h-12 grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+        className="w-full h-full object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
       />
     </div>
   )

@@ -1,16 +1,8 @@
-import BlogMinimalCard from "@/components/ui/BlogMinimalCard"
-import { RevealText, RevealFade } from "@/components/ui/Reveal"
+import { BlogCard } from "@/components/blog/BlogCard"
+import { RevealFade, RevealText } from "@/components/ui/Reveal"
+import type { DisplayPost } from "@/sanity/types"
 
-export interface BlogPreviewPost {
-  title: string
-  excerpt: string
-  href: string
-  imageUrl?: string
-  category?: string
-  readTime?: string
-}
-
-export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }) {
+export function BlogPreviewSectionClient({ posts }: { posts: DisplayPost[] }) {
   return (
     <section className="relative overflow-hidden bg-[var(--color-bg)]">
       <div className="container py-20 md:py-28">
@@ -24,15 +16,11 @@ export function BlogPreviewSectionClient({ posts }: { posts: BlogPreviewPost[] }
           </RevealText>
         </div>
 
-        {/* 3-column card grid */}
+        {/* 3-column card grid — same BlogCard used on /blog */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-x-16 md:gap-y-14">
           {posts.map((post, i) => (
-            <RevealFade key={post.href} delay={0.15 + i * 0.1}>
-              <BlogMinimalCard
-                imageUrl={post.imageUrl ?? "/placeholder-blog.jpg"}
-                title={post.title}
-                href={post.href}
-              />
+            <RevealFade key={post._id} delay={0.15 + i * 0.1} className="h-full">
+              <BlogCard post={post} className="h-full" />
             </RevealFade>
           ))}
         </div>

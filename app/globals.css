@@ -71,6 +71,9 @@
     margin: 0;
     padding: 0;
 }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* ─── Design Tokens ───────────────────────────────────────────── */
@@ -121,6 +124,10 @@
   --space-32:  8rem;
   --section-y: clamp(4rem, 10vw, 8rem);
   --section-x: clamp(1.5rem, 6vw, 7.5rem);
+  /* Kept in sync with Navbar.tsx's h-20/h-14 scroll toggle so sticky elements
+     below it (e.g. TableOfContents' mobile bar) can pin flush underneath
+     instead of a hardcoded offset that drifts when the navbar's height changes. */
+  --navbar-height: 5rem;
 }
 
 
@@ -238,7 +245,6 @@ body {
 
 /* ─── Hero Animation – Word Reveal ───────────────────────────── */
 .word-wrapper {
-  position: relative;
   display: inline-block;
   overflow: hidden;
   padding-top: 0.08em;
@@ -250,53 +256,15 @@ body {
 
 .word-inner {
   display: inline-block;
+  /* 130%, not 110%: word-wrapper's overflow-hidden box extends 0.22em past
+     the line box (padding-bottom, to avoid clipping descenders when visible),
+     so a plain 110% offset falls short and leaves a sliver of the hidden
+     word's top edge inside the clip region. */
+  transform: translateY(130%);
 }
 
-/* Decorative cover, NOT the real text — the real word (.word-inner) is
-   always fully painted in its final position from first frame, so it can't
-   delay LCP the way animating the text itself used to. Pure CSS, no JS: it
-   auto-resizes with .word-wrapper (inset:0) regardless of font-swap timing,
-   so — unlike the old translateY(130%)-on-the-real-text version — there's
-   nothing left that depends on waiting for document.fonts.ready. Retreats
-   upward (translateY 0 → -100%) to fake the old "rises up from below" look
-   without ever hiding the real text node. --word-i staggers each word, same
-   convention as --char-i in Button.tsx. */
-@keyframes word-mask-retreat {
-  to { transform: translateY(-100%); }
-}
-
-.word-mask {
-  position: absolute;
-  inset: 0;
-  background-color: var(--color-bg);
-  pointer-events: none;
-  animation: word-mask-retreat 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(var(--word-i, 0) * 65ms);
-}
-
-/* ─── Hero Animation – CSS-only fade (label / subhead / CTA) ────
-   Pure CSS, runs on first paint — unlike the old [data-hero-anim]
-   opacity:0 rule, this never waits on JS hydration or
-   document.fonts.ready, so it can't delay LCP the way the GSAP-gated
-   version did (PSI flagged the subhead <p> with a 3.58s render delay). */
-@keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(var(--fade-y, 16px)); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.hero-fade-in {
-  /* cubic-bezier approximation of GSAP's power2.out, matching the original
-     timeline's feel exactly (not just "ease-out"). */
-  animation: hero-fade-up var(--fade-duration, 0.6s) cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--fade-delay, 0s) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .word-mask {
-    display: none;
-  }
-  .hero-fade-in {
-    animation: none;
-  }
+[data-hero-anim] {
+  opacity: 0;
 }
 
 /* ─── Dropdown Panel ──────────────────────────────────────────── */

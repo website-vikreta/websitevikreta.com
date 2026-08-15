@@ -47,7 +47,7 @@ export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
           </Link>
         </h3>
 
-        <p className="h-[5.1em] line-clamp-3 text-base text-(--color-text-muted) leading-[1.7] mb-6 max-w-[52ch]">
+        <p className="h-[3.4em] line-clamp-2 text-base text-(--color-text-muted) leading-[1.7] mb-6 max-w-[52ch]">
           {post.description}
         </p>
 
