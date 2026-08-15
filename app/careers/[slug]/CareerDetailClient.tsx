@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import type { PortableTextBlock } from '@portabletext/react'
-import { Loader2 } from 'lucide-react'
+import { ArrowLeft, ArrowClockwise } from 'react-bootstrap-icons'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
@@ -105,9 +105,10 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       <section className="container pt-[150px] pb-16">
         <Link
           href="/careers"
-          className="mb-8 inline-flex text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+          className="mb-8 inline-flex items-center gap-1.5 text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
         >
-          ← Back to careers
+          <ArrowLeft size={14} aria-hidden="true" />
+          Back to careers
         </Link>
         <h1 className="text-h2 font-bold tracking-tight text-(--color-text) mb-6">
           {opening.title}
@@ -320,7 +321,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                 className="w-fit"
               >
                 {submitting
-                  ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" />Submitting…</span>
+                  ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><ArrowClockwise size={13} className="animate-spin" aria-hidden="true" />Submitting…</span>
                   : 'Submit Application'
                 }
               </Button>

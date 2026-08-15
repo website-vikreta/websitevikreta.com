@@ -4,8 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
 import { gsap } from '@/lib/gsap'
-import { Loader2, ArrowUpRight } from 'lucide-react'
-import { Linkedin, Whatsapp, Instagram, Envelope, Telephone } from 'react-bootstrap-icons'
+import { Linkedin, Whatsapp, Instagram, Envelope, Telephone, ArrowUpRight, ArrowLeft, ArrowClockwise } from 'react-bootstrap-icons'
 import emailjs from '@emailjs/browser'
 import { Button } from '@/components/ui/Button'
 import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
@@ -66,7 +65,6 @@ function SocialLink({
       </span>
       <ArrowUpRight
         size={14}
-        strokeWidth={1.75}
         className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
         aria-hidden="true"
       />
@@ -379,9 +377,10 @@ export function ContactPageContent() {
                     router.push('/')
                   }
                 }}
-                className="mb-8 inline-flex text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+                className="mb-8 inline-flex items-center gap-1.5 text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text) cursor-pointer"
               >
-                ← Back
+                <ArrowLeft size={14} aria-hidden="true" />
+                Back
               </button>
               {/* H1 — word-by-word masked reveal, same as HeroSection */}
               <h1
@@ -608,7 +607,7 @@ export function ContactPageContent() {
                       disabled={isSubmitting}
                     >
                       {isSubmitting
-                        ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" />Sending…</span>
+                        ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><ArrowClockwise size={13} className="animate-spin" aria-hidden="true" />Sending…</span>
                         : 'Send Info'
                       }
                     </Button>

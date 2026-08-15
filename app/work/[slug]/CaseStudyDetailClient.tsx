@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowLeft } from 'react-bootstrap-icons'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
 import type { CaseStudy } from '@/lib/work-data'
@@ -22,9 +23,10 @@ export function CaseStudyDetailClient({ study }: Props) {
           <RevealFade delay={0}>
             <Link
               href="/work"
-              className="mb-8 inline-flex text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+              className="mb-8 inline-flex items-center gap-1.5 text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
             >
-              ← Back to work
+              <ArrowLeft size={14} aria-hidden="true" />
+              Back to work
             </Link>
           </RevealFade>
 
