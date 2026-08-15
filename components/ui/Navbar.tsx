@@ -68,6 +68,13 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Mirrors the h-20/h-14 toggle below into a CSS var so sticky elements
+  // further down the page (e.g. TableOfContents' mobile bar) can pin flush
+  // under the navbar's real height instead of a hardcoded offset.
+  useEffect(() => {
+    document.documentElement.style.setProperty('--navbar-height', scrolled ? '3.5rem' : '5rem')
+  }, [scrolled])
+
   useEffect(() => {
     setMobileOpen(false)
     setMobileExpanded(null)

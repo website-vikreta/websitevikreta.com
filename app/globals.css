@@ -124,6 +124,10 @@
   --space-32:  8rem;
   --section-y: clamp(4rem, 10vw, 8rem);
   --section-x: clamp(1.5rem, 6vw, 7.5rem);
+  /* Kept in sync with Navbar.tsx's h-20/h-14 scroll toggle so sticky elements
+     below it (e.g. TableOfContents' mobile bar) can pin flush underneath
+     instead of a hardcoded offset that drifts when the navbar's height changes. */
+  --navbar-height: 5rem;
 }
 
 
