@@ -33,8 +33,10 @@ export interface WebProject {
   title: string
   description: string
   href: string
-  image: string
-  imageAlt: string
+  logo: string
+  // image, imageAlt — screenshot previews, not rendered for now (logo-only), see ExternalProjectLink
+  image?: string
+  imageAlt?: string
   skills: string
 }
 
@@ -128,6 +130,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'A sleek product site for DbyT Dynamics with a clean, modern presentation.',
     href: 'https://tocal.in/',
+    logo: '/client-logos/tocal.svg',
     image: '/our-services/webdevelopment.webp',
     imageAlt: 'Tocal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
@@ -138,6 +141,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'The public site for a protocol that needed to read as credible to institutional users.',
     href: 'https://www.sustainablebtc.org/',
+    logo: '/client-logos/sustainable-bitcoin-protocol.svg',
     image: '/our-services/ui-ux-design.webp',
     imageAlt: 'Sustainable Bitcoin Protocol website preview',
     skills: 'UI/UX DESIGN / DESIGN SYSTEM',
@@ -148,6 +152,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       "A sustainable e-commerce storefront for a women's clothing brand.",
     href: 'https://blancoraclothing.com/shop',
+    logo: '/client-logos/blancora.svg',
     image: '/our-services/web-mobile-crm.webp',
     imageAlt: 'Earth by Blancora website preview',
     skills: 'UI/UX DESIGN / E-COMMERCE DEVELOPMENT',
@@ -158,6 +163,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'A local service business taken from no web presence at all to a site built to convert.',
     href: 'https://apcleanco.com/',
+    logo: '/client-logos/ap-cleanco.svg',
     image: '/our-services/digital-marketing-seo-geo.webp',
     imageAlt: 'AP Cleanco website preview',
     skills: 'WEB DEVELOPMENT / LOCAL SEO',
@@ -168,6 +174,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
+    logo: '/client-logos/archmodal.svg',
     image: '/our-services/ai-automation.webp',
     imageAlt: 'Archmodal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
@@ -178,6 +185,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'A professional consulting firm site focused on credibility and growth.',
     href: 'https://www.katalystcs.co.in/',
+    logo: '/client-logos/katalyst.png',
     image: '/our-services/webdevelopment.webp',
     imageAlt: 'Katalyst Consulting website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
