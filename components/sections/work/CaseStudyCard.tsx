@@ -153,13 +153,14 @@ export function ExternalProjectLink({
       className={`group relative flex h-full flex-col bg-(--color-surface) transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${className}`}
     >
       <div className="relative flex aspect-video items-center justify-center overflow-hidden border-b border-(--color-border) bg-(--color-bg-muted) p-10">
-        <div className="relative h-12 w-[70%]">
+        <div className="flex h-14 w-[65%] items-center justify-center">
           <Image
             src={logo}
             alt={`${title} logo`}
-            fill
-            className="object-contain opacity-80 transition-opacity duration-300 ease-out group-hover:opacity-100"
+            width={0}
+            height={56}
             unoptimized
+            className="h-full w-full object-contain grayscale opacity-60 transition-all duration-300 ease-out group-hover:grayscale-0 group-hover:opacity-100"
           />
         </div>
       </div>
