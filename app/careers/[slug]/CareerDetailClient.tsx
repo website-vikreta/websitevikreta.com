@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import type { PortableTextBlock } from '@portabletext/react'
-import { Loader2 } from 'lucide-react'
+import { ArrowLeft, ArrowClockwise } from 'react-bootstrap-icons'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
@@ -16,6 +17,7 @@ interface Opening {
   type: string
   stipend: string
   positions: number
+  isActive: boolean
   shortDescription: string
   description?: PortableTextBlock[]
   prerequisites: string[]
@@ -101,6 +103,13 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
     <>
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="container pt-[150px] pb-16">
+        <Link
+          href="/careers"
+          className="mb-8 inline-flex items-center gap-1.5 text-sm text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+        >
+          <ArrowLeft size={14} aria-hidden="true" />
+          Back to careers
+        </Link>
         <h1 className="text-h2 font-bold tracking-tight text-(--color-text) mb-6">
           {opening.title}
         </h1>
@@ -161,7 +170,17 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
           {/* RIGHT — Application Form */}
           <div className="bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
-            {submitted ? (
+            {!opening.isActive ? (
+              <div>
+                <h2 className={SUBHEAD}>Applications closed</h2>
+                <p className="text-base text-(--color-text-muted) leading-relaxed">
+                  We&apos;re not accepting applications for this role right now. Check back later or browse other open roles.
+                </p>
+                <Button href="/careers" variant="primary" size="md" showArrow className="mt-6 w-fit">
+                  Browse open roles
+                </Button>
+              </div>
+            ) : submitted ? (
               <div>
                 <p
                   style={{
@@ -302,7 +321,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                 className="w-fit"
               >
                 {submitting
-                  ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><Loader2 size={13} strokeWidth={2} className="animate-spin" aria-hidden="true" />Submitting…</span>
+                  ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><ArrowClockwise size={13} className="animate-spin" aria-hidden="true" />Submitting…</span>
                   : 'Submit Application'
                 }
               </Button>

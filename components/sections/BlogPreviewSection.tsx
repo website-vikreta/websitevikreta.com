@@ -1,35 +1,32 @@
 import { blogPosts as staticPosts } from "@/lib/blog-data"
+import { slugifyCategory } from "@/lib/blog-url"
 import { fetchHomepagePosts } from "@/sanity/lib/fetch"
-import { postHref, slugifyCategory } from "@/lib/blog-url"
-import { BlogPreviewSectionClient, type BlogPreviewPost } from "./BlogPreviewSectionClient"
+import type { DisplayPost } from "@/sanity/types"
+import { BlogPreviewSectionClient } from "./BlogPreviewSectionClient"
 
-function staticFallback(): BlogPreviewPost[] {
+function staticFallback(): DisplayPost[] {
   return staticPosts.slice(0, 3).map((p) => ({
-    title: p.title,
-    excerpt: p.description,
-    href: postHref(slugifyCategory(p.category), p.slug),
-    imageUrl: p.imageUrl,
+    _id: p.slug,
+    slug: p.slug,
     category: p.category,
+    categorySlug: slugifyCategory(p.category),
+    title: p.title,
+    description: p.description,
+    publishDate: p.publishDate,
     readTime: p.readTime,
+    likes: 0,
+    commentsCount: 0,
+    imageUrl: p.imageUrl,
   }))
 }
 
-async function getPosts(): Promise<BlogPreviewPost[]> {
+async function getPosts(): Promise<DisplayPost[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
     return staticFallback()
   }
   try {
     const posts = await fetchHomepagePosts()
-    if (posts.length > 0) {
-      return posts.map((p) => ({
-        title: p.title,
-        excerpt: p.description,
-        href: postHref(p.categorySlug, p.slug),
-        imageUrl: p.imageUrl,
-        category: p.category,
-        readTime: p.readTime,
-      }))
-    }
+    if (posts.length > 0) return posts
   } catch {
     // fall through to static
   }

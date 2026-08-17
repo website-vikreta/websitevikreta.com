@@ -13,7 +13,9 @@ const POST_SUMMARY = groq`
   "tags": tags[]->{ _id, title, slug { current } },
   "labels": labels[]->{ _id, title, slug { current } },
   publishedAt,
-  readTime
+  readTime,
+  "likes": coalesce(likes, 0),
+  "commentsCount": count(*[_type == "comment" && post._ref == ^._id])
 `
 
 export const ALL_POSTS_QUERY = groq`
@@ -42,7 +44,14 @@ export const POST_BY_SLUG_QUERY = groq`
     seoDescription,
     seoKeywords,
     canonicalUrl,
-    "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl }
+    "author": author->{ name, "slug": slug.current, image, bio, linkedinUrl },
+    "comments": *[_type == "comment" && post._ref == ^._id] | order(_createdAt asc) {
+      _id,
+      name,
+      message,
+      _createdAt,
+      "parentId": parentComment._ref
+    }
   }
 `
 

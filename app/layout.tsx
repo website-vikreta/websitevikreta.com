@@ -64,16 +64,24 @@ export default function RootLayout({
             {/* @next/third-parties' GoogleAnalytics hardcodes strategy="afterInteractive" (no way to
                 override it) — that eager load was the single biggest TBT contributor on mobile
                 Lighthouse (92ms+ main-thread time) and tripped the Best Practices "third-party cookies"
-                check. Hand-rolled here so it can load on strategy="lazyOnload" instead. */}
+                check. Hand-rolled here so it can load on strategy="lazyOnload" instead.
+
+                The hostname check below (same guard as middleware.ts's isProduction) has to live
+                inside the script, not as a server-side conditional — gating this render with
+                headers()/cookies() would force the whole app out of static generation. GA_ID is set
+                in .env.local for local testing convenience, so without this, localhost and the
+                stage deploy both fire real pageviews/events into production GA4. */}
             <Script
               id="ga-init"
               strategy="lazyOnload"
               dangerouslySetInnerHTML={{
                 __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                  if (window.location.hostname === 'www.websitevikreta.com') {
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                  }
                 `,
               }}
             />
@@ -83,6 +91,23 @@ export default function RootLayout({
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
             />
           </>
+        )}
+        {process.env.NEXT_PUBLIC_CLARITY_ID && (
+          <Script
+            id="clarity-init"
+            strategy="lazyOnload"
+            dangerouslySetInnerHTML={{
+              __html: `
+                if (window.location.hostname === 'www.websitevikreta.com') {
+                  (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                  })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_ID}");
+                }
+              `,
+            }}
+          />
         )}
 
       <ConditionalShell>

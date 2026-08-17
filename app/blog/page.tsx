@@ -81,12 +81,17 @@ export const metadata: Metadata = {
 
 function mapStaticPosts(): DisplayPost[] {
   return staticPosts.map((p) => ({
+    // Static fallback posts (used only when Sanity isn't configured) have
+    // no backing document — slug doubles as a stable synthetic id.
+    _id: p.slug,
     slug: p.slug,
     category: p.category,
     title: p.title,
     description: p.description,
     publishDate: p.publishDate,
     readTime: p.readTime,
+    likes: 0,
+    commentsCount: 0,
     imageUrl: p.imageUrl,
   }))
 }

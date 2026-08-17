@@ -1,7 +1,7 @@
 import { defineQuery } from 'next-sanity'
 
 export const ALL_OPENINGS_QUERY = defineQuery(`
-  *[_type == "opening" && isActive == true] | order(_createdAt desc) {
+  *[_type == "opening"] | order(_createdAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -9,6 +9,7 @@ export const ALL_OPENINGS_QUERY = defineQuery(`
     stipend,
     positions,
     flag,
+    isActive,
     shortDescription,
     prerequisites,
     skills,
@@ -16,7 +17,7 @@ export const ALL_OPENINGS_QUERY = defineQuery(`
 `)
 
 export const OPENING_BY_SLUG_QUERY = defineQuery(`
-  *[_type == "opening" && slug.current == $slug && isActive == true][0] {
+  *[_type == "opening" && slug.current == $slug][0] {
     _id,
     title,
     "slug": slug.current,
@@ -24,6 +25,7 @@ export const OPENING_BY_SLUG_QUERY = defineQuery(`
     stipend,
     positions,
     flag,
+    isActive,
     shortDescription,
     description,
     prerequisites,

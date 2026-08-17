@@ -1,15 +1,20 @@
 import Image from 'next/image'
 import { PortableText, type PortableTextBlock } from '@portabletext/react'
 import { urlFor } from '@/sanity/lib/image'
+import { getBlockText, slugify } from '@/sanity/lib/utils'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ptComponents: any = {
   block: {
-    h2: ({ children }: any) => (
-      <h2 className="text-2xl font-bold mt-10 mb-4 text-[var(--color-text)]">{children}</h2>
+    h2: ({ children, value }: any) => (
+      <h2 id={slugify(getBlockText(value))} className="text-2xl font-bold mt-10 mb-4 text-[var(--color-text)] scroll-mt-32">
+        {children}
+      </h2>
     ),
-    h3: ({ children }: any) => (
-      <h3 className="text-xl font-semibold mt-8 mb-3 text-[var(--color-text)]">{children}</h3>
+    h3: ({ children, value }: any) => (
+      <h3 id={slugify(getBlockText(value))} className="text-xl font-semibold mt-8 mb-3 text-[var(--color-text)] scroll-mt-32">
+        {children}
+      </h3>
     ),
     h4: ({ children }: any) => (
       <h4 className="text-lg font-semibold mt-6 mb-2 text-[var(--color-text)]">{children}</h4>

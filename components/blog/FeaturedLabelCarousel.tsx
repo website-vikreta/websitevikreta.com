@@ -32,7 +32,7 @@ export async function FeaturedLabelCarousel({ title, labelSlug, excludeSlugs }: 
       <ScrollableRow ariaLabel={title} gapClassName="gap-[1.875rem]">
         {posts.map((post) => (
           <div key={post.slug} className="w-72 shrink-0 snap-start sm:w-80">
-            <BlogCard post={post} className="h-full" />
+            <BlogCard post={post} className="h-full" clampDescription />
           </div>
         ))}
       </ScrollableRow>

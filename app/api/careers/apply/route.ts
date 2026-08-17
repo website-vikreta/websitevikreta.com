@@ -23,6 +23,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    const opening = await writeClient.fetch<{ isActive: boolean } | null>(
+      `*[_type == "opening" && _id == $openingId][0]{ isActive }`,
+      { openingId }
+    )
+    if (!opening || !opening.isActive) {
+      return NextResponse.json({ error: 'This role is not accepting applications.' }, { status: 403 })
+    }
+
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 })
     }

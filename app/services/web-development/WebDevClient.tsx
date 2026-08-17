@@ -7,6 +7,7 @@ import { RevealText } from '@/components/ui/Reveal'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { trackLinkClick } from '@/lib/analytics'
 import type { FaqItem } from '@/lib/faq-data'
 
 // ─── Shared constants ──────────────────────────────────────────────────────────
@@ -256,6 +257,7 @@ export default function WebDevClient() {
                       href={project.href}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackLinkClick(project.href, 'web_development_projects')}
                       variants={cardVariant}
                       className="group block border border-(--color-border) bg-(--color-surface) p-3"
                     >

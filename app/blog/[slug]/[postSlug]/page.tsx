@@ -17,6 +17,10 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { Breadcrumb, type BreadcrumbSegment } from '@/components/ui/Breadcrumb'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
+import { LikeButton } from '@/components/blog/LikeButton'
+import { CommentSection } from '@/components/blog/CommentSection'
+import { TableOfContents } from '@/components/blog/TableOfContents'
+import { extractHeadings } from '@/sanity/lib/utils'
 import type { AdjacentPost } from '@/sanity/lib/fetch'
 import type { DisplayPost, FullPost } from '@/sanity/types'
 import { SITE_URL } from '@/config/site'
@@ -198,6 +202,10 @@ export default async function BlogPostPage({
   const readTime = post.readTime ||
     (post.source === 'sanity' && Array.isArray(post.body) && post.body.length > 0 ? calcReadTime(post.body) : '')
 
+  // Table of contents — only Sanity posts have block-level h2/h3 styles to
+  // extract from; static fallback posts are plain paragraph strings.
+  const headings = post.source === 'sanity' ? extractHeadings(post.body) : []
+
   // Category is only linkable when we have a real Sanity category doc +
   // slug behind it — static posts and Sanity posts with no category
   // reference just render the label as plain (unlinked) text.
@@ -265,11 +273,16 @@ export default async function BlogPostPage({
           <Breadcrumb segments={breadcrumbSegments} />
         </div>
 
-        {/* Cover image — Sanity posts only. Matches the 720px content column
-            (title/body/byline) and stays 16:9 at every breakpoint. */}
-        {post.source === 'sanity' && post.featuredImage && (
-          <div className="container">
-            <div className="relative mx-auto aspect-video w-full max-w-[720px] overflow-hidden">
+        <div className="container pb-24 pt-6 md:pb-32 md:pt-8">
+          <div className={headings.length > 0 ? 'lg:grid lg:grid-cols-[250px_1fr] lg:gap-12 lg:items-start' : undefined}>
+
+          <div className={headings.length > 0 ? 'lg:col-start-2 lg:row-start-1' : undefined}>
+          {/* Cover image — Sanity posts only. Lives in the content column so
+              the desktop ToC sidebar (row-span-2 below) starts level with the
+              top of the image, not just the title. Matches the 720px content
+              column and stays 16:9 at every breakpoint. */}
+          {post.source === 'sanity' && post.featuredImage && (
+            <div className="relative mx-auto mb-6 aspect-video w-full max-w-[720px] overflow-hidden md:mb-8">
               <Image
                 src={urlFor(post.featuredImage).width(1200).height(675).url()}
                 alt={post.featuredImage.alt ?? post.title}
@@ -278,10 +291,7 @@ export default async function BlogPostPage({
                 priority
               />
             </div>
-          </div>
-        )}
-
-        <div className="container pb-24 pt-6 md:pb-32 md:pt-8">
+          )}
 
           {/* Title — same pt-6/8 gap above (from breadcrumb or cover image)
               as below (to byline/body), matching the compact rhythm above.
@@ -349,11 +359,22 @@ export default async function BlogPostPage({
 
               </div>
               <hr className="mt-6 border-[var(--color-border)]" />
-              <div className="mt-6">
+              <div className="mt-6 flex items-center justify-between gap-4">
                 <SocialShare path={postHref(canonicalSlug, post.slug)} title={post.title} campaign="blog" />
+                <LikeButton postId={post._id} initialLikes={post.likes} />
               </div>
             </div>
           )}
+          </div>
+
+          {/* Single component call: its mobile pill nav renders here in DOM
+              order (above the body, below title/byline); its desktop sidebar
+              nav is a Fragment sibling pinned to grid column 1 (see the
+              lg:col-start-1 classes inside TableOfContents), independent of
+              this DOM position. */}
+          <TableOfContents headings={headings} />
+
+          <div className={headings.length > 0 ? 'lg:col-start-2 lg:row-start-2' : undefined}>
 
           {/* Body */}
           <div className="mx-auto max-w-[720px]">
@@ -392,6 +413,16 @@ export default async function BlogPostPage({
             </div>
           )}
 
+          {/* Comments — directly under the post's own content (tags), so it
+              reads as commenting on the article above it rather than a
+              disconnected form. Prev/Next + Related reads (navigating away)
+              come after, not before. */}
+          {post.source === 'sanity' && (
+            <div className="mx-auto mt-16 max-w-[720px] md:mt-20">
+              <CommentSection postId={post._id} comments={post.comments} />
+            </div>
+          )}
+
           {/* Previous / Next */}
           <PostNavigation previous={previousPost} next={nextPost} />
 
@@ -409,6 +440,8 @@ export default async function BlogPostPage({
             </div>
           )}
 
+          </div>
+          </div>
         </div>
       </article>
     </main>

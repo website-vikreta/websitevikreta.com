@@ -5,28 +5,19 @@
   --font-mono: var(--font-utile);
 }
 
-/* Two accordion consumers, two different Radix Content lifecycles — each
-   needs its own collapse mechanism, not one shared class:
-
-   .accordion-content (app/faq/FaqPageContent.tsx) — Radix's default
+/* .accordion-content (app/faq/FaqPageContent.tsx) — Radix's default
    mount/unmount Content. Radix's Presence only detects a CSS *animation*
    (not a *transition*) to time when it's safe to unmount after closing, so
    this needs the accordion-down/up keyframes below; a transition here would
    make Presence unmount the node instantly, killing the close animation.
 
-   .accordion-content-seo (components/sections/FaqSection.tsx, forceMount) —
-   every answer stays in the DOM/server HTML for SEO, open or closed, so a
-   `transition` against Radix's own measured --radix-accordion-content-height
-   is correct here and preferred: it only runs on a data-state *change*, not
-   on initial mount, so closed items don't replay a close animation on first
-   paint (which forceMount + the animation above would do, since every closed
-   item matches [data-state="closed"] from first paint).
-   grid-template-rows: 0fr->1fr was tried instead (9978276, after 84bf8d2 was
-   reverted at 040da0e for the same reason) — `fr` isn't reliably
-   interpolatable across browsers, so the transition often just snaps
-   instantly with no visible animation, AND can fail to collapse fully,
-   leaving one line of the answer visible under its closed question. Same bug
-   both times; don't reintroduce it. */
+   components/sections/FaqSection.tsx animates height with Framer Motion
+   instead (motion.div animating to/from height: 'auto', which measures the
+   real content height itself rather than racing Radix's
+   --radix-accordion-content-height custom property) — no CSS class needed
+   there. CSS height-transition (var-based) and grid-template-rows: 0fr->1fr
+   were both tried and both produced an inconsistent snap instead of a smooth
+   animation; don't reintroduce either. */
 .accordion-content {
   overflow: hidden;
 }
@@ -36,15 +27,6 @@
 .accordion-content[data-state="closed"] {
   height: 0;
   animation: accordion-up 0.2s ease-out;
-}
-
-.accordion-content-seo {
-  overflow: hidden;
-  height: 0;
-  transition: height 0.25s ease-out;
-}
-.accordion-content-seo[data-state="open"] {
-  height: var(--radix-accordion-content-height);
 }
 
 @keyframes accordion-down {
@@ -57,8 +39,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .accordion-content,
-  .accordion-content-seo {
+  .accordion-content {
     transition: none;
     animation: none;
   }
@@ -71,6 +52,9 @@
     margin: 0;
     padding: 0;
 }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* ─── Design Tokens ───────────────────────────────────────────── */
@@ -121,6 +105,10 @@
   --space-32:  8rem;
   --section-y: clamp(4rem, 10vw, 8rem);
   --section-x: clamp(1.5rem, 6vw, 7.5rem);
+  /* Kept in sync with Navbar.tsx's h-20/h-14 scroll toggle so sticky elements
+     below it (e.g. TableOfContents' mobile bar) can pin flush underneath
+     instead of a hardcoded offset that drifts when the navbar's height changes. */
+  --navbar-height: 5rem;
 }
 
 
