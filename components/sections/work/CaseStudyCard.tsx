@@ -130,16 +130,17 @@ export function ExternalProjectLink({
   title,
   description,
   href,
-  image,
-  imageAlt,
+  logo,
+  // image, imageAlt — kept for a future revert to screenshot previews, see commented block below
   skills,
   className = '',
 }: {
   title: string
   description: string
   href: string
-  image: string
-  imageAlt: string
+  logo: string
+  image?: string
+  imageAlt?: string
   skills: string
   className?: string
 }) {
@@ -151,6 +152,18 @@ export function ExternalProjectLink({
       onClick={() => trackLinkClick(href, 'work_websites_section')}
       className={`group relative flex h-full flex-col bg-(--color-surface) transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${className}`}
     >
+      <div className="relative flex aspect-video items-center justify-center overflow-hidden border-b border-(--color-border) bg-(--color-bg-muted) p-10">
+        <div className="relative h-12 w-[70%]">
+          <Image
+            src={logo}
+            alt={`${title} logo`}
+            fill
+            className="object-contain opacity-80 transition-opacity duration-300 ease-out group-hover:opacity-100"
+            unoptimized
+          />
+        </div>
+      </div>
+      {/* Screenshot-preview version — revert to this when real screenshots are ready:
       <div className="relative aspect-video overflow-hidden border-b border-(--color-border) bg-(--color-bg-muted)">
         <RevealImage className="relative h-full w-full">
           <Image
@@ -162,6 +175,7 @@ export function ExternalProjectLink({
           />
         </RevealImage>
       </div>
+      */}
 
       <div className="flex flex-1 flex-col gap-4 p-6 md:p-8">
         <h3 className="text-2xl font-bold leading-snug tracking-tight text-(--color-text)">
