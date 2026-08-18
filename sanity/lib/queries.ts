@@ -14,7 +14,8 @@ const POST_SUMMARY = groq`
   "labels": labels[]->{ _id, title, slug { current } },
   publishedAt,
   readTime,
-  "likes": coalesce(likes, 0)
+  "likes": coalesce(likes, 0),
+  "commentsCount": count(*[_type == "comment" && post._ref == ^._id])
 `
 
 export const ALL_POSTS_QUERY = groq`

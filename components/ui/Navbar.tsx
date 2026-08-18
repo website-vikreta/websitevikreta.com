@@ -51,19 +51,37 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
+  // Home-only: once the nav links are revealed by scrolling down, keep them
+  // visible even after scrolling back to top (unlike `scrolled`, which tracks
+  // the bar's bg/height live in both directions).
+  const [linksRevealed, setLinksRevealed] = useState(false)
   const pathname = usePathname()
   const isHome = pathname === '/'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    const onScroll = () => {
+      const isScrolled = window.scrollY > 40
+      setScrolled(isScrolled)
+      if (isScrolled) setLinksRevealed(true)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Mirrors the h-20/h-14 toggle below into a CSS var so sticky elements
+  // further down the page (e.g. TableOfContents' mobile bar) can pin flush
+  // under the navbar's real height instead of a hardcoded offset.
+  useEffect(() => {
+    document.documentElement.style.setProperty('--navbar-height', scrolled ? '3.5rem' : '5rem')
+  }, [scrolled])
 
   useEffect(() => {
     setMobileOpen(false)
     setMobileExpanded(null)
     setActiveDropdown(null)
+    const isScrolled = window.scrollY > 40
+    setScrolled(isScrolled)
+    setLinksRevealed(isScrolled)
   }, [pathname])
 
   useEffect(() => {
@@ -99,7 +117,7 @@ export function Navbar() {
           {/* Desktop nav — hidden at top on home page only, visible on scroll */}
           <ul
             className={`hidden lg:flex items-center gap-10 list-none transition-all duration-300 ${
-              isHome && !scrolled
+              isHome && !linksRevealed
                 ? 'opacity-0 pointer-events-none -translate-y-1'
                 : 'opacity-100 pointer-events-auto translate-y-0'
             }`}

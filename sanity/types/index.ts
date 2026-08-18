@@ -77,6 +77,7 @@ export interface Post {
   labels?: Pick<Label, '_id' | 'title' | 'slug'>[]
   readTime?: string
   likes: number
+  commentsCount?: number
   seoTitle?: string
   seoDescription?: string
   seoKeywords?: string[]
@@ -158,6 +159,7 @@ export interface DisplayPost {
   publishedAt?: string
   readTime: string
   likes: number
+  commentsCount: number
   imageUrl?: string
   // Resolved label refs (e.g. "Featured", "Hero") — used to pick which
   // post gets special placement (see FeaturedBlogHero selection logic).

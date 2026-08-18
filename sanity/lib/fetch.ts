@@ -75,6 +75,7 @@ function toDisplayPost(post: Post): DisplayPost {
     publishedAt: post.publishedAt,
     readTime: post.readTime ?? '',
     likes: post.likes,
+    commentsCount: post.commentsCount ?? 0,
     imageUrl: post.featuredImage?.asset
       ? urlFor(post.featuredImage).width(800).fit('crop').url()
       : undefined,

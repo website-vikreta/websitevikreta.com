@@ -36,10 +36,10 @@ export default function CareersClient({ openings }: Props) {
   const filters = useMemo(() => {
     const flags = Array.from(new Set(openings.map(o => o.flag).filter((f): f is string => !!f)))
     const hasClosedRoles = openings.some(o => !o.isActive)
-    return [ALL_FILTER, ...(hasClosedRoles ? [ACTIVE_FILTER] : []), ...flags]
+    return [...(hasClosedRoles ? [ACTIVE_FILTER] : []), ...flags, ALL_FILTER]
   }, [openings])
 
-  const [activeFilter, setActiveFilter] = useState(ALL_FILTER)
+  const [activeFilter, setActiveFilter] = useState(filters.includes(ACTIVE_FILTER) ? ACTIVE_FILTER : ALL_FILTER)
 
   const filteredOpenings = useMemo(() => {
     if (activeFilter === ALL_FILTER) return openings
