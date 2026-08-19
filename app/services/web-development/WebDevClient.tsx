@@ -1,11 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { motion } from 'motion/react'
+import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { RevealText } from '@/components/ui/Reveal'
 import { FaqSection } from '@/components/sections/FaqSection'
-import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { trackLinkClick } from '@/lib/analytics'
 import type { FaqItem } from '@/lib/faq-data'
@@ -61,42 +61,43 @@ const projects = [
     id: 1,
     title: 'Tocal',
     description: 'A sleek product site for DbyT Dynamics with a clean, modern presentation.',
-    image: 'https://placehold.co/600x750',
+    logo: '/client-logos/tocal.svg',
     href: 'https://tocal.in/',
   },
   {
     id: 2,
     title: 'Sustainable Bitcoin Protocol',
     description: 'Institutional-grade market infrastructure site for a sustainable Bitcoin protocol.',
-    image: 'https://placehold.co/600x750',
+    logo: '/client-logos/sustainable-bitcoin-protocol.svg',
     href: 'https://www.sustainablebtc.org/',
   },
   {
     id: 3,
     title: 'Earth by Blancora',
     description: 'A sustainable, stylish e-commerce storefront for a women\'s clothing brand.',
-    image: 'https://placehold.co/600x750',
+    logo: '/client-logos/blancora.svg',
     href: 'https://blancoraclothing.com/shop',
   },
   {
     id: 4,
     title: 'Archmodal',
     description: 'A polished home page for an architectural modeling and design studio.',
-    image: 'https://placehold.co/600x750',
+    logo: '/client-logos/archmodal.svg',
     href: 'https://www.archmodal.com/',
   },
   {
     id: 5,
     title: 'Psilent Ganges',
     description: 'An engineering solutions site built for clarity, performance, and trust.',
-    image: 'https://placehold.co/600x750',
+    // No real logo asset exists for this client yet — flagged, not fabricated.
+    logo: null,
     href: 'https://psilentganges.netlify.app/',
   },
   {
     id: 6,
     title: 'Katalyst Consulting',
     description: 'A professional consulting firm site focused on credibility and growth.',
-    image: 'https://placehold.co/600x750',
+    logo: '/client-logos/katalyst.png',
     href: 'https://www.katalystcs.co.in/',
   },
 ]
@@ -145,7 +146,6 @@ const webDevFaqs: FaqItem[] = [
 // ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function WebDevClient() {
-  const router = useRouter()
   const columnCount = 3
   const projectColumns = Array.from({ length: columnCount }, (_, colIndex) =>
     projects.filter((_, i) => i % columnCount === colIndex)
@@ -159,7 +159,7 @@ export default function WebDevClient() {
         <div className="mx-auto w-full max-w-3xl">
 
           {/* Heading — two-line masked reveal, triggered on mount */}
-          <motion.h2
+          <motion.h1
             className="text-h2 font-bold"
             variants={lineContainer}
             initial="hidden"
@@ -176,7 +176,7 @@ export default function WebDevClient() {
                 Websites That Drive Growth
               </motion.span>
             </span>
-          </motion.h2>
+          </motion.h1>
 
           {/* Subtitle + CTA — staggered fade-up, sequenced after heading */}
           <motion.div
@@ -261,21 +261,30 @@ export default function WebDevClient() {
                       variants={cardVariant}
                       className="group block border border-(--color-border) bg-(--color-surface) p-3"
                     >
-                      <div className={cn('relative w-full overflow-hidden bg-(--color-bg-muted)', aspectRatios[globalIndex % aspectRatios.length])}>
+                      <div className={cn('relative flex w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)', aspectRatios[globalIndex % aspectRatios.length])}>
                         <motion.div
-                          className="size-full"
+                          className="flex size-full items-center justify-center p-10"
                           initial={{ clipPath: 'inset(100% 0 0 0)' }}
                           whileInView={{ clipPath: 'inset(0% 0 0 0)' }}
                           viewport={{ once: true, margin: '-80px' }}
                           transition={{ duration: 0.9, ease: EASE }}
                         >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={project.image}
-                            alt={project.title}
-                            loading="lazy"
-                            className="size-full object-cover grayscale transition-all duration-[1200ms] ease-out group-hover:scale-110 group-hover:grayscale-0"
-                          />
+                          {project.logo ? (
+                            <div className="flex h-14 w-[65%] items-center justify-center">
+                              <Image
+                                src={project.logo}
+                                alt={`${project.title} logo`}
+                                width={0}
+                                height={56}
+                                unoptimized
+                                className="h-full w-full object-contain grayscale opacity-60 transition-all duration-300 ease-out group-hover:grayscale-0 group-hover:opacity-100"
+                              />
+                            </div>
+                          ) : (
+                            <span className="text-center font-bold text-lg text-(--color-text-muted) transition-colors duration-300 ease-out group-hover:text-(--color-text)">
+                              {project.title}
+                            </span>
+                          )}
                         </motion.div>
 
                         {/* Grain overlay — premium texture */}
@@ -286,26 +295,20 @@ export default function WebDevClient() {
                         />
 
                         {/* Accent corner tag — reveals on hover */}
-                        <span className="absolute top-3 left-3 bg-(--color-accent) px-2 py-1 text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer">
+                        <span className="absolute top-3 left-3 bg-(--color-accent) px-2 py-1 text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                           View Site
                         </span>
                       </div>
 
                       <h3 className="mt-4 font-bold text-lg text-(--color-text)">{project.title}</h3>
                       <p className="mt-1 text-sm text-neutral-500">{project.description}</p>
-                      <span
-                        role="link"
-                        tabIndex={0}
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push('/coming-soon') }}
-                        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); router.push('/coming-soon') } }}
-                        className="group/link mt-3 inline-flex w-fit cursor-pointer items-center gap-1.5 text-[1rem] font-medium text-(--color-text)"
-                      >
+                      <div className="mt-3 flex items-center gap-1.5 text-[1rem] font-medium text-(--color-text)">
                         <span className="relative">
-                          Read more
-                          <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-(--color-text) transition-transform duration-300 ease-out group-hover/link:scale-x-100" />
+                          Visit site
+                          <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-(--color-text) transition-transform duration-300 ease-out group-hover:scale-x-100" />
                         </span>
-                        <ArrowRight size={14} strokeWidth={1.75} className="transition-transform duration-300 ease-out group-hover/link:translate-x-1" />
-                      </span>
+                        <ArrowUpRight size={14} strokeWidth={1.75} className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      </div>
                     </motion.a>
                   )
                 })}
