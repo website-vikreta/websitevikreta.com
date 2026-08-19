@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { ArrowUp } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
+import { trackScrollToTop } from '@/lib/analytics'
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false)
@@ -22,6 +23,7 @@ export function ScrollToTop() {
   }, [])
 
   const scrollToTop = () => {
+    trackScrollToTop()
     window.scrollTo({
       top: 0,
       behavior: 'smooth',

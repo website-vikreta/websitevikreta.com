@@ -8,6 +8,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { RevealText } from '@/components/ui/Reveal'
 import { FaqAnswer } from '@/components/ui/FaqAnswer'
 import { faqPageJsonLd, type FaqItem } from '@/lib/faq-data'
+import { trackFaqExpand } from '@/lib/analytics'
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
@@ -27,6 +28,11 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
   // extra click to reopen an item after closing it.
   const [openId, setOpenId] = useState<string>('')
   const prefersReducedMotion = useReducedMotion()
+
+  function handleOpenChange(value: string) {
+    setOpenId(value)
+    if (value) trackFaqExpand(items.find((i) => i.id === value)?.question ?? value)
+  }
 
   return (
     <section className="py-16 md:py-20" aria-label={ariaLabel}>
@@ -54,7 +60,7 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
             type="single"
             collapsible
             value={openId}
-            onValueChange={setOpenId}
+            onValueChange={handleOpenChange}
           >
             {items.map((faq, index) => {
               const isOpen = faq.id === openId

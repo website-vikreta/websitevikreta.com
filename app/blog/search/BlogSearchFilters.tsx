@@ -11,6 +11,7 @@ import {
   type SortField,
   type SortOrder,
 } from '@/lib/blog-search-params'
+import { trackBlogSearch } from '@/lib/analytics'
 import type { Category, Label, Tag } from '@/sanity/types'
 
 type SlugRef = { slug: { current: string } | string }
@@ -105,14 +106,19 @@ export function BlogSearchFilters({ params, categories, tags, labels, children }
   useEffect(() => {
     const trimmed = text.trim()
     if (trimmed === params.query) return
-    debounceRef.current = setTimeout(() => navigate({ query: trimmed }, 'replace'), 400)
+    debounceRef.current = setTimeout(() => {
+      trackBlogSearch(trimmed)
+      navigate({ query: trimmed }, 'replace')
+    }, 400)
     return () => clearTimeout(debounceRef.current)
   }, [text, params.query, navigate])
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault()
     clearTimeout(debounceRef.current)
-    navigate({ query: text.trim() })
+    const trimmed = text.trim()
+    trackBlogSearch(trimmed)
+    navigate({ query: trimmed })
   }
 
   const showClear = hasActiveFilters(params)
