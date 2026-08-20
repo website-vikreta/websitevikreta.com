@@ -22,7 +22,16 @@ declare global {
  */
 function gtagEvent(name: string, params: Record<string, unknown>) {
   if (typeof window === 'undefined' || !window.dataLayer) return
-  window.dataLayer.push(['event', name, params])
+  // Must be a real `arguments` object, not an array. gtag.js dispatches a
+  // dataLayer entry to its command table only after `Object.prototype.toString
+  // .call(entry) === '[object Arguments]'`; it tests `Array.isArray` first and
+  // sends arrays down a legacy method-call path that drops them silently. So
+  // build the entry exactly the way Google's own snippet does.
+  const gtag = function (this: void) {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer!.push(arguments)
+  } as (...args: unknown[]) => void
+  gtag('event', name, params)
 }
 
 type ClickEventName =
