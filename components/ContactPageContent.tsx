@@ -119,15 +119,24 @@ interface FormData {
   name: string
   jobOrWebsite: string
   email: string
+  phone: string
 }
 
 interface FormErrors {
   name?: string
   jobOrWebsite?: string
   email?: string
+  phone?: string
 }
 
-const INITIAL: FormData = { name: '', jobOrWebsite: '', email: '' }
+const INITIAL: FormData = { name: '', jobOrWebsite: '', email: '', phone: '' }
+
+// Loose E.164-style check: optional leading +, 7–15 digits total.
+// Not India-specific — accepts any country's numbering plan.
+function isValidPhone(phone: string): boolean {
+  const digits = phone.trim().replace(/[\s\-().]/g, '')
+  return /^\+?[1-9]\d{6,14}$/.test(digits)
+}
 
 function validate(form: FormData): FormErrors {
   const e: FormErrors = {}
@@ -135,6 +144,7 @@ function validate(form: FormData): FormErrors {
   if (!form.jobOrWebsite.trim()) e.jobOrWebsite = 'Enter your job or website'
   if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
     e.email = 'Enter a valid email'
+  if (!form.phone.trim() || !isValidPhone(form.phone)) e.phone = 'Enter a valid phone number'
   return e
 }
 
@@ -225,7 +235,7 @@ export function ContactPageContent() {
           reply_to: form.email,
           email:    form.email,
           service:  form.jobOrWebsite,
-          mobile:   'Not provided',
+          mobile:   form.phone,
           budget:   'Not specified',
           message:  `${form.name} has a ${form.jobOrWebsite} that needs help.`,
           to_name:  'Website Vikreta',
@@ -294,6 +304,10 @@ export function ContactPageContent() {
         .inline-field.field-email {
           flex: 1 1 220px;
           min-width: 220px;
+        }
+        .inline-field.field-phone {
+          flex: 1 1 180px;
+          min-width: 180px;
         }
         /* form-specific word reveal — clip-path instead of overflow:hidden
            so baseline stays natural (overflow:hidden on inline-block shifts
@@ -535,7 +549,7 @@ export function ContactPageContent() {
                         {' '}
                       </span>
                     ))}
-                    {/* email-row as one masked unit [17] */}
+                    {/* email + phone row as one masked unit [17] */}
                     <span className="email-row-mask">
                       <span
                         className="email-row"
@@ -554,6 +568,19 @@ export function ContactPageContent() {
                           aria-describedby={errors.email ? 'err-email' : undefined}
                           disabled={isSubmitting}
                         />
+                        <span>&amp;</span>
+                        <input
+                          name="phone"
+                          type="tel"
+                          value={form.phone}
+                          onChange={handleChange}
+                          placeholder="your phone number"
+                          className={`inline-field field-phone${form.phone.trim() ? ' filled' : ''}${errors.phone ? ' error' : ''}`}
+                          aria-label="Your phone number"
+                          aria-invalid={!!errors.phone}
+                          aria-describedby={errors.phone ? 'err-phone' : undefined}
+                          disabled={isSubmitting}
+                        />
                         <span>to</span>
                       </span>
                     </span>
@@ -569,7 +596,7 @@ export function ContactPageContent() {
                   </p>
 
                   {/* Inline error hints */}
-                  {(errors.name || errors.jobOrWebsite || errors.email) && (
+                  {(errors.name || errors.jobOrWebsite || errors.email || errors.phone) && (
                     <div
                       style={{
                         marginTop:     '1.25rem',
@@ -582,6 +609,7 @@ export function ContactPageContent() {
                       {errors.name        && <p id="err-name"  style={{ fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.name}</p>}
                       {errors.jobOrWebsite && <p id="err-job"   style={{ fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.jobOrWebsite}</p>}
                       {errors.email       && <p id="err-email" style={{ fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.email}</p>}
+                      {errors.phone       && <p id="err-phone" style={{ fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.phone}</p>}
                     </div>
                   )}
 
