@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "@next/third-parties": "^16.2.9",
+    "@next/third-parties": "^16.3.2",
     "@portabletext/react": "^6.2.0",
     "@radix-ui/react-accordion": "^1.2.14",
     "@sanity/image-url": "^2.1.1",
