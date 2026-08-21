@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { RevealText } from '@/components/ui/Reveal'
+import { RevealImage, RevealText } from '@/components/ui/Reveal'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { cn } from '@/lib/utils'
 import { trackLinkClick } from '@/lib/analytics'
@@ -208,22 +208,18 @@ export default function WebDevClient() {
         </div>
       </section>
 
-      {/* ─── Video placeholder ─────────────────────────────────────────────── */}
+      {/* ─── Showcase image ────────────────────────────────────────────────── */}
       <section className="pb-16 md:pb-20">
         <div className="container">
-          <motion.div
-            className="aspect-video w-full bg-black rounded-none overflow-hidden flex items-center justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.35, ease: EASE }}
-          >
-            {/* TODO: Replace with final video asset — 16:9, no border-radius, autoplay/loop/muted */}
-            {/* <video autoPlay loop muted playsInline className="w-full h-full object-cover" src="..." /> */}
-            <span className="text-xs uppercase tracking-widest text-neutral-600">
-              Video coming soon
-            </span>
-          </motion.div>
+          <RevealImage className="relative aspect-video w-full overflow-hidden rounded-none bg-(--color-bg-muted)">
+            <Image
+              src="/services/web-development-showcase.png"
+              alt="Website Vikreta web development services overview — fast, SEO-ready Next.js websites across desktop and mobile"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 1440px"
+            />
+          </RevealImage>
         </div>
       </section>
 
