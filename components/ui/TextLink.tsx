@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { ArrowUpRight, ArrowRight } from "lucide-react"
 import { scrollToHash } from "@/lib/scroll-to-hash"
-import { useAuditModal, AUDIT_MODAL_HASH } from "@/components/ui/AuditModalProvider"
+import { useAuditModal, AUDIT_MODAL_CONFIGS } from "@/components/ui/AuditModalProvider"
 
 interface TextLinkProps {
   href: string
@@ -26,7 +26,7 @@ export function TextLink({
       href={href}
       className={`group inline-flex items-center gap-1.5 text-[1rem] font-medium text-[var(--color-text)] w-fit ${className}`}
       onClick={(e) => {
-        if (href === AUDIT_MODAL_HASH) { e.preventDefault(); openAuditModal() }
+        if (AUDIT_MODAL_CONFIGS[href]) { e.preventDefault(); openAuditModal(AUDIT_MODAL_CONFIGS[href]) }
         else scrollToHash(e, href)
       }}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}

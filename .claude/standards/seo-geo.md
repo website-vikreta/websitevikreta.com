@@ -151,6 +151,9 @@ H2: [Related concepts]
 FAQ section with schema: 5-8 common questions answered directly
 ```
 
+### Writing Quality (GEO signal, not just style)
+Generic, hedge-y, AI-pattern prose is worse at getting cited, not just worse to read — direct answers with concrete specifics are what AI tools quote. Run GEO copy through `.claude/context/ai-slop-stop-skill.md` before publishing: no throat-clearing before the answer, no vague-importance claims, concrete numbers over adjectives.
+
 ### GEO Signal Builders
 - Author bio on every blog post (with schema)
 - "Last updated" date visible on page + in schema
