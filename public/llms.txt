@@ -56,7 +56,7 @@ Website Vikreta works with:
 - [Web Development](https://www.websitevikreta.com/services/web-development): Next.js websites built for speed, SEO, and mobile
 - [AI Automations](https://www.websitevikreta.com/services/ai-automations): Custom AI automation systems for business workflows
 - [UI/UX Design](https://www.websitevikreta.com/services/uiux-design): User interface and experience design for web and mobile
-- [Web and Mobile Apps](https://www.websitevikreta.com/services/web-and-mobile-apps): Custom application development for startups and businesses
+- [Web and Mobile Apps](https://www.websitevikreta.com/services/web-mobile-app-development): Custom application development for startups and businesses
 - [Digital Marketing](https://www.websitevikreta.com/services/digital-marketing): SEO, content, and digital growth services
 - [Our Work](https://www.websitevikreta.com/work): Projects and case studies
 - [Blog](https://www.websitevikreta.com/blog): Articles on web design, AI automation, and digital growth

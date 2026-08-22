@@ -50,6 +50,8 @@ interface AuditFormProps {
   /** GA4 form_name + button_location label, e.g. 'book_audit_modal' vs 'book_audit_inline'. */
   formName?: string
   heading?:  string
+  subjectPlaceholder?: string
+  messagePlaceholder?: string
   /** Fires after a confirmed successful send (e.g. so a modal can auto-close). */
   onSuccess?: () => void
 }
@@ -61,7 +63,13 @@ interface AuditFormProps {
  * `useId()` keeps field ids unique whenever more than one instance is
  * mounted at once (e.g. the inline section + the popup on the same page).
  */
-export function AuditForm({ formName = 'book_audit', heading = 'Book a Free Process Audit', onSuccess }: AuditFormProps) {
+export function AuditForm({
+  formName = 'book_audit',
+  heading = 'Book a Free Process Audit',
+  subjectPlaceholder = 'What do you need automated?',
+  messagePlaceholder = 'Describe the repetitive work you want to automate…',
+  onSuccess,
+}: AuditFormProps) {
   const [form,       setForm]       = useState<AuditFormData>(FORM_INITIAL)
   const [errors,     setErrors]     = useState<AuditFormErrors>({})
   const [submitting, setSubmitting] = useState(false)
@@ -82,9 +90,11 @@ export function AuditForm({ formName = 'book_audit', heading = 'Book a Free Proc
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
+    const nextForm = { ...form, [name]: value }
+    setForm(nextForm)
     if (errors[name as keyof AuditFormErrors]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }))
+      const fieldErrors = validateForm(nextForm)
+      setErrors(prev => ({ ...prev, [name]: fieldErrors[name as keyof AuditFormErrors] }))
     }
     if (sendError) setSendError(false)
   }
@@ -252,7 +262,7 @@ export function AuditForm({ formName = 'book_audit', heading = 'Book a Free Proc
             type="text"
             value={form.subject}
             onChange={handleChange}
-            placeholder="What do you need automated?"
+            placeholder={subjectPlaceholder}
             disabled={submitting}
             aria-invalid={!!errors.subject}
             aria-describedby={errors.subject ? fieldId('err-subject') : undefined}
@@ -278,7 +288,7 @@ export function AuditForm({ formName = 'book_audit', heading = 'Book a Free Proc
             name="message"
             value={form.message}
             onChange={handleChange}
-            placeholder="Describe the repetitive work you want to automate…"
+            placeholder={messagePlaceholder}
             rows={5}
             disabled={submitting}
             aria-invalid={!!errors.message}
