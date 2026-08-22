@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'r
 import emailjs from '@emailjs/browser'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
 
@@ -152,9 +153,16 @@ export default function ContactSection() {
             >
               Find the Hours You&apos;re Losing Every Week
             </h2>
-            <p className="cta-sub text-body-lg text-(--color-text-muted) leading-relaxed mb-4 md:mb-10">
+            <p className="cta-sub text-body-lg text-(--color-text-muted) leading-relaxed mb-6">
               Book a free audit. We&apos;ll tell you honestly whether automation is worth it for your process, before you spend a dollar.
             </p>
+
+            {/* Lower-friction second path for visitors who won't fill a form. */}
+            <div className="cta-sub mb-4 md:mb-10">
+              <TextLink href="https://wa.me/919970445198" arrow="diagonal" external>
+                Or message us directly on WhatsApp
+              </TextLink>
+            </div>
           </div>
 
           {/* Right — 60% */}
