@@ -5,6 +5,7 @@ import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
 import { ConditionalShell } from '@/components/ui/ConditionalShell'
 import { ScrollManager } from '@/components/ui/ScrollManager'
 import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
+import { AuditModalProvider } from '@/components/ui/AuditModalProvider'
 import { CTASection } from '@/components/sections/CTASection'
 import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
@@ -56,8 +57,10 @@ export default function RootLayout({
           <RouteProgressBar />
         </Suspense>
         <ScrollManager />
-        <ConditionalNavbar />
-        {children}
+        <AuditModalProvider>
+          <ConditionalNavbar />
+          {children}
+        </AuditModalProvider>
         {/* <GoToTop /> */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

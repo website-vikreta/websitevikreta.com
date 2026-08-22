@@ -152,6 +152,14 @@ body {
   overflow-x: hidden;
 }
 
+/* Native fallback for any #hash link not going through scrollToHash
+   (components/ui/Button.tsx, TextLink.tsx) — e.g. a raw <a href="#...">. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* ─── Layout ──────────────────────────────────────────────────── */
 .container {
   width: 100%;
@@ -241,6 +249,51 @@ body {
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
 }
 
+/* ─── Audit Modal (sitewide "book a free audit" popup) ──────────
+   Radix Dialog drives [data-state] — no JS-timed animation needed. Centered
+   card that shrinks to the viewport on small screens instead of a separate
+   bottom-sheet variant; internal scroll once the form outgrows the height. */
+.audit-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background-color: rgba(18, 18, 18, 0.6);
+}
+
+.audit-modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 61;
+  width: min(560px, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+}
+
+.audit-modal-overlay[data-state='open']    { animation: audit-overlay-in 0.25s ease-out both; }
+.audit-modal-overlay[data-state='closed']  { animation: audit-overlay-out 0.2s ease-in both; }
+.audit-modal-content[data-state='open']    { animation: audit-content-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.audit-modal-content[data-state='closed']  { animation: audit-content-out 0.2s ease-in both; }
+
+@keyframes audit-overlay-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes audit-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes audit-content-in  {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes audit-content-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audit-modal-overlay,
+  .audit-modal-content {
+    animation: none !important;
+  }
+}
+
 /* ─── Buttons ─────────────────────────────────────────────────── */
 @layer components {
 
@@ -310,6 +363,17 @@ body {
     background-color: #ffffff;
     border-color: #ffffff;
     color: #000000 !important;
+  }
+
+  /* ── Mount fade-in (DUR.fast, site reveal curve) ─────
+     @starting-style gives the transition something to animate FROM on first
+     paint, so a freshly-mounted element fades in with no state/effect dance. */
+  .fade-in-on-mount {
+    opacity: 1;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @starting-style {
+    .fade-in-on-mount { opacity: 0; }
   }
 
   /* ── Slot-machine char animation ────────────────────── */
