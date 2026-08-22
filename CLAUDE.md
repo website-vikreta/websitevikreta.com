@@ -47,6 +47,7 @@ Never skip to code. Story → Experience → Motion → Architecture → Code.
 | Animation | `.claude/standards/motion-system.md` |
 | SEO/GEO | `.claude/standards/seo-geo.md` |
 | Code rules | `.claude/standards/code-standards.md` |
+| Copy that sounds human | `.claude/commands/macro/humanize.md` |
 | Design/code conventions log | `.claude/learning.md` |
 
 ## Learning Log — Consistency Memory

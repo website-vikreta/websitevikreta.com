@@ -48,6 +48,8 @@
 **Example — Right:**
 > "You're losing 40 hours a month to work a tool could do. We fix that."
 
+**Rule:** Every shipped string runs through `.claude/commands/macro/humanize.md` before it goes live — page copy, blog posts, CTAs, meta descriptions, alt text. AI-writing tells are an automatic revision.
+
 ---
 
 ## Motion Identity

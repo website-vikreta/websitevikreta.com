@@ -52,7 +52,13 @@ GEO rules:
 
 ---
 
-## Step 4 — SEO Checklist
+## Step 4 — Humanize Pass (mandatory)
+Run: `.claude/commands/macro/humanize.md` over the full draft.
+No post ships with AI-writing tells. Do not skip this because the draft "reads fine" — run the pattern table.
+
+---
+
+## Step 5 — SEO Checklist
 Before finishing:
 - [ ] Primary keyword in H1, first paragraph, one H2, meta description
 - [ ] Secondary keywords distributed naturally (not stuffed)
@@ -62,6 +68,7 @@ Before finishing:
 - [ ] FAQ schema ready
 - [ ] Estimated read time in frontmatter
 - [ ] Category tag assigned
+- [ ] Humanize pass run and clean (title + meta description included)
 
 ---
 

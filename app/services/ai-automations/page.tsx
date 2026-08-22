@@ -12,7 +12,7 @@ const jsonLd = {
       '@id': `${PAGE_URL}#service`,
       name: 'AI Automation Services',
       serviceType: 'AI Workflow Automation',
-      description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+      description: 'AI workflow automation for the repetitive work eating your team\'s week. We audit your process, connect your tools, and hand the system over documented.',
       url: PAGE_URL,
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
@@ -31,7 +31,7 @@ const jsonLd = {
 
 export const metadata: Metadata = {
   title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
-  description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+  description: 'AI workflow automation for the repetitive work eating your team\'s week. We audit your process, connect your tools, and hand the system over documented.',
   keywords: [
     'AI automation agency',
     'AI workflow automation',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
-    description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+    description: 'AI workflow automation for the repetitive work eating your team\'s week. We audit your process, connect your tools, and hand the system over documented.',
     url: `${SITE_URL}/services/ai-automations`,
    siteName: 'Website Vikreta',
     type: 'website',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AI Automation Services | Workflow Automation for Businesses | Website Vikreta',
-    description: 'We build custom AI workflow automation systems that eliminate repetitive work, automate business processes, connect your tools, and improve efficiency.',
+    description: 'AI workflow automation for the repetitive work eating your team\'s week. We audit your process, connect your tools, and hand the system over documented.',
     images: ['/og-image.png'],
   },
   alternates: {
