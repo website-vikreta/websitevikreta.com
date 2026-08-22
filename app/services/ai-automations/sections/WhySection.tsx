@@ -2,18 +2,22 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
+import { Search, Wrench, FileCheck2 } from 'lucide-react'
 import { useGsapSection, revealLines, revealFadeUp, revealClipImage, STAGGER } from '@/lib/gsap/reveals'
 
 const DIFFERENTIATORS = [
   {
+    icon:  Search,
     title: 'We audit before we build',
     body:  'If a $50 tool solves it, that’s what we’ll tell you — instead of inventing a reason to charge you more.',
   },
   {
+    icon:  Wrench,
     title: 'We’ve done the messy version of this',
     body:  'Spreadsheet chaos, tools that won’t talk to each other, exports that need renaming by hand. That’s most of the real work.',
   },
   {
+    icon:  FileCheck2,
     title: 'You own what we build',
     body:  'Documentation and a proper handover, not a dependency on us to keep it alive.',
   },
@@ -38,25 +42,33 @@ export default function WhySection() {
             </h2>
 
             <ul className="flex flex-col gap-6">
-              {DIFFERENTIATORS.map(({ title, body }) => (
-                <li key={title} className="why-item">
-                  <h3 className="font-sans text-lg font-bold tracking-tight text-(--color-text)">
-                    {title}
-                  </h3>
-                  <p className="mt-1.5 text-body-lg leading-relaxed text-(--color-text-muted)">
-                    {body}
-                  </p>
+              {DIFFERENTIATORS.map(({ icon: Icon, title, body }) => (
+                <li key={title} className="why-item flex gap-4">
+                  <Icon
+                    size={22}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                    className="mt-1 shrink-0 text-(--color-accent)"
+                  />
+                  <div>
+                    <h3 className="font-sans text-lg font-bold tracking-tight text-(--color-text)">
+                      {title}
+                    </h3>
+                    <p className="mt-1.5 text-body-lg leading-relaxed text-(--color-text-muted)">
+                      {body}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="why-image relative order-first aspect-[4/3] w-full overflow-hidden bg-(--color-bg-muted)">
+          <div className="why-image relative order-first aspect-square w-full self-center overflow-hidden border border-(--color-border) bg-(--color-bg-muted)">
             <Image
               src="/our-services/ai-automation/why-choose-website-vikreta-ai-automation.webp"
               alt="Why choose Website Vikreta for AI automation"
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
