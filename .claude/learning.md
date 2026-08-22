@@ -26,6 +26,13 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Why: equal gaps between components = uniform page rhythm.
 - Date: 2026-06-28
 
+### [Re-drift] — AI Automations section rhythm restored (2026-08-22)
+- Rule: The page had drifted off the logged rhythm again after the PainSection rework. Restored: `PainSection` `pb-16 md:pb-20` → `py-16 md:py-20` (it had lost its top padding, so Hero→Pain was the one uneven seam on the page), `ContactSection` `pt-16 pb-24 md:pt-20 md:pb-32` → `pt-32 pb-24 md:pt-40 md:pb-32` (the logged contact/form exception value), `WhySection` h2 `mb-8` → `mb-6` (matches PainSection, the other two-col text/image section). Every other section on the page, shared ones included (`StatsCounters`, `ClientLogosSection`, `FaqSection`), was already `py-16 md:py-20`.
+- Check before editing: `grep -rn -A3 "<section" app/services/ai-automations/sections/*.tsx | grep -E "py-|pt-|pb-"` lists the whole page's rhythm in one shot.
+- Why: user asked for the sections to read as one continuous page rather than stacked blocks. Uniform padding is what does that; the two odd values were the only things breaking it.
+- Still flat on ground, though: every section except `CalendlyCTABanner` renders on `--color-bg` (`StatsCounters` is forced transparent via `bgClassName=""`), so the surface-rhythm rule below is unapplied on this page. Not changed here — spacing was the ask.
+- Date: 2026-08-22
+
 ### [Section] — heading-to-content gap
 - Rule: Section heading block bottom margin = `mb-10 md:mb-14`.
 - Where: home page section headers.
@@ -239,6 +246,13 @@ Persistent memory of design + code conventions for this site. Every reusable dec
 - Where: `app/services/ai-automations/sections/WhySection.tsx` — replaced `/our-services/ai-automation/why-choose-website-vikreta-ai-automation.webp` (deleted, was unused elsewhere) with a coded checklist card reusing the 3 `DIFFERENTIATORS` titles + new `Search`/`Wrench`/`FileCheck2` lucide icons (also added to the left-column list items, previously icon-less).
 - Superseded in the working tree (2026-08-22): the user put the watercolor image back in `WhySection` (the coded checklist card is gone) and re-added the file under `public/our-services/ai-automation/`. Treat the rule as **not enforced on this page** unless the user says otherwise; do not silently re-delete the image. Its alt text now describes the illustration itself, per the alt-text rule.
 - Still open: `app/services/ai-automations/sections/PainSection.tsx`'s `/services/manual-work-vs-automated.webp` is the same watercolor-illustration style.
+- Date: 2026-08-22
+
+### [Component] — sitewide "book a free audit" popup, reused form
+- Rule: The lead-gen form (first/last name, email, subject, message, EmailJS submit, validation, loading/success/error states) lives in ONE component — `components/ui/AuditForm.tsx` — with no outer section/card chrome, so it can be dropped into a page section or a modal. It's rendered in two places: inline in `app/services/ai-automations/sections/ContactSection.tsx` (still on-page for organic scroll/SEO/no-JS fallback) and inside `components/ui/AuditModal.tsx` (a Radix `@radix-ui/react-dialog` popup, mounted once via `AuditModalProvider` in `app/layout.tsx`). `AuditForm` uses React's `useId()` to prefix every field/error id, since both instances can be mounted simultaneously (inline section always in the DOM, modal opens on top of it) — hardcoded ids would collide and break `htmlFor` associations. Don't duplicate this form again on a new service page; import `AuditForm` or trigger the modal.
+- Trigger convention: any `Button` or `TextLink` with `href="#book-audit"` (the `AUDIT_MODAL_HASH` constant, exported from `AuditModalProvider.tsx`) now opens the popup via `useAuditModal().openAuditModal()` instead of scrolling — wired once inside `Button.tsx`/`TextLink.tsx`, so every existing and future "Get Free Audit" CTA across service pages gets the popup automatically just by using that href, no per-CTA code. Other `#hash` hrefs are untouched — they still go through `scrollToHash` (see [Anti-pattern] below... see `lib/scroll-to-hash.ts`).
+- Modal styling: sharp corners (no border-radius, matches the sitewide no-bubbly-card convention), `bg-(--color-surface) border border-(--color-border)`, centered card that shrinks to `calc(100vw - 2rem)`/`calc(100vh - 2rem)` with internal scroll instead of a separate mobile bottom-sheet variant. CSS lives in `app/globals.css` under "Audit Modal", keyed off Radix's `[data-state=open/closed]` — no JS-timed animation. `z-index: 60/61`, above the navbar (`z-40`) and its mobile drawer (`z-50`). Reduced-motion strips the animation entirely (`animation: none !important`).
+- Why: user asked to replace "CTA scrolls down to the contact form" with a generalized popup usable from any service page, explicitly saying to reuse the existing form rather than rebuild it.
 - Date: 2026-08-22
 
 ### [Exception] — numbered indices ARE allowed on a principles list (user-confirmed twice)
