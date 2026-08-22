@@ -4,34 +4,54 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { useGsapSection, revealLines, revealFadeUp, revealClipImage, STAGGER } from '@/lib/gsap/reveals'
 
+const DIFFERENTIATORS = [
+  {
+    title: 'We audit before we build',
+    body:  'If a $50 tool solves it, that’s what we’ll tell you — instead of inventing a reason to charge you more.',
+  },
+  {
+    title: 'We’ve done the messy version of this',
+    body:  'Spreadsheet chaos, tools that won’t talk to each other, exports that need renaming by hand. That’s most of the real work.',
+  },
+  {
+    title: 'You own what we build',
+    body:  'Documentation and a proper handover, not a dependency on us to keep it alive.',
+  },
+]
+
 export default function WhySection() {
   const scope = useRef<HTMLElement>(null)
 
   useGsapSection(scope, () => {
     revealLines('.why-heading', { trigger: scope.current })
-    revealFadeUp('.why-para', { y: 20, stagger: STAGGER.base, trigger: scope.current })
+    revealFadeUp('.why-item', { y: 20, stagger: STAGGER.base, trigger: scope.current })
     revealClipImage('.why-image', { trigger: '.why-image' })
   })
 
   return (
     <section ref={scope} className="py-16 md:py-20" aria-label="Why Website Vikreta">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
           <div className="max-w-2xl">
-            <h2 className="why-heading text-h3 font-bold tracking-tight text-(--color-text) mb-6">
+            <h2 className="why-heading mb-8 text-h3 font-bold tracking-tight text-(--color-text)">
               Why Website Vikreta
             </h2>
 
-            <p className="why-para text-body-lg text-(--color-text-muted) leading-relaxed mb-5">
-              We audit before we build. If a $50 tool solves it, we&apos;ll tell you that instead of inventing a reason to charge you more.
-            </p>
-
-            <p className="why-para text-body-lg text-(--color-text-muted) leading-relaxed">
-              We&apos;ve done the unglamorous version of this. Spreadsheet chaos, tools that won&apos;t talk to each other, exports that need renaming by hand. That&apos;s most of the real work, and it&apos;s where we&apos;re strongest.
-            </p>
+            <ul className="flex flex-col gap-6">
+              {DIFFERENTIATORS.map(({ title, body }) => (
+                <li key={title} className="why-item">
+                  <h3 className="font-sans text-lg font-bold tracking-tight text-(--color-text)">
+                    {title}
+                  </h3>
+                  <p className="mt-1.5 text-body-lg leading-relaxed text-(--color-text-muted)">
+                    {body}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="why-image relative w-full aspect-[4/3] overflow-hidden bg-(--color-bg-muted) order-first">
+          <div className="why-image relative order-first aspect-[4/3] w-full overflow-hidden bg-(--color-bg-muted)">
             <Image
               src="/our-services/ai-automation/why-choose-website-vikreta-ai-automation.webp"
               alt="Why choose Website Vikreta for AI automation"
