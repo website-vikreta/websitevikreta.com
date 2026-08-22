@@ -5,7 +5,7 @@ import React from 'react'
 import { ArrowRight } from 'lucide-react'
 import { trackLinkClick } from '@/lib/analytics'
 import { scrollToHash } from '@/lib/scroll-to-hash'
-import { useAuditModal, AUDIT_MODAL_HASH } from '@/components/ui/AuditModalProvider'
+import { useAuditModal, AUDIT_MODAL_CONFIGS } from '@/components/ui/AuditModalProvider'
 
 function SlotText({ children }: { children: React.ReactNode }) {
   if (typeof children !== 'string') return <>{children}</>
@@ -115,7 +115,7 @@ export function Button({
         className={classes}
         onClick={(e) => {
           if (external) trackLinkClick(href, 'button')
-          else if (href === AUDIT_MODAL_HASH) { e.preventDefault(); openAuditModal() }
+          else if (AUDIT_MODAL_CONFIGS[href]) { e.preventDefault(); openAuditModal(AUDIT_MODAL_CONFIGS[href]) }
           else scrollToHash(e, href)
         }}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}

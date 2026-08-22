@@ -84,7 +84,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       'A product experience that institutional users could trust, with a design system the team could extend without starting from scratch each release.',
     testimonial: {
       quote:
-        'They shaped our entire product from the ground up and are still the first people we call.',
+        'They shaped our entire digital appearance from the ground up and are still the first people we call.',
       role: 'Co-founder, Sustainable Bitcoin Protocol',
     },
   },

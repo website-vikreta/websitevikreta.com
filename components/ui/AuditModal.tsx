@@ -4,14 +4,16 @@ import { useRef } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { AuditForm } from '@/components/ui/AuditForm'
+import type { AuditModalConfig } from '@/components/ui/AuditModalProvider'
 
 interface AuditModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  config: AuditModalConfig
 }
 
-/** Sitewide "book a free audit" popup — opened from any CTA via `useAuditModal()`. */
-export function AuditModal({ open, onOpenChange }: AuditModalProps) {
+/** Sitewide popup form shell — copy/placeholders come from `config`, opened from any CTA via `useAuditModal()`. */
+export function AuditModal({ open, onOpenChange, config }: AuditModalProps) {
   const contentRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -28,9 +30,9 @@ export function AuditModal({ open, onOpenChange }: AuditModalProps) {
             firstField?.focus()
           }}
         >
-          <DialogPrimitive.Title className="sr-only">Book a Free Process Audit</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">{config.heading}</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">
-            Tell us about the repetitive work you want automated — we&apos;ll reply within 24 hours.
+            {config.dialogDescription}
           </DialogPrimitive.Description>
 
           <DialogPrimitive.Close
@@ -41,7 +43,13 @@ export function AuditModal({ open, onOpenChange }: AuditModalProps) {
           </DialogPrimitive.Close>
 
           <div className="p-6 pt-14 sm:p-8 sm:pt-16">
-            <AuditForm formName="book_audit_modal" onSuccess={() => { /* leave open — user sees the confirmation */ }} />
+            <AuditForm
+              formName={config.formName}
+              heading={config.heading}
+              subjectPlaceholder={config.subjectPlaceholder}
+              messagePlaceholder={config.messagePlaceholder}
+              onSuccess={() => { /* leave open — user sees the confirmation */ }}
+            />
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

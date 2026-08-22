@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
+import { CALENDLY_URL } from '@/config/site'
 import {
   revealLines,
   revealFadeUp,
@@ -70,7 +71,7 @@ export default function Hero() {
         </p>
 
         <div ref={ctaRef} className="flex justify-center">
-          <Button href="#start-project" variant="primary" size="lg" showArrow>
+          <Button href={CALENDLY_URL} external variant="primary" size="lg" showArrow>
             Book a Free Project Call
           </Button>
         </div>

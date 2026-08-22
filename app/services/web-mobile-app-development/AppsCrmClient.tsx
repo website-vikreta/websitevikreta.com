@@ -1,6 +1,7 @@
 'use client'
 
 import { DotGrid } from '@/components/ui/DotGrid'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { ALL_FAQS } from '@/lib/faq-data'
 import Hero from './sections/Hero'
@@ -26,6 +27,7 @@ export default function AppsCrmClient() {
         <FaqSection items={appsCrmFaqs} ariaLabel="Apps & CRM FAQs" />
         <ContactSection />
       </main>
+      <ScrollToTop />
     </>
   )
 }

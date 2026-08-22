@@ -1,35 +1,22 @@
 'use client'
 
 import { useRef } from 'react'
-import { gsap } from '@/lib/gsap'
-import { ToolSprawl } from './SystemDiagram'
+import Image from 'next/image'
 import {
   revealLines,
   revealFadeUp,
+  revealClipImage,
   useGsapSection,
-  DUR,
-  EASE,
   STAGGER,
 } from '@/lib/gsap/reveals'
 
 export default function PainSection() {
   const scope = useRef<HTMLElement>(null)
 
-  useGsapSection(scope, (reduce) => {
+  useGsapSection(scope, () => {
     revealLines('.pain-h2', { trigger: scope.current })
     revealFadeUp('.pain-p', { y: 20, stagger: STAGGER.loose, delay: 0.1, trigger: scope.current })
-    revealFadeUp('.pain-diagram .sd-node', { y: 12, stagger: STAGGER.tight, trigger: '.pain-diagram' })
-
-    // Connectors fade in after the chips land — the copying starts.
-    if (reduce) return
-    gsap.from('.pain-diagram .sd-link line', {
-      opacity: 0,
-      duration: DUR.slow,
-      ease: EASE.out,
-      stagger: STAGGER.tight,
-      delay: 0.3,
-      scrollTrigger: { trigger: '.pain-diagram', start: 'top 85%', once: true },
-    })
+    revealClipImage('.pain-diagram', { scale: false, trigger: '.pain-diagram' })
   })
 
   return (
@@ -57,8 +44,15 @@ export default function PainSection() {
             </p>
           </div>
 
-          <div className="pain-diagram order-first md:order-last">
-            <ToolSprawl />
+          <div className="pain-diagram order-first md:order-last relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
+            <Image
+              src="/services/tool-sprawl-integration-diagram.webp"
+              alt="Six disconnected tools — a leads sheet, WhatsApp, orders, invoices, notes and email — all routed by hand through one person on your team"
+              width={1204}
+              height={887}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="h-auto w-full"
+            />
           </div>
         </div>
       </div>
