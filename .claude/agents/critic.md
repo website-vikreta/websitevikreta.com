@@ -45,6 +45,7 @@ My job is to find every reason this would NOT win Site of the Day — and fix th
 
 ## Automatic Fails (Any one = revision required)
 - [ ] No clear CTA on the page
+- [ ] Copy reads like AI-generated content — throat-clearing openers, "not X, but Y" formulas, vague-importance claims, empty adverbs, manufactured three-part lists (see `.claude/context/ai-slop-stop-skill.md`)
 - [ ] Hero headline is generic ("We help businesses grow")
 - [ ] Animations feel jarring or fast
 - [ ] Accent color used more than once per section

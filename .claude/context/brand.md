@@ -40,6 +40,7 @@
 - Corporate jargon ("synergy", "leverage", "holistic")
 - Startup hype ("disrupting", "revolutionizing")
 - Overly technical (tool names before outcomes)
+- AI-generated — throat-clearing ("Here's the thing:"), false-contrast formulas ("It's not X, it's Y"), vague-importance claims, empty adverbs, manufactured three-part lists. Full pattern list + fixes: `.claude/context/ai-slop-stop-skill.md`.
 
 **Example — Wrong:**
 > "We leverage cutting-edge AI technologies to provide holistic digital transformation solutions."

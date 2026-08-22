@@ -29,6 +29,7 @@ Never skip to code. Story → Experience → Motion → Architecture → Code.
 - `.claude/context/session.md` — current decisions, what's locked
 - `.claude/context/brand.md` — palette, type, voice
 - The ONE relevant standards file for the task
+- Writing or editing any user-facing copy (headlines, body, CTAs, microcopy)? Also load `.claude/context/ai-slop-stop-skill.md` and pass every draft through it before it ships.
 
 ## Reference Index
 | Need | File |
@@ -39,6 +40,7 @@ Never skip to code. Story → Experience → Motion → Architecture → Code.
 | Vision | `.claude/context/vision.md` |
 | Current session | `.claude/context/session.md` |
 | Concept + emotion | `.claude/agents/storyteller.md` |
+| Anti-slop writing (kill AI-writing tells) | `.claude/context/ai-slop-stop-skill.md` |
 | Build + perf | `.claude/agents/builder.md` |
 | Score + critique | `.claude/agents/critic.md` |
 | Visual design | `.claude/standards/design-system.md` |
