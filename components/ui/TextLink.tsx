@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { ArrowUpRight, ArrowRight } from "lucide-react"
+import { scrollToHash } from "@/lib/scroll-to-hash"
 
 interface TextLinkProps {
   href: string
@@ -22,6 +23,7 @@ export function TextLink({
     <Link
       href={href}
       className={`group inline-flex items-center gap-1.5 text-[1rem] font-medium text-[var(--color-text)] w-fit ${className}`}
+      onClick={(e) => scrollToHash(e, href)}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       <span className="relative">

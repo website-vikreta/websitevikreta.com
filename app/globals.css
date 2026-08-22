@@ -152,6 +152,14 @@ body {
   overflow-x: hidden;
 }
 
+/* Native fallback for any #hash link not going through scrollToHash
+   (components/ui/Button.tsx, TextLink.tsx) — e.g. a raw <a href="#...">. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* ─── Layout ──────────────────────────────────────────────────── */
 .container {
   width: 100%;
