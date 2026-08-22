@@ -17,7 +17,7 @@ const PILLARS: Pillar[] = [
     icon:   Clock,
     title:  'Save time',
     line:   'Hours back every week, not buried in a report nobody reads.',
-    metric: '20 hours → 1 hour on one client’s image pipeline',
+    metric: '20 hours → 1 hour on one client\'s image pipeline',
   },
   {
     icon:  IndianRupee,
@@ -27,7 +27,7 @@ const PILLARS: Pillar[] = [
   {
     icon:  TrendingUp,
     title: 'Better output',
-    line:  'More content, more replies, more coverage — without more headcount.',
+    line:  'More content, more replies, more coverage. Without more headcount.',
   },
   {
     icon:  Users,
@@ -52,13 +52,13 @@ export default function PillarsSection() {
             id="pillars-heading"
             className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
           >
-            What Changes When You Automate With Us
+            What changes when you automate with us
           </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-4 lg:gap-x-8">
           {PILLARS.map(({ icon: Icon, title, line, metric }) => (
-            <div key={title} className="pillar group">
+            <div key={title} className="pillar">
               <Icon
                 size={40}
                 strokeWidth={1.5}

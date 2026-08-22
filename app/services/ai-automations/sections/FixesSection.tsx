@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useGsapSection, revealLines, revealFadeUp, revealClipImage } from '@/lib/gsap/reveals'
 
@@ -21,7 +20,6 @@ interface Service {
   description: string
   cta:         string
   image?:      ServiceImage
-  stat?:       { from: string; to: string }
 }
 
 const SERVICES: Service[] = [
@@ -30,7 +28,7 @@ const SERVICES: Service[] = [
     title:       'Workflow & business process automation',
     indexLabel:  'Workflow automation',
     description:
-      'We connect the tools you already use — CRM, lead capture, order data, spreadsheets — with n8n and Make.com, so information moves without anyone copy-pasting it.',
+      'Your CRM, lead capture, order data and spreadsheets, wired together with n8n and Make.com so information moves without anyone copy-pasting it.',
     cta:         'See a workflow we built',
     image: {
       src:    '/services/ai-automation-flow.webp',
@@ -78,7 +76,7 @@ const SERVICES: Service[] = [
       src:    '/services/whatsapp-ai-agent.webp',
       width:  1536,
       height: 1024,
-      alt:    'WhatsApp AI agent handling a customer conversation about order status and returns, surrounded by its capabilities: dead cart recovery, personalised customer support, orders and returns, marketing broadcasts, payment links, smart promotions, AI-powered replies and analytics — connecting to Shopify, WooCommerce, Google Sheets and delivery partners.',
+      alt:    'WhatsApp AI agent handling a customer conversation about order status and returns, surrounded by its capabilities: dead cart recovery, personalised customer support, orders and returns, marketing broadcasts, payment links, smart promotions, AI-powered replies and analytics, connecting to Shopify, WooCommerce, Google Sheets and delivery partners.',
     },
   },
   {
@@ -86,7 +84,7 @@ const SERVICES: Service[] = [
     title:       '+ Anything AI',
     indexLabel:  'Anything else',
     description:
-      'If it’s repetitive, rule-based, or eating hours from someone who’s worth more than that, it’s fair game. Tell us what it is.',
+      'If it\'s repetitive, rule-based, or eating hours from someone who\'s worth more than that, it\'s fair game. Tell us what it is.',
     cta:         'Book a Free Process Audit',
   },
 ]
@@ -139,7 +137,7 @@ export default function FixesSection() {
               id="fix-heading"
               className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
             >
-              Where We Focus
+              Where we focus
             </h2>
 
             <nav aria-label="Services" className="mt-8 hidden lg:block">
@@ -188,17 +186,6 @@ export default function FixesSection() {
                       sizes="(min-width: 1024px) 830px, 100vw"
                       className="h-auto w-full"
                     />
-                    {service.stat && (
-                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-(--color-text) px-3 py-1.5">
-                        <span className="text-sm font-bold text-(--color-bg) line-through decoration-2">
-                          {service.stat.from}
-                        </span>
-                        <ArrowRight size={13} className="shrink-0 text-(--color-accent)" aria-hidden="true" />
-                        <span className="text-sm font-bold text-(--color-bg)">
-                          {service.stat.to}
-                        </span>
-                      </div>
-                    )}
                   </div>
                 )}
 

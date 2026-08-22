@@ -13,7 +13,7 @@ const STEPS: Step[] = [
   {
     step:        '01',
     title:       'We watch',
-    description: 'How the work actually gets done today, not how it’s supposed to work on paper.',
+    description: 'How the work actually gets done today, not how it\'s supposed to work on paper.',
   },
   {
     step:        '02',
@@ -73,15 +73,14 @@ export default function HowWeWork() {
       <div className="container">
         <div className="mb-10 max-w-2xl md:mb-14">
           <h2 id="services-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-            How We Work
+            How we work
           </h2>
         </div>
 
         {/* The numerals ARE the rail — no separate track, no node dots. Each
             step inks in as you reach it and the connector fills behind it, so
-            the process visibly runs top to bottom. Nothing to click: the old
-            canvas offered "Add Node" and drag-to-rearrange on a process whose
-            own copy says it never changes. */}
+            the process visibly runs top to bottom. Nothing here is clickable:
+            the process doesn't change. */}
         <ol className="max-w-4xl">
           {STEPS.map((item, i) => {
             const isReached  = i <= reached

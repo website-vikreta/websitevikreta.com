@@ -224,27 +224,6 @@ body {
   opacity: 0;
 }
 
-/* ─── Tab-panel swap (AI-Automations pain selector) ───────────── */
-/* Replays on remount (React `key` change) so switching tabs reads as a
-   change rather than text silently rewriting itself. Cosmetic only — the
-   panel is fully present without it. */
-.pain-swap {
-  animation: pain-swap 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes pain-swap {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pain-swap {
-    animation: none;
-  }
-}
-
 /* ─── Dropdown Panel ──────────────────────────────────────────── */
 .dropdown-panel {
   position: absolute;
@@ -339,6 +318,17 @@ body {
     background-color: #ffffff;
     border-color: #ffffff;
     color: #000000 !important;
+  }
+
+  /* ── Mount fade-in (DUR.fast, site reveal curve) ─────
+     @starting-style gives the transition something to animate FROM on first
+     paint, so a freshly-mounted element fades in with no state/effect dance. */
+  .fade-in-on-mount {
+    opacity: 1;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @starting-style {
+    .fade-in-on-mount { opacity: 0; }
   }
 
   /* ── Slot-machine char animation ────────────────────── */

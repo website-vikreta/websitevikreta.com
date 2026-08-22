@@ -14,8 +14,6 @@ import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
 const CSS_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
 /** Focus/hover micro-interaction duration (DUR.micro = 0.2s). */
 const T_MICRO = '0.2s'
-/** Error-alert fade duration (DUR.fast = 0.4s). */
-const T_FAST = '0.4s'
 
 // ─── Contact Form ─────────────────────────────────────────────────────────────
 
@@ -61,9 +59,6 @@ export default function ContactSection() {
   const [ctaSubmitted,  setCtaSubmitted]  = useState(false)
   const [ctaSendError,  setCtaSendError]  = useState(false)
 
-  // Presentational-only: drives the error alert's opacity fade-in. Does not touch form/validation state.
-  const [ctaErrorVisible, setCtaErrorVisible] = useState(false)
-
   const scope = useRef<HTMLElement>(null)
 
   // Entrance: left column (heading masked lines + sub fade-up) → form card → field rows, tight cascade.
@@ -85,14 +80,6 @@ export default function ContactSection() {
     const tween = revealFadeUp('.cta-success-msg', { y: 16, trigger: null })
     return () => { tween.kill() }
   }, [ctaSubmitted])
-
-  // Error alert: simple opacity fade-in (no y-transform, per spec) — needs a two-frame state
-  // flip since a CSS transition requires a prior style to animate from.
-  useEffect(() => {
-    if (!ctaSendError) { setCtaErrorVisible(false); return }
-    const id = requestAnimationFrame(() => setCtaErrorVisible(true))
-    return () => cancelAnimationFrame(id)
-  }, [ctaSendError])
 
   function handleCtaChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target
@@ -151,7 +138,7 @@ export default function ContactSection() {
               id="cta-form-heading"
               className="cta-heading text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6"
             >
-              Find the Hours You&apos;re Losing Every Week
+              Find the hours you&apos;re losing every week
             </h2>
             <p className="cta-sub text-body-lg text-(--color-text-muted) leading-relaxed mb-6">
               Book a free audit. We&apos;ll tell you honestly whether automation is worth it for your process, before you spend a dollar.
@@ -174,7 +161,7 @@ export default function ContactSection() {
                     className="text-h3 font-normal max-w-[28ch]"
                     style={{ color: '#16a34a' }}
                   >
-                    Thanks, we&rsquo;ll get back to you within 24 hours.
+                    Thanks, we&apos;ll get back to you within 24 hours.
                   </p>
                   <button
                     type="button"
@@ -353,13 +340,8 @@ export default function ContactSection() {
 
                     {ctaSendError && (
                       <p
-                        className="text-xs"
-                        style={{
-                          color: '#FF4444',
-                          fontFamily: 'monospace',
-                          opacity: ctaErrorVisible ? 1 : 0,
-                          transition: `opacity ${T_FAST} ${CSS_EASE}`,
-                        }}
+                        className="fade-in-on-mount text-xs"
+                        style={{ color: '#FF4444', fontFamily: 'monospace' }}
                         role="alert"
                       >
                         Something went wrong. Email us at{' '}

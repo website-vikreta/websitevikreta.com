@@ -11,10 +11,10 @@ interface Capability {
 }
 
 const CAPABILITIES: Capability[] = [
-  { icon: LightningFill,   title: 'Automate Anything',  line: 'Connect apps, APIs and data sources' },
-  { icon: ClockFill,       title: 'Save Time',          line: 'Eliminate repetitive tasks and manual work' },
-  { icon: ShieldFillCheck, title: 'Reliable & Secure',  line: 'Enterprise-grade security and data protection' },
-  { icon: BarChartFill,    title: 'Scalable Workflows', line: 'Build once, scale without limits' },
+  { icon: LightningFill,   title: 'Automate anything',  line: 'Your apps, APIs and data, talking to each other' },
+  { icon: ClockFill,       title: 'No more copy-paste', line: 'The manual handoff between your tools, gone' },
+  { icon: ShieldFillCheck, title: 'Runs on your stack', line: 'Your accounts, your data, your access' },
+  { icon: BarChartFill,    title: 'Built once',         line: 'Then it runs every day without you' },
 ]
 
 /** Divider rules: dashed top border on mobile stack, dashed left border once

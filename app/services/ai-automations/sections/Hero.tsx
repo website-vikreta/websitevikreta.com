@@ -57,18 +57,17 @@ export default function Hero() {
           className="mx-auto mb-6 max-w-4xl text-balance font-sans text-h1 font-bold text-(--color-text) md:font-semibold"
         >
           Get{' '}
-          <span style={{ color: 'var(--color-accent)' }}>20 Hours a Week</span>{' '}
-          Back. Cut What It Costs to Run Your Team.
+          <span style={{ color: 'var(--color-accent)' }}>20 hours a week</span>{' '}
+          back. Cut what it costs to run your team.
         </h1>
 
         <p
           ref={subRef}
           className="mx-auto mb-10 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)"
         >
-          AI automation for the repetitive work eating your team&apos;s time —
+          AI automation for the repetitive work eating your team&apos;s time:
           content production, customer replies, lead follow-up, tool-to-tool
-          busywork. We find it, automate it, and hand it to you fully
-          documented.
+          busywork. We find it, automate it, hand it back documented.
         </p>
 
         {/* Two paths on purpose: the form for people who want to write it down,

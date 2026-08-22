@@ -9,12 +9,12 @@ const DIFFERENTIATORS = [
   {
     icon:  Search,
     title: 'We audit before we build',
-    body:  'If a $50 tool solves it, that’s what we’ll tell you — instead of inventing a reason to charge you more.',
+    body:  'If a $50 tool solves it, that\'s what we\'ll tell you, instead of inventing a reason to charge you more.',
   },
   {
     icon:  Wrench,
-    title: 'We’ve done the messy version of this',
-    body:  'Spreadsheet chaos, tools that won’t talk to each other, exports that need renaming by hand. That’s most of the real work.',
+    title: 'We\'ve done the messy version of this',
+    body:  'Spreadsheet chaos, tools that won\'t talk to each other, exports that need renaming by hand. That\'s most of the real work.',
   },
   {
     icon:  FileCheck2,
@@ -66,7 +66,7 @@ export default function WhySection() {
           <div className="why-image relative order-first aspect-square w-full self-center overflow-hidden border border-(--color-border) bg-(--color-bg-muted)">
             <Image
               src="/our-services/ai-automation/why-choose-website-vikreta-ai-automation.webp"
-              alt="Why choose Website Vikreta for AI automation"
+              alt="Illustration: on the left a person holds their head over a desk buried in paperwork and crossed-out calendars; on the right the same person works calmly at one laptop while a dashboard, a piggy bank, a stopwatch, two joined puzzle pieces and a handover manual are each ticked off."
               fill
               className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
