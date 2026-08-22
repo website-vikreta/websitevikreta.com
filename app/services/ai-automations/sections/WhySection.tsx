@@ -37,7 +37,7 @@ export default function WhySection() {
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
           <div className="max-w-2xl">
-            <h2 className="why-heading mb-8 text-h3 font-bold tracking-tight text-(--color-text)">
+            <h2 className="why-heading mb-6 text-h3 font-bold tracking-tight text-(--color-text)">
               Why Website Vikreta
             </h2>
 

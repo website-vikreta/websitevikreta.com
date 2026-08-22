@@ -16,7 +16,7 @@ export default function PainSection() {
   return (
     <section
       ref={scope}
-      className="pb-16 md:pb-20"
+      className="py-16 md:py-20"
       aria-labelledby="pain-heading"
     >
       <div className="container">
