@@ -67,4 +67,11 @@ If REVISION ROUTE = Ship: proceed to implementation.
 Now write the code.
 Follow `.claude/standards/code-standards.md` throughout.
 
+---
+
+## Step 6 — Humanize the copy (mandatory before done)
+Run `.claude/commands/macro/humanize.md` over every string the visitor reads:
+headlines, body, CTAs, labels, alt text, meta title + description, FAQ answers.
+A page with AI-writing tells is not shippable, whatever the Critic scored.
+
 Update `.claude/context/session.md` when done.

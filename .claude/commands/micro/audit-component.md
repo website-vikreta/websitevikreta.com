@@ -20,6 +20,7 @@
 - [ ] Font uses `font-sans` Tailwind class or `var(--font-epilogue)` — no hardcoded font families
 - [ ] GSAP has cleanup if animations present
 - [ ] `prefers-reduced-motion` respected
+- [ ] Visible strings pass `.claude/commands/macro/humanize.md` (no puff, no `-ing` tails, no curly quotes)
 
 ## Output
 - Pass / Fail per check

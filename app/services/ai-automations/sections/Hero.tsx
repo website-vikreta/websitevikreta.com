@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
+import { CALENDLY_URL } from '@/config/site'
 import {
   revealLines,
   revealFadeUp,
@@ -15,6 +16,7 @@ export default function Hero() {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const subRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const proofRef = useRef<HTMLUListElement>(null)
 
   // Load-triggered hero timeline (no ScrollTrigger — above the fold).
   useGsapSection(scope, (reduce) => {
@@ -22,7 +24,8 @@ export default function Hero() {
     const heading = headingRef.current
     const sub = subRef.current
     const cta = ctaRef.current
-    if (!content || !heading || !sub || !cta) return
+    const proof = proofRef.current
+    if (!content || !heading || !sub || !cta || !proof) return
 
     // Reduced motion: reveal instantly, no transforms.
     if (reduce) {
@@ -33,47 +36,64 @@ export default function Hero() {
     const tl = gsap.timeline()
     // Lift the FOUC guard exactly as the choreography begins.
     tl.set(content, { opacity: 1 }, 0)
-    // 1. Headline masks up line-by-line.
     tl.add(revealLines(heading, { trigger: null }), 0)
-    // 2. Subhead settles into the tail of the headline.
     tl.add(revealFadeUp(sub, { y: 18, trigger: null }), '-=0.5')
-    // 3. CTA follows.
     tl.add(revealFadeUp(cta, { y: 18, trigger: null }), '-=0.4')
+    tl.add(revealFadeUp(proof, { y: 14, trigger: null }), '-=0.45')
   })
 
   return (
     <section
       ref={scope}
-      className="relative flex flex-col items-center justify-center min-h-svh text-center overflow-x-clip"
+      className="relative flex min-h-svh flex-col items-center justify-center overflow-x-clip text-center"
       aria-label="AI Automation Services"
     >
       <div
         ref={contentRef}
-        className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28 opacity-0"
+        className="container relative z-10 pt-28 pb-20 opacity-0 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28"
       >
         <h1
           ref={headingRef}
-          className="text-h1 font-bold md:font-semibold text-(--color-text) font-sans mb-6 max-w-4xl mx-auto text-balance"
+          className="mx-auto mb-6 max-w-4xl text-balance font-sans text-h1 font-bold text-(--color-text) md:font-semibold"
         >
-          Your Team Is{' '}
-          <span style={{ color: 'var(--color-accent)' }}>Too Expensive</span>{' '}
-          to Spend on Copy-Paste
+          Get{' '}
+          <span style={{ color: 'var(--color-accent)' }}>20 hours a week</span>{' '}
+          back. Cut what it costs to run your team.
         </h1>
 
         <p
           ref={subRef}
-          className="text-body-lg text-(--color-text-muted) max-w-xl mx-auto leading-relaxed mb-10"
+          className="mx-auto mb-10 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)"
         >
-          We find the slow, manual part of your business and build a system
-          that runs it in a fraction of the time. Your team keeps the work
-          that needs a human. The rest runs itself.
+          AI automation for the repetitive work eating your team&apos;s time:
+          content production, customer replies, lead follow-up, tool-to-tool
+          busywork. We find it, automate it, hand it back documented.
         </p>
 
-        <div ref={ctaRef} className="flex justify-center">
+        {/* Two paths on purpose: the form for people who want to write it down,
+            a live call for people who'd rather just talk. Secondary is hidden
+            entirely when CALENDLY_URL is unset — never a dead link. */}
+        <div ref={ctaRef} className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button href="#book-audit" variant="primary" size="lg" showArrow>
             Book a Free Process Audit
           </Button>
+          {CALENDLY_URL && (
+            <Button href={CALENDLY_URL} external variant="ghost" size="lg" showArrow>
+              Schedule a Free Call
+            </Button>
+          )}
         </div>
+
+        {/* Above-the-fold proof. Real, already-published figures only — sourced
+            from StatsCounters' STATS array so they can't drift into invention. */}
+        <ul
+          ref={proofRef}
+          className="mx-auto mt-12 flex max-w-2xl flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-(--color-border) pt-6 text-sm text-(--color-text-muted)"
+        >
+          <li>6,360+ hours given back to clients</li>
+          <li>68+ projects shipped</li>
+          <li>Free audit, no commitment</li>
+        </ul>
       </div>
     </section>
   )
