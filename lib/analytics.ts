@@ -40,13 +40,14 @@ type ClickEventName =
   | 'email_click'
   | 'linkedin_click'
   | 'instagram_click'
+  | 'calendly_click'
   | 'external_link_click'
 
 /**
  * Classifies an outbound href into its GA4 click-event name. Known platforms
- * (WhatsApp/tel/mailto/LinkedIn/Instagram) get a specific event; any other
- * off-site http(s) link (Upwork, client project sites, author socials, ...)
- * falls back to `external_link_click` so it still counts instead of
+ * (WhatsApp/tel/mailto/LinkedIn/Instagram/Calendly) get a specific event; any
+ * other off-site http(s) link (Upwork, client project sites, author socials,
+ * ...) falls back to `external_link_click` so it still counts instead of
  * silently no-oping. Same-origin links return null — internal nav isn't a
  * click-to-leave event.
  */
@@ -56,6 +57,7 @@ function getClickEventName(href: string): ClickEventName | null {
   if (href.startsWith('mailto:')) return 'email_click'
   if (href.includes('linkedin.com/')) return 'linkedin_click'
   if (href.includes('instagram.com/')) return 'instagram_click'
+  if (href.includes('calendly.com/')) return 'calendly_click'
   if (/^https?:\/\//.test(href) && !href.includes(window.location.hostname)) return 'external_link_click'
   return null
 }
