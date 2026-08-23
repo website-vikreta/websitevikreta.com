@@ -23,31 +23,31 @@ export const PROJECTS: WebDevProject[] = [
   },
   {
     id: 3,
+    title: 'AP Cleanco',
+    description: 'A clean, conversion-focused site for a commercial cleaning company.',
+    logo: '/client-logos/ap-cleanco.svg',
+    href: 'https://apcleanco.com/',
+  },
+  {
+    id: 4,
     title: 'Earth by Blancora',
     description: 'A sustainable, stylish e-commerce storefront for a women\'s clothing brand.',
     logo: '/client-logos/blancora.svg',
     href: 'https://blancoraclothing.com/shop',
   },
   {
-    id: 4,
+    id: 5,
     title: 'Archmodal',
     description: 'A polished home page for an architectural modeling and design studio.',
     logo: '/client-logos/archmodal.svg',
     href: 'https://www.archmodal.com/',
   },
   {
-    id: 5,
+    id: 6,
     title: 'Psilent Ganges',
     description: 'An engineering solutions site built for clarity, performance, and trust.',
     // No real logo asset exists for this client yet — flagged, not fabricated.
     logo: null,
     href: 'https://psilentganges.netlify.app/',
-  },
-  {
-    id: 6,
-    title: 'Katalyst Consulting',
-    description: 'A professional consulting firm site focused on credibility and growth.',
-    logo: '/client-logos/katalyst.png',
-    href: 'https://www.katalystcs.co.in/',
   },
 ]
