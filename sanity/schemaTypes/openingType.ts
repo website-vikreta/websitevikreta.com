@@ -56,11 +56,10 @@ export const openingType = defineType({
     }),
     defineField({
       name: 'flag',
-      title: 'Flags',
-      type: 'array',
+      title: 'Flag',
+      type: 'string',
       group: 'details',
-      description: 'Highlights this opening with corner tags on the careers listing. Select as many as apply.',
-      of: [{ type: 'string' }],
+      description: 'Highlights this opening with a corner indicator on the careers listing.',
       options: {
         list: [
           { title: 'New', value: 'New' },
