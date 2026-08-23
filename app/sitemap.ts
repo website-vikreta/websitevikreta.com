@@ -37,7 +37,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.8,
   },
   {
-    url: `${BASE}/services/web-and-mobile-apps`,
+    url: `${BASE}/services/web-mobile-app-development`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.8,

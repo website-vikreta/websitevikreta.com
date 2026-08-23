@@ -57,7 +57,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     description:
       "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
     image: '/our-services/web-mobile-crm.webp',
-    href: '/services/web-and-mobile-apps',
+    href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
   },
   {

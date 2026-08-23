@@ -65,7 +65,7 @@ export function ClientLogosSection() {
         >
           <motion.div
             ref={trackRef}
-            className="flex items-center gap-10 md:gap-14 w-max"
+            className="flex items-center gap-14 md:gap-16 w-max"
             style={{ x }}
           >
             {[...CLIENTS, ...CLIENTS].map((client, i) => (
@@ -84,12 +84,12 @@ export function ClientLogosSection() {
 
 function LogoSlot({ src, alt, eager }: { src: string; alt: string; eager?: boolean }) {
   return (
-    <div className="shrink-0 flex items-center justify-center w-24 h-9 md:w-32 md:h-12 group" title={alt}>
+    <div className="shrink-0 flex items-center justify-center w-28 h-11 md:w-40 md:h-16 group" title={alt}>
       <Image
         src={src}
         alt={alt}
         width={0}
-        height={40}
+        height={56}
         unoptimized
         loading={eager ? 'eager' : 'lazy'}
         className="w-full h-full object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"

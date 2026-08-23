@@ -25,7 +25,7 @@ const NAV_ITEMS: NavItem[] = [
     dropdown: [
       { label: 'AI Automations', href: '/services/ai-automations' },
       { label: 'Web Development', href: '/services/web-development' },
-      { label: 'Apps & CRM', href: '/services/web-and-mobile-apps' },
+      { label: 'Apps & CRM', href: '/services/web-mobile-app-development' },
       { label: 'UI/UX Design', href: '/services/uiux-design' },
       { label: 'Digital Marketing', href: '/services/digital-marketing' },
     ],

@@ -42,6 +42,8 @@ Voice rules from `.claude/context/brand.md`:
 - Specific beats vague. "3 hours per week" beats "time-consuming".
 - Every H2 should be answerable standalone.
 
+Before finishing the draft, run it through `.claude/context/ai-slop-stop-skill.md` — blog posts are the longest prose on the site and the most exposed to throat-clearing intros, "not X, but Y" formulas, and canned conclusions.
+
 GEO rules:
 - First paragraph answers the question directly — no "In this article we will explore…"
 - Use numbered lists and tables where data exists
@@ -50,7 +52,13 @@ GEO rules:
 
 ---
 
-## Step 4 — SEO Checklist
+## Step 4 — Humanize Pass (mandatory)
+Run: `.claude/commands/macro/humanize.md` over the full draft.
+No post ships with AI-writing tells. Do not skip this because the draft "reads fine" — run the pattern table.
+
+---
+
+## Step 5 — SEO Checklist
 Before finishing:
 - [ ] Primary keyword in H1, first paragraph, one H2, meta description
 - [ ] Secondary keywords distributed naturally (not stuffed)
@@ -60,6 +68,7 @@ Before finishing:
 - [ ] FAQ schema ready
 - [ ] Estimated read time in frontmatter
 - [ ] Category tag assigned
+- [ ] Humanize pass run and clean (title + meta description included)
 
 ---
 

@@ -16,7 +16,6 @@ const ACCENT_INDEX = 5
 
 export function HeroSection() {
   const sectionRef   = useRef<HTMLElement>(null)
-  const labelRef     = useRef<HTMLSpanElement>(null)
   const wordInnerRefs = useRef<(HTMLSpanElement | null)[]>([])
   const subheadRef   = useRef<HTMLParagraphElement>(null)
   const ctaRef       = useRef<HTMLDivElement>(null)
@@ -35,14 +34,13 @@ export function HeroSection() {
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
         gsap.set(
-          [labelRef.current, subheadRef.current, ctaRef.current],
+          [subheadRef.current, ctaRef.current],
           { opacity: 1 },
         )
         gsap.set(wordEls, { y: '0%' })
         return
       }
 
-      gsap.set(labelRef.current, { opacity: 0, y: 14 })
       gsap.set(wordEls, { y: '130%' })
       gsap.set([subheadRef.current, ctaRef.current], { opacity: 0, y: 18 })
     }, sectionRef)
@@ -55,8 +53,7 @@ export function HeroSection() {
         if (cancelled) return
         ctx.add(() => {
           gsap.timeline()
-            .to(labelRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
-            .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 }, '-=0.2')
+            .to(wordEls, { y: '0%', duration: 1.05, ease: 'expo.out', stagger: 0.065 })
             .to(subheadRef.current, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.3')
             .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
         })
@@ -78,18 +75,6 @@ export function HeroSection() {
     >
       {/* ── Content ──────────────────────────────────────────── */}
       <div className="container relative z-10 pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28">
-
-        {/* Label — kicker badge, tight to headline */}
-        <span
-          ref={labelRef}
-          data-hero-anim
-          className="inline-flex items-center gap-2 border border-(--color-border) bg-white px-3 py-1.5 rounded-sm mb-6"
-        >
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-(--color-accent)" />
-          <span className="font-mono text-meta-label tracking-(--tracking-meta) text-(--color-text) uppercase">
-            AI-Powered Agency
-          </span>
-        </span>
 
         {/* Headline — display scale, word-masked reveal */}
         <h1
