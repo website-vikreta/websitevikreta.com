@@ -57,8 +57,8 @@ export default function Hero() {
           ref={headingRef}
           className="text-h1 font-bold md:font-semibold text-(--color-text) font-sans mb-6 max-w-4xl mx-auto text-balance"
         >
-          Your Users Give Up Before They{' '}
-          <span style={{ color: 'var(--color-accent)' }}>Convert</span>
+          Custom UI/UX Design, Built in{' '}
+          <span style={{ color: 'var(--color-accent)' }}>Figma</span>
         </h1>
 
         <p
