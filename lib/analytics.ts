@@ -96,7 +96,7 @@ export function trackShareClick(platform: string, campaign: string) {
 /** Fires `job_application_submit` after a careers application's API call succeeds. */
 export function trackJobApplicationSubmit(openingSlug: string) {
   if (typeof window === 'undefined') return
-  sendGAEvent('event', 'job_application_submit', {
+  gtagEvent('job_application_submit', {
     opening_slug: openingSlug,
     page_location: window.location.href,
   })
@@ -105,7 +105,7 @@ export function trackJobApplicationSubmit(openingSlug: string) {
 /** Fires `comment_submit` after a blog comment or reply posts successfully. */
 export function trackCommentSubmit(postId: string, isReply: boolean) {
   if (typeof window === 'undefined') return
-  sendGAEvent('event', 'comment_submit', {
+  gtagEvent('comment_submit', {
     post_id: postId,
     comment_type: isReply ? 'reply' : 'comment',
     page_location: window.location.href,
@@ -115,7 +115,7 @@ export function trackCommentSubmit(postId: string, isReply: boolean) {
 /** Fires `post_like` when a visitor likes (not unlikes) a blog post. */
 export function trackPostLike(postId: string) {
   if (typeof window === 'undefined') return
-  sendGAEvent('event', 'post_like', {
+  gtagEvent('post_like', {
     post_id: postId,
     page_location: window.location.href,
   })
@@ -124,7 +124,7 @@ export function trackPostLike(postId: string) {
 /** Fires `blog_search` when a visitor runs a non-empty search query on /blog/search. */
 export function trackBlogSearch(query: string) {
   if (typeof window === 'undefined' || !query.trim()) return
-  sendGAEvent('event', 'blog_search', {
+  gtagEvent('blog_search', {
     search_term: query,
     page_location: window.location.href,
   })
@@ -133,7 +133,7 @@ export function trackBlogSearch(query: string) {
 /** Fires `toc_link_click` when a visitor jumps via the blog Table of Contents. */
 export function trackTocClick(headingText: string) {
   if (typeof window === 'undefined') return
-  sendGAEvent('event', 'toc_link_click', {
+  gtagEvent('toc_link_click', {
     heading: headingText,
     page_location: window.location.href,
   })
@@ -142,7 +142,7 @@ export function trackTocClick(headingText: string) {
 /** Fires `faq_expand` when an FAQ accordion item is opened (not on close). */
 export function trackFaqExpand(question: string) {
   if (typeof window === 'undefined') return
-  sendGAEvent('event', 'faq_expand', {
+  gtagEvent('faq_expand', {
     question,
     page_location: window.location.href,
   })
@@ -151,7 +151,7 @@ export function trackFaqExpand(question: string) {
 /** Fires `scroll_to_top_click` when the floating scroll-to-top button is used. */
 export function trackScrollToTop() {
   if (typeof window === 'undefined') return
-  sendGAEvent('event', 'scroll_to_top_click', {
+  gtagEvent('scroll_to_top_click', {
     page_location: window.location.href,
   })
 }
