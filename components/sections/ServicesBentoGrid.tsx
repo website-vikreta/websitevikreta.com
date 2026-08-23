@@ -14,6 +14,7 @@ interface ServiceCard {
   index: string
   title: string
   description: string
+  highlights: string[]
   image: string
   href: string
   FallbackIcon: React.ComponentType<{ size?: number; className?: string }>
@@ -26,6 +27,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'AI Automation & Workflow Optimization',
     description:
       'Find us the hours your team shouldn\'t be spending. We audit what\'s actually happening in your business, then wire in AI where it makes sense, not where it sounds impressive.',
+    highlights: ['Workflow audits', 'Custom AI agents', 'Ongoing monitoring'],
     image: '/our-services/ai-automation-systems.png',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
@@ -36,6 +38,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Website Development',
     description:
       'Built in Next.js. Fast, SEO-ready, written properly. Not a theme with your logo on it.',
+    highlights: ['Next.js builds', 'Core Web Vitals', 'SEO-ready structure'],
     image: '/services/web-development-showcase.png',
     href: '/services/web-development',
     FallbackIcon: Globe,
@@ -46,6 +49,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'UI/UX Design',
     description:
       "We start with how people actually use things. The visual part comes after that's figured out.",
+    highlights: ['User flows', 'Design systems', 'Usability testing'],
     image: '/our-services/uiux-design-systems.png',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
@@ -56,6 +60,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Web & Mobile Apps / CRM Systems',
     description:
       "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
+    highlights: ['Custom portals', 'E-commerce builds', 'Internal tools'],
     image: '/our-services/web-mobile-crm-systems.png',
     href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
@@ -66,6 +71,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Digital Marketing / SEO & GEO',
     description:
       'SEO, GEO, paid: combined into one thing that\'s actually measured. No vanity metrics.',
+    highlights: ['SEO & GEO', 'Paid campaigns', 'Revenue reporting'],
     image: '/our-services/digital-marketing-systems.png',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
@@ -116,6 +122,9 @@ function StackCard({
                 style={{ maxWidth: '46ch' }}
               >
                 {card.description}
+              </p>
+              <p className="mt-6 text-sm text-(--color-text-faint)">
+                {card.highlights.join(' · ')}
               </p>
             </div>
 
