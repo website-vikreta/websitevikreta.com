@@ -19,6 +19,7 @@ interface AuditFormData {
   firstName: string
   lastName:  string
   email:     string
+  phone:     string
   subject:   string
   message:   string
 }
@@ -27,12 +28,20 @@ interface AuditFormErrors {
   firstName?: string
   lastName?:  string
   email?:     string
+  phone?:     string
   subject?:   string
   message?:   string
 }
 
 const FORM_INITIAL: AuditFormData = {
-  firstName: '', lastName: '', email: '', subject: '', message: '',
+  firstName: '', lastName: '', email: '', phone: '', subject: '', message: '',
+}
+
+// Loose E.164-style check: optional leading +, 7–15 digits total.
+// Not India-specific — accepts any country's numbering plan. Same rule as ContactPageContent.tsx.
+function isValidPhone(phone: string): boolean {
+  const digits = phone.trim().replace(/[\s\-().]/g, '')
+  return /^\+?[1-9]\d{6,14}$/.test(digits)
 }
 
 function validateForm(data: AuditFormData): AuditFormErrors {
@@ -41,6 +50,7 @@ function validateForm(data: AuditFormData): AuditFormErrors {
   if (!data.lastName.trim())  errs.lastName  = 'Required'
   if (!data.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
     errs.email = 'Valid email required'
+  if (!data.phone.trim() || !isValidPhone(data.phone)) errs.phone = 'Valid phone number required'
   if (!data.subject.trim()) errs.subject = 'Required'
   if (!data.message.trim()) errs.message = 'Required'
   return errs
@@ -113,6 +123,7 @@ export function AuditForm({
           name:         `${form.firstName} ${form.lastName}`,
           reply_to:     form.email,
           email:        form.email,
+          mobile:       form.phone,
           service_type: form.subject,
           budget:       'Not specified',
           message:      form.message,
@@ -224,31 +235,61 @@ export function AuditForm({
 
         </div>
 
-        {/* Email */}
-        <div className="cta-field-row">
-          <label htmlFor={fieldId('email')} className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
-            Email
-          </label>
-          <input
-            id={fieldId('email')}
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="jane@company.com"
-            disabled={submitting}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? fieldId('err-email') : undefined}
-            className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none placeholder:text-(--color-text-faint) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-text)"
-            style={{ borderColor: errors.email ? '#FF4444' : 'var(--color-border)', transition: `border-color ${T_MICRO} ${CSS_EASE}` }}
-            onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
-            onBlur={e => { e.target.style.borderColor = errors.email ? '#FF4444' : 'var(--color-border)' }}
-          />
-          {errors.email && (
-            <p id={fieldId('err-email')} className="mt-1 text-xs" style={{ color: '#FF4444', fontFamily: 'monospace' }}>
-              {errors.email}
-            </p>
-          )}
+        {/* Email + Phone */}
+        <div className="cta-field-row grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          <div>
+            <label htmlFor={fieldId('email')} className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
+              Email
+            </label>
+            <input
+              id={fieldId('email')}
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="jane@company.com"
+              disabled={submitting}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? fieldId('err-email') : undefined}
+              className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none placeholder:text-(--color-text-faint) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-text)"
+              style={{ borderColor: errors.email ? '#FF4444' : 'var(--color-border)', transition: `border-color ${T_MICRO} ${CSS_EASE}` }}
+              onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+              onBlur={e => { e.target.style.borderColor = errors.email ? '#FF4444' : 'var(--color-border)' }}
+            />
+            {errors.email && (
+              <p id={fieldId('err-email')} className="mt-1 text-xs" style={{ color: '#FF4444', fontFamily: 'monospace' }}>
+                {errors.email}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor={fieldId('phone')} className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
+              Phone
+            </label>
+            <input
+              id={fieldId('phone')}
+              name="phone"
+              type="tel"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="+91 98765 43210"
+              disabled={submitting}
+              aria-invalid={!!errors.phone}
+              aria-describedby={errors.phone ? fieldId('err-phone') : undefined}
+              className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none placeholder:text-(--color-text-faint) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-text)"
+              style={{ borderColor: errors.phone ? '#FF4444' : 'var(--color-border)', transition: `border-color ${T_MICRO} ${CSS_EASE}` }}
+              onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+              onBlur={e => { e.target.style.borderColor = errors.phone ? '#FF4444' : 'var(--color-border)' }}
+            />
+            {errors.phone && (
+              <p id={fieldId('err-phone')} className="mt-1 text-xs" style={{ color: '#FF4444', fontFamily: 'monospace' }}>
+                {errors.phone}
+              </p>
+            )}
+          </div>
+
         </div>
 
         {/* Subject */}
