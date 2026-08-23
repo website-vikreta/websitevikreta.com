@@ -13,7 +13,7 @@ interface Opening {
   type: string
   stipend: string
   positions: number
-  flag?: string[] | string
+  flag?: string
   isActive: boolean
   shortDescription: string
   prerequisites: string[]
@@ -32,15 +32,9 @@ const FLAG_STYLES: Record<string, string> = {
 const ALL_FILTER = 'All'
 const ACTIVE_FILTER = 'Active Roles'
 
-// Older Sanity docs pre-date the array migration and still store `flag` as a plain string.
-function flagsOf(flag: Opening['flag']): string[] {
-  if (!flag) return []
-  return Array.isArray(flag) ? flag : [flag]
-}
-
 export default function CareersClient({ openings }: Props) {
   const filters = useMemo(() => {
-    const flags = Array.from(new Set(openings.flatMap(o => flagsOf(o.flag))))
+    const flags = Array.from(new Set(openings.map(o => o.flag).filter((f): f is string => !!f)))
     const hasClosedRoles = openings.some(o => !o.isActive)
     return [...(hasClosedRoles ? [ACTIVE_FILTER] : []), ...flags, ALL_FILTER]
   }, [openings])
@@ -50,7 +44,7 @@ export default function CareersClient({ openings }: Props) {
   const filteredOpenings = useMemo(() => {
     if (activeFilter === ALL_FILTER) return openings
     if (activeFilter === ACTIVE_FILTER) return openings.filter(o => o.isActive)
-    return openings.filter(o => flagsOf(o.flag).includes(activeFilter))
+    return openings.filter(o => o.flag === activeFilter)
   }, [openings, activeFilter])
 
   return (
@@ -86,7 +80,7 @@ export default function CareersClient({ openings }: Props) {
 
           {filters.length > 1 && (
             <RevealFade className="mb-8 md:mb-10" delay={0.15}>
-              <div role="group" aria-label="Filter openings" className="flex flex-wrap gap-2">
+              <div role="group" aria-label="Filter openings by status" className="flex flex-wrap gap-2">
                 {filters.map(filter => {
                   const isActive = filter === activeFilter
                   return (
@@ -113,25 +107,18 @@ export default function CareersClient({ openings }: Props) {
             <p className="text-base text-(--color-text-muted)">No openings in this category right now.</p>
           ) : (
           <div className="grid grid-cols-1 border-t border-l border-(--color-border) md:grid-cols-2 lg:grid-cols-3">
-            {filteredOpenings.map((opening, i) => {
-              const openingFlags = flagsOf(opening.flag)
-              return (
+            {filteredOpenings.map((opening, i) => (
               <RevealFade key={opening.slug} delay={(i % 3) * 0.08} className="border-r border-b border-(--color-border)">
                 <Link
                   href={`/careers/${opening.slug}`}
                   className="group relative flex h-full flex-col gap-5 bg-(--color-surface) p-6 transition-colors duration-300 ease-out hover:bg-(--color-bg-muted) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) md:p-8"
                 >
-                  {openingFlags.length > 0 && (
-                    <div className="absolute top-0 right-0 flex">
-                      {openingFlags.map(f => (
-                        <span
-                          key={f}
-                          className={`px-3 py-1 text-xs font-medium uppercase tracking-wide ${FLAG_STYLES[f] ?? 'bg-(--color-accent) text-(--color-text)'}`}
-                        >
-                          {f}
-                        </span>
-                      ))}
-                    </div>
+                  {opening.flag && (
+                    <span
+                      className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium uppercase tracking-wide ${FLAG_STYLES[opening.flag] ?? 'bg-(--color-accent) text-(--color-text)'}`}
+                    >
+                      {opening.flag}
+                    </span>
                   )}
 
                   <span className="text-sm text-(--color-text-muted)">
@@ -166,8 +153,7 @@ export default function CareersClient({ openings }: Props) {
                   </div>
                 </Link>
               </RevealFade>
-              )
-            })}
+            ))}
           </div>
           )}
         </div>
