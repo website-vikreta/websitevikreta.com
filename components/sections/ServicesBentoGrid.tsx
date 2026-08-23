@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
 import Image from 'next/image'
 import { Globe, BarChart2, Bot, Smartphone } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
+import { RevealText, RevealFade, REVEAL_EASE } from '@/components/ui/Reveal'
 
 type CardId = 'web-dev' | 'digital-marketing' | 'ai-automation' | 'web-mobile-crm' | 'uiux'
 
@@ -163,7 +163,7 @@ export function ServicesBentoGrid() {
     <section className="relative py-16 md:py-20">
       <div className="container relative z-10">
         {/* Section heading */}
-        <div className="mb-10 md:mb-14">
+        <div className="mb-10 md:mb-14 max-w-3xl">
           <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
             We don&apos;t build pages.
           </RevealText>
@@ -174,6 +174,12 @@ export function ServicesBentoGrid() {
           >
             We build systems.
           </RevealText>
+          <RevealFade className="mt-5" delay={0.22}>
+            <p className="text-body-lg leading-relaxed text-(--color-text-muted) max-w-xl">
+              One team building the automation, the website, and the marketing that runs on it —
+              not three vendors who&apos;ve never spoken to each other.
+            </p>
+          </RevealFade>
         </div>
 
         {/* Sticky stack track — each card gets a full-height scroll slot */}
