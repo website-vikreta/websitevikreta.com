@@ -25,7 +25,7 @@ export default function ContactSection() {
     <section
       ref={scope}
       id="get-quote"
-      className="pt-32 pb-24 md:pt-40 md:pb-32"
+      className="py-16 md:py-20"
       aria-labelledby="cta-form-heading"
     >
       <div className="container">

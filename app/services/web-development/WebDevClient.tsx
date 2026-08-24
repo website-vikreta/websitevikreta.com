@@ -66,9 +66,9 @@ export default function WebDevClient() {
         <ProjectsSection />
         <TestimonialsSection />
         <WhySection />
-        <FaqSection items={webDevFaqs} ariaLabel="Web Development FAQs" />
         {/* INVITATION */}
         <ContactSection />
+        <FaqSection items={webDevFaqs} ariaLabel="Web Development FAQs" />
       </main>
       <ScrollToTop />
     </>

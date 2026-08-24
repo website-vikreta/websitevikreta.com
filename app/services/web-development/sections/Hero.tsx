@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
-import { PROJECTS } from '../data'
 
 export default function Hero() {
   const scope = useRef<HTMLElement>(null)
@@ -70,12 +69,12 @@ export default function Hero() {
           </Button>
         </div>
 
-        {/* Above-the-fold proof. Real count, sourced from PROJECTS so it can't drift. */}
+        {/* Above-the-fold proof. */}
         <ul
           ref={proofRef}
           className="mx-auto mt-12 flex max-w-2xl flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-(--color-border) pt-6 text-sm text-(--color-text-muted)"
         >
-          <li>{PROJECTS.length}+ client sites shipped</li>
+          <li>32+ client sites shipped</li>
           <li>Custom-coded, no templates</li>
           <li>Free quote, no commitment</li>
         </ul>
