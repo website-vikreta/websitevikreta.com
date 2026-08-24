@@ -40,13 +40,14 @@ type ClickEventName =
   | 'email_click'
   | 'linkedin_click'
   | 'instagram_click'
+  | 'calendly_click'
   | 'external_link_click'
 
 /**
  * Classifies an outbound href into its GA4 click-event name. Known platforms
- * (WhatsApp/tel/mailto/LinkedIn/Instagram) get a specific event; any other
- * off-site http(s) link (Upwork, client project sites, author socials, ...)
- * falls back to `external_link_click` so it still counts instead of
+ * (WhatsApp/tel/mailto/LinkedIn/Instagram/Calendly) get a specific event; any
+ * other off-site http(s) link (Upwork, client project sites, author socials,
+ * ...) falls back to `external_link_click` so it still counts instead of
  * silently no-oping. Same-origin links return null — internal nav isn't a
  * click-to-leave event.
  */
@@ -56,6 +57,7 @@ function getClickEventName(href: string): ClickEventName | null {
   if (href.startsWith('mailto:')) return 'email_click'
   if (href.includes('linkedin.com/')) return 'linkedin_click'
   if (href.includes('instagram.com/')) return 'instagram_click'
+  if (href.includes('calendly.com/')) return 'calendly_click'
   if (/^https?:\/\//.test(href) && !href.includes(window.location.hostname)) return 'external_link_click'
   return null
 }
@@ -87,6 +89,69 @@ export function trackShareClick(platform: string, campaign: string) {
   gtagEvent('share_click', {
     platform,
     campaign,
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `job_application_submit` after a careers application's API call succeeds. */
+export function trackJobApplicationSubmit(openingSlug: string) {
+  if (typeof window === 'undefined') return
+  gtagEvent('job_application_submit', {
+    opening_slug: openingSlug,
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `comment_submit` after a blog comment or reply posts successfully. */
+export function trackCommentSubmit(postId: string, isReply: boolean) {
+  if (typeof window === 'undefined') return
+  gtagEvent('comment_submit', {
+    post_id: postId,
+    comment_type: isReply ? 'reply' : 'comment',
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `post_like` when a visitor likes (not unlikes) a blog post. */
+export function trackPostLike(postId: string) {
+  if (typeof window === 'undefined') return
+  gtagEvent('post_like', {
+    post_id: postId,
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `blog_search` when a visitor runs a non-empty search query on /blog/search. */
+export function trackBlogSearch(query: string) {
+  if (typeof window === 'undefined' || !query.trim()) return
+  gtagEvent('blog_search', {
+    search_term: query,
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `toc_link_click` when a visitor jumps via the blog Table of Contents. */
+export function trackTocClick(headingText: string) {
+  if (typeof window === 'undefined') return
+  gtagEvent('toc_link_click', {
+    heading: headingText,
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `faq_expand` when an FAQ accordion item is opened (not on close). */
+export function trackFaqExpand(question: string) {
+  if (typeof window === 'undefined') return
+  gtagEvent('faq_expand', {
+    question,
+    page_location: window.location.href,
+  })
+}
+
+/** Fires `scroll_to_top_click` when the floating scroll-to-top button is used. */
+export function trackScrollToTop() {
+  if (typeof window === 'undefined') return
+  gtagEvent('scroll_to_top_click', {
     page_location: window.location.href,
   })
 }

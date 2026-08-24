@@ -34,6 +34,7 @@ My job is to find every reason this would NOT win Site of the Day — and fix th
 - Is there proof on this page (numbers, names, results)?
 - Is every word earning its place? (Delete test: if removed, does it matter?)
 - Does the page follow: Tension → Shift → Resolution → Invitation?
+- Does the copy read like a person wrote it? Score against `.claude/commands/macro/humanize.md` — any AI-writing tell caps Content at 6.
 
 ### Performance / SEO (Weight: 10%)
 - Is there a title tag with primary keyword?
@@ -45,6 +46,7 @@ My job is to find every reason this would NOT win Site of the Day — and fix th
 
 ## Automatic Fails (Any one = revision required)
 - [ ] No clear CTA on the page
+- [ ] Copy reads like AI-generated content — throat-clearing openers, "not X, but Y" formulas, vague-importance claims, empty adverbs, manufactured three-part lists (see `.claude/context/ai-slop-stop-skill.md`)
 - [ ] Hero headline is generic ("We help businesses grow")
 - [ ] Animations feel jarring or fast
 - [ ] Accent color used more than once per section
@@ -54,6 +56,7 @@ My job is to find every reason this would NOT win Site of the Day — and fix th
 - [ ] Fonts cause layout shift
 - [ ] Three or more font sizes that are too similar (no hierarchy)
 - [ ] Any stock photo with people smiling at cameras
+- [ ] Copy carries AI-writing tells (see `.claude/commands/macro/humanize.md`) — puffery, `-ing` tails, "not just X it's Y", forced triplets, em dash spray, curly quotes
 
 ---
 

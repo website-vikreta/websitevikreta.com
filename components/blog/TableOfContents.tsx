@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { trackTocClick } from '@/lib/analytics'
 import type { Heading } from '@/sanity/lib/utils'
 
 export function TableOfContents({ headings }: { headings: Heading[] }) {
@@ -139,19 +140,32 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
         {isOpen && (
           <ul
             id="mobile-toc-list"
-            className="absolute top-full left-0 max-h-[60vh] w-full overflow-y-auto border-t border-(--color-border) bg-white px-[var(--section-x)] py-3 shadow-lg"
+            className={cn(
+              'absolute top-full left-0 max-h-[60vh] w-full overflow-y-auto border-t border-(--color-border) bg-white px-[var(--section-x)] py-3 shadow-lg',
+              '[scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent]',
+              '[&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-(--color-border)',
+            )}
           >
             {headings.map((h) => (
               <li key={h._key}>
                 <a
                   href={`#${h.slug}`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => { trackTocClick(h.text); setIsOpen(false) }}
                   className={cn(
-                    'block py-2 text-sm transition-colors duration-200',
-                    h.level === 3 ? 'pl-4' : 'pl-0',
-                    activeId === h.slug ? 'font-medium text-(--color-text)' : 'text-(--color-text-muted)',
+                    'flex items-start gap-1.5 py-2 transition-colors duration-200',
+                    h.level === 3 ? 'pl-4 text-xs' : 'pl-0 text-sm',
+                    activeId === h.slug
+                      ? 'font-medium text-(--color-text)'
+                      : h.level === 3
+                        ? 'text-(--color-text-faint)'
+                        : 'text-(--color-text-muted)',
                   )}
                 >
+                  {h.level === 3 && (
+                    <span aria-hidden="true" className="text-(--color-text-faint)">
+                      •
+                    </span>
+                  )}
                   {h.text}
                 </a>
               </li>
@@ -171,7 +185,11 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
           changes, only color + shadow do — no invisible-twin span needed). */}
       <nav
         aria-label="Table of contents"
-        className="hidden lg:sticky lg:top-32 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:block lg:self-start"
+        className={cn(
+          'hidden lg:sticky lg:top-32 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:block lg:max-h-[calc(100vh-8rem)] lg:self-start lg:overflow-y-auto lg:pr-2',
+          '[scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent]',
+          '[&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-(--color-border)',
+        )}
       >
         <div className="mb-4">
           <p className="text-xs text-(--color-text-faint)">Table of Contents</p>
@@ -182,14 +200,22 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
             <li key={h._key}>
               <a
                 href={`#${h.slug}`}
+                onClick={() => trackTocClick(h.text)}
                 className={cn(
-                  'block whitespace-normal border-l-2 text-sm leading-snug transition-colors duration-200',
-                  h.level === 3 ? 'pl-8' : 'pl-4',
+                  'flex items-start gap-1.5 whitespace-normal border-l-2 leading-snug transition-colors duration-200',
+                  h.level === 3 ? 'pl-8 text-xs' : 'pl-4 text-sm',
                   activeId === h.slug
                     ? 'border-(--color-text) text-(--color-text) [text-shadow:0_0_0.5px_currentColor]'
-                    : 'border-(--color-border) text-(--color-text-muted) hover:text-(--color-text)',
+                    : h.level === 3
+                      ? 'border-(--color-border) text-(--color-text-faint) hover:text-(--color-text)'
+                      : 'border-(--color-border) text-(--color-text-muted) hover:text-(--color-text)',
                 )}
               >
+                {h.level === 3 && (
+                  <span aria-hidden="true" className="text-(--color-text-faint)">
+                    •
+                  </span>
+                )}
                 {h.text}
               </a>
             </li>

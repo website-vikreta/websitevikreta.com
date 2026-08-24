@@ -3,15 +3,52 @@ import WebDevClient from './WebDevClient'
 import { ComingSoonPage } from '@/components/ComingSoonPage'
 import { SITE_URL } from '@/config/site'
 
+const PAGE_URL = `${SITE_URL}/services/web-development`
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${PAGE_URL}#service`,
+      name: 'Web Development Services',
+      serviceType: 'Web Development',
+      description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
+      url: PAGE_URL,
+      provider: { '@id': `${SITE_URL}/#organization` },
+      areaServed: { '@type': 'Country', name: 'India' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${PAGE_URL}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
+        { '@type': 'ListItem', position: 3, name: 'Web Development', item: PAGE_URL },
+      ],
+    },
+  ],
+}
+
 export const metadata: Metadata = {
   title: 'Web Development Services | Website Vikreta',
   description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
   keywords: [
+    // Primary
+    'web development company',
+    // Secondary
+    'custom website development services',
     'Next.js development agency',
-    'web development agency',
-    'custom website development',
-    'SEO-ready websites',
-    'TypeScript development',
+    'business website development company',
+    'SEO-ready website design and development',
+    'custom website design company',
+    'website redesign services',
+    // Long-tail
+    'custom website development for small business',
+    'Next.js website development company for US businesses',
+    'how much does a custom business website cost',
+    'website redesign company for growing businesses',
+    'fast SEO-optimized website development services',
   ],
   openGraph: {
     title: 'Web Development Services | Website Vikreta',
@@ -51,6 +88,14 @@ export const metadata: Metadata = {
 }
 
 export default function WebDevelopmentPage() {
-  // return <WebDevClient />
-  return <ComingSoonPage pageName="Web Development" />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <WebDevClient />
+    </>
+  )
+  // return <ComingSoonPage pageName="Web Development" />
 }

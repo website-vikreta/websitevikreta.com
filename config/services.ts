@@ -38,7 +38,7 @@ export const SERVICES: Service[] = [
     description:
       "CRMs, portals, e-commerce, custom systems — built for how your business actually works, not a template of how others think it should.",
     tag: 'AI workflows embedded from day one',
-    href: '/services/web-and-mobile-apps',
+    href: '/services/web-mobile-app-development',
     image: '/our-services/web-app-crm.jpeg',
   },
   {

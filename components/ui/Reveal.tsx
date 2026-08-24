@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'motion/react'
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
+import { revealLines, useGsapSection } from '@/lib/gsap/reveals'
 
 // Shared motion language for the whole site.
 // Mirrors the hero reveal: text slides up from behind an overflow-hidden clip,
@@ -14,40 +15,35 @@ const VIEWPORT = { once: true, amount: 0.1, margin: REVEAL_MARGIN } as const
 
 /**
  * Masked line reveal — for headings + titles.
- * Outer semantic tag holds styles; an inner clip + translateY gives the
- * "slide up from behind the line" effect (same technique as the hero).
+ * Delegates to the GSAP `revealLines` primitive so the whole site gets the SAME
+ * reveal as the service pages: SplitText breaks the copy into lines, each line
+ * is masked with overflow-hidden, and the lines slide up one by one. The old
+ * motion/react version masked the block as a single unit, which is why headings
+ * here read differently from /services/ai-automations.
  */
 export function RevealText({
-  as: Tag = 'div',
+  as = 'div',
   className,
   children,
   delay = 0,
-  duration = 0.9,
 }: {
   as?: ElementType
   className?: string
   children: ReactNode
   delay?: number
-  duration?: number
 }) {
-  // Trigger off the STATIC clip wrapper — IntersectionObserver measures the
-  // transformed box, so observing the moving inner line would never fire reliably.
+  const ref = useRef<HTMLDivElement>(null)
+  // Cast to a concrete intrinsic tag: ElementType alone won't accept a ref,
+  // and the runtime element is still whatever `as` names.
+  const Tag = as as 'div'
+
+  useGsapSection(ref, () => {
+    if (ref.current) revealLines(ref.current, { delay, trigger: ref.current })
+  })
+
   return (
-    <Tag className={className}>
-      <motion.span
-        className="block overflow-hidden pb-[0.14em] -mb-[0.14em]"
-        initial="hidden"
-        whileInView="visible"
-        viewport={VIEWPORT}
-      >
-        <motion.span
-          className="block"
-          variants={{ hidden: { y: '110%' }, visible: { y: '0%' } }}
-          transition={{ duration, ease: REVEAL_EASE, delay }}
-        >
-          {children}
-        </motion.span>
-      </motion.span>
+    <Tag ref={ref} className={className}>
+      {children}
     </Tag>
   )
 }

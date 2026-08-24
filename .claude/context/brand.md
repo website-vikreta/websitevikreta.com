@@ -40,12 +40,15 @@
 - Corporate jargon ("synergy", "leverage", "holistic")
 - Startup hype ("disrupting", "revolutionizing")
 - Overly technical (tool names before outcomes)
+- AI-generated — throat-clearing ("Here's the thing:"), false-contrast formulas ("It's not X, it's Y"), vague-importance claims, empty adverbs, manufactured three-part lists. Full pattern list + fixes: `.claude/context/ai-slop-stop-skill.md`.
 
 **Example — Wrong:**
 > "We leverage cutting-edge AI technologies to provide holistic digital transformation solutions."
 
 **Example — Right:**
 > "You're losing 40 hours a month to work a tool could do. We fix that."
+
+**Rule:** Every shipped string runs through `.claude/commands/macro/humanize.md` before it goes live — page copy, blog posts, CTAs, meta descriptions, alt text. AI-writing tells are an automatic revision.
 
 ---
 

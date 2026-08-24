@@ -10,7 +10,7 @@ export const FOOTER_LINKS = {
   services: [
     { label: 'AI Automation & Workflow Optimization', href: '/services/ai-automations' },
     { label: 'Website Development', href: '/services/web-development' },
-    { label: 'Web & Mobile Apps / CRM Systems', href: '/services/web-and-mobile-apps' },
+    { label: 'Web & Mobile Apps / CRM Systems', href: '/services/web-mobile-app-development' },
     { label: 'UX & UI Design', href: '/services/uiux-design' },
     { label: 'Digital Marketing / SEO & GEO', href: '/services/digital-marketing' },
   ],

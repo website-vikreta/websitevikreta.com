@@ -377,7 +377,7 @@ export default async function BlogPostPage({
           <div className={headings.length > 0 ? 'lg:col-start-2 lg:row-start-2' : undefined}>
 
           {/* Body */}
-          <div className="mx-auto max-w-[720px]">
+          <div className="mx-auto max-w-[720px] break-words">
             {post.source === 'static' ? (
               <div className="space-y-6">
                 {post.body.map((paragraph, i) => (
