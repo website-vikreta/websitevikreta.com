@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
 import Image from 'next/image'
 import { Globe, BarChart2, Bot, Smartphone } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
+import { RevealText, RevealFade, REVEAL_EASE } from '@/components/ui/Reveal'
 
 type CardId = 'web-dev' | 'digital-marketing' | 'ai-automation' | 'web-mobile-crm' | 'uiux'
 
@@ -14,6 +14,7 @@ interface ServiceCard {
   index: string
   title: string
   description: string
+  highlights: string[]
   image: string
   href: string
   FallbackIcon: React.ComponentType<{ size?: number; className?: string }>
@@ -26,7 +27,8 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'AI Automation & Workflow Optimization',
     description:
       'Find us the hours your team shouldn\'t be spending. We audit what\'s actually happening in your business, then wire in AI where it makes sense, not where it sounds impressive.',
-    image: '/our-services/ai-automation.webp',
+    highlights: ['Workflow audits', 'Custom AI agents', 'Ongoing monitoring'],
+    image: '/our-services/ai-automation-systems.png',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
   },
@@ -36,7 +38,8 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Website Development',
     description:
       'Built in Next.js. Fast, SEO-ready, written properly. Not a theme with your logo on it.',
-    image: '/our-services/webdevelopment.webp',
+    highlights: ['Next.js builds', 'Core Web Vitals', 'SEO-ready structure'],
+    image: '/services/web-development-showcase.png',
     href: '/services/web-development',
     FallbackIcon: Globe,
   },
@@ -46,7 +49,8 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'UI/UX Design',
     description:
       "We start with how people actually use things. The visual part comes after that's figured out.",
-    image: '/our-services/ui-ux-design.webp',
+    highlights: ['User flows', 'Design systems', 'Usability testing'],
+    image: '/our-services/uiux-design-systems.png',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
   },
@@ -56,7 +60,8 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Web & Mobile Apps / CRM Systems',
     description:
       "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
-    image: '/our-services/web-mobile-crm.webp',
+    highlights: ['Custom portals', 'E-commerce builds', 'Internal tools'],
+    image: '/our-services/web-mobile-crm-systems.png',
     href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
   },
@@ -66,7 +71,8 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Digital Marketing / SEO & GEO',
     description:
       'SEO, GEO, paid: combined into one thing that\'s actually measured. No vanity metrics.',
-    image: '/our-services/digital-marketing-seo-geo.webp',
+    highlights: ['SEO & GEO', 'Paid campaigns', 'Revenue reporting'],
+    image: '/our-services/digital-marketing-systems.png',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
   },
@@ -117,6 +123,9 @@ function StackCard({
               >
                 {card.description}
               </p>
+              <p className="mt-6 text-sm text-(--color-text-faint)">
+                {card.highlights.join(' · ')}
+              </p>
             </div>
 
             <div>
@@ -163,7 +172,7 @@ export function ServicesBentoGrid() {
     <section className="relative py-16 md:py-20">
       <div className="container relative z-10">
         {/* Section heading */}
-        <div className="mb-10 md:mb-14">
+        <div className="mb-10 md:mb-14 max-w-3xl">
           <RevealText as="h2" className="text-h2 font-bold tracking-tight text-(--color-text)">
             We don&apos;t build pages.
           </RevealText>
@@ -174,6 +183,12 @@ export function ServicesBentoGrid() {
           >
             We build systems.
           </RevealText>
+          <RevealFade className="mt-5" delay={0.22}>
+            <p className="text-body-lg leading-relaxed text-(--color-text-muted) max-w-xl">
+              One team building the automation, the website, and the marketing that runs on it —
+              not three vendors who&apos;ve never spoken to each other.
+            </p>
+          </RevealFade>
         </div>
 
         {/* Sticky stack track — each card gets a full-height scroll slot */}

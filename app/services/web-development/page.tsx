@@ -34,11 +34,21 @@ export const metadata: Metadata = {
   title: 'Web Development Services | Website Vikreta',
   description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
   keywords: [
+    // Primary
+    'web development company',
+    // Secondary
+    'custom website development services',
     'Next.js development agency',
-    'web development agency',
-    'custom website development',
-    'SEO-ready websites',
-    'TypeScript development',
+    'business website development company',
+    'SEO-ready website design and development',
+    'custom website design company',
+    'website redesign services',
+    // Long-tail
+    'custom website development for small business',
+    'Next.js website development company for US businesses',
+    'how much does a custom business website cost',
+    'website redesign company for growing businesses',
+    'fast SEO-optimized website development services',
   ],
   openGraph: {
     title: 'Web Development Services | Website Vikreta',
