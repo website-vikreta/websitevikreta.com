@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowClockwise } from 'react-bootstrap-icons'
 import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
+import { trackJobApplicationSubmit } from '@/lib/analytics'
 
 const SUBHEAD = 'text-h4 font-bold tracking-tight text-(--color-text) mb-6'
 
@@ -83,6 +84,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       }
 
       setSubmitted(true)
+      trackJobApplicationSubmit(opening.slug)
     } catch {
       setSubmitError('Something went wrong. Please try again.')
     } finally {
