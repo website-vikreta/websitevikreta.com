@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { trackTocClick } from '@/lib/analytics'
 import type { Heading } from '@/sanity/lib/utils'
 
 export function TableOfContents({ headings }: { headings: Heading[] }) {
@@ -149,7 +150,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
               <li key={h._key}>
                 <a
                   href={`#${h.slug}`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => { trackTocClick(h.text); setIsOpen(false) }}
                   className={cn(
                     'flex items-start gap-1.5 py-2 transition-colors duration-200',
                     h.level === 3 ? 'pl-4 text-xs' : 'pl-0 text-sm',
@@ -199,6 +200,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
             <li key={h._key}>
               <a
                 href={`#${h.slug}`}
+                onClick={() => trackTocClick(h.text)}
                 className={cn(
                   'flex items-start gap-1.5 whitespace-normal border-l-2 leading-snug transition-colors duration-200',
                   h.level === 3 ? 'pl-8 text-xs' : 'pl-4 text-sm',

@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { ArrowUpRight } from 'lucide-react'
 import { FaqAnswer } from '@/components/ui/FaqAnswer'
 import { ALL_FAQS as FAQ_ITEMS, faqPageJsonLd } from '@/lib/faq-data'
+import { trackFaqExpand } from '@/lib/analytics'
 
 export function FaqPageContent() {
   const headerRef = useRef<HTMLDivElement>(null)
@@ -18,6 +19,11 @@ export function FaqPageContent() {
   // state from ours if the two modes ever flip between renders.
   const [openValue, setOpenValue] = useState<string>('')
   const prefersReducedMotion = useReducedMotion()
+
+  function handleOpenChange(value: string) {
+    setOpenValue(value)
+    if (value) trackFaqExpand(FAQ_ITEMS.find((i) => i.id === value)?.question ?? value)
+  }
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -79,7 +85,7 @@ export function FaqPageContent() {
               type="single"
               collapsible
               value={openValue}
-              onValueChange={setOpenValue}
+              onValueChange={handleOpenChange}
             >
               {FAQ_ITEMS.map((item, index) => {
                 const isOpen = item.id === openValue

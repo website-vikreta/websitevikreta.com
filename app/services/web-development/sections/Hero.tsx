@@ -49,7 +49,7 @@ export default function Hero() {
           ref={headingRef}
           className="mx-auto mb-6 max-w-4xl text-balance font-sans text-h1 font-bold text-(--color-text) md:font-semibold"
         >
-          Crafting <span style={{ color: 'var(--color-accent)' }}>High-Performance</span> Websites That Drive Growth
+          Custom Website Development, Built in <span style={{ color: 'var(--color-accent)' }}>Next.js</span>
         </h1>
 
         <p

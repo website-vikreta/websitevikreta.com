@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { submitComment, type SubmitCommentResult } from '@/actions/submit-comment'
 import { getCommentIdentity, setCommentIdentity, clearCommentIdentity, type CommentIdentity } from '@/lib/comment-identity'
+import { trackCommentSubmit } from '@/lib/analytics'
 
 interface CommentFormProps {
   postId: string
@@ -52,6 +53,7 @@ export function CommentForm({ postId, parentId, onPosted, onCancel }: CommentFor
         const email = (formData.get('email') as string) ?? ''
         if (name && email) setCommentIdentity({ name, email })
         formRef.current?.reset()
+        trackCommentSubmit(postId, !!parentId)
         onPosted?.()
       }
       return result

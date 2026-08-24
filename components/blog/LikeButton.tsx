@@ -4,6 +4,7 @@ import { useEffect, useOptimistic, useRef, useState, useTransition } from 'react
 import { usePathname } from 'next/navigation'
 import { Heart } from 'lucide-react'
 import { likePost, unlikePost } from '@/actions/like-post'
+import { trackPostLike } from '@/lib/analytics'
 
 const LIKED_POSTS_KEY = 'likedPosts'
 
@@ -75,6 +76,7 @@ export function LikeButton({ postId, initialLikes, size = 'md' }: LikeButtonProp
       addOptimisticDelta(next ? 1 : -1)
       try {
         await (next ? likePost(postId, pathname) : unlikePost(postId, pathname))
+        if (next) trackPostLike(postId)
       } catch {
         // Rate-limited or the write failed — undo the optimistic flip
         // instead of leaving the button stuck showing a state the server
