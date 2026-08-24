@@ -28,7 +28,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     description:
       'Find us the hours your team shouldn\'t be spending. We audit what\'s actually happening in your business, then wire in AI where it makes sense, not where it sounds impressive.',
     highlights: ['Workflow audits', 'Custom AI agents', 'Ongoing monitoring'],
-    image: '/our-services/ai-automation-systems.png',
+    image: '/our-services/ai-automation-systems.webp',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
   },
@@ -39,7 +39,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     description:
       'Built in Next.js. Fast, SEO-ready, written properly. Not a theme with your logo on it.',
     highlights: ['Next.js builds', 'Core Web Vitals', 'SEO-ready structure'],
-    image: '/services/web-development-showcase.png',
+    image: '/services/web-development-showcase.webp',
     href: '/services/web-development',
     FallbackIcon: Globe,
   },
@@ -50,7 +50,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     description:
       "We start with how people actually use things. The visual part comes after that's figured out.",
     highlights: ['User flows', 'Design systems', 'Usability testing'],
-    image: '/our-services/uiux-design-systems.png',
+    image: '/our-services/uiux-design-systems.webp',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
   },
@@ -61,7 +61,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     description:
       "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
     highlights: ['Custom portals', 'E-commerce builds', 'Internal tools'],
-    image: '/our-services/web-mobile-crm-systems.png',
+    image: '/our-services/web-mobile-crm-systems.webp',
     href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
   },
@@ -72,7 +72,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     description:
       'SEO, GEO, paid: combined into one thing that\'s actually measured. No vanity metrics.',
     highlights: ['SEO & GEO', 'Paid campaigns', 'Revenue reporting'],
-    image: '/our-services/digital-marketing-systems.png',
+    image: '/our-services/digital-marketing-systems.webp',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
   },
