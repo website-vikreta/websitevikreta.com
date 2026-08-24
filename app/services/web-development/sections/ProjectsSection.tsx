@@ -3,19 +3,22 @@
 import { useRef } from 'react'
 import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
-import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import { cn } from '@/lib/utils'
 import { trackLinkClick } from '@/lib/analytics'
 import { PROJECTS } from '../data'
-
-const aspectRatios = ['aspect-[4/5]', 'aspect-[3/4]', 'aspect-[1/1]', 'aspect-[4/3]'] as const
 
 export default function ProjectsSection() {
   const scope = useRef<HTMLElement>(null)
 
   useGsapSection(scope, () => {
     revealLines('#work-heading', { trigger: scope.current })
-    revealFadeUp('.project-card', { y: 24, stagger: STAGGER.tight, trigger: scope.current })
+    // Per-card triggers, not one section trigger: the columns are offset and the
+    // grid is taller than the viewport, so a single trigger would burn the
+    // reveal on cards nobody has scrolled to yet.
+    scope.current?.querySelectorAll<HTMLElement>('.project-card').forEach((card) => {
+      revealFadeUp(card, { y: 24, trigger: card })
+    })
   })
 
   const columnCount = 3
@@ -42,7 +45,6 @@ export default function ProjectsSection() {
               )}
             >
               {column.map((project) => {
-                const globalIndex = PROJECTS.findIndex((p) => p.id === project.id)
                 return (
                   <a
                     key={project.id}
@@ -52,7 +54,7 @@ export default function ProjectsSection() {
                     onClick={() => trackLinkClick(project.href, 'web_development_projects')}
                     className="project-card group block border border-(--color-border) bg-(--color-surface) p-3"
                   >
-                    <div className={cn('relative flex w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)', aspectRatios[globalIndex % aspectRatios.length])}>
+                    <div className="relative flex w-full aspect-video items-center justify-center overflow-hidden bg-(--color-bg-muted)">
                       <div className="flex size-full items-center justify-center p-10">
                         {project.logo ? (
                           <div className="flex h-14 w-[65%] items-center justify-center">

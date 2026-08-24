@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGsapSection, revealLines, revealFadeUp, STAGGER } from '@/lib/gsap/reveals'
 import { cn } from '@/lib/utils'
 
@@ -35,11 +35,37 @@ const STEPS: Step[] = [
 
 export default function HowWeWork() {
   const scope = useRef<HTMLElement>(null)
+  // Highest step reached so far. Monotonic on purpose: a completed step stays
+  // completed on scroll-back — this is a process running to completion, not a
+  // highlight that follows the cursor. Starts at 0 so step 01 is already inked
+  // on first paint, and the section still reads as finished if JS never runs.
+  const [reached, setReached] = useState(0)
 
   useGsapSection(scope, () => {
     revealLines('#how-we-work-heading', { trigger: scope.current, start: 'top 75%' })
     revealFadeUp('.step-item', { y: 24, stagger: STAGGER.base, trigger: scope.current, start: 'top 75%' })
   })
+
+  useEffect(() => {
+    const items = scope.current?.querySelectorAll<HTMLElement>('.step-item')
+    if (!items?.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          const index = Number((entry.target as HTMLElement).dataset.index)
+          setReached((prev) => (index > prev ? index : prev))
+        })
+      },
+      // Fires once a step has genuinely arrived rather than the instant its top
+      // edge clips the bottom of the screen.
+      { rootMargin: '0px 0px -35% 0px' },
+    )
+
+    items.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <section ref={scope} className="py-16 md:py-20" aria-labelledby="how-we-work-heading">
@@ -55,18 +81,32 @@ export default function HowWeWork() {
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           {STEPS.map((item, i) => {
             const isDown = i % 2 === 1
+            const isReached = i <= reached
 
             return (
               <div
                 key={item.step}
+                data-index={i}
                 className={cn('step-item w-full md:w-[220px] md:shrink-0', isDown && 'md:mt-20')}
               >
+                {/* The numeral inks in as you reach it, so the zigzag visibly
+                    runs step to step instead of sitting fully lit on arrival. */}
                 <span
                   aria-hidden="true"
-                  className="font-mono text-4xl font-bold leading-none tracking-[-0.05em] text-(--color-accent) md:text-5xl"
+                  className={cn(
+                    'block font-mono text-4xl font-bold leading-none tracking-[-0.05em] transition-colors duration-500 ease-out md:text-5xl',
+                    isReached ? 'text-(--color-accent)' : 'text-(--color-text-faint)',
+                  )}
                 >
                   {item.step}
                 </span>
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'mt-4 block h-px origin-left bg-(--color-accent) transition-transform duration-700 ease-out',
+                    isReached ? 'scale-x-100' : 'scale-x-0',
+                  )}
+                />
                 <h3 className="mt-5 font-sans text-xl font-bold leading-[1.15] text-(--color-text) sm:text-2xl">
                   <span className="sr-only">{`Step ${item.step}: `}</span>
                   {item.title}
