@@ -56,7 +56,7 @@ export default function ProofSection() {
               &ldquo;{SBP_CASE_STUDY.testimonial.quote}&rdquo;
             </p>
             <p className="mt-4 text-sm text-(--color-text-muted)">
-              {SBP_CASE_STUDY.testimonial.role} — {SBP_CASE_STUDY.metric?.value} {SBP_CASE_STUDY.metric?.label.toLowerCase()}
+              {SBP_CASE_STUDY.testimonial.role} · {SBP_CASE_STUDY.metric?.value} {SBP_CASE_STUDY.metric?.label.toLowerCase()}
             </p>
             <div className="mt-4">
               <CaseStudyReadLink />
