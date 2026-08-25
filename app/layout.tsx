@@ -64,10 +64,13 @@ export default function RootLayout({
         {/* <GoToTop /> */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
-            {/* @next/third-parties' GoogleAnalytics hardcodes strategy="afterInteractive" (no way to
-                override it) — that eager load was the single biggest TBT contributor on mobile
-                Lighthouse (92ms+ main-thread time) and tripped the Best Practices "third-party cookies"
-                check. Hand-rolled here so it can load on strategy="lazyOnload" instead.
+            {/* Was strategy="lazyOnload" to shave TBT off mobile Lighthouse (the reason @next/third-parties'
+                GoogleAnalytics, which hardcodes afterInteractive, wasn't used). But lazyOnload only fires
+                once the browser goes truly idle, and this site's continuous scroll/motion animations rarely
+                let that happen — GA4 Realtime and Clarity were both missing real concurrent visitors because
+                the script just never loaded in time. afterInteractive trades a little TBT back for gtag
+                actually firing; still hand-rolled (not @next/third-parties) so it stays behind the hostname
+                gate below instead of loading on stage/localhost too.
 
                 The hostname check below (same guard as middleware.ts's isProduction) has to live
                 inside the script, not as a server-side conditional — gating this render with
@@ -76,7 +79,7 @@ export default function RootLayout({
                 stage deploy both fire real pageviews/events into production GA4. */}
             <Script
               id="ga-init"
-              strategy="lazyOnload"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                   if (window.location.hostname === 'www.websitevikreta.com') {
@@ -90,7 +93,7 @@ export default function RootLayout({
             />
             <Script
               id="ga-src"
-              strategy="lazyOnload"
+              strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
             />
           </>
@@ -98,7 +101,7 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_CLARITY_ID && (
           <Script
             id="clarity-init"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 if (window.location.hostname === 'www.websitevikreta.com') {
