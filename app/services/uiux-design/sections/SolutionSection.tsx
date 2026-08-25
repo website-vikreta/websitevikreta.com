@@ -44,7 +44,7 @@ const SYSTEMS: System[] = [
     title:       'Visual design systems',
     indexLabel:  'Design systems',
     description:
-      'A component library in Figma, not a one-off set of screens — type, color, spacing, and states your team can reuse without re-deciding them each time.',
+      'A component library in Figma, not a one-off set of screens: type, color, spacing, and states your team can reuse without re-deciding them each time.',
     cta:         'See how systems hold up',
     image: {
       src: '/services/visual-design-systems.webp',
