@@ -20,7 +20,7 @@ export default function PainSection() {
 
           <div className="pain-image relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
             <Image
-              src="/services/website-losing-customers.png"
+              src="/services/website-losing-customers.webp"
               alt="A visitor walking away through a door from a slow, outdated, poorly-ranking website, versus a fast, polished, well-ranked site that keeps them"
               width={1448}
               height={1086}

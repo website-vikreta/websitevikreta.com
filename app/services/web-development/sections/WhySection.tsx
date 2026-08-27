@@ -65,7 +65,7 @@ export default function WhySection() {
 
           <div className="why-image relative order-first aspect-[4/3] w-full self-center overflow-hidden border border-(--color-border) bg-(--color-bg-muted) md:order-last">
             <Image
-              src="/services/why-website-vikreta.png"
+              src="/services/why-website-vikreta.webp"
               alt="Website Vikreta web development process: discovery, build, launch, and ongoing support"
               fill
               className="object-cover"
