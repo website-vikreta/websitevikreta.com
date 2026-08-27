@@ -46,8 +46,8 @@ export default function PainSection() {
 
           <div className="pain-diagram order-first md:order-last relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
             <Image
-              src="/our-services/digital-marketing-systems.webp"
-              alt="A search results page and an AI chat answer shown side by side, illustrating the gap between ranking on Google and being cited in an AI-generated answer"
+              src="/services/seo-geo-visibility-gap.webp"
+              alt="A ranked number-one podium next to a search results page, a laptop dashboard with a downward-trending chart, a person walking away through a door, and a Google results page paired with an AI chat answer marked as not visible"
               width={1448}
               height={1086}
               sizes="(min-width: 768px) 50vw, 100vw"
