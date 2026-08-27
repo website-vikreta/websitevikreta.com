@@ -12,12 +12,12 @@ const STEPS: HowItWorksStep[] = [
   },
   {
     title:       'Strategy',
-    description: 'A prioritized plan — the fixes and content that move the metrics that actually matter to your business.',
+    description: 'A prioritized plan: the fixes and content that move the metrics that actually matter to your business.',
     action:      'Sign off on the priorities.',
   },
   {
     title:       'Build & publish',
-    description: 'Technical fixes shipped, content written and published, campaigns launched — on a schedule you can see.',
+    description: 'Technical fixes shipped, content written and published, and campaigns launched, all on a schedule you can see.',
     action:      'Review drafts before they go live.',
   },
   {

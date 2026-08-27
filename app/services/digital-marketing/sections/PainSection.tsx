@@ -33,8 +33,8 @@ export default function PainSection() {
 
             <p className="pain-p text-body-lg text-(--color-text-muted) leading-relaxed mb-5">
               You&rsquo;re ranking for a phrase nobody buys on. Or you&rsquo;re
-              getting traffic that lands, reads, and leaves — because the page
-              was written for the algorithm, not the person who needed it.
+              getting traffic that lands, reads, and leaves. The page was
+              written for the algorithm, not the person who needed it.
             </p>
 
             <p className="pain-p text-body-lg text-(--color-text-muted) leading-relaxed">

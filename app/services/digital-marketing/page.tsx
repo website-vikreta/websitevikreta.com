@@ -12,7 +12,7 @@ const jsonLd = {
       '@id': `${PAGE_URL}#service`,
       name: 'Digital Marketing & SEO/GEO Services',
       serviceType: 'Digital Marketing',
-      description: 'SEO, GEO, content, and paid campaigns built on real data — rank on Google and get cited by AI answer engines.',
+      description: 'SEO, GEO, content, and paid campaigns built on real data. Rank on Google and get cited by AI answer engines.',
       url: PAGE_URL,
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
@@ -31,7 +31,7 @@ const jsonLd = {
 
 export const metadata: Metadata = {
   title: 'Digital Marketing & SEO/GEO Agency | Website Vikreta',
-  description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data — free scoping call.',
+  description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data. Free scoping call.',
   keywords: [
     'SEO agency Pune',
     'digital marketing agency',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Digital Marketing & SEO/GEO Agency | Website Vikreta',
-    description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data — free scoping call.',
+    description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data. Free scoping call.',
     url: PAGE_URL,
     siteName: 'Website Vikreta',
     type: 'website',

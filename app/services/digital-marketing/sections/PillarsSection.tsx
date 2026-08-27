@@ -19,7 +19,7 @@ const PILLARS: Pillar[] = [
   {
     icon:  Sparkles,
     title: 'Get cited by AI',
-    line:  'GEO — structuring your content so ChatGPT, Perplexity, and AI Overviews quote you as the source.',
+    line:  'GEO: structuring your content so ChatGPT, Perplexity, and AI Overviews quote you as the source.',
   },
   {
     icon:  FileText,
@@ -55,7 +55,7 @@ export default function PillarsSection() {
 
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-4 lg:gap-x-8">
           {PILLARS.map(({ icon: Icon, title, line }) => (
-            <div key={title} className="pillar">
+            <div key={title} className="pillar flex flex-col items-center text-center">
               <Icon
                 size={40}
                 strokeWidth={1.5}
