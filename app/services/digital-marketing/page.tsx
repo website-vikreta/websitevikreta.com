@@ -1,21 +1,50 @@
 import type { Metadata } from 'next'
-import { ComingSoonPage } from '@/components/ComingSoonPage'
+import DigitalMarketingClient from './DigitalMarketingClient'
 import { SITE_URL } from '@/config/site'
 
+const PAGE_URL = `${SITE_URL}/services/digital-marketing`
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${PAGE_URL}#service`,
+      name: 'Digital Marketing & SEO/GEO Services',
+      serviceType: 'Digital Marketing',
+      description: 'SEO, GEO, content, and paid campaigns built on real data — rank on Google and get cited by AI answer engines.',
+      url: PAGE_URL,
+      provider: { '@id': `${SITE_URL}/#organization` },
+      areaServed: { '@type': 'Country', name: 'India' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${PAGE_URL}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
+        { '@type': 'ListItem', position: 3, name: 'Digital Marketing', item: PAGE_URL },
+      ],
+    },
+  ],
+}
+
 export const metadata: Metadata = {
-  title: 'Digital Marketing & SEO Services | Website Vikreta',
-  description: 'Grow your business with SEO, content marketing, and digital marketing services that help you attract qualified traffic and generate more leads.',
+  title: 'Digital Marketing & SEO/GEO Agency | Website Vikreta',
+  description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data — free scoping call.',
   keywords: [
     'SEO agency Pune',
     'digital marketing agency',
-    'content marketing',
+    'GEO generative engine optimization',
+    'AI search optimization',
+    'content marketing services',
     'search engine optimization',
-    'growth marketing',
+    'growth marketing agency',
   ],
   openGraph: {
-    title: 'Digital Marketing & SEO Services | Website Vikreta',
-    description: 'Grow your business with SEO, content marketing, and digital marketing services that help you attract qualified traffic and generate more leads.',
-    url: `${SITE_URL}/services/digital-marketing`,
+    title: 'Digital Marketing & SEO/GEO Agency | Website Vikreta',
+    description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data — free scoping call.',
+    url: PAGE_URL,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
@@ -24,18 +53,18 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 675,
-        alt: 'Digital Marketing & SEO Services | Website Vikreta',
+        alt: 'Digital Marketing & SEO/GEO Agency | Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Digital Marketing & SEO Services | Website Vikreta',
-    description: 'Grow your business with SEO, content marketing, and digital marketing services.',
+    title: 'Digital Marketing & SEO/GEO Agency | Website Vikreta',
+    description: 'Rank on Google and get cited by AI answer engines. SEO, GEO, content, and paid marketing built on real data.',
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: `${SITE_URL}/services/digital-marketing`,
+    canonical: PAGE_URL,
   },
   robots: {
     index: true,
@@ -49,6 +78,14 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Page() {
-  return <ComingSoonPage pageName="Digital Marketing" />
+export default function DigitalMarketingPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <DigitalMarketingClient />
+    </>
+  )
 }
