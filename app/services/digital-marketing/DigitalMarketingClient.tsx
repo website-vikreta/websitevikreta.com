@@ -8,7 +8,6 @@ import { FaqSection } from '@/components/sections/FaqSection'
 import { ALL_FAQS } from '@/lib/faq-data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
-import GeoExplainerSection from './sections/GeoExplainerSection'
 import PillarsSection from './sections/PillarsSection'
 import HowWeWork from './sections/HowWeWork'
 import ProofSection from './sections/ProofSection'
@@ -25,8 +24,6 @@ export default function DigitalMarketingClient() {
         {/* TENSION */}
         <Hero />
         <PainSection />
-        {/* SHIFT — the concept most competitors don't explain */}
-        <GeoExplainerSection />
         {/* RESOLUTION */}
         <PillarsSection />
         <HowWeWork />
