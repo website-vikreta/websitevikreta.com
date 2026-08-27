@@ -2,6 +2,7 @@
 
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { WorkTestimonialsSection } from '@/components/sections/work/WorkTestimonialsSection'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { ALL_FAQS } from '@/lib/faq-data'
 import Hero from './sections/Hero'
@@ -26,6 +27,7 @@ export default function UiUxClient() {
         <PrinciplesSection />
         <HowWeWork />
         <ProofSection />
+        <WorkTestimonialsSection />
         {/* emitSchema={false}: these Q&As are verbatim from ALL_FAQS, which
             /faq already emits as FAQPage — two blocks for the same Q&As is
             duplicate content. */}
