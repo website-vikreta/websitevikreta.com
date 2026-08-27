@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { SITE_URL } from '@/config/site'
 
 export const runtime = 'edge'
 
@@ -31,7 +32,7 @@ export default async function Image() {
         >
           {/* Logo */}
           <img
-            src="/logo/websitevikreta-logo-horizontal.png"
+            src={`${SITE_URL}/logo/websitevikreta-logo-horizontal.png`}
             width={120}
             alt=""
             style={{ marginBottom: '32px' }}
