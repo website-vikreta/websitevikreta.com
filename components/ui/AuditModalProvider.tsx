@@ -38,6 +38,14 @@ const FREE_QUOTE_CONFIG: AuditModalConfig = {
   dialogDescription: "Tell us about your website project — we'll reply within 24 hours.",
 }
 
+const MARKETING_AUDIT_CONFIG: AuditModalConfig = {
+  formName: 'book_marketing_audit_modal',
+  heading: 'Book a Free Marketing Audit',
+  subjectPlaceholder: 'What are you trying to grow?',
+  messagePlaceholder: 'Tell us about your traffic, leads, or rankings goal…',
+  dialogDescription: "Tell us what you want to grow — we'll reply within 24 hours.",
+}
+
 /**
  * One entry per popup variant sitewide, keyed by the `#hash` that opens it.
  * `Button`/`TextLink` look a clicked href up here; a miss falls through to
@@ -48,6 +56,7 @@ export const AUDIT_MODAL_CONFIGS: Record<string, AuditModalConfig> = {
   '#book-audit':        AUDIT_CONFIG,
   '#start-project':     PROJECT_CALL_CONFIG,
   '#get-quote':         FREE_QUOTE_CONFIG,
+  '#marketing-audit':   MARKETING_AUDIT_CONFIG,
 }
 
 /** Back-compat default for any caller that opens the modal with no config. */
