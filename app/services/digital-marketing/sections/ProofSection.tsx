@@ -51,7 +51,7 @@ export default function ProofSection() {
               &ldquo;{AP_CLEANCO_CASE_STUDY.testimonial.quote}&rdquo;
             </p>
             <p className="mt-4 text-sm text-(--color-text-muted)">
-              {AP_CLEANCO_CASE_STUDY.testimonial.role} — {AP_CLEANCO_CASE_STUDY.metric?.value} {AP_CLEANCO_CASE_STUDY.metric?.label.toLowerCase()}
+              {AP_CLEANCO_CASE_STUDY.testimonial.role}, {AP_CLEANCO_CASE_STUDY.metric?.value} {AP_CLEANCO_CASE_STUDY.metric?.label.toLowerCase()}
             </p>
             <div className="mt-4">
               <CaseStudyReadLink />
