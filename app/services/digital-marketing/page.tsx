@@ -19,11 +19,20 @@ export const metadata: Metadata = {
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 675,
+        alt: 'Digital Marketing & SEO Services | Website Vikreta',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Digital Marketing & SEO Services | Website Vikreta',
     description: 'Grow your business with SEO, content marketing, and digital marketing services.',
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: `${SITE_URL}/services/digital-marketing`,
