@@ -39,7 +39,7 @@ export default function PainSection() {
 
             <p className="pain-p text-body-lg text-(--color-text-muted) leading-relaxed">
               Hiring a designer for a fresh coat of visual polish doesn&rsquo;t
-              fix that — it just makes the same confusing flow look better while
+              fix that. It just makes the same confusing flow look better while
               people still can&rsquo;t find what they came for.
             </p>
           </div>
@@ -47,7 +47,7 @@ export default function PainSection() {
           <div className="pain-diagram order-first md:order-last relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
             <Image
               src="/services/screens-built-before-tested.webp"
-              alt="A developer builds and ships screens alone; a user opens the result confused, stuck on a loading state, and backs out — while a designer working from research ships a flow the same user completes without hesitating"
+              alt="A developer builds and ships screens alone; a user opens the result confused, stuck on a loading state, and backs out, while a designer working from research ships a flow the same user completes without hesitating"
               width={1448}
               height={1086}
               sizes="(min-width: 768px) 50vw, 100vw"

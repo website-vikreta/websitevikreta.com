@@ -7,9 +7,11 @@ import { revealLines, revealFadeUp, revealClipImage, useGsapSection, STAGGER } f
 export default function PainSection() {
   const scope = useRef<HTMLElement>(null)
 
-  useGsapSection(scope, () => {
+  useGsapSection(scope, (reduce) => {
+    if (reduce) return
     revealLines('.pain-h2', { trigger: scope.current })
     revealFadeUp('.pain-p', { y: 20, stagger: STAGGER.loose, delay: 0.1, trigger: scope.current })
+    // Image animates with section but on its own trigger for proper clip timing
     revealClipImage('.pain-image', { trigger: '.pain-image' })
   })
 
@@ -20,7 +22,7 @@ export default function PainSection() {
 
           <div className="pain-image relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
             <Image
-              src="/services/website-losing-customers.png"
+              src="/services/website-losing-customers.webp"
               alt="A visitor walking away through a door from a slow, outdated, poorly-ranking website, versus a fast, polished, well-ranked site that keeps them"
               width={1448}
               height={1086}
