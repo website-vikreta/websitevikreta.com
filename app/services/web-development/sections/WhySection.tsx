@@ -26,9 +26,11 @@ const DIFFERENTIATORS = [
 export default function WhySection() {
   const scope = useRef<HTMLElement>(null)
 
-  useGsapSection(scope, () => {
+  useGsapSection(scope, (reduce) => {
+    if (reduce) return
     revealLines('.why-heading', { trigger: scope.current })
-    revealFadeUp('.why-item', { y: 20, stagger: STAGGER.base, trigger: scope.current })
+    revealFadeUp('.why-item', { y: 20, stagger: STAGGER.base, delay: 0.1, trigger: scope.current })
+    // Image animates on its own trigger for proper clip timing
     revealClipImage('.why-image', { trigger: '.why-image' })
   })
 
@@ -37,11 +39,11 @@ export default function WhySection() {
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
           <div className="max-w-2xl">
-            <h2 className="why-heading mb-6 text-h3 font-bold tracking-tight text-(--color-text)">
+            <h2 className="why-heading text-h3 font-bold tracking-tight text-(--color-text)">
               Why Website Vikreta
             </h2>
 
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-6 mt-6">
               {DIFFERENTIATORS.map(({ icon: Icon, title, body }) => (
                 <li key={title} className="why-item flex gap-4">
                   <Icon
