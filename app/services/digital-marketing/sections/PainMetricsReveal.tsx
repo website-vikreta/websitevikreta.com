@@ -12,11 +12,11 @@ import { cn } from '@/lib/utils'
 // reserved for the "after" side. Both images share one composition/camera
 // angle so the drag genuinely reads as noise resolving into signal.
 const BEFORE_IMAGE = {
-  src: '/services/digital-marketing/vanity-metrics-chaos.png',
+  src: '/services/digital-marketing/vanity-metrics-chaos.webp',
   alt: 'A tangle of disconnected vanity-metric shapes — keyword positions, impressions, follower counts — with no single clear focal point.',
 }
 const AFTER_IMAGE = {
-  src: '/services/digital-marketing/real-metrics-clarity.png',
+  src: '/services/digital-marketing/real-metrics-clarity.webp',
   alt: 'The same scene resolved into one clear highlighted line: leads booked and revenue.',
 }
 
