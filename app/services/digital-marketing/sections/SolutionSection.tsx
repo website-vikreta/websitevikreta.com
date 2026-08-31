@@ -1,20 +1,18 @@
 'use client'
 
 /**
- * Sticky chapter index + panels — same interaction pattern as
- * app/services/web-mobile-app-development/sections/SolutionSection.tsx,
- * each panel paired with an image using the same revealClipImage treatment.
+ * Sticky chapter index + full-width panels — the "Where we focus" pattern
+ * from app/services/ai-automations/sections/FixesSection.tsx, also used by
+ * Apps & CRM's SolutionSection. Each panel's visual is an illustrated crop
+ * (same watercolor/hand-drawn language as manual-work-vs-automated.webp),
+ * one per system, cropped from a single generated triptych so the three
+ * share one consistent style.
  */
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
-import { useGsapSection, revealLines, revealFadeUp, revealClipImage } from '@/lib/gsap/reveals'
-
-interface SystemImage {
-  src: string
-  alt: string
-}
+import { useGsapSection, revealLines, revealFadeUp } from '@/lib/gsap/reveals'
 
 interface System {
   id:          string
@@ -23,44 +21,41 @@ interface System {
   indexLabel:  string
   description: string
   cta:         string
-  image:       SystemImage
+  image:       { src: string; alt: string }
 }
 
 const SYSTEMS: System[] = [
   {
-    id:          'research-flows',
-    title:       'Research & UX flows',
-    indexLabel:  'Research & flows',
-    description:
-      'Interviews, competitor teardowns, and user flows mapped before a single screen gets styled. We find out where people actually get stuck first.',
-    cta:         'See how we scope research',
+    id:          'seo-geo-foundations',
+    title:       'SEO & GEO foundations',
+    indexLabel:  'SEO & GEO',
+    description: 'Technical SEO, structured content, and schema markup so you rank in Google and get cited when people ask AI for a recommendation.',
+    cta:         'See how we approach SEO & GEO',
     image: {
-      src: '/services/research-ux-flows.webp',
-      alt: 'A user interview, a user-flow map with sticky notes, an information-architecture tree, and a heatmap review, laid out as one research process',
+      src: '/services/digital-marketing/systems/seo-geo-foundations.png',
+      alt: 'A search results screen with a schema markup panel and a sitemap diagram beside it.',
     },
   },
   {
-    id:          'design-systems',
-    title:       'Visual design systems',
-    indexLabel:  'Design systems',
-    description:
-      'A component library in Figma, not a one-off set of screens: type, color, spacing, and states your team can reuse without re-deciding them each time.',
-    cta:         'See how systems hold up',
+    id:          'content-systems',
+    title:       'Content & growth systems',
+    indexLabel:  'Content',
+    description: 'A blog and content pipeline that keeps ranking and getting cited long after we ship it, not a retainer that stops producing the day you cancel.',
+    cta:         'See how we build content systems',
     image: {
-      src: '/services/visual-design-systems.webp',
-      alt: 'A Figma design system panel showing a color palette, type scale, spacing grid, and button/input/toggle component states',
+      src: '/services/digital-marketing/systems/content-systems.png',
+      alt: 'A content calendar and article draft feeding into a write, automate, promote pipeline with a rising growth chart.',
     },
   },
   {
-    id:          'prototyping-handoff',
-    title:       'Prototyping & handoff',
-    indexLabel:  'Prototyping',
-    description:
-      'Clickable prototypes you can test with real users before a line of code gets written, then dev-ready specs so build doesn’t reinterpret the design.',
-    cta:         'See what handoff looks like',
+    id:          'paid-local-campaigns',
+    title:       'Paid & local campaigns',
+    indexLabel:  'Paid & local',
+    description: 'Targeted paid campaigns and local SEO tied to one goal: booked jobs and qualified leads, not clicks.',
+    cta:         'See how we run paid & local campaigns',
     image: {
-      src: '/services/prototyping-handoff.webp',
-      alt: 'A clickable mobile-screen prototype flow next to a developer handoff panel with spacing specs and exported code',
+      src: '/services/digital-marketing/systems/paid-local-campaigns.png',
+      alt: 'An ad card and a phone showing a local map listing with reviews, beside a storefront and a revenue chart.',
     },
   },
 ]
@@ -72,15 +67,12 @@ export default function SolutionSection() {
   useGsapSection(scope, () => {
     revealLines('#solution-heading', { trigger: scope.current })
     scope.current?.querySelectorAll<HTMLElement>('.service-panel').forEach((panel) => {
-      const img = panel.querySelector<HTMLElement>('.service-image')
-      if (img) revealClipImage(img, { scale: false, trigger: panel })
-      revealFadeUp(panel.querySelectorAll('.service-copy'), { y: 20, trigger: panel })
+      revealFadeUp(panel.querySelectorAll('.service-copy, .service-visual'), { y: 20, trigger: panel })
     })
   })
 
-  // Scroll-spy for the sticky index — same technique as the Apps/CRM version:
-  // panels are tall blocks, so a thin band near the top of the viewport
-  // reliably has exactly one crossing it.
+  // Scroll-spy for the sticky index — panels are tall blocks, so a thin band
+  // near the top of the viewport reliably has exactly one crossing it.
   useEffect(() => {
     const panels = scope.current?.querySelectorAll<HTMLElement>('.service-panel')
     if (!panels?.length) return
@@ -108,7 +100,7 @@ export default function SolutionSection() {
               id="solution-heading"
               className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
             >
-              Three Systems We Build Most Often
+              Three Systems We Build And Run
             </h2>
 
             <nav aria-label="Systems" className="mt-8 hidden lg:block">
@@ -136,17 +128,16 @@ export default function SolutionSection() {
           </div>
 
           {/* ── System panels ── */}
-          <div className="mt-10 flex flex-col gap-16 lg:col-span-8 lg:mt-0 md:gap-20">
+          <div className="mt-10 flex flex-col gap-20 lg:col-span-8 lg:mt-0 md:gap-24">
             {SYSTEMS.map((system) => (
               <article key={system.id} id={system.id} className="service-panel scroll-mt-32">
-                <div className="service-image relative mb-6 overflow-hidden border border-(--color-border) bg-(--color-surface)">
+                <div className="service-visual relative mb-6 aspect-video w-full overflow-hidden border border-(--color-border) bg-(--color-surface)">
                   <Image
                     src={system.image.src}
                     alt={system.image.alt}
-                    width={1448}
-                    height={1086}
-                    sizes="(min-width: 1024px) 830px, 100vw"
-                    className="h-auto w-full"
+                    fill
+                    sizes="(min-width: 1024px) 58vw, 100vw"
+                    className="object-cover"
                   />
                 </div>
 
@@ -157,7 +148,7 @@ export default function SolutionSection() {
                   {system.description}
                 </p>
                 <div className="service-copy mt-6">
-                  <Button href="#start-project" variant="ghost" size="sm" showArrow>
+                  <Button href="#marketing-audit" variant="ghost" size="sm" showArrow>
                     {system.cta}
                   </Button>
                 </div>
