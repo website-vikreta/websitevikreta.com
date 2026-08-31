@@ -21,8 +21,8 @@ const AFTER_IMAGE = {
 }
 
 const AUTO_PLAY_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
-const AUTO_PLAY_START_MS = 400
-const AUTO_PLAY_DURATION_MS = 2200
+const AUTO_PLAY_START_MS = 600  // Increased from 400 to sync with fade-in
+const AUTO_PLAY_DURATION_MS = 1800  // Reduced from 2200 for snappier feel
 
 // Before layer's visible width == `position`% (measured from the left), so
 // 100 = fully vanity-chaos, 0 = fully real-metrics. Starts at 100 (the full
@@ -80,8 +80,8 @@ export default function PainMetricsReveal() {
     <div
       ref={containerRef}
       className={cn(
-        'pain-panel order-first md:order-last relative aspect-video w-full overflow-hidden',
-        'border border-(--color-border) select-none touch-none cursor-ew-resize'
+        'pain-panel relative aspect-video w-full overflow-hidden',
+        'border border-(--color-border) bg-(--color-surface) select-none touch-none cursor-ew-resize'
       )}
       role="slider"
       aria-label="Drag to compare vanity metrics against the metrics we actually report on"

@@ -39,7 +39,7 @@ export default function ContactSection() {
               Let&rsquo;s Fix What Isn&rsquo;t Converting
             </h2>
             <p className="cta-sub text-body-lg text-(--color-text-muted) leading-relaxed mb-4 md:mb-10">
-              Tell us what&rsquo;s not working — rankings, traffic, or leads. We&rsquo;ll tell you straight what it takes to fix it.
+              Tell us what&rsquo;s not working: rankings, traffic, or leads. We&rsquo;ll tell you straight what it takes to fix it.
             </p>
           </div>
 

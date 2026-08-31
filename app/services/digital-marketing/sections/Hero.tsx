@@ -66,7 +66,7 @@ export default function Hero() {
           className="text-body-lg text-(--color-text-muted) max-w-xl mx-auto leading-relaxed mb-10"
         >
           SEO, content, and paid campaigns tracked by leads and revenue, not
-          impressions and rankings — and built to show up in Google and in
+          impressions and rankings and built to show up in Google and in
           the answers AI gives.
         </p>
 
