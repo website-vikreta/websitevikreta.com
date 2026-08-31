@@ -12,7 +12,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
-import { useGsapSection, revealLines, revealFadeUp } from '@/lib/gsap/reveals'
+import { useGsapSection, revealLines, revealFadeUp, revealClipImage } from '@/lib/gsap/reveals'
 
 interface System {
   id:          string
@@ -67,7 +67,9 @@ export default function SolutionSection() {
   useGsapSection(scope, () => {
     revealLines('#solution-heading', { trigger: scope.current })
     scope.current?.querySelectorAll<HTMLElement>('.service-panel').forEach((panel) => {
-      revealFadeUp(panel.querySelectorAll('.service-copy, .service-visual'), { y: 20, trigger: panel })
+      const img = panel.querySelector<HTMLElement>('.service-visual')
+      if (img) revealClipImage(img, { scale: true, trigger: panel })
+      revealFadeUp(panel.querySelectorAll('.service-copy'), { y: 20, trigger: panel })
     })
   })
 

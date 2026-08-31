@@ -15,22 +15,25 @@ export default function PainSection() {
   useGsapSection(scope, () => {
     revealLines('.pain-h2', { trigger: scope.current })
     revealFadeUp('.pain-p', { y: 20, stagger: STAGGER.loose, delay: 0.1, trigger: scope.current })
-    revealFadeUp('.pain-panel', { y: 20, trigger: '.pain-panel' })
+    revealFadeUp('.pain-panel', { y: 20, delay: STAGGER.loose * 2, trigger: scope.current })
   })
 
   return (
-    <section ref={scope} className="pb-16 md:pb-20" aria-labelledby="pain-heading">
+    <section ref={scope} className="py-16 md:py-20" aria-labelledby="pain-heading">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-          <div className="max-w-xl">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+          
+          <PainMetricsReveal />
+
+          <div>
             <h2
               id="pain-heading"
-              className="pain-h2 text-h3 font-bold tracking-tight text-(--color-text) mb-6"
+              className="pain-h2 text-h3 font-bold tracking-tight text-(--color-text)"
             >
               Vanity Metrics Don&rsquo;t Pay Rent
             </h2>
 
-            <p className="pain-p text-body-lg text-(--color-text-muted) leading-relaxed mb-5">
+            <p className="pain-p mt-6 text-body-lg text-(--color-text-muted) leading-relaxed mb-5">
               Your last agency sent a monthly report full of keyword
               positions and impression counts. None of it explained why the
               phone stopped ringing.
@@ -43,7 +46,6 @@ export default function PainSection() {
             </p>
           </div>
 
-          <PainMetricsReveal />
         </div>
       </div>
     </section>
