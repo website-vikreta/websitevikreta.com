@@ -32,7 +32,7 @@ const SYSTEMS: System[] = [
     description: 'Technical SEO, structured content, and schema markup so you rank in Google and get cited when people ask AI for a recommendation.',
     cta:         'See how we approach SEO & GEO',
     image: {
-      src: '/services/digital-marketing/systems/seo-geo-foundations.png',
+      src: '/services/digital-marketing/systems/seo-geo-foundations.webp',
       alt: 'A search results screen with a schema markup panel and a sitemap diagram beside it.',
     },
   },
@@ -43,7 +43,7 @@ const SYSTEMS: System[] = [
     description: 'A blog and content pipeline that keeps ranking and getting cited long after we ship it, not a retainer that stops producing the day you cancel.',
     cta:         'See how we build content systems',
     image: {
-      src: '/services/digital-marketing/systems/content-systems.png',
+      src: '/services/digital-marketing/systems/content-systems.webp',
       alt: 'A content calendar and article draft feeding into a write, automate, promote pipeline with a rising growth chart.',
     },
   },
@@ -54,7 +54,7 @@ const SYSTEMS: System[] = [
     description: 'Targeted paid campaigns and local SEO tied to one goal: booked jobs and qualified leads, not clicks.',
     cta:         'See how we run paid & local campaigns',
     image: {
-      src: '/services/digital-marketing/systems/paid-local-campaigns.png',
+      src: '/services/digital-marketing/systems/paid-local-campaigns.webp',
       alt: 'An ad card and a phone showing a local map listing with reviews, beside a storefront and a revenue chart.',
     },
   },
