@@ -1,21 +1,21 @@
 # Image Asset Standards
 
-## WebP is the default shipping format for all site-delivered images
+## WebP is the default shipping format for all content images on the site
 
-- All final site-delivered images in the app, including marketing visuals, illustrations, comparison panels, editorial assets, and route-level/content imagery, must be shipped as `.webp`.
-- PNG is allowed only as an intermediate source file while editing or generating an image; it must not be the runtime asset path in the app.
-- Do not introduce new `.png` references for page visuals, comparison sliders, illustrations, product mockups, editorial assets, or any image that is shown on the site.
-- This rule does not apply to brand logos, third-party client logos, favicons, or other identity assets that are intentionally stored as PNG/JPG/SVG for brand or compatibility reasons.
+- All final site-delivered content images in the app must be shipped as `.webp`.
+- This includes marketing visuals, illustrations, comparison panels, editorial assets, blog/gallery imagery, route-level content assets, and any image that is shown as content on the page.
+- PNG/JPG are allowed only as intermediate source files while editing or generating an image; they must not be used as the runtime image path in the app.
+- This rule does not apply to brand logos, third-party client logos, favicons, icon assets, or other identity assets intentionally stored as PNG/JPG/SVG for branding or compatibility reasons.
 
 ## Strict rules
 
-1. Use `.webp` for all final image assets in `public/services/**` and similar marketing image folders.
+1. Use `.webp` for all final content images across the app, not just under `public/services/**`.
 2. Update the component `src` field to the `.webp` path before merging.
-3. Delete the unused `.png` source after conversion if it is no longer referenced.
-4. Never ship a page with both `.png` and `.webp` for the same asset unless the PNG is intentionally kept as an edit source and clearly documented.
-5. If an image is used for comparison/slider logic, ensure both layers use the same format and same crop framing.
-6. If a source file is large or a visual is reused across multiple components, optimize once and reuse the generated `.webp` file instead of creating duplicates.
-7. No "temporary PNG until later" exceptions. If the app is using the image, it must use the WebP path.
+3. Delete the unused `.png`/`.jpg` source after conversion if it is no longer referenced.
+4. Never ship a page with both `.png` and `.webp` for the same asset unless the raster file is intentionally kept as an edit source and clearly documented.
+5. If an image is used for comparison/slider logic, ensure both layers use the same format and the same crop framing.
+6. If a source file is large or reused across multiple components, optimize once and reuse the generated `.webp` instead of creating duplicates.
+7. No "temporary PNG until later" exceptions. If the app is using the image as content, it must use the WebP path.
 
 ## Required conversion workflow (manual)
 
