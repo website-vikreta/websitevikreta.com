@@ -51,6 +51,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={utile.variable}
+      data-scroll-behavior="smooth"
     >
       <body>
         <Suspense fallback={null}>
