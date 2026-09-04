@@ -1,11 +1,18 @@
-# Command: /fix-performance
+# Command Recipe: fix-performance
+
 > Diagnose and fix a performance issue on a page or component.
 
+## Trigger
+
+Run the **fix-performance** command recipe, or invoke `/fix-performance` if your tool supports slash commands.
+
 ## Load
-- `.claude/agents/builder.md` (performance section only)
-- `.claude/context/session.md`
+
+- `.ai/agents/builder.md` (performance section only)
+- `.ai/context/session.md`
 
 ## Input Required
+
 - Page route or component
 - Lighthouse score (if known)
 - Metric failing: LCP / CLS / INP / TTFB / bundle size
@@ -35,7 +42,9 @@
 - Are Three.js / R3F loaded on every page instead of dynamically?
 - Are there unused imports?
 
-## Output
+## Output Validation
+
 - Root cause identified
 - Code fix applied
-- Expected Lighthouse delta
+- Expected Lighthouse delta stated
+- Perf-related reusable decision logged to `.ai/learning.md` if applicable

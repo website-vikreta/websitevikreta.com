@@ -1,15 +1,22 @@
-# Command: /humanize
+# Command Recipe: humanize
+
 > Strip AI-writing tells out of copy so it reads like a person wrote it. Run on every word that ships — page copy, blog posts, meta descriptions, alt text, CTAs.
 
+## Trigger
+
+Run the **humanize** command recipe, or invoke `/humanize` if your tool supports slash commands.
+
 ## Load
-- `.claude/context/brand.md` (Voice & Tone — the target sound)
-- `.claude/learning.md` → `[Copy]` entries (density budget, logged copy rules)
+
+- `.ai/context/brand.md` (Voice & Tone — the target sound)
+- `.ai/learning.md` → `[Copy]` entries (density budget, logged copy rules)
 
 ## Input Required
+
 - Text to humanize: a file path, a component path, or pasted copy.
 - Optional: target tone if it differs from brand voice (default: brand voice).
 
-## Process
+## Execution Checklist
 
 ### 1. Scan
 Read the text and mark every hit from the pattern table below. Quote the offending line, name the pattern.
@@ -23,6 +30,15 @@ If a sentence would embarrass you said out loud to a client on a call, it fails.
 ### 4. Output
 - The rewritten text (applied to the file if a path was given)
 - A short list of what changed and why (pattern name per fix)
+
+## Output Validation
+
+- [ ] Zero hits from the pattern table
+- [ ] Zero em dashes beyond one per section
+- [ ] Zero curly quotes
+- [ ] Every claim is either specific or deleted
+- [ ] Reads aloud without cringe
+- [ ] Still says what it needed to say
 
 ---
 
@@ -86,7 +102,7 @@ Clean and dead is still a fail. After the cuts:
 ---
 
 ## Brand-specific bans (on top of the above)
-From `.claude/context/brand.md`:
+From `.ai/context/brand.md`:
 - No corporate jargon: synergy, leverage, holistic, transformation, solutions (as a noun).
 - No startup hype: disrupting, revolutionizing, game-changing, next-gen.
 - No tool names before outcomes.

@@ -11,7 +11,7 @@ interface FeaturedBlogHeroProps {
 // Server Component, no reveal. This is the LCP element on /blog and on the
 // category/label/tag landing pages — its image is `priority`, so gating the
 // whole card behind a fade-in observer was actively fighting that. See the
-// [Anti-pattern] entry in .claude/learning.md.
+// [Anti-pattern] entry in .ai/learning.md.
 export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
   return (
     <article className="mb-10 md:mb-14 border border-(--color-border) hover:border-(--color-border-strong) transition-colors duration-300 lg:grid lg:grid-cols-2 lg:items-stretch lg:aspect-[32/9]">

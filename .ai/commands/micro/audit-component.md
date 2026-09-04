@@ -1,14 +1,22 @@
-# Command: /audit-component
+# Command Recipe: audit-component
+
 > Quick design + performance audit on a single component.
 
+## Trigger
+
+Run the **audit-component** command recipe, or invoke `/audit-component` if your tool supports slash commands.
+
 ## Load
-- `.claude/agents/critic.md` (scoring rubric only)
-- `.claude/standards/design-system.md` (token compliance)
+
+- `.ai/agents/critic.md` (scoring rubric only)
+- `.ai/standards/design-system.md` (token compliance)
 
 ## Input Required
+
 - Component file path or pasted code
 
 ## Audit Checks
+
 - [ ] Uses CSS custom property tokens (no hardcoded hex)
 - [ ] Accent color `#FFD600` used max once
 - [ ] No border-radius > 4px on containers
@@ -20,9 +28,10 @@
 - [ ] Font uses `font-sans` Tailwind class or `var(--font-epilogue)` — no hardcoded font families
 - [ ] GSAP has cleanup if animations present
 - [ ] `prefers-reduced-motion` respected
-- [ ] Visible strings pass `.claude/commands/macro/humanize.md` (no puff, no `-ing` tails, no curly quotes)
+- [ ] Visible strings pass `.ai/commands/macro/humanize.md` (no puff, no `-ing` tails, no curly quotes)
 
-## Output
+## Output Validation
+
 - Pass / Fail per check
 - Specific lines to fix
-- Fixed version of component
+- Fixed version of component (if failures found)

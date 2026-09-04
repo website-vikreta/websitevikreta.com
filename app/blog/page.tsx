@@ -14,7 +14,7 @@ import { selectFeaturedPost } from '@/lib/selectFeaturedPost'
 import { fetchFilteredBlogPosts, fetchCategoriesWithPosts, fetchPostsByLabel } from '@/sanity/lib/fetch'
 import type { DisplayPost } from '@/sanity/types'
 
-// Label whose posts populate the hero slider — see .claude/learning.md
+// Label whose posts populate the hero slider — see .ai/learning.md
 // [Hero] entry for why "Featured Articles" (not a literal "Featured Blog"
 // label, which doesn't exist in the Sanity schema) is the source.
 const HERO_LABEL_SLUG = 'featured-articles'

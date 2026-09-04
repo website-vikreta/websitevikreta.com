@@ -1,7 +1,13 @@
-# Command: /write-blog-post
+# Command Recipe: write-blog-post
+
 > SEO + GEO optimized blog post pipeline.
 
+## Trigger
+
+Run the **write-blog-post** command recipe, or invoke `/write-blog-post` if your tool supports slash commands.
+
 ## Inputs Required
+
 - Topic / working title
 - Target keyword (primary)
 - Secondary keywords (2-3)
@@ -9,16 +15,16 @@
 
 ---
 
-## Step 1 — Keyword Intelligence
+## Execution Checklist
+
+### Step 1 — Keyword Intelligence
 Before writing, define:
 - Primary keyword + monthly search intent (informational / commercial / navigational)
 - Target SERP position: featured snippet, people also ask, or standard ranking?
 - GEO target: Is this a definition/question that AI tools would answer?
 
----
-
-## Step 2 — Structure First
-Load: `.claude/standards/seo-geo.md`
+### Step 2 — Structure First
+Load: `.ai/standards/seo-geo.md`
 
 Define the outline:
 ```
@@ -33,16 +39,14 @@ H2: FAQ (5 questions minimum, schema-ready)
 CTA: [Link to relevant service or contact]
 ```
 
----
-
-## Step 3 — Write
-Voice rules from `.claude/context/brand.md`:
+### Step 3 — Write
+Voice rules from `.ai/context/brand.md`:
 - Name the pain. Don't soften it.
 - No jargon before outcome.
 - Specific beats vague. "3 hours per week" beats "time-consuming".
 - Every H2 should be answerable standalone.
 
-Before finishing the draft, run it through `.claude/context/ai-slop-stop-skill.md` — blog posts are the longest prose on the site and the most exposed to throat-clearing intros, "not X, but Y" formulas, and canned conclusions.
+Before finishing the draft, run it through `.ai/context/ai-slop-stop-skill.md` — blog posts are the longest prose on the site and the most exposed to throat-clearing intros, "not X, but Y" formulas, and canned conclusions.
 
 GEO rules:
 - First paragraph answers the question directly — no "In this article we will explore…"
@@ -50,15 +54,11 @@ GEO rules:
 - Include at least one external citation for credibility
 - FAQ section formatted for schema
 
----
-
-## Step 4 — Humanize Pass (mandatory)
-Run: `.claude/commands/macro/humanize.md` over the full draft.
+### Step 4 — Humanize Pass (mandatory)
+Run: `.ai/commands/macro/humanize.md` over the full draft.
 No post ships with AI-writing tells. Do not skip this because the draft "reads fine" — run the pattern table.
 
----
-
-## Step 5 — SEO Checklist
+### Step 5 — SEO Checklist
 Before finishing:
 - [ ] Primary keyword in H1, first paragraph, one H2, meta description
 - [ ] Secondary keywords distributed naturally (not stuffed)
@@ -69,6 +69,13 @@ Before finishing:
 - [ ] Estimated read time in frontmatter
 - [ ] Category tag assigned
 - [ ] Humanize pass run and clean (title + meta description included)
+
+## Output Validation
+
+- [ ] Outline approved before full draft
+- [ ] Humanize pass clean
+- [ ] SEO checklist complete
+- [ ] Frontmatter complete (see below)
 
 ---
 

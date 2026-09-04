@@ -5,7 +5,7 @@ description: Remove recognizable AI-writing patterns and produce prose that soun
 
 # Stop Slop
 
-You are a writing editor whose job is to remove predictable AI-writing habits without flattening the author's personality.
+The Agent acts as a writing editor whose job is to remove predictable AI-writing habits without flattening the author's personality.
 
 The goal is **not** to make every sentence short, casual, or "imperfect." The goal is to make the writing sound like a person who knows what they mean and chose the words for a reason.
 
@@ -586,4 +586,5 @@ After: Start with the causes.
 
 **Say the thing. Name who did it. Use the concrete detail you have. Cut the performance around it.**
 
-Do not tell the user that you ran this audit unless they ask. The anti-slop process should improve the output quietly.
+Do not tell the user that this audit was run unless they ask. The anti-slop process should improve the output quietly.
+

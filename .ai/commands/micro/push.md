@@ -1,14 +1,21 @@
-# Command: /push
+# Command Recipe: push
+
 > Turn the current working-tree changes into logically-split commits and push. Opens a new PR against the active `releases/**` branch if none exists yet for this branch; otherwise just updates the existing one.
 
+## Trigger
+
+Run the **push** command recipe, or invoke `/push` if your tool supports slash commands.
+
 ## Load
-- Nothing from the design pipeline — this is a git/GitHub workflow command, not a design task.
+
+- Nothing from the design pipeline — this is a git/GitHub workflow recipe, not a design task.
 
 ## Input Required
+
 - Nothing required. Optional: a short hint about what the change is for for a better branch slug / PR title.
 - Optional flag: `--confirm` (or the user says "ask first" / "confirm before opening") → enables the confirmation gate in §6. Default (flag absent): run straight through, no gate.
 
-## Process
+## Execution Checklist
 
 ### 1. Determine the target release branch
 ```
@@ -24,7 +31,7 @@ current_branch=$(git branch --show-current)
 
 ### 3. Build gate — mandatory, no flag to skip
 - Run `npm run build`.
-- **Build fails** → STOP immediately. Do not commit, do not push, do not open/update a PR. Report the build errors to the user and fix them (or ask, if the fix isn't obvious) before retrying `/push`.
+- **Build fails** → STOP immediately. Do not commit, do not push, do not open/update a PR. Report the build errors to the user and fix them (or ask, if the fix isn't obvious) before retrying **push**.
 - **Build succeeds** → continue.
 
 ### 4. Decide mode: new branch+PR, or update an existing one
@@ -33,7 +40,7 @@ current_branch=$(git branch --show-current)
 - **`current_branch` IS the target release branch** (fresh work, straight off `releases/**`) → **New PR mode**.
   - Pick a type prefix from the change's dominant nature: `feat` / `fix` / `refactor` / `perf` / `chore` / `docs` / `style` — same convention as this repo's recent branches (`feat/mobile-performance`, `fix/ga-hostname-gate`).
   - `git checkout -b <type>/<kebab-slug>` off current HEAD (carries uncommitted changes over — no stash needed).
-- **`current_branch` is anything else** (you're already on a feature branch — either from an earlier `/push` run or created manually) → **stay on it, do not create another branch.** Then check `gh pr list --head <current_branch> --state open --json number,url`:
+- **`current_branch` is anything else** (already on a feature branch) → **stay on it, do not create another branch.** Then check `gh pr list --head <current_branch> --state open --json number,url`:
   - **Open PR exists** → **Update mode**: this run only commits + pushes to the existing branch. Skip branch creation and skip `gh pr create` entirely — the push updates the existing PR automatically. Report its URL, don't open a new one.
   - **No open PR yet** → **New PR mode, existing branch**: commit + push on this same branch, then run `gh pr create` for the first time (§7-8).
 
@@ -69,7 +76,7 @@ Body must include:
 ## Testing
 ### Checklist
 - [ ] Step-by-step manual verification steps specific to what changed
-- [ ] Cross-browser / mobile check if UI touched (per CLAUDE.md: mobile-first)
+- [ ] Cross-browser / mobile check if UI touched (per AGENTS.md: mobile-first)
 - [ ] `npm run build` / `npx tsc` clean if applicable
 - [ ] No console errors / warnings introduced
 
@@ -83,6 +90,8 @@ Body must include:
 - **New PR mode only**: push right after committing, then immediately call `gh pr create --base <target-release-branch> --head <branch> --title "..." --body "$(cat <<'EOF' ... EOF)"` — no gate. Re-check `gh pr list --head <branch> --state open` immediately before this call — if one now exists, skip creating and report that URL instead.
 - Never force-push, never skip hooks, never target `main` — only the active `releases/**` branch from step 1.
 
-## Output
-- PR URL
+## Output Validation
+
+- PR URL reported
 - Short list of commits made
+- Build gate passed before push
