@@ -17,11 +17,15 @@ export function ScrollManager() {
   }, [])
 
   useEffect(() => {
+    // `instant` overrides global `scroll-behavior: smooth` — route changes
+    // should jump to top, not animate like same-page scrolling.
+    const scrollOpts: ScrollToOptions = { left: 0, behavior: 'instant' }
+
     if (isBack.current) {
-      window.scrollTo(0, scrollPositions.current[pathname] ?? 0)
+      window.scrollTo({ top: scrollPositions.current[pathname] ?? 0, ...scrollOpts })
       isBack.current = false
     } else {
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, ...scrollOpts })
     }
 
     const handleScroll = () => {
