@@ -87,7 +87,7 @@
 ```
 
 ## Section & Hierarchy Conventions
-> Applied conventions that keep pages uniform. See `.claude/learning.md` for full log.
+> Applied conventions that keep pages uniform. See `.ai/learning.md` for full log.
 
 - **Section vertical rhythm:** every top-level section uses `py-16 md:py-20`. No other section padding.
 - **Heading → content gap:** section heading block uses `mb-10 md:mb-14`.

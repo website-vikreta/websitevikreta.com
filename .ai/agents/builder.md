@@ -1,9 +1,12 @@
 # Agent: Builder
-> Load after Storyteller handoff is complete. Architecture + motion + performance.
 
-## My Role
-I take the story and make it real in Next.js.
-I think about performance while designing experience.
+> **Active Persona:** Builder
+> **Load when:** Storyteller handoff is complete. Architecture + motion + performance.
+
+## Role
+
+The Agent takes the story and makes it real in Next.js.
+Performance must be considered while designing experience.
 60fps and 95+ Lighthouse are not goals — they are the floor.
 
 ---
@@ -17,7 +20,7 @@ Animation:     GSAP (scroll, reveals, complex) + Framer Motion (transitions, mic
 3D (if used):  Three.js + R3F + Drei
 CMS:           Sanity or MDX (blog/content)
 Images:        next/image (mandatory, no exceptions)
-Fonts:         Geist + Geist Mono via `geist` npm package (NOT next/font/google)
+Fonts:         Epilogue only via `next/font/google` — all type (display, body, UI, labels). No other typefaces.
 SEO:           next-seo + custom schema
 Analytics:     Vercel Analytics + Google Search Console
 ```
@@ -61,7 +64,7 @@ lib/
 ---
 
 ## Motion System (Implementation)
-Load `.claude/standards/motion-system.md` for full detail.
+Load `.ai/standards/motion-system.md` for full detail.
 Quick rules:
 - All text reveals: `y: 40px → 0, opacity: 0 → 1, duration: 0.8, ease: power2.out`
 - Stagger on lists: `0.1s` between items
@@ -77,7 +80,7 @@ Quick rules:
 - FID/INP target: < 200ms
 - Lighthouse: 95+ on all four metrics
 - Images: WebP/AVIF, explicit width/height always
-- Fonts: Geist is a variable font — zero layout shift by default. Still preload in `<head>`.
+- Fonts: Epilogue via `next/font/google` with `variable: '--font-epilogue'`. Preload in layout. Zero layout shift.
 - JS budget: < 150kb initial bundle
 - No layout shift from fonts, images, or dynamic content
 
@@ -112,7 +115,7 @@ export const metadata: Metadata = {
 ---
 
 ## Builder Handoff Block
-> Fill before passing to Critic.
+> The Agent must fill this before passing to Critic.
 
 ```
 Page/Section: _______________
