@@ -24,6 +24,7 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Services',
     dropdown: [
       { label: 'AI Automations', href: '/services/ai-automations' },
+      { label: 'WhatsApp Automation', href: '/services/ai-automations/whatsapp-automation' },
       { label: 'Web Development', href: '/services/web-development' },
       { label: 'Apps & CRM', href: '/services/web-mobile-app-development' },
       { label: 'UI/UX Design', href: '/services/uiux-design' },
@@ -294,7 +295,7 @@ export function Navbar() {
                     <ul
                       className={`list-none overflow-hidden transition-all duration-300 ${
                         mobileExpanded === item.label
-                          ? 'max-h-72 opacity-100 pb-1'
+                          ? 'max-h-80 opacity-100 pb-1'
                           : 'max-h-0 opacity-0'
                       }`}
                     >
