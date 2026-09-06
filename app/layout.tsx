@@ -48,11 +48,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    // Next 16 opts out of disabling CSS smooth-scroll on SPA navigations
-    // unless this is set: https://nextjs.org/docs/messages/missing-data-scroll-behavior
     <html
       lang="en"
       className={utile.variable}
+      // Next 16: Next only disables CSS smooth-scroll on SPA navigations when this is set.
+      // https://nextjs.org/docs/messages/missing-data-scroll-behavior
       data-scroll-behavior="smooth"
     >
       <body>
