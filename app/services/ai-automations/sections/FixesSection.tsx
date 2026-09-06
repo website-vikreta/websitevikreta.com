@@ -19,6 +19,7 @@ interface Service {
   indexLabel:  string
   description: string
   cta:         string
+  href?:       string
   image?:      ServiceImage
 }
 
@@ -71,7 +72,8 @@ const SERVICES: Service[] = [
     indexLabel:  'WhatsApp agents',
     description:
       'A customer assistant that sounds like your team and actually does things: payment links, live order tracking, returns and promotions, all inside the chat.',
-    cta:         'See how it works',
+    cta:         'Explore the full platform',
+    href:        '/services/ai-automations/whatsapp-automation',
     image: {
       src:    '/services/whatsapp-ai-agent.webp',
       width:  1536,
@@ -196,7 +198,12 @@ export default function FixesSection() {
                   {service.description}
                 </p>
                 <div className="service-copy mt-6">
-                  <Button href="#book-audit" variant="ghost" size="sm" showArrow>
+                  <Button
+                    href={service.href ?? '#book-audit'}
+                    variant="ghost"
+                    size="sm"
+                    showArrow
+                  >
                     {service.cta}
                   </Button>
                 </div>
