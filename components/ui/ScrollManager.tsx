@@ -3,6 +3,18 @@
 import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 
+/** Jump without inheriting CSS `scroll-behavior: smooth` (same pattern Next uses). */
+function jumpScroll(top: number) {
+  const html = document.documentElement
+  const previous = html.style.scrollBehavior
+  html.style.scrollBehavior = 'auto'
+  // Chrome ignores the style change until layout is flushed.
+  // https://github.com/vercel/next.js/issues/40719#issuecomment-1336248042
+  html.getClientRects()
+  window.scrollTo(0, top)
+  html.style.scrollBehavior = previous
+}
+
 export function ScrollManager() {
   const pathname = usePathname()
   const scrollPositions = useRef<Record<string, number>>({})
@@ -17,15 +29,11 @@ export function ScrollManager() {
   }, [])
 
   useEffect(() => {
-    // `instant` overrides global `scroll-behavior: smooth` — route changes
-    // should jump to top, not animate like same-page scrolling.
-    const scrollOpts: ScrollToOptions = { left: 0, behavior: 'instant' }
-
     if (isBack.current) {
-      window.scrollTo({ top: scrollPositions.current[pathname] ?? 0, ...scrollOpts })
+      jumpScroll(scrollPositions.current[pathname] ?? 0)
       isBack.current = false
     } else {
-      window.scrollTo({ top: 0, ...scrollOpts })
+      jumpScroll(0)
     }
 
     const handleScroll = () => {
