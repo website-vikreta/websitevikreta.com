@@ -31,6 +31,12 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.9,
   },
   {
+    url: `${BASE}/services/ai-automations/whatsapp-automation`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  },
+  {
     url: `${BASE}/services/web-development`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
