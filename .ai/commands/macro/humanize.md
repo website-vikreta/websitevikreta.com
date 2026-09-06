@@ -34,7 +34,7 @@ If a sentence would embarrass you said out loud to a client on a call, it fails.
 ## Output Validation
 
 - [ ] Zero hits from the pattern table
-- [ ] Zero em dashes beyond one per section
+- [ ] Zero em dashes in user-facing copy
 - [ ] Zero curly quotes
 - [ ] Every claim is either specific or deleted
 - [ ] Reads aloud without cringe
@@ -67,7 +67,7 @@ If a sentence would embarrass you said out loud to a client on a call, it fails.
 ### Style
 | Pattern | Fix |
 |---|---|
-| Em dash overuse | Comma, period, or rewrite. Max one em dash per section of copy. |
+| Em dash | Period, comma, or rewrite. No em dashes in user-facing copy. |
 | Boldface sprinkling | Bold nothing, or one phrase per screen. |
 | Inline-header bullet lists (`**Thing:** description`) | Prose sentence, or label + value with no bold. |
 | Title Case Headings | Sentence case. **Exception: button/CTA labels are Title Case — do not touch them** (user-confirmed 2026-08-22). |
@@ -112,7 +112,7 @@ From `.ai/context/brand.md`:
 
 ## Definition of done
 - [ ] Zero hits from the pattern table
-- [ ] Zero em dashes beyond one per section
+- [ ] Zero em dashes in user-facing copy
 - [ ] Zero curly quotes
 - [ ] Every claim is either specific or deleted
 - [ ] Reads aloud without cringe
