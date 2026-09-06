@@ -25,7 +25,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '01',
     title: 'AI Automation & Workflow Optimization',
     description:
-      'Find us the hours your team shouldn\'t be spending. We audit what\'s actually happening in your business, then wire in AI where it makes sense, not where it sounds impressive.',
+      'We audit the hours your team spends on CRM, reporting, and support, then build custom AI agents and workflow automation that take that work off their plate.',
     image: '/our-services/ai-automation-systems.webp',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
@@ -35,7 +35,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '02',
     title: 'Website Development',
     description:
-      'Built in Next.js. Fast, SEO-ready, written properly. Not a theme with your logo on it.',
+      'Custom, SEO-ready websites for growing businesses. Fast to load, written to rank, and built around how you sell.',
     image: '/services/web-development-showcase.webp',
     href: '/services/web-development',
     FallbackIcon: Globe,
@@ -45,7 +45,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '03',
     title: 'UI/UX Design',
     description:
-      "We start with how people actually use things. The visual part comes after that's figured out.",
+      'User research, wireframes, and product design for web and mobile. Design systems and prototypes your developers can actually ship.',
     image: '/our-services/uiux-design-systems.webp',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
@@ -55,7 +55,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '04',
     title: 'Web & Mobile Apps / CRM Systems',
     description:
-      "Portals, CRMs, e-commerce, internal tools. Built for how your business runs, not for how a template assumes it should.",
+      'Custom CRMs, customer portals, internal tools, and e-commerce. Web and mobile apps built around how your business runs.',
     image: '/our-services/web-mobile-crm-systems.webp',
     href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
@@ -65,7 +65,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     index: '05',
     title: 'Digital Marketing / SEO & GEO',
     description:
-      'SEO, GEO, paid: combined into one thing that\'s actually measured. No vanity metrics.',
+      'SEO, GEO, content, and paid campaigns built to bring in leads. Local SEO and growth marketing you can measure in enquiries.',
     image: '/our-services/digital-marketing-systems.webp',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
@@ -176,8 +176,8 @@ export function ServicesBentoGrid() {
           </RevealText>
           <RevealFade className="mt-5" delay={0.22}>
             <p className="text-body-lg leading-relaxed text-(--color-text-muted) max-w-xl">
-              One team building the automation, the website, and the marketing that runs on it —
-              not three vendors who&apos;ve never spoken to each other.
+              The automation, the website, and the marketing that runs on it come from one team.
+              Split that across three vendors who have never spoken and the work falls apart.
             </p>
           </RevealFade>
         </div>
