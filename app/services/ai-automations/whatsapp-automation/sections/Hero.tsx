@@ -14,8 +14,8 @@ import { MediaPlaceholder } from '../components/MediaPlaceholder'
 
 const PROOF = [
   '98% message open rate',
-  '15–40% cart recovery range',
-  'Live in 7–14 days',
+  '15 to 40% cart recovery range',
+  'Live in 7 to 14 days',
 ]
 
 export default function Hero() {
@@ -62,10 +62,6 @@ export default function Hero() {
         className="container relative z-10 grid grid-cols-1 items-center gap-12 pt-28 pb-20 opacity-0 lg:grid-cols-2 lg:gap-16 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28"
       >
         <div className="text-center lg:text-left">
-          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-(--color-text-faint)">
-            WhatsApp Commerce Platform
-          </p>
-
           <h1
             ref={headingRef}
             className="mb-6 max-w-xl text-balance font-sans text-h1 font-bold text-(--color-text) md:font-semibold lg:mx-0"
@@ -79,8 +75,8 @@ export default function Hero() {
             ref={subRef}
             className="mb-10 max-w-lg text-body-lg leading-relaxed text-(--color-text-muted) lg:mx-0"
           >
-            CRM, cart recovery, COD confirmation, order updates, and AI support —
-            deployed on your brand, connected to your store.
+            CRM, cart recovery, COD confirmation, order updates, and AI support.
+            Deployed on your brand, connected to your store.
           </p>
 
           <div
