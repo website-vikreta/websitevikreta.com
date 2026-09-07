@@ -52,7 +52,7 @@ const WHATSAPP_DEMO_CONFIG: AuditModalConfig = {
   subjectPlaceholder: 'Your store URL or platform (Shopify, WooCommerce, custom)',
   messagePlaceholder: 'Monthly order volume, cart abandonment challenges…',
   dialogDescription:
-    "Tell us about your store — we'll show you what the platform looks like on your brand.",
+    "Tell us about your store. We'll show you what the platform looks like on your brand.",
 }
 
 /**
