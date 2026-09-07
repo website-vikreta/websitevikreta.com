@@ -177,7 +177,7 @@ export function ServicesBentoGrid() {
           <RevealFade className="mt-5" delay={0.22}>
             <p className="text-body-lg leading-relaxed text-(--color-text-muted) max-w-xl">
               The automation, the website, and the marketing that runs on it come from one team.
-              Split that across three vendors who have never spoken and the work falls apart.
+              Split it across three vendors who have never spoken to each other, and the work falls apart.
             </p>
           </RevealFade>
         </div>
