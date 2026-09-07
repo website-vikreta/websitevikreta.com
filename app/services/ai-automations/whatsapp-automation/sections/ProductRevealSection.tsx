@@ -11,9 +11,9 @@ import {
 import { MediaPlaceholder } from '../components/MediaPlaceholder'
 
 const MODULES = [
-  { title: 'Sales & CRM', line: 'Every lead from every channel — one dashboard.' },
+  { title: 'Sales & CRM', line: 'Every lead from every channel in one dashboard.' },
   { title: 'WhatsApp Commerce', line: 'Cart recovery, COD confirm, order updates.' },
-  { title: 'Automation & AI', line: 'Chatbots, agents, and workflows — no code.' },
+  { title: 'Automation & AI', line: 'Chatbots, agents, and workflows. No code.' },
   { title: 'Omni-Channel Inbox', line: 'WhatsApp, Instagram, and Facebook in one place.' },
 ]
 
@@ -50,13 +50,13 @@ export default function ProductRevealSection() {
           <p className="reveal-copy mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
             Leads from every channel land in one CRM. WhatsApp handles sales,
             support, and recovery. Your store stays in sync. Your team manages
-            it from one dashboard — not five tabs.
+            it from one dashboard instead of five tabs.
           </p>
         </div>
 
         <div className="reveal-visual mb-10">
           <MediaPlaceholder
-            label="Hub architecture diagram — CRM at center, four product modules"
+            label="Hub architecture diagram. CRM at center, four product modules"
             aspect="wide"
           />
         </div>

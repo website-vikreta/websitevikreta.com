@@ -49,11 +49,11 @@ export default function OnboardingSection() {
             id="onboarding-heading"
             className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
           >
-            Live in 7–14 days. Here is exactly what happens.
+            Live in 7 to 14 days. Here is exactly what happens.
           </h2>
           <p className="onboarding-copy mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
             We handle Meta verification, template approval, and store wiring. You
-            provide brand assets and approvals — we do the rest.
+            provide brand assets and approvals. We do the rest.
           </p>
         </div>
 

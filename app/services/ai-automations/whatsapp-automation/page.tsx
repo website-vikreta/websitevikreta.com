@@ -13,7 +13,7 @@ const jsonLd = {
       name: 'WhatsApp Commerce Platform',
       serviceType: 'WhatsApp E-commerce Automation',
       description:
-        'CRM, cart recovery, COD confirmation, order updates, and AI support on WhatsApp — one platform deployed for your store.',
+        'CRM, cart recovery, COD confirmation, order updates, and AI support on WhatsApp. One platform deployed for your store.',
       url: PAGE_URL,
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },

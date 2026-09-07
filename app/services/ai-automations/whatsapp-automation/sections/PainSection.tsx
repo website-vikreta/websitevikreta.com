@@ -12,12 +12,12 @@ const PAINS = [
   {
     stat: '70%',
     title: 'Carts are being abandoned',
-    line: 'Seven in ten checkouts never complete. That revenue is still recoverable — if you reach buyers where they actually read messages.',
+    line: 'Seven in ten checkouts never complete. That revenue is still recoverable if you reach buyers where they actually read messages.',
   },
   {
-    stat: '5–8%',
+    stat: '5 to 8%',
     title: 'Email recovery is not working',
-    line: 'Cart recovery emails land in Promotions. Open rates sit around 20%. WhatsApp inverts that — messages get read.',
+    line: 'Cart recovery emails land in Promotions. Open rates sit around 20%. WhatsApp inverts that. Messages get read.',
   },
   {
     stat: 'Hours',

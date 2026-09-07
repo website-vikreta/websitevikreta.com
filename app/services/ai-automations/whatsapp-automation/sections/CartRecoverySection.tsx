@@ -29,7 +29,7 @@ const CAUSES = [
   },
   {
     cause: 'Slow checkout page',
-    fix: 'Next.js speed audit — target LCP under 2.5s',
+    fix: 'Speed audit. Target LCP under 2.5s',
   },
   {
     cause: 'Trust hesitation at payment',
@@ -38,9 +38,9 @@ const CAUSES = [
 ]
 
 const MESSAGES = [
-  { timing: '+15 min', label: 'Plain reminder', note: 'Utility — no discount' },
+  { timing: '+15 min', label: 'Plain reminder', note: 'Utility. No discount' },
   { timing: '+4 hrs', label: 'Objection handling', note: 'Social proof' },
-  { timing: '+24 hrs', label: 'Time-boxed offer', note: 'Marketing — last nudge' },
+  { timing: '+24 hrs', label: 'Time-boxed offer', note: 'Marketing. Last nudge' },
 ]
 
 export default function CartRecoverySection() {
@@ -70,12 +70,12 @@ export default function CartRecoverySection() {
             id="cart-heading"
             className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
           >
-            We fix checkout — then recover the carts that still leave
+            We fix checkout, then recover the carts that still leave
           </h2>
           <p className="cart-intro mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
             Six fixable reasons carts die. We address checkout friction first,
             then run a three-message WhatsApp sequence on the ones that still
-            abandon. No discount on message one — that trains shoppers to leave
+            abandon. No discount on message one. That trains shoppers to leave
             on purpose.
           </p>
         </div>
@@ -110,7 +110,7 @@ export default function CartRecoverySection() {
             {MESSAGES.map(({ timing, label, note }) => (
               <div key={timing} className="cart-mockup">
                 <MediaPlaceholder
-                  label={`WhatsApp message mockup — ${label}`}
+                  label={`WhatsApp message mockup, ${label}`}
                   aspect="portrait"
                 />
                 <p className="mt-3 font-mono text-xs text-(--color-accent)">{timing}</p>

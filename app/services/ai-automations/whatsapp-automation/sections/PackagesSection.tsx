@@ -34,7 +34,7 @@ const PACKAGES: PackageTier[] = [
   {
     name: 'WA eCommerce',
     price: 'From ₹15,750 / quarter',
-    description: 'Full commerce stack — cart recovery, COD, and Shopify sync built in.',
+    description: 'Full commerce stack with cart recovery, COD, and Shopify sync built in.',
     highlighted: true,
     features: [
       'Everything in WA Starter',

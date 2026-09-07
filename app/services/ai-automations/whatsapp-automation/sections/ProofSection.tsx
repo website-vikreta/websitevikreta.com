@@ -11,8 +11,8 @@ import {
 const CASES = [
   {
     brand: 'Keeros SuperFoods',
-    result: '20–40% cart recovery',
-    detail: '98% message read rate. Abandoned cart notification 15–20 minutes after drop-off.',
+    result: '20 to 40% cart recovery',
+    detail: '98% message read rate. Abandoned cart notification 15 to 20 minutes after drop-off.',
   },
   {
     brand: 'The Hatke',
@@ -21,7 +21,7 @@ const CASES = [
   },
   {
     brand: 'Indian Ethnic Co.',
-    result: '7% → 15–20% recovery',
+    result: '15 to 20% recovery from 7%',
     detail: 'Cart recovery rose from a 7% baseline after switching from email-first to WhatsApp.',
   },
 ]

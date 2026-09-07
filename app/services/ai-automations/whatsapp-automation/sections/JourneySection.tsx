@@ -65,8 +65,8 @@ export default function JourneySection() {
             From first enquiry to repeat purchase
           </h2>
           <p className="mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Eight stages. One platform. Not just cart recovery — the full
-            customer lifecycle on WhatsApp.
+            Eight stages. One platform. Cart recovery is one stage. The rest of
+            the customer lifecycle runs on WhatsApp too.
           </p>
         </div>
 

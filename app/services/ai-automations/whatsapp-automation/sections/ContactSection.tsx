@@ -36,7 +36,7 @@ export default function ContactSection() {
             <p className="cta-sub text-body-lg leading-relaxed text-(--color-text-muted)">
               Tell us your store URL and monthly order volume. We will show you
               what cart recovery, COD confirmation, and order updates look like
-              on your brand — no commitment.
+              on your brand. No commitment.
             </p>
           </div>
 
