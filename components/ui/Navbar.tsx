@@ -4,13 +4,14 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ChevronDown, X } from 'lucide-react'
+import { ChevronDown, ChevronRight, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Logo } from '@/components/ui/Logo'
 
 interface DropdownItem {
   label: string
   href: string
+  children?: DropdownItem[]
 }
 
 interface NavItem {
@@ -23,8 +24,16 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: 'Services',
     dropdown: [
-      { label: 'AI Automations', href: '/services/ai-automations' },
-      { label: 'WhatsApp Automation', href: '/services/ai-automations/whatsapp-automation' },
+      {
+        label: 'AI Automations',
+        href: '/services/ai-automations',
+        children: [
+          {
+            label: 'WhatsApp Automation',
+            href: '/services/ai-automations/whatsapp-automation',
+          },
+        ],
+      },
       { label: 'Web Development', href: '/services/web-development' },
       { label: 'Apps & CRM', href: '/services/web-mobile-app-development' },
       { label: 'UI/UX Design', href: '/services/uiux-design' },
@@ -37,9 +46,14 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Careers', href: '/careers' },
 ]
 
+function dropItemMatches(item: DropdownItem, pathname: string): boolean {
+  if (pathname === item.href || pathname.startsWith(item.href + '/')) return true
+  return item.children?.some((child) => dropItemMatches(child, pathname)) ?? false
+}
+
 function isItemActive(item: NavItem, pathname: string): boolean {
   if (item.dropdown) {
-    return item.dropdown.some((d) => pathname.startsWith(d.href))
+    return item.dropdown.some((d) => dropItemMatches(d, pathname))
   }
   if (item.href) {
     return pathname === item.href || pathname.startsWith(item.href + '/')
@@ -47,10 +61,15 @@ function isItemActive(item: NavItem, pathname: string): boolean {
   return false
 }
 
+const DROP_LINK =
+  'flex items-center justify-between gap-3 px-3 py-2.5 text-sm text-[var(--color-text-muted)] rounded-[3px] transition-colors duration-150 hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]'
+
 export function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [nestedOpen, setNestedOpen] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
+  const [mobileNested, setMobileNested] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
   // Home-only: once the nav links are revealed by scrolling down, keep them
   // visible even after scrolling back to top (unlike `scrolled`, which tracks
@@ -79,7 +98,9 @@ export function Navbar() {
   useEffect(() => {
     setMobileOpen(false)
     setMobileExpanded(null)
+    setMobileNested(null)
     setActiveDropdown(null)
+    setNestedOpen(null)
     const isScrolled = window.scrollY > 40
     setScrolled(isScrolled)
     setLinksRevealed(isScrolled)
@@ -95,6 +116,7 @@ export function Navbar() {
   const closeMobileMenu = useCallback(() => {
     setMobileOpen(false)
     setMobileExpanded(null)
+    setMobileNested(null)
   }, [])
 
   return (
@@ -129,7 +151,10 @@ export function Navbar() {
                 key={item.label}
                 className="relative"
                 onMouseEnter={() => item.dropdown && setActiveDropdown(item.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseLeave={() => {
+                  setActiveDropdown(null)
+                  setNestedOpen(null)
+                }}
               >
                 {item.dropdown ? (
                   <>
@@ -144,7 +169,10 @@ export function Navbar() {
                             activeDropdown === item.label ? null : item.label,
                           )
                         }
-                        if (e.key === 'Escape') setActiveDropdown(null)
+                        if (e.key === 'Escape') {
+                          setActiveDropdown(null)
+                          setNestedOpen(null)
+                        }
                       }}
                     >
                       {item.label}
@@ -159,25 +187,86 @@ export function Navbar() {
                     </button>
 
                     <div
-                      className={`dropdown-panel${
+                      className={`dropdown-anchor${
                         activeDropdown === item.label ? ' open' : ''
                       }`}
-                      role="menu"
                     >
-                      <ul className="list-none" role="list">
-                        {item.dropdown.map((dropItem) => (
-                          <li key={dropItem.href} role="none">
-                            <Link
-                              href={dropItem.href}
-                              className="block px-3 py-2.5 text-sm text-[var(--color-text-muted)] rounded-[3px] transition-colors duration-150 hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]"
-                              role="menuitem"
-                              onClick={() => setActiveDropdown(null)}
+                      <div className="dropdown-panel" role="menu">
+                        <ul className="list-none" role="list">
+                          {item.dropdown.map((dropItem) => (
+                            <li
+                              key={dropItem.href}
+                              role="none"
+                              onMouseEnter={() =>
+                                setNestedOpen(
+                                  dropItem.children ? dropItem.href : null,
+                                )
+                              }
+                              onFocusCapture={() =>
+                                setNestedOpen(
+                                  dropItem.children ? dropItem.href : null,
+                                )
+                              }
                             >
-                              {dropItem.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                              <Link
+                                href={dropItem.href}
+                                className={`${DROP_LINK}${
+                                  nestedOpen === dropItem.href
+                                    ? ' text-[var(--color-text)] bg-[var(--color-bg-subtle)]'
+                                    : ''
+                                }`}
+                                role="menuitem"
+                                aria-haspopup={
+                                  dropItem.children ? 'menu' : undefined
+                                }
+                                aria-expanded={
+                                  dropItem.children
+                                    ? nestedOpen === dropItem.href
+                                    : undefined
+                                }
+                                onClick={() => setActiveDropdown(null)}
+                              >
+                                {dropItem.label}
+                                {dropItem.children ? (
+                                  <ChevronRight
+                                    size={12}
+                                    strokeWidth={1.5}
+                                    aria-hidden={true}
+                                    className="shrink-0 text-[var(--color-text-faint)]"
+                                  />
+                                ) : null}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      {item.dropdown.map((dropItem) =>
+                        dropItem.children ? (
+                          <div
+                            key={`${dropItem.href}-submenu`}
+                            className={`dropdown-panel nested${
+                              nestedOpen === dropItem.href ? ' open' : ''
+                            }`}
+                            role="menu"
+                            onMouseEnter={() => setNestedOpen(dropItem.href)}
+                          >
+                            <ul className="list-none" role="list">
+                              {dropItem.children.map((child) => (
+                                <li key={child.href} role="none">
+                                  <Link
+                                    href={child.href}
+                                    className={DROP_LINK}
+                                    role="menuitem"
+                                    onClick={() => setActiveDropdown(null)}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : null,
+                      )}
                     </div>
                   </>
                 ) : (
@@ -274,11 +363,14 @@ export function Navbar() {
                   <div>
                     <button
                       className="flex items-center justify-between w-full py-3 text-left text-[0.9375rem] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-150"
-                      onClick={() =>
-                        setMobileExpanded(
-                          mobileExpanded === item.label ? null : item.label,
-                        )
-                      }
+                      onClick={() => {
+                        if (mobileExpanded === item.label) {
+                          setMobileExpanded(null)
+                          setMobileNested(null)
+                        } else {
+                          setMobileExpanded(item.label)
+                        }
+                      }}
                       aria-expanded={mobileExpanded === item.label}
                     >
                       {item.label}
@@ -295,19 +387,74 @@ export function Navbar() {
                     <ul
                       className={`list-none overflow-hidden transition-all duration-300 ${
                         mobileExpanded === item.label
-                          ? 'max-h-80 opacity-100 pb-1'
+                          ? 'max-h-[28rem] opacity-100 pb-1'
                           : 'max-h-0 opacity-0'
                       }`}
                     >
                       {item.dropdown.map((dropItem) => (
                         <li key={dropItem.href}>
-                          <Link
-                            href={dropItem.href}
-                            className="block py-2.5 pl-4 text-sm text-[var(--color-text-faint)] border-l border-black/[0.08] hover:text-[var(--color-text)] hover:border-black/[0.2] transition-all duration-150"
-                            onClick={closeMobileMenu}
-                          >
-                            {dropItem.label}
-                          </Link>
+                          {dropItem.children ? (
+                            <div>
+                              <div className="flex items-center border-l border-black/[0.08]">
+                                <Link
+                                  href={dropItem.href}
+                                  className="flex-1 py-2.5 pl-4 pr-2 text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors duration-150"
+                                  onClick={closeMobileMenu}
+                                >
+                                  {dropItem.label}
+                                </Link>
+                                <button
+                                  type="button"
+                                  className="flex items-center justify-center w-10 h-10 text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors duration-150"
+                                  aria-label={`${dropItem.label} submenu`}
+                                  aria-expanded={mobileNested === dropItem.href}
+                                  onClick={() =>
+                                    setMobileNested(
+                                      mobileNested === dropItem.href
+                                        ? null
+                                        : dropItem.href,
+                                    )
+                                  }
+                                >
+                                  <ChevronDown
+                                    size={13}
+                                    strokeWidth={1.5}
+                                    aria-hidden={true}
+                                    className={`transition-transform duration-200 ${
+                                      mobileNested === dropItem.href ? 'rotate-180' : ''
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                              <ul
+                                className={`list-none overflow-hidden transition-all duration-300 ${
+                                  mobileNested === dropItem.href
+                                    ? 'max-h-40 opacity-100'
+                                    : 'max-h-0 opacity-0'
+                                }`}
+                              >
+                                {dropItem.children.map((child) => (
+                                  <li key={child.href}>
+                                    <Link
+                                      href={child.href}
+                                      className="block py-2.5 pl-8 text-sm text-[var(--color-text-faint)] border-l border-black/[0.08] hover:text-[var(--color-text)] hover:border-black/[0.2] transition-all duration-150"
+                                      onClick={closeMobileMenu}
+                                    >
+                                      {child.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : (
+                            <Link
+                              href={dropItem.href}
+                              className="block py-2.5 pl-4 text-sm text-[var(--color-text-faint)] border-l border-black/[0.08] hover:text-[var(--color-text)] hover:border-black/[0.2] transition-all duration-150"
+                              onClick={closeMobileMenu}
+                            >
+                              {dropItem.label}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>
