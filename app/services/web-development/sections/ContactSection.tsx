@@ -4,11 +4,11 @@ import { useRef } from 'react'
 import { TextLink } from '@/components/ui/TextLink'
 import { AuditForm } from '@/components/ui/AuditForm'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import { WEB_DEV_CONTACT } from '../data'
 
 export default function ContactSection() {
   const scope = useRef<HTMLElement>(null)
 
-  // Entrance: left column (heading masked lines + sub fade-up) → form card → field rows, tight cascade.
   useGsapSection(scope, () => {
     revealLines('.cta-heading', { trigger: scope.current })
     revealFadeUp('.cta-sub', { y: 20, delay: STAGGER.loose, trigger: scope.current })
@@ -25,25 +25,22 @@ export default function ContactSection() {
     <section
       ref={scope}
       id="get-quote"
-      className="py-16 md:py-20"
+      className="pt-32 pb-24 md:pt-40 md:pb-32"
       aria-labelledby="cta-form-heading"
     >
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20 lg:items-start">
-
-          {/* Left — 40% */}
-          <div className='md:py-8'>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-20">
+          <div className="md:py-8">
             <h2
               id="cta-form-heading"
-              className="cta-heading text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6"
+              className="cta-heading mb-6 text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
             >
-              Let&rsquo;s Build Something That Converts
+              {WEB_DEV_CONTACT.heading}
             </h2>
-            <p className="cta-sub text-body-lg text-(--color-text-muted) leading-relaxed mb-6">
-              Tell us about your business. We&rsquo;ll tell you honestly what it takes to get a fast, SEO-ready site live: timeline and cost, no pressure.
+            <p className="cta-sub mb-6 text-body-lg leading-relaxed text-(--color-text-muted)">
+              {WEB_DEV_CONTACT.subhead}
             </p>
 
-            {/* Lower-friction second path for visitors who won't fill a form. */}
             <div className="cta-sub mb-4 md:mb-10">
               <TextLink href="https://wa.me/919970445198" arrow="diagonal" external>
                 Or message us directly on WhatsApp
@@ -51,18 +48,16 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Right — 60% */}
           <div>
-            <div className="cta-form-card bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
+            <div className="cta-form-card border border-(--color-border) bg-(--color-surface) p-5 sm:p-6 md:p-8">
               <AuditForm
                 formName="web_development_quote"
-                heading="Get a Free Website Quote"
+                heading={WEB_DEV_CONTACT.formHeading}
                 subjectPlaceholder="What do you need built?"
                 messagePlaceholder="Tell us about your business and what you're trying to build…"
               />
             </div>
           </div>
-
         </div>
       </div>
     </section>
