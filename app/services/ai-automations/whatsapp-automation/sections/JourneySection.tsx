@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import {
   revealLines,
   revealFadeUp,
   useGsapSection,
-  STAGGER,
 } from '@/lib/gsap/reveals'
 
 const STAGES = [
@@ -19,41 +19,59 @@ const STAGES = [
   { step: '08', title: 'Retention & re-engagement', feature: 'Win-back flows + bulk messaging' },
 ]
 
+const TOP = STAGES.slice(0, 4)
+const BOTTOM = STAGES.slice(4).toReversed()
+
+function StageNode({
+  item,
+  index,
+}: {
+  item: (typeof STAGES)[number]
+  index: number
+}) {
+  const titleOnTop = index % 2 === 0
+  const title = (
+    <h3 className="font-sans text-sm font-bold leading-tight text-(--color-text)">
+      <span className="sr-only">{`Step ${item.step}: `}</span>
+      {item.title}
+    </h3>
+  )
+  const feature = (
+    <p className="text-xs leading-snug text-(--color-text-muted)">{item.feature}</p>
+  )
+
+  return (
+    <li className="flex min-w-0 flex-col items-center px-1">
+      <div className="flex min-h-28 w-full items-end justify-center pb-4 text-center">
+        {titleOnTop ? title : feature}
+      </div>
+      <span
+        aria-hidden="true"
+        className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-(--color-accent) font-mono text-sm font-bold leading-none tracking-[-0.05em] text-(--color-text)"
+      >
+        {item.step}
+      </span>
+      <div className="flex min-h-28 w-full items-start justify-center pt-4 text-center">
+        {titleOnTop ? feature : title}
+      </div>
+    </li>
+  )
+}
+
 export default function JourneySection() {
   const scope = useRef<HTMLElement>(null)
-  const [activeStep, setActiveStep] = useState(STAGES[0].step)
 
   useGsapSection(scope, () => {
     revealLines('#journey-heading', { trigger: scope.current })
-    revealFadeUp('.journey-step', {
-      y: 20,
-      stagger: STAGGER.tight,
-      trigger: scope.current,
-    })
+    revealFadeUp('.journey-intro', { y: 20, trigger: scope.current })
+    revealFadeUp('.journey-map', { y: 24, trigger: scope.current })
   })
-
-  useEffect(() => {
-    const steps = scope.current?.querySelectorAll<HTMLElement>('.journey-step')
-    if (!steps?.length) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.find((e) => e.isIntersecting)
-        const step = hit?.target.getAttribute('data-step')
-        if (step) setActiveStep(step)
-      },
-      { rootMargin: '-30% 0px -55% 0px' },
-    )
-
-    steps.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
       ref={scope}
       id="journey"
-      className="py-16 md:py-20"
+      className="scroll-mt-32 py-16 md:py-20"
       aria-labelledby="journey-heading"
     >
       <div className="container">
@@ -64,57 +82,49 @@ export default function JourneySection() {
           >
             From first enquiry to repeat purchase
           </h2>
-          <p className="mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
+          <p className="journey-intro mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
             Eight stages. One platform. Cart recovery is one stage. The rest of
             the customer lifecycle runs on WhatsApp too.
           </p>
         </div>
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-12">
-          <nav
-            aria-label="Customer journey steps"
-            className="mb-8 hidden lg:col-span-4 lg:mb-0 lg:block lg:sticky lg:top-32 lg:self-start"
-          >
-            <ul className="flex flex-col">
-              {STAGES.map(({ step, title }) => {
-                const isActive = step === activeStep
-                return (
-                  <li key={step}>
-                    <a
-                      href={`#journey-${step}`}
-                      aria-current={isActive ? 'step' : undefined}
-                      className={`block border-l-2 py-2 pl-4 text-sm transition-colors duration-300 ${
-                        isActive
-                          ? 'border-(--color-text) text-(--color-text) [text-shadow:0_0_0.5px_currentColor]'
-                          : 'border-(--color-border) text-(--color-text-muted) hover:text-(--color-text)'
-                      }`}
-                    >
-                      {title}
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
+        <div className="journey-map overflow-x-auto pb-2">
+          <div className="relative min-w-[48rem]">
+            <div
+              aria-hidden="true"
+              className="absolute top-[8.375rem] right-[12.5%] left-[12.5%] h-4 -translate-y-1/2 bg-(--color-accent)"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute top-[8.375rem] left-[87.5%] h-[19.75rem] w-4 -translate-x-1/2 bg-(--color-accent)"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute top-[28.125rem] right-[12.5%] left-[12.5%] h-4 -translate-y-1/2 bg-(--color-accent)"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute top-[28.125rem] left-[12.5%] z-10 flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center bg-(--color-text)"
+            >
+              <ArrowLeft size={14} strokeWidth={2} className="text-(--color-bg)" />
+            </span>
 
-          <ol className="flex flex-col gap-6 lg:col-span-8">
-            {STAGES.map(({ step, title, feature }) => (
-              <li
-                key={step}
-                id={`journey-${step}`}
-                data-step={step}
-                className="journey-step scroll-mt-32 border border-(--color-border) bg-(--color-surface) p-6 md:p-8"
-              >
-                <span className="font-mono text-xs text-(--color-text-faint)">
-                  {step}
-                </span>
-                <h3 className="mt-2 font-sans text-xl font-bold text-(--color-text) md:text-2xl">
-                  {title}
-                </h3>
-                <p className="mt-3 text-[15px] text-(--color-accent)">{feature}</p>
-              </li>
-            ))}
-          </ol>
+            <ol className="grid grid-cols-4">
+              {TOP.map((item, i) => (
+                <StageNode key={item.step} item={item} index={i} />
+              ))}
+            </ol>
+            <div className="h-12" aria-hidden="true" />
+            <ol className="grid grid-cols-4">
+              {BOTTOM.map((item) => (
+                <StageNode
+                  key={item.step}
+                  item={item}
+                  index={STAGES.indexOf(item)}
+                />
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </section>

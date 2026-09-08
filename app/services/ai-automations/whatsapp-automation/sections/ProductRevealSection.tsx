@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import {
   revealLines,
   revealFadeUp,
@@ -8,7 +9,6 @@ import {
   useGsapSection,
   STAGGER,
 } from '@/lib/gsap/reveals'
-import { MediaPlaceholder } from '../components/MediaPlaceholder'
 
 const MODULES = [
   { title: 'Sales & CRM', line: 'Every lead from every channel in one dashboard.' },
@@ -23,7 +23,7 @@ export default function ProductRevealSection() {
   useGsapSection(scope, () => {
     revealLines('#reveal-heading', { trigger: scope.current })
     revealFadeUp('.reveal-copy', { y: 20, trigger: scope.current })
-    revealClipImage('.reveal-visual', { scale: true, trigger: scope.current })
+    revealClipImage('.reveal-visual', { scale: false, trigger: scope.current })
     revealFadeUp('.reveal-module', {
       y: 16,
       stagger: STAGGER.base,
@@ -36,36 +36,42 @@ export default function ProductRevealSection() {
     <section
       ref={scope}
       id="product"
-      className="py-16 md:py-20"
+      className="scroll-mt-32 py-16 md:py-20"
       aria-labelledby="reveal-heading"
     >
       <div className="container">
-        <div className="mb-10 max-w-2xl md:mb-14">
-          <h2
-            id="reveal-heading"
-            className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
-          >
-            This is not a chatbot. It is your business on WhatsApp.
-          </h2>
-          <p className="reveal-copy mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Leads from every channel land in one CRM. WhatsApp handles sales,
-            support, and recovery. Your store stays in sync. Your team manages
-            it from one dashboard instead of five tabs.
-          </p>
-        </div>
+        <div className="mb-10 grid grid-cols-1 items-center gap-10 md:mb-14 lg:grid-cols-2 lg:gap-16">
+          <div className="mx-auto max-w-xl text-center">
+            <h2
+              id="reveal-heading"
+              className="mb-6 text-h3 font-bold tracking-tight text-(--color-text)"
+            >
+              This is not a chatbot. It is your business on WhatsApp.
+            </h2>
+            <p className="reveal-copy text-body-lg leading-relaxed text-(--color-text-muted)">
+              Leads from every channel land in one CRM. WhatsApp handles sales,
+              support, and recovery. Your store stays in sync. Your team manages
+              it from one dashboard instead of five tabs.
+            </p>
+          </div>
 
-        <div className="reveal-visual mb-10">
-          <MediaPlaceholder
-            label="Hub architecture diagram. CRM at center, four product modules"
-            aspect="wide"
-          />
+          <div className="reveal-visual relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
+            <Image
+              src="/services/whatsapp-commerce-hub.webp"
+              alt="Instagram, Facebook, Google, web, and ads feeding into WhatsApp. The same hub runs catalog, automation, and support, with the team watching one dashboard and the customer chatting on their phone."
+              width={1448}
+              height={1086}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="h-auto w-full"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {MODULES.map(({ title, line }) => (
             <div
               key={title}
-              className="reveal-module border border-(--color-border) bg-(--color-surface) p-5"
+              className="reveal-module border border-(--color-border) bg-(--color-surface) p-6 text-center md:p-8"
             >
               <h3 className="font-sans text-base font-bold text-(--color-text)">
                 {title}

@@ -28,22 +28,23 @@ export default function IntegrationsStrip() {
   return (
     <section
       ref={scope}
-      className="border-y border-(--color-border) py-12 md:py-16"
+      className="border-y border-(--color-border) py-16 md:py-20"
       aria-label="Platform integrations"
     >
       <div className="container">
-        <p className="mb-8 text-center text-sm text-(--color-text-muted)">
+        <p className="mb-10 text-center text-sm text-(--color-text-muted) md:mb-14">
           Connects to what you already use
         </p>
-        <ul className="flex flex-wrap items-center justify-center gap-3">
-          {INTEGRATIONS.map((name) => (
-            <li
-              key={name}
-              className="integration-item flex h-12 min-w-[7rem] items-center justify-center border border-dashed border-(--color-border) bg-(--color-bg-muted) px-4"
-            >
-              <span className="font-mono text-[10px] uppercase tracking-wider text-(--color-text-faint)">
-                {name}
-              </span>
+        <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          {INTEGRATIONS.map((name, i) => (
+            <li key={name} className="integration-item flex items-center gap-8">
+              {i > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="hidden h-4 w-px bg-(--color-border) sm:block"
+                />
+              )}
+              <span className="text-sm font-medium text-(--color-text)">{name}</span>
             </li>
           ))}
         </ul>

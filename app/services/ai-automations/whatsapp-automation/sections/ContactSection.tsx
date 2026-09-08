@@ -21,7 +21,7 @@ export default function ContactSection() {
     <section
       ref={scope}
       id="whatsapp-demo"
-      className="pt-16 pb-24 md:pt-20 md:pb-32"
+      className="pt-32 pb-24 md:pt-40 md:pb-32"
       aria-labelledby="cta-form-heading"
     >
       <div className="container">

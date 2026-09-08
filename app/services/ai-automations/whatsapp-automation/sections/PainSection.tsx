@@ -55,7 +55,7 @@ export default function PainSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {PAINS.map(({ stat, title, line }) => (
             <article
               key={title}
