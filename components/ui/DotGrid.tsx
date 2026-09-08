@@ -183,7 +183,7 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
     <canvas
       ref={canvasRef}
       className={isGlobal
-        ? 'fixed inset-0 w-screen h-screen pointer-events-none -z-10'
+        ? 'fixed inset-0 pointer-events-none -z-10'
         : 'absolute inset-0 w-full h-full pointer-events-none'
       }
       aria-hidden="true"

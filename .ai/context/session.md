@@ -6,7 +6,9 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Digital Marketing page (`/services/digital-marketing`) — built out from `ComingSoonPage` to a full page, same conversion spine as Apps & CRM: Hero → Pain → Solution → HowWeWork → Proof → FAQ → Contact. New `sections/` folder + `DigitalMarketingClient.tsx`. New `#marketing-audit` popup config added to `AuditModalProvider.tsx`. Proof section is a single AP Cleanco project card + its testimonial (only real project tagged local SEO). FAQ is a new page-local array (`dm-1`–`dm-4`), not a filtered `ALL_FAQS` subset. `tsc --noEmit` and `eslint` clean. See learning.md's 2026-08-24 `[Page] Digital Marketing` entry (and its 2026-08-28 update) for exact details.
+Web Development page (`/services/web-development`) — PainSection desktop pins the full frame (The friction + H2 + step copy + image) at `top-32` for a `300vh` track; steps swap only after that pin. Three friction WebPs. Mobile stacked.
+
+Previous: Digital Marketing page
 
 2026-08-28 follow-up pass: `GrowthDiagram.tsx` retired — the three Solution panels and the Pain-section comparison now use real ChatGPT-generated illustrations (cropped triptych for the three system cards at `public/services/digital-marketing/systems/*.png`; a matched before/after pair for `PainMetricsReveal.tsx` at `public/services/digital-marketing/{vanity-metrics-chaos,real-metrics-clarity}.png`) instead of coded diagrams/text — this page now follows Apps & CRM's real-image precedent too. `PainMetricsReveal` is an interactive drag/hover-scrub before/after slider that auto-plays once on scroll-into-view. **Not yet reviewed by the user in a real deploy — ship then iterate on feedback.**
 
