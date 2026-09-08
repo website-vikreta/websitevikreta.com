@@ -874,3 +874,45 @@ _None logged yet._
   - `PainSection`'s right column is no longer a text-only comparison card — it's now `PainMetricsReveal.tsx`, an interactive before/after **image** slider (`vanity-metrics-chaos.png` vs `real-metrics-clarity.png`, same illustration style/precedent as above). Behavior: starts fully on the "vanity" image, auto-plays to fully "real" once scrolled into view (`useInView` `once:true amount:0.4`, 400ms start delay, 2200ms `cubic-bezier(0.16,1,0.3,1)` CSS transition on `clip-path`/`left`, skipped straight to end state under `prefers-reduced-motion`), then the divider tracks the cursor on plain hover afterward (`onPointerMove` always updates position, not gated behind pointer-down — a hover-scrub, not a click-drag) — any pointer/keyboard interaction cancels the auto-play. The "What most reports show" label opacity is tied directly to `position > 0`, so it disappears exactly when the reveal completes (auto or manual).
   - Real generated images ARE now this page's precedent too, same as Apps & CRM — the "no real screenshots exist for this domain" framing above no longer holds now that the user supplied ChatGPT-generated illustrations for both Pain and Solution. Don't re-add coded SVG/HTML diagram fallbacks here without asking first.
 
+### [Hero] — WhatsApp automation matches sibling service heroes (centered type, no placeholder visual)
+- Rule: `/services/ai-automations/whatsapp-automation` Hero is the same centered `min-h-svh` type hero as AI Automations / Digital Marketing / Apps: `items-center justify-center text-center`, container `pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28`, proof `<ul>` `mx-auto mt-12 max-w-2xl flex-wrap gap-x-8 gap-y-2 border-t border-(--color-border) pt-6 text-sm text-(--color-text-muted)`. Do **not** put a 2-col `MediaPlaceholder` in the hero — empty dashed slots look unfinished; dashboard shots belong in `ProductRevealSection` once a real asset exists.
+- Proof band is real only: `68+ projects shipped` (from `StatsCounters`), `Live in 7 to 14 days` (this page's onboarding FAQ), `Shopify and WooCommerce`. Never ship industry averages (`98% open rate`, `15 to 40% cart recovery`) as if they were ours.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/Hero.tsx`
+- Date: 2026-09-08
+
+### [Rejected] — WhatsApp Pain as two-col copy + stacked list
+- Rule: Do not use heading/paragraphs left + one boxed hairline list right for this Pain section. User preferred the original 3-up stat cards (“a little great”). Restored: `text-h2` heading (`mb-10 md:mb-14 max-w-2xl`) + `md:grid-cols-3` surface cards (`p-6 md:p-8`), large `text-(--color-accent)` stat, `text-xl` title, `text-[15px]` line. Cards: abandoned carts `70%`, email recovery `5 to 8%`, manual chase `Hours`.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/PainSection.tsx`
+- Date: 2026-09-08
+
+### [Page] — WhatsApp automation section rhythm
+- Rule: Body sections on `/services/ai-automations/whatsapp-automation` use `py-16 md:py-20`. Hero keeps `pt-28 pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28`. Contact uses the logged form exception `pt-32 pb-24 md:pt-40 md:pb-32`. Heading blocks are `mb-10 max-w-2xl md:mb-14`. Content grids `gap-6`. Surface cards `p-6 md:p-8`. Block-to-block / footnote spacing `mb-10 md:mb-14` / `mt-10 md:mt-14`. Integrations strip is a body section (`py-16 md:py-20`), not a tighter `py-12 md:py-16` exception. Shared `FaqSection` heading `mb-12` left alone (sitewide component).
+- Where: `app/services/ai-automations/whatsapp-automation/sections/*.tsx`
+- Date: 2026-09-08
+
+### [Section] — WhatsApp Product Reveal uses the hub architecture illustration
+- Rule: `ProductRevealSection` is a two-col split, **text left / image right** (`grid-cols-1 lg:grid-cols-2 lg:items-center lg:gap-16`). Copy column is `text-center` and vertically centered to the WhatsApp illustration. Heading is `text-h3`. Image: `public/services/whatsapp-commerce-hub.webp` (1448×1086), `overflow-hidden border border-(--color-border) bg-(--color-surface)`, `revealClipImage` `scale: false` with **`trigger: scope.current`**. `sizes="(min-width: 1024px) 50vw, 100vw"`. Four module cards stay full-width below, `text-center`, `mb-10 md:mb-14` after the split. Mobile: copy first, then image (no `order-first` on the visual). Section `scroll-mt-32`.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/ProductRevealSection.tsx`
+- Date: 2026-09-08
+
+### [Section] — WhatsApp Journey is a reverse-C (⊃) milestone map
+- Rule: Not a single horizontal row. **4 nodes on top, 4 below**, path is an **ulta C / mouth on the left** (⊃): `01 → 02 → 03 → 04` LTR on the top rail, drop down the **right** edge, then `05 → 06 → 07 → 08` RTL on the bottom rail (bottom grid renders `[08, 07, 06, 05]` LTR). Rails: `h-4` / `w-4` (`16px`) `bg-(--color-accent)` — yellow and thick; not the thin black `h-0.5` hairline. Arrow is `ArrowLeft` at bottom-left (`left-[12.5%] top-[28.125rem]`). Track `min-w-[48rem]` + `overflow-x-auto`. Nodes stay yellow `h-11 w-11 rounded-full` (HowItWorks badge exception). Labels still alternate above/below by **original** index. Do not flatten back to one row; do not use a regular C (open on the right).
+- Where: `app/services/ai-automations/whatsapp-automation/sections/JourneySection.tsx`
+- Date: 2026-09-08
+
+### [Nav] — Services nested submenu
+- Rule: WhatsApp Automation is not a top-level Services item. It is a child of AI Automations. Desktop: hover Services opens `.dropdown-anchor` (same fade as before). Hover AI Automations opens a sibling `.dropdown-panel.nested` to the right — not nested inside the first panel (transform + radius clips overflow). Nested uses the same hover + 0.2s fade as Services. Mobile: AI Automations stays a link; chevron reveals WhatsApp at `pl-8`. `DropdownItem.children?: DropdownItem[]`. Footer stays flat.
+- Where: `components/ui/Navbar.tsx`, `app/globals.css` (`.dropdown-anchor`, `.dropdown-panel.nested`)
+- Date: 2026-09-08
+
+### [Section] — WhatsApp Cart Recovery heading sits in a 2-col grid, not a stacked max-w-2xl block
+- Rule: Do not stack the H2 and intro in `mb-10 max-w-2xl`. Use `grid-cols-1 lg:grid-cols-2 lg:items-end lg:gap-16` for heading | intro, then six cause/fix cards `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6`. Cards: cause `text-sm text-muted`, fix `mt-3 text-sm font-medium`. No uppercase “Root cause / How we fix it” labels. The 3-message sequence stays full-width below.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/CartRecoverySection.tsx`
+- Date: 2026-09-08
+
+### [Section] — WhatsApp onboarding is a 6+6 reverse-C path, not a 12-card grid
+- Rule: Do not use `lg:grid-cols-6` bordered cells for the 12 go-live steps. Same ⊃ path as Journey: top `01→06` LTR, drop on the right, bottom `07→12` RTL (grid paints `[12…07]`). Six columns: rails `left/right-[8.333%]`, vertical `left-[91.667%]`. Geometry: `min-h-20` + `pb-4` + half `h-11` → top rail `top-[7.375rem]`; row + `h-12` + top offset → bottom `top-[25.125rem]`; vertical `h-[17.75rem]`. Thick yellow `h-4`/`w-4` rails, yellow numbered nodes, `ArrowLeft` at handover. Track `min-w-[56rem]`. Labels sit outside the C (above on top row, below on bottom). Heading copy unchanged.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/OnboardingSection.tsx`
+- Date: 2026-09-08
+
+
