@@ -16,7 +16,7 @@ export default function StatsRail() {
   return (
     <section
       ref={scope}
-      className="border-t border-(--color-border) py-16 md:py-20"
+      className="py-16 md:py-20"
       aria-labelledby="stats-heading"
     >
       <div className="container">

@@ -15,7 +15,7 @@ export default function SupportSection() {
   return (
     <section
       ref={scope}
-      className="border-t border-(--color-border) py-16 md:py-20"
+      className="py-16 md:py-20"
       aria-labelledby="support-heading"
     >
       <div className="container">

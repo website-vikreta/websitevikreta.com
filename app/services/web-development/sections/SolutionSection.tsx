@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { Button } from '@/components/ui/Button'
 import { useGsapSection, revealLines, revealFadeUp, revealClipImage } from '@/lib/gsap/reveals'
 import { WEB_DEV_SOLUTION } from '../data'
 
@@ -79,10 +80,10 @@ export default function SolutionSection() {
   }, [])
 
   return (
-    <section ref={scope} className="border-t border-(--color-border) py-16 md:py-20" aria-labelledby="solution-heading">
+    <section ref={scope} className="py-16 md:py-20" aria-labelledby="solution-heading">
       <div className="container">
-        <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12">
-          <div className="lg:col-span-4 lg:sticky lg:top-32">
+        <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-8 xl:gap-x-12">
+          <div className="lg:col-span-4 lg:sticky lg:top-28 xl:top-32">
             <h2
               id="solution-heading"
               className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
@@ -101,13 +102,13 @@ export default function SolutionSection() {
                       <a
                         href={`#${system.id}`}
                         aria-current={isActive ? 'true' : undefined}
-                        className={`flex items-center gap-3 border-l-2 py-3 pl-4 text-[15px] transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
+                        className={`flex items-center gap-3 border-l-2 py-3 pl-4 text-sm transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) xl:text-[15px] ${
                           isActive
                             ? 'border-(--color-text) text-(--color-text) [text-shadow:0_0_0.5px_currentColor]'
                             : 'border-(--color-border) text-(--color-text-muted) hover:text-(--color-text)'
                         }`}
                       >
-                        <Mark className="size-8 shrink-0" />
+                        <Mark className="size-7 shrink-0 xl:size-8" />
                         {system.indexLabel}
                       </a>
                     </li>
@@ -117,26 +118,31 @@ export default function SolutionSection() {
             </nav>
           </div>
 
-          <div className="mt-10 flex flex-col gap-20 lg:col-span-8 lg:mt-0 md:gap-24">
+          <div className="mt-10 flex flex-col gap-16 lg:col-span-8 lg:mt-0 xl:gap-20">
             {WEB_DEV_SOLUTION.systems.map((system) => (
-              <article key={system.id} id={system.id} className="service-panel scroll-mt-32">
+              <article key={system.id} id={system.id} className="service-panel scroll-mt-28 xl:scroll-mt-32">
                 <div className="service-image relative mb-6 overflow-hidden border border-(--color-border) bg-(--color-surface)">
                   <Image
                     src={system.image.src}
                     alt={system.image.alt}
                     width={system.image.width}
                     height={system.image.height}
-                    sizes="(min-width: 1024px) 830px, 100vw"
+                    sizes="(min-width: 1280px) 720px, 100vw"
                     className="h-auto w-full"
                   />
                 </div>
 
-                <h3 className="service-copy font-sans text-2xl font-bold leading-[1.1] text-(--color-text) sm:text-3xl">
+                <h3 className="service-copy text-2xl font-bold leading-[1.1] text-(--color-text) sm:text-[1.65rem] xl:text-3xl">
                   {system.title}
                 </h3>
-                <p className="service-copy mt-3 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)">
+                <p className="service-copy mt-3 max-w-2xl text-base leading-relaxed text-(--color-text-muted) xl:text-body-lg">
                   {system.description}
                 </p>
+                <div className="service-copy mt-6">
+                  <Button href="#get-quote" variant="ghost" size="sm" showArrow>
+                    {system.cta}
+                  </Button>
+                </div>
               </article>
             ))}
           </div>
