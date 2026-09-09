@@ -900,8 +900,8 @@ _None logged yet._
 - Date: 2026-09-08
 
 ### [Nav] — Services nested submenu
-- Rule: WhatsApp Automation is not a top-level Services item. It is a child of AI Automations. Desktop: hover Services opens `.dropdown-anchor` (same fade as before). Hover AI Automations opens a sibling `.dropdown-panel.nested` to the right — not nested inside the first panel (transform + radius clips overflow). Nested uses the same hover + 0.2s fade as Services. Mobile: AI Automations stays a link; chevron reveals WhatsApp at `pl-8`. `DropdownItem.children?: DropdownItem[]`. Footer stays flat.
-- Where: `components/ui/Navbar.tsx`, `app/globals.css` (`.dropdown-anchor`, `.dropdown-panel.nested`)
+- Rule: WhatsApp Automation is not a top-level Services item. It is a child of AI Automations. Desktop: restore the original `.dropdown-panel` / `.open` hover (do **not** use a side flyout or `.dropdown-anchor` — that broke the Services menu). WhatsApp renders indented (`pl-6`) under AI Automations in the **same** panel. Mobile: WhatsApp is `pl-8` under AI Automations when Services is expanded. `DropdownItem.children?: DropdownItem[]`. Footer stays flat.
+- Where: `components/ui/Navbar.tsx`, `app/globals.css` (`.dropdown-panel`)
 - Date: 2026-09-08
 
 ### [Section] — WhatsApp Cart Recovery heading sits in a 2-col grid, not a stacked max-w-2xl block
