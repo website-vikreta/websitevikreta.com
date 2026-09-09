@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import WebDevClient from './WebDevClient'
-import { ComingSoonPage } from '@/components/ComingSoonPage'
 import { SITE_URL } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/services/web-development`
@@ -13,7 +12,7 @@ const jsonLd = {
       '@id': `${PAGE_URL}#service`,
       name: 'Web Development Services',
       serviceType: 'Web Development',
-      description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
+      description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
       url: PAGE_URL,
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
@@ -32,7 +31,7 @@ const jsonLd = {
 
 export const metadata: Metadata = {
   title: 'Web Development Services | Website Vikreta',
-  description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
+  description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
   keywords: [
     // Primary
     'web development company',
@@ -52,7 +51,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Web Development Services | Website Vikreta',
-    description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS. Designed for performance, scalability, and business growth.',
+    description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
     url: `${SITE_URL}/services/web-development`,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -69,7 +68,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Web Development Services | Website Vikreta',
-    description: 'Build fast, SEO-ready websites with Next.js, TypeScript, and Tailwind CSS.',
+    description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
     images: ['/og-image.png'],
   },
   alternates: {
@@ -97,5 +96,4 @@ export default function WebDevelopmentPage() {
       <WebDevClient />
     </>
   )
-  // return <ComingSoonPage pageName="Web Development" />
 }

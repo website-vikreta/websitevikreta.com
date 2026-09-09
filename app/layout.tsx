@@ -51,6 +51,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={utile.variable}
+      // Next 16: Next only disables CSS smooth-scroll on SPA navigations when this is set.
+      // https://nextjs.org/docs/messages/missing-data-scroll-behavior
+      data-scroll-behavior="smooth"
     >
       <body>
         <Suspense fallback={null}>

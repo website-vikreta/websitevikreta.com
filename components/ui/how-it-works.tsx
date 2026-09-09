@@ -14,8 +14,8 @@
  * pastel themes, a handwriting font, drop shadows, 25px radii, dark-mode
  * variants, and rotated "pinned note" cards. None of that survives here:
  * this project has no dark theme, one accent color, Epilogue only, no
- * shadows, and a 4px radius cap (see .claude/context/brand.md,
- * .claude/standards/design-system.md).
+ * shadows, and a 4px radius cap (see .ai/context/brand.md,
+ * .ai/standards/design-system.md).
  */
 
 import { ArrowRight, Pin } from 'lucide-react'

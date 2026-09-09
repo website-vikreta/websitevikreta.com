@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import type { DisplayPost } from '@/sanity/types'
 
 // Server Component — no scroll reveal, no motion, no client JS. See the
-// [Anti-pattern] entry in .claude/learning.md: /blog/* is a reading surface,
+// [Anti-pattern] entry in .ai/learning.md: /blog/* is a reading surface,
 // and an IntersectionObserver-gated `opacity: 0` on every card costs LCP,
 // blocks text from being readable until a scroll event, and can strand
 // results invisible when a grid swaps content in place. Loading state is

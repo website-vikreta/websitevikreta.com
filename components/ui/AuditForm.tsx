@@ -168,7 +168,7 @@ export function AuditForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit} noValidate className="min-w-0">
 
       {heading && (
         <h2 className="font-sans font-bold text-2xl sm:text-3xl leading-[1.1] text-(--color-text) mb-6">

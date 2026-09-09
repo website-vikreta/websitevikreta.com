@@ -139,7 +139,7 @@ function ServiceCard({ service }: { service: Service }) {
     <motion.div
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="flex-shrink-0 overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-[calc(100vw_-_2rem)] md:w-[min(80vw,1100px)]"
+      className="flex-shrink-0 overflow-hidden relative cursor-pointer flex flex-col md:flex-row h-[70vh] md:h-[clamp(400px,70vh,800px)] w-full max-w-[calc(100%-2rem)] md:w-[min(80vw,1100px)]"
       style={{ background: '#131313' }}
     >
       {/* Grain texture */}
