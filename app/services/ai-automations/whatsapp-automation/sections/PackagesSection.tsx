@@ -16,6 +16,7 @@ interface PackageTier {
   description: string
   features: string[]
   cta: string
+  eyebrow?: string
   highlighted?: boolean
 }
 
@@ -38,6 +39,7 @@ const PACKAGES: PackageTier[] = [
     price: 'From ₹15,750 / quarter',
     description: 'Full commerce stack with cart recovery, COD, and Shopify sync built in.',
     cta: 'Book a platform demo',
+    eyebrow: 'Most stores pick this',
     highlighted: true,
     features: [
       'Everything in WA Starter',
@@ -85,63 +87,71 @@ export default function PackagesSection() {
         </div>
 
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
-          {PACKAGES.map(({ name, price, description, features, cta, highlighted }) => (
-            <article
-              key={name}
-              className={`package-card relative flex flex-col border bg-(--color-surface) p-6 md:p-8 ${
-                highlighted
-                  ? 'border-(--color-text)'
-                  : 'border-(--color-border)'
-              }`}
-            >
-              {highlighted && (
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-1.5 bg-(--color-accent)"
-                />
-              )}
-              {highlighted && (
-                <p className="mb-4 text-sm text-(--color-text-muted)">
-                  Most stores pick this
+          {PACKAGES.map(
+            ({ name, price, description, features, cta, eyebrow, highlighted }) => (
+              <article
+                key={name}
+                className={`package-card relative flex h-full flex-col border bg-(--color-surface) p-6 md:p-8 ${
+                  highlighted
+                    ? 'border-(--color-text)'
+                    : 'border-(--color-border)'
+                }`}
+              >
+                {highlighted ? (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-1.5 bg-(--color-accent)"
+                  />
+                ) : null}
+
+                <div className="flex items-baseline justify-between gap-4">
+                  <h3 className="font-sans text-2xl font-bold text-(--color-text) sm:text-3xl">
+                    {name}
+                  </h3>
+                  {eyebrow ? (
+                    <p className="shrink-0 text-sm text-(--color-text-muted)">
+                      {eyebrow}
+                    </p>
+                  ) : null}
+                </div>
+
+                <p className="mt-4 text-2xl font-bold tracking-tight text-(--color-text)">
+                  {price}
                 </p>
-              )}
-              <h3 className="font-sans text-2xl font-bold text-(--color-text) sm:text-3xl">
-                {name}
-              </h3>
-              <p className="mt-3 text-2xl font-bold tracking-tight text-(--color-text)">
-                {price}
-              </p>
-              <p className="mt-4 text-[15px] leading-relaxed text-(--color-text-muted)">
-                {description}
-              </p>
-              <ul className="mt-8 flex flex-1 flex-col gap-3">
-                {features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-3 text-sm leading-relaxed text-(--color-text-muted)"
+                <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">
+                  {description}
+                </p>
+
+                <ul className="mt-6 flex flex-1 flex-col gap-3">
+                  {features.map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-start gap-3 text-sm leading-relaxed text-(--color-text-muted)"
+                    >
+                      <Check
+                        size={16}
+                        strokeWidth={2}
+                        aria-hidden="true"
+                        className="mt-0.5 shrink-0 text-(--color-text)"
+                      />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6">
+                  <Button
+                    href="#whatsapp-demo"
+                    variant={highlighted ? 'primary' : 'ghost'}
+                    size="md"
+                    showArrow
                   >
-                    <Check
-                      size={16}
-                      strokeWidth={2}
-                      aria-hidden="true"
-                      className="mt-0.5 shrink-0 text-(--color-text)"
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <Button
-                  href="#whatsapp-demo"
-                  variant={highlighted ? 'primary' : 'ghost'}
-                  size="md"
-                  showArrow
-                >
-                  {cta}
-                </Button>
-              </div>
-            </article>
-          ))}
+                    {cta}
+                  </Button>
+                </div>
+              </article>
+            ),
+          )}
         </div>
 
         <p className="mt-10 text-sm text-(--color-text-faint) md:mt-14">
