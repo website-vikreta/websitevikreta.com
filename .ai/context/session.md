@@ -6,7 +6,7 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Navbar nested Services dropdown: WhatsApp Automation sits under AI Automations (desktop flyout + mobile accordion). WhatsApp page work on `feat/whatsapp-automation-page` continues: CartRecovery message mockups still placeholder.
+WhatsApp Packages section: equal-height 2-up pricing cards with CSS subgrid so title/price/CTA align. Eyebrow slot reserved on both cards. Full-width CTAs.
 
 Previous: Digital Marketing page (`/services/digital-marketing`) — built out from `ComingSoonPage` to a full page, same conversion spine as Apps & CRM: Hero → Pain → Solution → HowWeWork → Proof → FAQ → Contact. New `sections/` folder + `DigitalMarketingClient.tsx`. New `#marketing-audit` popup config added to `AuditModalProvider.tsx`. Proof section is a single AP Cleanco project card + its testimonial (only real project tagged local SEO). FAQ is a new page-local array (`dm-1`–`dm-4`), not a filtered `ALL_FAQS` subset. `tsc --noEmit` and `eslint` clean. See learning.md's 2026-08-24 `[Page] Digital Marketing` entry (and its 2026-08-28 update) for exact details.
 
@@ -69,7 +69,9 @@ _None yet_
 - No layout shift (CLS must be < 0.1)
 
 ## Last Updated
-2026-09-08 — Services nav: WhatsApp Automation nested under AI Automations.
+2026-09-09 — WhatsApp Journey + Onboarding: shared S-snake (3+3+2 / 5+5+2).
+
+Previous: 2026-09-09 — WhatsApp Packages cards: subgrid alignment, reserved eyebrow slot, full-width CTAs.
 
 Previous: 2026-08-01 — /work pass. Kept the page's existing look (a restyle in the About page's language was built and rejected outright — see learning.md [Rejected]). Shipped: home + /work now share ONE `FeaturedWorkSection` fed by `lib/work-data.ts` (page-local `WorkCaseStudiesSection` deleted); `ClientLogosSection` (8 invented client names) dropped from /work and `StatsCounters` given `bgClassName=""` — no section backgrounds on this page; testimonial carousel made touch-usable (measured card width replacing the fixed 380px that overflowed small phones, drag-to-swipe, `useReducedMotion` guard, shared `REVEAL_EASE`); `FaqSection` easing unified to `REVEAL_EASE`; `DotGrid`'s rAF loop now idles when nothing is fading. Selected websites is 6 cards (Psilent Ganges netlify test removed, sustainablebtc.org + apcleanco.com added). **Open: real screenshots needed — 6 website cards share 5 stock `/our-services/*.webp` illustrations; `ClientLogosSection`'s fake names still live on /about.**
 

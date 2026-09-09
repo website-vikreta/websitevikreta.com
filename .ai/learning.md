@@ -909,9 +909,34 @@ _None logged yet._
 - Where: `app/services/ai-automations/whatsapp-automation/sections/CartRecoverySection.tsx`
 - Date: 2026-09-08
 
-### [Section] — WhatsApp onboarding is a 6+6 reverse-C path, not a 12-card grid
-- Rule: Do not use `lg:grid-cols-6` bordered cells for the 12 go-live steps. Same ⊃ path as Journey: top `01→06` LTR, drop on the right, bottom `07→12` RTL (grid paints `[12…07]`). Six columns: rails `left/right-[8.333%]`, vertical `left-[91.667%]`. Geometry: `min-h-20` + `pb-4` + half `h-11` → top rail `top-[7.375rem]`; row + `h-12` + top offset → bottom `top-[25.125rem]`; vertical `h-[17.75rem]`. Thick yellow `h-4`/`w-4` rails, yellow numbered nodes, `ArrowLeft` at handover. Track `min-w-[56rem]`. Labels sit outside the C (above on top row, below on bottom). Heading copy unchanged.
+### [Rejected] — WhatsApp onboarding as How We Work bullet rails
+- Rule: Do not render the 12 go-live steps as two week columns of number + title. User: it is a journey, so it must look like Journey (reverse-C map), not a bullet list.
 - Where: `app/services/ai-automations/whatsapp-automation/sections/OnboardingSection.tsx`
 - Date: 2026-09-08
+
+### [Section] — WhatsApp onboarding is the same reverse-C as Journey, 6+6
+- Rule: Same ⊃ map as Journey: yellow `h-4`/`w-4` rails, yellow `h-11` nodes, labels alternate above/below by original index, `ArrowLeft` at handover. **12 steps = 6 cols**, not 4. Rails: `left/right-[8.333%]`, vertical `left-[91.667%]`. **Node chrome must match Journey** (`min-h-28` label slots, `h-12` gutter) so rails sit at the same offsets: top `8.375rem`, bottom `28.125rem`, vertical `h-[19.75rem]`. Do not use `min-h-20` — that put the bars through the labels and `overflow-x-auto` clipped the bottom titles. Track `min-w-[72rem]` (12rem per col, same as Journey’s 48rem/4). Still not a 12-cell bordered grid.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/OnboardingSection.tsx`
+- Date: 2026-09-08
+
+### [Section] — WhatsApp Journey is a reverse-C yellow rail, 4+4
+- Rule: Same journey language as onboarding: **straight yellow `h-4`/`w-4` rails**, yellow `h-11` nodes, reverse-C (⊃). `01→04` LTR on top, drop at **right** (`left-[87.5%]`), `05→08` RTL on bottom (grid renders `[08,07,06,05]`). Rails: `left/right-[12.5%]`, top `8.375rem`, bottom `28.125rem`, vertical `h-[19.75rem]`. `min-h-28` label slots, `h-12` gutter, `min-w-[48rem]` + `overflow-x-auto`. Copy alternates above/below by original index: band + title + feature. **03 is inverted** (`bg-text` + `text-accent`) so Purchase is the one surprise. `ArrowLeft` at bottom-left. Not teardrop pins. Not one 8-node row. Not a sine wave.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/JourneySection.tsx`
+- Date: 2026-09-09
+
+### [Section] — WhatsApp onboarding is a folded 6+6 reverse-C
+- Rule: Not 12 nodes on one sine wave. **6 on top LTR, drop on the right, 6 on the bottom RTL** (`[12…07]` in the bottom grid). Yellow `h-4`/`w-4` rails, `h-11` nodes, `min-h-28` slots, `h-12` gutter, offsets `8.375rem` / `28.125rem` / `h-[19.75rem]`, rails `left/right-[8.333%]` and vertical `left-[91.667%]`, `min-w-[72rem]`. Labels still alternate above/below by original index. Each label slot is icon circle + title (lucide, accent stroke). `ArrowLeft` at handover. Keep all 12 steps.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/OnboardingSection.tsx`
+- Date: 2026-09-09
+
+### [Section] — WhatsApp maps share one S-snake path
+- Rule: Both lifecycle and go-live use `SnakePath`. Onboarding **5+5+2**, Journey **3+3+2** (03 inverted). Path is drawn through **measured badge centers** (ResizeObserver), not a stretched SVG arc — that was clipping 07–08 and stacking 05/08. Copy: rows 1–2 above the badge, row 3 below (`flex` order + `justify-end` / `justify-start`), `lg:gap-y-16` between rows. Chevrons only on horizontal segments. Mobile: stacked list, left yellow rule.
+- Where: `app/services/ai-automations/whatsapp-automation/components/SnakePath.tsx`, `sections/OnboardingSection.tsx`, `sections/JourneySection.tsx`
+- Date: 2026-09-09
+
+### [Section] — WhatsApp packages are a 2-up subgrid, not loose flex cards
+- Rule: Pricing cards share one parent grid: `max-w-5xl mx-auto grid-cols-1 md:grid-cols-2 md:grid-rows-[auto_auto_auto_auto_minmax(0,1fr)_auto] gap-6`. Each card is `md:row-span-6 md:grid md:grid-rows-subgrid` so eyebrow / title / price / description / features / CTA sit on the same rows. Both cards reserve the eyebrow line (`min-h-5 text-sm leading-5`); the non-featured card renders the same string `text-transparent aria-hidden` so wrap height matches. Featured keeps `border-(--color-text)` + `absolute` yellow `h-1.5` top bar. CTAs `w-full justify-center`, `pt-8 mt-auto`; primary on featured, ghost on Starter. Cards `p-6 md:p-8`. Do not leave the “Most stores pick this” line only on one card — that was why titles and buttons didn’t line up.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/PackagesSection.tsx`
+- Date: 2026-09-09
 
 
