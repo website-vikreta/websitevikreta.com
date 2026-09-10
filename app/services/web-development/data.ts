@@ -92,38 +92,23 @@ export interface WebDevProofCard {
 
 export const WEB_DEV_PROOF_CARDS: WebDevProofCard[] = [
   {
-    id: 'ap-cleanco',
+    id: 'tocal',
     label: 'A',
-    title: 'AP Cleanco',
-    stat: '3 weeks',
-    catchphrase: 'Zero to online. Properly.',
-    href: 'https://apcleanco.com/',
+    title: 'Tocal',
+    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
+    catchphrase: 'A sleek product site with a clean, modern presentation.',
+    href: 'https://tocal.in/',
     thumbnail: {
       kind: 'screenshot',
-      src: '/services/web-development/proof/ap-cleanco.webp',
+      src: '/services/web-development/proof/tocal.webp',
       width: 1440,
       height: 810,
-      alt: 'AP Cleanco website homepage',
-    },
-  },
-  {
-    id: 'simpli-home',
-    label: 'B',
-    title: 'Simpli Home',
-    stat: '11 hrs a week',
-    catchphrase: 'They do the work we hired them for.',
-    href: 'https://www.simpli-home.com/',
-    thumbnail: {
-      kind: 'screenshot',
-      src: '/services/web-development/proof/simpli-home.webp',
-      width: 1440,
-      height: 810,
-      alt: 'Simpli Home website homepage',
+      alt: 'Tocal website homepage',
     },
   },
   {
     id: 'sustainable-bitcoin-protocol',
-    label: 'C',
+    label: 'B',
     title: 'Sustainable Bitcoin Protocol',
     stat: '3+ years',
     catchphrase: 'Still the first call.',
@@ -137,18 +122,33 @@ export const WEB_DEV_PROOF_CARDS: WebDevProofCard[] = [
     },
   },
   {
-    id: 'tocal',
-    label: 'D',
-    title: 'Tocal',
-    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
-    catchphrase: 'A sleek product site with a clean, modern presentation.',
-    href: 'https://tocal.in/',
+    id: 'ap-cleanco',
+    label: 'C',
+    title: 'AP Cleanco',
+    stat: '3 weeks',
+    catchphrase: 'Zero to online. Properly.',
+    href: 'https://apcleanco.com/',
     thumbnail: {
       kind: 'screenshot',
-      src: '/services/web-development/proof/tocal.webp',
+      src: '/services/web-development/proof/ap-cleanco.webp',
       width: 1440,
       height: 810,
-      alt: 'Tocal website homepage',
+      alt: 'AP Cleanco website homepage',
+    },
+  },
+  {
+    id: 'archmodal',
+    label: 'D',
+    title: 'Archmodal',
+    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
+    catchphrase: 'A polished home page for an architectural studio.',
+    href: 'https://www.archmodal.com/',
+    thumbnail: {
+      kind: 'screenshot',
+      src: '/services/web-development/proof/archmodal.webp',
+      width: 1440,
+      height: 810,
+      alt: 'Archmodal website homepage',
     },
   },
   {
@@ -167,18 +167,18 @@ export const WEB_DEV_PROOF_CARDS: WebDevProofCard[] = [
     },
   },
   {
-    id: 'archmodal',
+    id: 'simpli-home',
     label: 'F',
-    title: 'Archmodal',
-    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
-    catchphrase: 'A polished home page for an architectural studio.',
-    href: 'https://www.archmodal.com/',
+    title: 'Simpli Home',
+    stat: '11 hrs a week',
+    catchphrase: 'They do the work we hired them for.',
+    href: 'https://www.simpli-home.com/',
     thumbnail: {
       kind: 'screenshot',
-      src: '/services/web-development/proof/archmodal.webp',
+      src: '/services/web-development/proof/simpli-home.webp',
       width: 1440,
       height: 810,
-      alt: 'Archmodal website homepage',
+      alt: 'Simpli Home website homepage',
     },
   },
 ]
@@ -188,6 +188,7 @@ export interface WebDevSolutionSystem {
   title: string
   indexLabel: string
   description: string
+  cta: string
   image: {
     src: string
     width: number
@@ -205,6 +206,7 @@ export const WEB_DEV_SOLUTION = {
       indexLabel: 'Site structure',
       description:
         'Pages, URLs, and content hierarchy mapped before anyone writes code. No orphan pages, no duplicate paths, no updating the same copy in three places.',
+      cta: 'Talk through your site map',
       image: {
         src: '/services/web-development/systems/site-structure.webp',
         width: 1672,
@@ -217,7 +219,8 @@ export const WEB_DEV_SOLUTION = {
       title: 'Auth and admin with named access.',
       indexLabel: 'Auth & admin',
       description:
-        'Logins, client areas, and CMS roles set to who should see what. Your team publishes from one dashboard — not from email threads and side spreadsheets.',
+        'Logins, client areas, and CMS roles set to who should see what. Your team publishes from one dashboard, not from email threads and side spreadsheets.',
+      cta: 'See how access would work',
       image: {
         src: '/services/web-development/systems/auth-admin.webp',
         width: 1672,
@@ -230,7 +233,8 @@ export const WEB_DEV_SOLUTION = {
       title: 'Performance under real traffic.',
       indexLabel: 'Performance',
       description:
-        'Caching, image delivery, and server response tuned and load-tested before launch. A busy day adds visitors — not downtime.',
+        'Caching, image delivery, and server response tuned before launch. When traffic spikes, the site keeps up.',
+      cta: 'Get a performance review',
       image: {
         src: '/services/web-development/systems/performance.webp',
         width: 1672,
@@ -244,6 +248,7 @@ export const WEB_DEV_SOLUTION = {
       indexLabel: 'Mobile-first',
       description:
         'Layout, forms, and CTAs built for phone first. Same pages, same flow, same speed on every screen size.',
+      cta: 'See a mobile-first build',
       image: {
         src: '/services/web-development/systems/mobile-first.webp',
         width: 1672,

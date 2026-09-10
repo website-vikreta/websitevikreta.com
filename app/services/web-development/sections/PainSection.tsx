@@ -93,7 +93,7 @@ export default function PainSection() {
     const sync = () => {
       const trackRect = track.getBoundingClientRect()
       const pinH = pin.offsetHeight
-      const pinOffset = 128
+      const pinOffset = pin.getBoundingClientRect().top > 0 ? pin.getBoundingClientRect().top : 112
       const travel = trackRect.height - pinH
       if (travel <= 0) {
         setActive(0)
@@ -134,7 +134,7 @@ export default function PainSection() {
         </div>
 
         <div ref={trackRef} className="relative hidden lg:block lg:h-[300vh]">
-          <div ref={pinRef} className="sticky top-32 bg-(--color-bg)">
+          <div ref={pinRef} className="sticky top-28 xl:top-32">
             <PainHeading id="pain-heading" />
 
             <div className="mt-10 grid grid-cols-12 gap-x-12 md:mt-14">

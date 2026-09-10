@@ -16,7 +16,7 @@ export default function HowWeWork() {
   return (
     <section
       ref={scope}
-      className="border-t border-(--color-border) py-16 md:py-20"
+      className="py-16 md:py-20"
       aria-labelledby="how-we-work-heading"
     >
       <div className="container">
@@ -36,7 +36,7 @@ export default function HowWeWork() {
           {steps.map((item, index) => (
             <li
               key={item.step}
-              className={`step-item max-w-xs ${index % 2 === 1 ? 'lg:mt-20' : ''}`}
+              className={`step-item max-w-xs ${index % 2 === 1 ? 'lg:mt-12 xl:mt-20' : ''}`}
             >
               <span
                 aria-hidden="true"

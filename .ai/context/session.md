@@ -6,7 +6,7 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Web Development page (`/services/web-development`) — PainSection desktop pins the full frame (The friction + H2 + step copy + image) at `top-32` for a `300vh` track; steps swap only after that pin. Three friction WebPs. Mobile stacked.
+Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize.
 
 Previous: Digital Marketing page
 
