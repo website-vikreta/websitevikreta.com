@@ -28,8 +28,13 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
 
     function resize() {
       if (!canvas) return
-      canvas.width  = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+      if (isGlobal) {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+      } else {
+        canvas.width = canvas.offsetWidth
+        canvas.height = canvas.offsetHeight
+      }
     }
 
     // Interpolate along cursor path so fast moves leave no gaps
@@ -183,8 +188,8 @@ export function DotGrid({ global: isGlobal = false }: { global?: boolean }) {
     <canvas
       ref={canvasRef}
       className={isGlobal
-        ? 'fixed inset-0 pointer-events-none -z-10'
-        : 'absolute inset-0 w-full h-full pointer-events-none'
+        ? 'pointer-events-none fixed inset-0 z-0 h-full w-full'
+        : 'absolute inset-0 h-full w-full pointer-events-none'
       }
       aria-hidden="true"
     />
