@@ -10,14 +10,14 @@ const PACKAGES = [
     name: 'WA Starter',
     price: '₹11,250',
     period: '/ quarter',
-    description: 'CRM, WhatsApp channel, and lead management for teams getting started.',
+    description: 'CRM, WhatsApp Business channel, and lead management for teams getting started on WhatsApp.',
     cta: 'Ask about Starter',
     features: [
-      'CRM + lead management',
-      'WhatsApp channel + templates',
+      'WhatsApp CRM with lead management',
+      'Official WhatsApp Business channel',
+      'Message templates and approvals',
       'Basic automation workflows',
-      '2 team seats',
-      'Omni-channel inbox',
+      '2 team seats with shared inbox',
     ],
     highlighted: false,
   },
@@ -25,16 +25,16 @@ const PACKAGES = [
     name: 'WA eCommerce',
     price: '₹15,750',
     period: '/ quarter',
-    description: 'Full commerce stack with cart recovery, COD confirmation, and Shopify sync.',
+    description: 'Full WhatsApp commerce stack with abandoned cart recovery, COD confirmation, and Shopify integration.',
     cta: 'Book a platform demo',
     eyebrow: 'Most stores start here',
     features: [
       'Everything in WA Starter',
-      'Abandoned cart recovery (3-step)',
-      'COD order confirmation',
-      'Order + shipping notifications',
-      'Product catalog in WhatsApp',
-      'Shopify / WooCommerce sync',
+      'Abandoned cart recovery with 3-step sequence',
+      'COD order confirmation with auto-cancel',
+      'Order and shipping status notifications',
+      'WhatsApp product catalog',
+      'Shopify and WooCommerce integration',
     ],
     highlighted: true,
   },
@@ -48,10 +48,10 @@ export default function PackagesSection() {
   const scope = useRef<HTMLElement>(null)
 
   useGsapSection(scope, () => {
-    revealLines('#packages-heading', { trigger: scope.current })
-    revealFadeUp('.packages-intro', { y: 20, trigger: scope.current })
-    revealFadeUp('.package-card',   { y: 24, stagger: STAGGER.loose, trigger: scope.current })
-    revealFadeUp('.packages-footer', { y: 16, trigger: scope.current })
+    revealLines('#packages-heading',  { trigger: scope.current })
+    revealFadeUp('.packages-intro',   { y: 20, trigger: scope.current })
+    revealFadeUp('.package-card',     { y: 24, stagger: STAGGER.loose, trigger: scope.current })
+    revealFadeUp('.packages-footer',  { y: 16, trigger: scope.current })
   })
 
   return (
@@ -60,11 +60,12 @@ export default function PackagesSection() {
 
         <div className="mb-10 max-w-2xl md:mb-14">
           <h2 id="packages-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-            Two tiers. Pick what matches your store.
+            Two tiers. Pick what your store actually needs.
           </h2>
           <p className="packages-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Platform subscription. Meta per-message charges — Utility (~11p) and Marketing — are billed
-            separately on usage. Setup and onboarding quoted once.
+            Platform subscription billed quarterly. WhatsApp message charges — Utility
+            messages at around 11 paise and Marketing messages — are billed separately
+            based on actual usage. Setup and onboarding are quoted once.
           </p>
         </div>
 
@@ -76,9 +77,7 @@ export default function PackagesSection() {
               <article
                 key={name}
                 className={`package-card relative flex h-full flex-col p-7 md:p-9 ${
-                  highlighted
-                    ? 'border-2 border-(--color-text) bg-(--color-surface)'
-                    : 'border border-(--color-border) bg-(--color-surface)'
+                  highlighted ? 'border-2 border-(--color-text) bg-(--color-surface)' : 'border border-(--color-border) bg-(--color-surface)'
                 }`}
                 style={{ borderRadius: '16px' }}
               >
@@ -86,19 +85,15 @@ export default function PackagesSection() {
                   <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-(--color-accent)" />
                 )}
 
-                {/* Header */}
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-2xl font-bold text-(--color-text)">{name}</h3>
                   {eyebrow && (
-                    <span
-                      style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', borderRadius: '4px', padding: '3px 8px', whiteSpace: 'nowrap', flexShrink: 0 }}
-                    >
+                    <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', borderRadius: '4px', padding: '3px 8px', whiteSpace: 'nowrap', flexShrink: 0 }}>
                       {eyebrow}
                     </span>
                   )}
                 </div>
 
-                {/* Price */}
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-3xl font-bold tracking-tight text-(--color-text)">{price}</span>
                   <span className="text-sm text-(--color-text-faint)">{period}</span>
@@ -106,7 +101,6 @@ export default function PackagesSection() {
 
                 <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{description}</p>
 
-                {/* Features */}
                 <ul className="mt-6 flex flex-1 flex-col gap-2.5">
                   {features.map(f => (
                     <li key={f} className="flex items-start gap-3 text-sm leading-relaxed text-(--color-text-muted)">
@@ -132,10 +126,10 @@ export default function PackagesSection() {
           style={{ borderRadius: '12px' }}
         >
           <div>
-            <p className="font-bold text-(--color-text)">Custom / Enterprise</p>
+            <p className="font-bold text-(--color-text)">Custom and Enterprise</p>
             <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">
-              AI agents, Instagram + Facebook inbox, custom integrations, multi-brand setups.
-              Quoted on scope.
+              AI WhatsApp agents, Instagram and Facebook inbox integration, custom API
+              connections, and multi-brand setups. Quoted based on scope.
             </p>
           </div>
           <Button href="#whatsapp-demo" variant="ghost" size="sm" showArrow className="shrink-0">
@@ -143,7 +137,7 @@ export default function PackagesSection() {
           </Button>
         </div>
 
-        {/* Integrations strip */}
+        {/* Integrations */}
         <div className="packages-footer mt-10 md:mt-12">
           <p className="mb-4 text-xs font-medium uppercase tracking-widest text-(--color-text-faint)">
             Connects to what you already use

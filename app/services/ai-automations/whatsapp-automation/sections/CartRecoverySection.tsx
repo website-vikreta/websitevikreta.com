@@ -228,8 +228,10 @@ export default function CartRecoverySection() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           {MESSAGES.map((msg) => (
             <div key={msg.timing} className="cart-msg flex flex-col">
-              {/* Phone */}
-              <RecoveryPhone {...msg} />
+              {/* Phone — constrained on mobile so it doesn't stretch full-width */}
+              <div className="mx-auto w-full max-w-[320px] sm:max-w-none">
+                <RecoveryPhone {...msg} />
+              </div>
 
               {/* Timing marker */}
               <div className="mt-5 flex items-start justify-between gap-3">

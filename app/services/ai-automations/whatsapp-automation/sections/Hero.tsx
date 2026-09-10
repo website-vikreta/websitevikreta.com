@@ -8,7 +8,13 @@ import PhoneDemo from '../components/PhoneDemo'
 
 const INTEGRATIONS = ['Shopify', 'WooCommerce', 'Razorpay', 'PayU', 'Meta Ads', 'Google Sheets']
 
-/* Singleton style — avoids re-injecting on every render */
+const STATS = [
+  { n: '68+',  label: 'projects shipped' },
+  { n: '7–14', label: 'days to go live' },
+  { n: '98%',  label: 'WhatsApp open rate' },
+]
+
+/* Singleton — avoids re-injecting on every render */
 const HERO_STYLE_ID = 'wa-hero-styles'
 if (typeof document !== 'undefined' && !document.getElementById(HERO_STYLE_ID)) {
   const s = document.createElement('style')
@@ -29,23 +35,22 @@ if (typeof document !== 'undefined' && !document.getElementById(HERO_STYLE_ID)) 
 }
 
 export default function Hero() {
-  const scope = useRef<HTMLElement>(null)
+  const scope    = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const subRef = useRef<HTMLParagraphElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
+  const subRef   = useRef<HTMLParagraphElement>(null)
+  const ctaRef   = useRef<HTMLDivElement>(null)
   const proofRef = useRef<HTMLDivElement>(null)
 
   useGsapSection(scope, () => {
     const heading = headingRef.current
-    const sub = subRef.current
-    const cta = ctaRef.current
-    const proof = proofRef.current
+    const sub     = subRef.current
+    const cta     = ctaRef.current
+    const proof   = proofRef.current
     if (!heading || !sub || !cta || !proof) return
-
     revealLines(heading, { trigger: null })
-    revealFadeUp(sub,   { y: 18, delay: 0.35, trigger: null })
-    revealFadeUp(cta,   { y: 18, delay: 0.5,  trigger: null })
-    revealFadeUp(proof, { y: 14, delay: 0.65, trigger: null })
+    revealFadeUp(sub,    { y: 18, delay: 0.35, trigger: null })
+    revealFadeUp(cta,    { y: 18, delay: 0.5,  trigger: null })
+    revealFadeUp(proof,  { y: 14, delay: 0.65, trigger: null })
   })
 
   return (
@@ -56,7 +61,7 @@ export default function Hero() {
         paddingTop: 'calc(var(--navbar-height) + clamp(3rem, 6vw, 5rem))',
         paddingBottom: 'clamp(3rem, 6vw, 5rem)',
       }}
-      aria-label="WhatsApp Commerce Platform"
+      aria-label="WhatsApp Commerce Platform for Indian D2C Stores"
     >
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-[clamp(2.5rem,5vw,4rem)] lg:grid-cols-[1.1fr_0.9fr]">
@@ -64,7 +69,7 @@ export default function Hero() {
           {/* ── Left: copy ── */}
           <div>
             <p className="text-meta-label mb-5 font-medium uppercase tracking-widest text-(--color-text-faint)">
-              WhatsApp Commerce Platform
+              WhatsApp Commerce Platform for D2C Stores
             </p>
 
             <h1
@@ -82,8 +87,9 @@ export default function Hero() {
               className="text-body-lg"
               style={{ color: 'var(--color-text-muted)', lineHeight: 1.65, maxWidth: '46ch', marginBottom: '2.5rem' }}
             >
-              Cart recovery, COD confirmation, order updates, AI support — one
-              platform deployed on your brand and wired into your store.
+              Abandoned cart recovery, COD order confirmation, order status updates,
+              and AI customer support — one platform deployed on your brand and
+              connected to your Shopify or WooCommerce store.
             </p>
 
             <div
@@ -102,20 +108,14 @@ export default function Hero() {
 
             {/* Stats + integrations */}
             <div ref={proofRef}>
-              {/* Stat chips */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' }}>
-                {[
-                  { n: '68+', label: 'projects shipped' },
-                  { n: '7–14', label: 'days to go live' },
-                  { n: '98%', label: 'WhatsApp read rate' },
-                ].map(({ n, label }) => (
+                {STATS.map(({ n, label }) => (
                   <div
                     key={n}
                     style={{
                       display: 'flex', alignItems: 'baseline', gap: '6px',
                       border: '1px solid var(--color-border)',
-                      borderRadius: '6px',
-                      padding: '8px 14px',
+                      borderRadius: '6px', padding: '8px 14px',
                       background: 'var(--color-surface)',
                     }}
                   >
@@ -125,8 +125,7 @@ export default function Hero() {
                 ))}
               </div>
 
-              {/* Integration chips */}
-              <p style={{ fontSize: '12px', color: 'var(--color-text-faint)', marginBottom: '10px', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+              <p style={{ fontSize: '11px', color: 'var(--color-text-faint)', marginBottom: '10px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                 Connects to
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -134,12 +133,10 @@ export default function Hero() {
                   <span
                     key={name}
                     style={{
-                      fontSize: '12.5px',
-                      fontWeight: 500,
+                      fontSize: '12.5px', fontWeight: 500,
                       color: 'var(--color-text-muted)',
                       border: '1px solid var(--color-border)',
-                      borderRadius: '4px',
-                      padding: '4px 10px',
+                      borderRadius: '4px', padding: '4px 10px',
                       background: 'var(--color-bg-muted)',
                     }}
                   >
@@ -150,8 +147,8 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── Right: phone demo (CSS-only entrance — singleton style above) ── */}
-          <div className="wa-phone-reveal mx-auto w-full lg:mx-0">
+          {/* ── Right: phone demo ── */}
+          <div className="wa-phone-reveal mx-auto w-full max-w-[380px] lg:mx-0 lg:max-w-none">
             <PhoneDemo />
           </div>
 
