@@ -7,11 +7,9 @@ import type { FaqItem } from '@/lib/faq-data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
 import ProductRevealSection from './sections/ProductRevealSection'
-import JourneySection from './sections/JourneySection'
 import CartRecoverySection from './sections/CartRecoverySection'
 import PackagesSection from './sections/PackagesSection'
 import OnboardingSection from './sections/OnboardingSection'
-import IntegrationsStrip from './sections/IntegrationsStrip'
 import ProofSection from './sections/ProofSection'
 import ContactSection from './sections/ContactSection'
 
@@ -68,11 +66,9 @@ export default function WhatsAppAutomationClient() {
         <Hero />
         <PainSection />
         <ProductRevealSection />
-        <JourneySection />
         <CartRecoverySection />
         <PackagesSection />
         <OnboardingSection />
-        <IntegrationsStrip />
         <ProofSection />
         <FaqSection
           items={WHATSAPP_FAQS}

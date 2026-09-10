@@ -15,88 +15,80 @@ import {
   UserRoundCheck,
   Waypoints,
 } from 'lucide-react'
-import {
-  revealDraw,
-  revealFadeUp,
-  revealLines,
-  STAGGER,
-  useGsapSection,
-} from '@/lib/gsap/reveals'
-import SnakePath, {
-  type SnakeStep,
-} from '../components/SnakePath'
+import { revealDraw, revealFadeUp, revealLines, STAGGER, useGsapSection } from '@/lib/gsap/reveals'
+import SnakePath, { type SnakeStep } from '../components/SnakePath'
 
 const STEPS: SnakeStep[] = [
   {
     step: '01',
     title: 'Registration',
-    detail: 'Create the account. We take it from there.',
+    detail: 'You create the account. We handle everything after that.',
     icon: ClipboardList,
   },
   {
     step: '02',
     title: 'Documents',
-    detail: 'You send business papers. We file them.',
+    detail: 'Business registration papers — you send, we file.',
     icon: Files,
   },
   {
     step: '03',
-    title: 'Verification',
-    detail: 'We run Meta verification.',
+    title: 'Meta verification',
+    detail: 'We run the BSP verification. Usually 2–3 days.',
     icon: ShieldCheck,
   },
   {
     step: '04',
-    title: 'WhatsApp setup',
-    detail: 'Official WhatsApp Business Account, ready.',
+    title: 'WhatsApp number',
+    detail: 'Your official WhatsApp Business Account, live.',
     icon: Smartphone,
   },
   {
     step: '05',
     title: 'Platform config',
-    detail: 'Templates, assets, store wiring.',
+    detail: 'Templates drafted, assets uploaded, store connected.',
     icon: SlidersHorizontal,
   },
   {
     step: '06',
     title: 'Branding',
-    detail: 'Inbox and flows in your brand.',
+    detail: 'Your inbox, your flows, your colours and copy.',
     icon: Palette,
   },
   {
     step: '07',
-    title: 'Automation setup',
-    detail: 'Sales, support, and recovery flows.',
+    title: 'Automation build',
+    detail: 'Cart recovery, COD, order updates — all wired up.',
     icon: Waypoints,
   },
   {
     step: '08',
     title: 'Template approval',
-    detail: 'We push templates through Meta.',
+    detail: 'We submit to Meta. Most clear in 24–48 hours.',
     icon: BadgeCheck,
   },
   {
     step: '09',
-    title: 'Testing',
-    detail: 'End-to-end before anyone sees it.',
+    title: 'End-to-end testing',
+    detail: 'We run the full flow before anyone sees it.',
     icon: ListChecks,
   },
   {
     step: '10',
-    title: 'Client approval',
-    detail: 'You sign off. Then we go.',
+    title: 'Your sign-off',
+    detail: 'You review, request changes, approve. Then we go.',
     icon: UserRoundCheck,
   },
   {
     step: '11',
     title: 'Go live',
-    detail: 'The channel is on.',
+    detail: 'First messages start going out to real customers.',
     icon: Rocket,
   },
   {
     step: '12',
-    title: 'Handover',
-    detail: 'You run it. We stay on call.',
+    title: 'Handover + support',
+    detail: 'You run it. We stay on call for the first 30 days.',
     icon: Handshake,
   },
 ]
@@ -106,13 +98,9 @@ export default function OnboardingSection() {
 
   useGsapSection(scope, () => {
     revealLines('#onboarding-heading', { trigger: scope.current })
-    revealFadeUp('.onboarding-copy', { y: 20, trigger: scope.current })
-    revealDraw('.onboarding-map .snake-wave', { trigger: scope.current })
-    revealFadeUp('.onboarding-map .snake-node', {
-      y: 16,
-      stagger: STAGGER.tight,
-      trigger: scope.current,
-    })
+    revealFadeUp('.onboarding-copy',   { y: 20,   trigger: scope.current })
+    revealDraw('.onboarding-map .snake-wave',  { trigger: scope.current })
+    revealFadeUp('.onboarding-map .snake-node', { y: 16, stagger: STAGGER.tight, trigger: scope.current })
   })
 
   return (
@@ -123,17 +111,30 @@ export default function OnboardingSection() {
       aria-labelledby="onboarding-heading"
     >
       <div className="container">
-        <div className="mb-10 max-w-2xl md:mb-14">
-          <h2
-            id="onboarding-heading"
-            className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
+        <div className="mb-10 grid grid-cols-1 gap-6 md:mb-14 md:grid-cols-[1fr_auto]">
+          <div className="max-w-xl">
+            <h2
+              id="onboarding-heading"
+              className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
+            >
+              Live in 7 to 14 days. Here is exactly what happens.
+            </h2>
+            <p className="onboarding-copy mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
+              We handle Meta verification, template drafting, store wiring, and
+              testing. You provide brand assets and two sign-offs. That is the
+              full ask on your side.
+            </p>
+          </div>
+
+          {/* Time callout */}
+          <div
+            className="flex shrink-0 flex-col items-center justify-center self-start rounded-2xl border border-(--color-border) bg-(--color-surface) px-8 py-6 text-center"
           >
-            Live in 7 to 14 days. Here is exactly what happens.
-          </h2>
-          <p className="onboarding-copy mt-6 text-body-lg leading-relaxed text-(--color-text-muted)">
-            We handle Meta verification, template approval, and store wiring. You
-            provide brand assets and approvals. We do the rest.
-          </p>
+            <span className="text-h2 font-bold tracking-tight text-(--color-accent)" style={{ lineHeight: 1 }}>
+              7–14
+            </span>
+            <span className="mt-1 text-sm text-(--color-text-muted)">days to go live</span>
+          </div>
         </div>
 
         <div className="onboarding-map">
@@ -141,8 +142,34 @@ export default function OnboardingSection() {
             steps={STEPS}
             rows={[5, 5, 2]}
             minWidthClass="min-w-[60rem]"
-            ariaLabel="Twelve steps from registration to handover"
+            ariaLabel="Twelve-step onboarding from registration to handover"
           />
+        </div>
+
+        {/* Responsibility split */}
+        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-border) sm:grid-cols-2 md:mt-14">
+          <div className="bg-(--color-surface) p-6 md:p-8">
+            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">You provide</p>
+            <ul className="space-y-1.5 text-sm text-(--color-text-muted)">
+              {['Business registration documents', 'Brand assets (logo, brand colours)', 'Store access (Shopify / WooCommerce)', 'Two approvals — templates and go-live'].map(i => (
+                <li key={i} className="flex items-start gap-2">
+                  <span aria-hidden className="mt-1 h-1 w-1 shrink-0 rounded-full bg-(--color-text-faint)" />
+                  {i}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-(--color-surface) p-6 md:p-8">
+            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">We handle</p>
+            <ul className="space-y-1.5 text-sm text-(--color-text-muted)">
+              {['Meta verification and WABA setup', 'All template drafting and submission', 'Automation build and store wiring', 'End-to-end testing before go-live', '30-day post-launch support'].map(i => (
+                <li key={i} className="flex items-start gap-2">
+                  <span aria-hidden className="mt-1 h-1 w-1 shrink-0 rounded-full bg-(--color-text-faint)" />
+                  {i}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
