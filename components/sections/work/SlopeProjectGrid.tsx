@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils'
 
 const SLOPE_COLUMN_OFFSET = [
   '',
-  'lg:mt-24 xl:mt-32',
-  'lg:mt-48 xl:mt-64',
+  'lg:mt-20 xl:mt-28',
+  'lg:mt-40 xl:mt-52',
 ] as const
 
 interface SlopeProjectGridProps {

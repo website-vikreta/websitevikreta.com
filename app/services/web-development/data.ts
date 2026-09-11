@@ -92,25 +92,25 @@ export interface WebDevProofCard {
 
 export const WEB_DEV_PROOF_CARDS: WebDevProofCard[] = [
   {
-    id: 'tocal',
+    id: 'simpli-home',
     label: 'A',
-    title: 'Tocal',
-    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
-    catchphrase: 'A sleek product site with a clean, modern presentation.',
-    href: 'https://tocal.in/',
+    title: 'Simpli Home',
+    skills: 'AI AUTOMATION / MEDIA OPS',
+    catchphrase: 'They do the work we hired them for.',
+    href: 'https://www.simpli-home.com/',
     thumbnail: {
       kind: 'screenshot',
-      src: '/services/web-development/proof/tocal.webp',
+      src: '/services/web-development/proof/simpli-home.webp',
       width: 1440,
       height: 810,
-      alt: 'Tocal website homepage',
+      alt: 'Simpli Home website homepage',
     },
   },
   {
     id: 'sustainable-bitcoin-protocol',
     label: 'B',
     title: 'Sustainable Bitcoin Protocol',
-    stat: '3+ years',
+    skills: 'UI/UX DESIGN / DESIGN SYSTEM',
     catchphrase: 'Still the first call.',
     href: 'https://www.sustainablebtc.org/',
     thumbnail: {
@@ -125,7 +125,7 @@ export const WEB_DEV_PROOF_CARDS: WebDevProofCard[] = [
     id: 'ap-cleanco',
     label: 'C',
     title: 'AP Cleanco',
-    stat: '3 weeks',
+    skills: 'WEB DEVELOPMENT / LOCAL SEO',
     catchphrase: 'Zero to online. Properly.',
     href: 'https://apcleanco.com/',
     thumbnail: {
@@ -167,18 +167,18 @@ export const WEB_DEV_PROOF_CARDS: WebDevProofCard[] = [
     },
   },
   {
-    id: 'simpli-home',
+    id: 'tocal',
     label: 'F',
-    title: 'Simpli Home',
-    stat: '11 hrs a week',
-    catchphrase: 'They do the work we hired them for.',
-    href: 'https://www.simpli-home.com/',
+    title: 'Tocal',
+    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
+    catchphrase: 'A sleek product site with a clean, modern presentation.',
+    href: 'https://tocal.in/',
     thumbnail: {
       kind: 'screenshot',
-      src: '/services/web-development/proof/simpli-home.webp',
+      src: '/services/web-development/proof/tocal.webp',
       width: 1440,
       height: 810,
-      alt: 'Simpli Home website homepage',
+      alt: 'Tocal website homepage',
     },
   },
 ]
