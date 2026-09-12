@@ -69,7 +69,9 @@ _None yet_
 - No layout shift (CLS must be < 0.1)
 
 ## Last Updated
-2026-09-09 — WhatsApp Journey + Onboarding: shared S-snake (3+3+2 / 5+5+2).
+2026-09-12 — WhatsApp automation visual pass: integration chips replaced with a sharp logo rail reused in Hero + Packages; page-level cards/grids squared off, with rounded corners kept only inside phone/chat/product mockups.
+
+Previous: 2026-09-09 — WhatsApp Journey + Onboarding: shared S-snake (3+3+2 / 5+5+2).
 
 Previous: 2026-09-09 — WhatsApp Packages cards: subgrid alignment, reserved eyebrow slot, full-width CTAs.
 

@@ -939,4 +939,13 @@ _None logged yet._
 - Where: `app/services/ai-automations/whatsapp-automation/sections/PackagesSection.tsx`
 - Date: 2026-09-09
 
+### [Section] — WhatsApp integrations use sharp logo rail, not text-only pills
+- Rule: Integration strips on `/services/ai-automations/whatsapp-automation` use `IntegrationLogoRail`: `h-12` square-edged bordered cells, sentence-case label `text-sm text-(--color-text-faint)`, real existing SVG marks via `next/image` for Shopify / Meta / Google, and crisp bordered initial marks for missing local brand assets. No rounded pills, no uppercase/tracked label, no soft chip background. Use it in both Hero proof and Packages footer so the reference idea reads as a consistent page motif.
+- Where: `app/services/ai-automations/whatsapp-automation/components/IntegrationLogoRail.tsx`, `sections/Hero.tsx`, `sections/PackagesSection.tsx`
+- Date: 2026-09-12
+
+### [Shape] — WhatsApp page cards stay square-edged
+- Rule: Page-level surface cards/grids on the WhatsApp automation page have no rounded container radius. Sharp bordered grids/cards are the default: Pain stat grid, RTO dark panel, Product COD step grid, Cart Recovery cause/fix grid, Packages cards/custom row, Onboarding time/responsibility blocks, and Proof stats. Keep rounded corners only inside product mockups where they represent phone screens, chat bubbles, avatars, slider thumbs, or small bullets.
+- Where: `app/services/ai-automations/whatsapp-automation/sections/*.tsx`, `components/RtoCalculator.tsx`
+- Date: 2026-09-12
 
