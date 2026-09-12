@@ -92,7 +92,6 @@ export default function RtoCalculator() {
     <div
       ref={hostRef}
       style={{
-        borderRadius: '20px',
         background: 'rgba(255,255,255,0.06)',
         border: '1px solid rgba(255,255,255,0.1)',
         padding: 'clamp(20px, 4vw, 32px)',

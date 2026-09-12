@@ -3,6 +3,7 @@
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaqSection } from '@/components/sections/FaqSection'
+import ContactSection from '@/app/services/ai-automations/sections/ContactSection'
 import type { FaqItem } from '@/lib/faq-data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
@@ -11,7 +12,6 @@ import CartRecoverySection from './sections/CartRecoverySection'
 import PackagesSection from './sections/PackagesSection'
 import OnboardingSection from './sections/OnboardingSection'
 import ProofSection from './sections/ProofSection'
-import ContactSection from './sections/ContactSection'
 
 const WHATSAPP_FAQS: FaqItem[] = [
   {

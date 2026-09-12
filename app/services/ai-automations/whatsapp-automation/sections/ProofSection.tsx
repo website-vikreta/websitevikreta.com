@@ -60,7 +60,7 @@ export default function ProofSection() {
         </div>
 
         {/* Channel stats — 3-up grid */}
-        <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-border) sm:grid-cols-3 md:mb-14">
+        <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) sm:grid-cols-3 md:mb-14">
           {CHANNEL_STATS.map(({ n, label, context }) => (
             <div key={n} className="proof-stat bg-(--color-surface) p-7 md:p-9">
               <p

@@ -15,10 +15,16 @@ import {
   UserRoundCheck,
   Waypoints,
 } from 'lucide-react'
-import { revealDraw, revealFadeUp, revealLines, STAGGER, useGsapSection } from '@/lib/gsap/reveals'
-import SnakePath, { type SnakeStep } from '../components/SnakePath'
+import { revealFadeUp, revealLines, STAGGER, useGsapSection } from '@/lib/gsap/reveals'
 
-const STEPS: SnakeStep[] = [
+type JourneyStep = {
+  step: string
+  title: string
+  detail: string
+  icon: typeof ClipboardList
+}
+
+const STEPS: JourneyStep[] = [
   {
     step: '01',
     title: 'Registration',
@@ -93,14 +99,20 @@ const STEPS: SnakeStep[] = [
   },
 ]
 
+const PHASES = [
+  { number: '01', title: 'Connect', detail: 'Get the account and verification moving.', steps: STEPS.slice(0, 3) },
+  { number: '02', title: 'Set up', detail: 'Make the platform yours and connect your store.', steps: STEPS.slice(3, 6) },
+  { number: '03', title: 'Build', detail: 'Wire the flows and get every message approved.', steps: STEPS.slice(6, 9) },
+  { number: '04', title: 'Launch', detail: 'Review, approve, and start sending.', steps: STEPS.slice(9, 12) },
+]
+
 export default function OnboardingSection() {
   const scope = useRef<HTMLElement>(null)
 
   useGsapSection(scope, () => {
     revealLines('#onboarding-heading', { trigger: scope.current })
     revealFadeUp('.onboarding-copy',   { y: 20,   trigger: scope.current })
-    revealDraw('.onboarding-map .snake-wave',  { trigger: scope.current })
-    revealFadeUp('.onboarding-map .snake-node', { y: 16, stagger: STAGGER.tight, trigger: scope.current })
+    revealFadeUp('.journey-phase', { y: 20, stagger: STAGGER.tight, trigger: scope.current })
   })
 
   return (
@@ -128,7 +140,7 @@ export default function OnboardingSection() {
 
           {/* Time callout */}
           <div
-            className="flex shrink-0 flex-col items-center justify-center self-start rounded-2xl border border-(--color-border) bg-(--color-surface) px-8 py-6 text-center"
+            className="flex shrink-0 flex-col items-center justify-center self-start border border-(--color-border) bg-(--color-surface) px-8 py-6 text-center"
           >
             <span className="text-h2 font-bold tracking-tight text-(--color-accent)" style={{ lineHeight: 1 }}>
               7–14
@@ -138,16 +150,51 @@ export default function OnboardingSection() {
         </div>
 
         <div className="onboarding-map">
-          <SnakePath
-            steps={STEPS}
-            rows={[5, 5, 2]}
-            minWidthClass="min-w-[60rem]"
-            ariaLabel="Twelve-step onboarding from registration to handover"
-          />
+          <p className="mb-5 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">
+            The journey
+          </p>
+          <div className="grid grid-cols-1 border-y border-(--color-border) sm:grid-cols-2 lg:grid-cols-4">
+            {PHASES.map((phase) => (
+              <div
+                key={phase.number}
+                className="journey-phase border-b border-(--color-border) p-6 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0 lg:p-7"
+              >
+                <div className="mb-8 flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">
+                      Phase {phase.number}
+                    </p>
+                    <h3 className="mt-2 text-2xl font-bold tracking-tight text-(--color-text)">{phase.title}</h3>
+                  </div>
+                  <span className="text-4xl font-bold leading-none tracking-tight text-(--color-accent)">{phase.number}</span>
+                </div>
+                <p className="mb-7 max-w-60 text-sm leading-relaxed text-(--color-text-muted)">{phase.detail}</p>
+                <ol className="space-y-5">
+                  {phase.steps.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <li key={item.step} className="flex gap-3">
+                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-(--color-border-strong) text-(--color-text-faint)">
+                          <Icon size={14} strokeWidth={1.5} />
+                        </span>
+                        <div>
+                          <p className="text-sm font-bold leading-tight text-(--color-text)">
+                            <span className="mr-1.5 font-mono text-xs font-normal text-(--color-text-faint)">{item.step}</span>
+                            {item.title}
+                          </p>
+                          <p className="mt-1 text-xs leading-relaxed text-(--color-text-muted)">{item.detail}</p>
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ol>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Responsibility split */}
-        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-border) sm:grid-cols-2 md:mt-14">
+        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) sm:grid-cols-2 md:mt-14">
           <div className="bg-(--color-surface) p-6 md:p-8">
             <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">You provide</p>
             <ul className="space-y-1.5 text-sm text-(--color-text-muted)">

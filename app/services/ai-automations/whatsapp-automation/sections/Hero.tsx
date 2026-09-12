@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { CALENDLY_URL } from '@/config/site'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import PhoneDemo from '../components/PhoneDemo'
-
-const INTEGRATIONS = ['Shopify', 'WooCommerce', 'Razorpay', 'PayU', 'Meta Ads', 'Google Sheets']
+import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
   { n: '68+',  label: 'projects shipped' },
@@ -112,12 +111,7 @@ export default function Hero() {
                 {STATS.map(({ n, label }) => (
                   <div
                     key={n}
-                    style={{
-                      display: 'flex', alignItems: 'baseline', gap: '6px',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: '6px', padding: '8px 14px',
-                      background: 'var(--color-surface)',
-                    }}
+                    className="flex items-baseline gap-1.5 border border-(--color-border) bg-(--color-surface) px-3.5 py-2"
                   >
                     <span style={{ fontSize: '1.125rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--color-text)' }}>{n}</span>
                     <span style={{ fontSize: '13px', color: 'var(--color-text-faint)' }}>{label}</span>
@@ -125,25 +119,7 @@ export default function Hero() {
                 ))}
               </div>
 
-              <p style={{ fontSize: '11px', color: 'var(--color-text-faint)', marginBottom: '10px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Connects to
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {INTEGRATIONS.map(name => (
-                  <span
-                    key={name}
-                    style={{
-                      fontSize: '12.5px', fontWeight: 500,
-                      color: 'var(--color-text-muted)',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: '4px', padding: '4px 10px',
-                      background: 'var(--color-bg-muted)',
-                    }}
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
+              <IntegrationLogoRail />
             </div>
           </div>
 

@@ -52,7 +52,7 @@ const MESSAGES: MessageCard[] = [
   },
 ]
 
-function RecoveryPhone({ timing, clockTime, preview, hasOffer, offerText }: MessageCard) {
+function RecoveryPhone({ clockTime, preview, hasOffer, offerText }: MessageCard) {
   return (
     /* Outer shell — dark, rounded like a real phone */
     <div style={{
@@ -196,7 +196,7 @@ export default function CartRecoverySection() {
         </div>
 
         {/* Cause / fix grid */}
-        <div className="mb-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-border) md:mb-16 md:grid-cols-2">
+        <div className="mb-12 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:mb-16 md:grid-cols-2">
           {CAUSES.map(({ cause, fix }) => (
             <div key={cause} className="cart-pair grid grid-cols-1 gap-3 bg-(--color-surface) p-6 sm:grid-cols-2 sm:gap-5 md:p-7">
               <div>

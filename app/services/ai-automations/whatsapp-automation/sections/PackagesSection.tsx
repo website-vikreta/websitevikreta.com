@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Check } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const PACKAGES = [
   {
@@ -40,10 +41,6 @@ const PACKAGES = [
   },
 ] as const
 
-const INTEGRATIONS = [
-  'Shopify', 'WooCommerce', 'Razorpay', 'PayU', 'Meta Ads', 'IndiaMART', 'Justdial', 'Google Sheets',
-]
-
 export default function PackagesSection() {
   const scope = useRef<HTMLElement>(null)
 
@@ -79,16 +76,15 @@ export default function PackagesSection() {
                 className={`package-card relative flex h-full flex-col p-7 md:p-9 ${
                   highlighted ? 'border-2 border-(--color-text) bg-(--color-surface)' : 'border border-(--color-border) bg-(--color-surface)'
                 }`}
-                style={{ borderRadius: '16px' }}
               >
                 {highlighted && (
-                  <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-(--color-accent)" />
+                  <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-(--color-accent)" />
                 )}
 
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-2xl font-bold text-(--color-text)">{name}</h3>
                   {eyebrow && (
-                    <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', borderRadius: '4px', padding: '3px 8px', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                    <span className="shrink-0 whitespace-nowrap border border-(--color-border) px-2 py-1 text-xs font-semibold text-(--color-text-muted)">
                       {eyebrow}
                     </span>
                   )}
@@ -123,7 +119,6 @@ export default function PackagesSection() {
         {/* Custom tier row */}
         <div
           className="packages-footer mt-4 flex flex-col items-start justify-between gap-4 border border-(--color-border) bg-(--color-bg-muted) p-6 sm:flex-row sm:items-center md:p-7"
-          style={{ borderRadius: '12px' }}
         >
           <div>
             <p className="font-bold text-(--color-text)">Custom and Enterprise</p>
@@ -138,21 +133,7 @@ export default function PackagesSection() {
         </div>
 
         {/* Integrations */}
-        <div className="packages-footer mt-10 md:mt-12">
-          <p className="mb-4 text-xs font-medium uppercase tracking-widest text-(--color-text-faint)">
-            Connects to what you already use
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {INTEGRATIONS.map(name => (
-              <span
-                key={name}
-                className="rounded border border-(--color-border) bg-(--color-surface) px-3 py-1.5 text-xs font-medium text-(--color-text-muted)"
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
+        <IntegrationLogoRail className="packages-footer mt-10 md:mt-12" />
       </div>
     </section>
   )

@@ -51,7 +51,7 @@ export default function PainSection() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-border) md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:grid-cols-3">
             {PAINS.map(({ stat, title, line }) => (
               <article
                 key={title}
@@ -79,7 +79,7 @@ export default function PainSection() {
       <section ref={mathScope} id="rto-math" className="pb-16 md:pb-20" aria-labelledby="math-heading">
         <div className="container">
           <div
-            style={{ borderRadius: '1.75rem', background: 'var(--color-text)', padding: 'clamp(2rem,5vw,4rem)' }}
+            style={{ background: 'var(--color-text)', padding: 'clamp(2rem,5vw,4rem)' }}
           >
             <div
               className="grid grid-cols-1 gap-[clamp(2rem,4vw,4rem)] lg:grid-cols-2"
