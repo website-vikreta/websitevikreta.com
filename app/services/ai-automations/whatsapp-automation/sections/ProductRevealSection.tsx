@@ -11,18 +11,18 @@ const FEATURES = [
   },
   {
     label: 'Abandoned Cart Recovery',
-    detail: 'Three-message WhatsApp sequence sent automatically when a customer drops off at checkout',
+    detail: 'Three message WhatsApp sequence sent automatically when a customer drops off at checkout',
   },
   {
     label: 'COD Order Confirmation',
-    detail: 'One WhatsApp message before dispatch — customer confirms or cancels, no manual follow-up',
+    detail: 'One WhatsApp message before dispatch. Customer confirms or cancels with no manual follow up',
   },
   {
     label: 'Order Status Notifications',
     detail: 'Automated WhatsApp updates for order confirmation, dispatch, and delivery',
   },
   {
-    label: 'Omni-Channel Inbox',
+    label: 'Omnichannel Inbox',
     detail: 'WhatsApp, Instagram DMs, and Facebook Messenger managed from one team inbox',
   },
 ]
@@ -30,25 +30,25 @@ const FEATURES = [
 const COD_STEPS = [
   {
     n: '01',
-    title: 'COD order placed on your store',
-    body: 'A cash-on-delivery order lands on Shopify or WooCommerce. The platform picks it up immediately with no manual trigger.',
+    title: 'Order received on your storefront',
+    body: 'A cash on delivery order drops into your Shopify or WooCommerce backend. Our system detects it instantly without manual input.',
   },
   {
     n: '02',
-    title: 'Customer receives a WhatsApp message',
-    body: 'Their name, product name, order amount, and two reply buttons — confirm or cancel. Nothing to type. Most customers respond within the hour.',
+    title: 'Instant WhatsApp verification',
+    body: 'The buyer receives a personalized message with order details and quick reply buttons to confirm or decline the order. No typing needed.',
   },
   {
     n: '03',
-    title: 'Confirmed orders go straight to dispatch',
-    body: 'A yes reply moves the order to your dispatch list. A no reply cancels it in your store automatically. Twenty-four hours of silence cancels it too.',
+    title: 'Approved orders move to fulfillment',
+    body: 'A confirmation click instantly tags the order for shipping. A cancellation tap automatically updates your store inventory.',
   },
 ]
 
 const TIMELINE = [
-  { at: 'Under 5 minutes', title: 'Confirmation message sent',  body: 'Order lands on your store, WhatsApp goes out immediately. No one on your team does anything.' },
-  { at: '3 hours',         title: 'One follow-up reminder',     body: 'A single reminder for customers who have not responded. We do not send more than this.' },
-  { at: '24 hours',        title: 'Unconfirmed order cancelled', body: 'Silence means no. The order cancels in your store before it ever reaches your packing table.' },
+  { at: 'Under 5 minutes', title: 'Verification message delivered',  body: 'The WhatsApp prompt is sent out as soon as the checkout is completed. Your team does nothing.' },
+  { at: '3 hours',         title: 'Automated follow up sent',     body: 'If the buyer has not replied, the system sends one final nudge to get their attention.' },
+  { at: '24 hours',        title: 'Order automatically voided', body: 'No response means no shipment. The order is seamlessly cancelled in your system to prevent RTO losses.' },
 ]
 
 /* Singleton keyframes — safe from re-injection */
@@ -167,28 +167,26 @@ export default function ProductRevealSection() {
         <div className="container">
           <div className="grid grid-cols-1 items-start gap-[clamp(2.5rem,5vw,5rem)] lg:grid-cols-2">
 
-            {/* Left — how it works */}
+            {/* Left side */}
             <div>
               <p className="text-meta-label mb-4 font-medium uppercase tracking-widest text-(--color-text-faint)">
-                WhatsApp COD Confirmation
+                Automated COD Verification
               </p>
               <h2
                 id="cod-heading"
                 className="text-h2 font-bold tracking-tight text-(--color-text)"
                 style={{ maxWidth: '14ch', lineHeight: 1.05, marginBottom: '1.5rem' }}
               >
-                One message before the parcel moves.
+                Stop fake orders before they ship.
               </h2>
               <p
                 className="cod-intro text-body-lg leading-relaxed text-(--color-text-muted)"
                 style={{ maxWidth: '44ch', marginBottom: '2rem' }}
               >
-                Every COD order on your store gets one WhatsApp message before it
-                leaves your warehouse. The customer confirms or cancels with a
-                single tap. No customer service call required.
+                Every cash on delivery purchase triggers an instant WhatsApp confirmation. Customers can approve or cancel their purchase with one tap, saving your team hours of manual calling.
               </p>
 
-              <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-(--color-border) bg-(--color-border)" style={{ listStyle: 'none' }}>
+              <ol className="grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border)" style={{ listStyle: 'none' }}>
                 {COD_STEPS.map(({ n, title, body }) => (
                   <li key={n} className="cod-step bg-(--color-surface) p-6 md:p-7">
                     <span className="font-mono text-xs tracking-widest" style={{ color: '#1a8a5a' }}>{n}</span>
@@ -199,22 +197,19 @@ export default function ProductRevealSection() {
               </ol>
             </div>
 
-            {/* Right — 24h rule */}
+            {/* Right side */}
             <div>
               <p className="text-meta-label mb-4 font-medium uppercase tracking-widest text-(--color-text-faint)">
-                How unconfirmed orders are handled
+                Handling silent or fake orders
               </p>
               <h2
                 className="font-bold tracking-tight text-(--color-text)"
                 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', lineHeight: 1.05, maxWidth: '14ch', marginBottom: '1.25rem' }}
               >
-                No reply in 24 hours means cancel.
+                Unresponsive orders are automatically dropped.
               </h2>
               <p className="text-body-lg leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '44ch' }}>
-                An impulse buyer who ordered at 2am will not reply. A customer
-                who gave a fake number cannot. The shopper who placed the same
-                order on three stores will only confirm one. All three cancel
-                themselves without any action from your team.
+                Customers who provide fake numbers or place impulse orders often ignore verification messages. If an order remains unconfirmed, our system automatically marks it as cancelled so you never ship a package that will be rejected at the door.
               </p>
 
               <ol
