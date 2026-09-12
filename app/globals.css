@@ -249,6 +249,16 @@ body {
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
 }
 
+.dropdown-panel.nested {
+  top: -6px;
+  left: calc(100% + 4px);
+  transform: translateX(-6px);
+}
+
+.dropdown-panel.nested.open {
+  transform: translateX(0);
+}
+
 /* ─── Audit Modal (sitewide "book a free audit" popup) ──────────
    Radix Dialog drives [data-state] — no JS-timed animation needed. Centered
    card that shrinks to the viewport on small screens instead of a separate

@@ -187,16 +187,17 @@ export function Navbar() {
                     </button>
 
                     <div
-                      className={`dropdown-anchor${
+                      className={`dropdown-panel${
                         activeDropdown === item.label ? ' open' : ''
                       }`}
+                      role="menu"
                     >
-                      <div className="dropdown-panel" role="menu">
                         <ul className="list-none" role="list">
                           {item.dropdown.map((dropItem) => (
                             <li
                               key={dropItem.href}
                               role="none"
+                              className="relative"
                               onMouseEnter={() =>
                                 setNestedOpen(
                                   dropItem.children ? dropItem.href : null,
@@ -236,38 +237,33 @@ export function Navbar() {
                                   />
                                 ) : null}
                               </Link>
+                              {dropItem.children ? (
+                                <div
+                                  className={`dropdown-panel nested${
+                                    nestedOpen === dropItem.href ? ' open' : ''
+                                  }`}
+                                  role="menu"
+                                >
+                                  <ul className="list-none" role="list">
+                                    {dropItem.children.map((child) => (
+                                      <li key={child.href} role="none">
+                                        <Link
+                                          href={child.href}
+                                          className={DROP_LINK}
+                                          role="menuitem"
+                                          onClick={() => setActiveDropdown(null)}
+                                        >
+                                          {child.label}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ) : null}
                             </li>
                           ))}
                         </ul>
                       </div>
-                      {item.dropdown.map((dropItem) =>
-                        dropItem.children ? (
-                          <div
-                            key={`${dropItem.href}-submenu`}
-                            className={`dropdown-panel nested${
-                              nestedOpen === dropItem.href ? ' open' : ''
-                            }`}
-                            role="menu"
-                            onMouseEnter={() => setNestedOpen(dropItem.href)}
-                          >
-                            <ul className="list-none" role="list">
-                              {dropItem.children.map((child) => (
-                                <li key={child.href} role="none">
-                                  <Link
-                                    href={child.href}
-                                    className={DROP_LINK}
-                                    role="menuitem"
-                                    onClick={() => setActiveDropdown(null)}
-                                  >
-                                    {child.label}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ) : null,
-                      )}
-                    </div>
                   </>
                 ) : (
                   <Link
