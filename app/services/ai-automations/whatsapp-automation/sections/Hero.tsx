@@ -8,9 +8,9 @@ import PhoneDemo from '../components/PhoneDemo'
 import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
-  { n: '68+',  label: 'projects shipped' },
+  { n: '68+', label: 'projects shipped' },
   { n: '7–14', label: 'days to go live' },
-  { n: '98%',  label: 'WhatsApp open rate' },
+  { n: '98%', label: 'WhatsApp open rate' },
 ]
 
 /* Singleton — avoids re-injecting on every render */
@@ -34,22 +34,22 @@ if (typeof document !== 'undefined' && !document.getElementById(HERO_STYLE_ID)) 
 }
 
 export default function Hero() {
-  const scope    = useRef<HTMLElement>(null)
+  const scope = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const subRef   = useRef<HTMLParagraphElement>(null)
-  const ctaRef   = useRef<HTMLDivElement>(null)
+  const subRef = useRef<HTMLParagraphElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
   const proofRef = useRef<HTMLDivElement>(null)
 
   useGsapSection(scope, () => {
     const heading = headingRef.current
-    const sub     = subRef.current
-    const cta     = ctaRef.current
-    const proof   = proofRef.current
+    const sub = subRef.current
+    const cta = ctaRef.current
+    const proof = proofRef.current
     if (!heading || !sub || !cta || !proof) return
     revealLines(heading, { trigger: null })
-    revealFadeUp(sub,    { y: 18, delay: 0.35, trigger: null })
-    revealFadeUp(cta,    { y: 18, delay: 0.5,  trigger: null })
-    revealFadeUp(proof,  { y: 14, delay: 0.65, trigger: null })
+    revealFadeUp(sub, { y: 18, delay: 0.35, trigger: null })
+    revealFadeUp(cta, { y: 18, delay: 0.5, trigger: null })
+    revealFadeUp(proof, { y: 14, delay: 0.65, trigger: null })
   })
 
   return (
@@ -87,7 +87,7 @@ export default function Hero() {
               style={{ color: 'var(--color-text-muted)', lineHeight: 1.65, maxWidth: '46ch', marginBottom: '2.5rem' }}
             >
               Abandoned cart recovery, COD order confirmation, order status updates,
-              and AI customer support — one platform deployed on your brand and
+              and AI customer support. One platform deployed on your brand and
               connected to your Shopify or WooCommerce store.
             </p>
 

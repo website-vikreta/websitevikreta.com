@@ -56,8 +56,7 @@ export default function Hero() {
           ref={subRef}
           className="mx-auto mb-10 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)"
         >
-          We design and develop fast, scalable, and visually stunning websites
-          that help businesses attract customers, build credibility, and grow online.
+          As a leading web development company, we provide custom website development services that help businesses attract customers, build credibility, and grow online.
         </p>
 
         <div ref={ctaRef} className="flex flex-col items-center justify-center gap-4 sm:flex-row">

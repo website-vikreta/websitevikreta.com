@@ -8,7 +8,7 @@ const BUILD_ITEMS = [
   {
     icon:  Zap,
     title: 'Fast, SEO-ready builds',
-    line:  'Clean semantic HTML, proper metadata, and load times that don’t lose visitors before the page even paints.',
+    line:  'As part of our fast SEO-optimized website development services, we deliver clean semantic HTML, proper metadata, and instant load times that don’t lose visitors.',
   },
   {
     icon:  Smartphone,
@@ -18,7 +18,7 @@ const BUILD_ITEMS = [
   {
     icon:  FileCode2,
     title: 'Custom-coded, not templated',
-    line:  'Every site is built from scratch in Next.js and Tailwind, built around your brand, not a theme with your logo swapped in.',
+    line:  'Every site is built from scratch. Partner with a custom website design company to get a site built around your brand, not a generic theme.',
   },
 ]
 
@@ -35,7 +35,7 @@ export default function WhatWeBuildSection() {
       <div className="container">
         <div className="mb-10 md:mb-14 max-w-2xl">
           <h2 id="build-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-            What We Build
+            SEO-ready website design and development
           </h2>
         </div>
 

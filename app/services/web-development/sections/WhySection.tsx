@@ -8,7 +8,7 @@ import { useGsapSection, revealLines, revealFadeUp, revealClipImage, STAGGER } f
 const DIFFERENTIATORS = [
   {
     icon:  Users,
-    title: 'Real client work, not concepts',
+    title: 'Custom website development for small business',
     body:  'Every project above is live today, built for a real business, not a portfolio filler piece.',
   },
   {
@@ -19,7 +19,7 @@ const DIFFERENTIATORS = [
   {
     icon:  LifeBuoy,
     title: 'You own what we build',
-    body:  'The code and content are yours from day one, plus support after launch to keep things running.',
+    body:  'The code and content are yours from day one. As your business website development company, we provide support after launch to keep things running.',
   },
 ]
 
@@ -40,7 +40,7 @@ export default function WhySection() {
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
           <div className="max-w-2xl">
             <h2 className="why-heading text-h3 font-bold tracking-tight text-(--color-text)">
-              Why Website Vikreta
+              Why choose our Next.js development agency
             </h2>
 
             <ul className="flex flex-col gap-6 mt-6">
