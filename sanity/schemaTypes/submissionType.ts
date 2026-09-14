@@ -37,6 +37,12 @@ export const submissionType = defineType({
       validation: r => r.required(),
     }),
     defineField({
+      name: 'notes',
+      title: 'Notes / Links',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
       name: 'resumePublicUrl',
       title: 'Resume Public URL',
       type: 'url',
