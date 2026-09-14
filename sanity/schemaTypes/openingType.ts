@@ -32,6 +32,7 @@ export const openingType = defineType({
       options: {
         list: [
           { title: 'Internship', value: 'Internship' },
+          { title: 'Part-time', value: 'Part-time' },
           { title: 'Full-time', value: 'Full-time' },
         ],
         layout: 'radio',
