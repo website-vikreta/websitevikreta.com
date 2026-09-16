@@ -64,16 +64,27 @@ function PainFrame({ item }: { item: WebDevPainItem }) {
   )
 }
 
-function PainHeading({ id }: { id?: string }) {
+function PainHeading({ id, compact = false }: { id?: string; compact?: boolean }) {
   return (
     <div className="max-w-2xl">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">
+      <p
+        className={`text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted) ${
+          compact ? 'mt-0' : ''
+        }`}
+      >
         {WEB_DEV_PAIN.eyebrow}
       </p>
-      <span className="mt-4 mb-4 block h-px w-8 bg-(--color-accent)" aria-hidden="true" />
+      <span
+        className={`block h-px w-8 bg-(--color-accent) ${compact ? 'mt-2 mb-2' : 'mt-4 mb-4'}`}
+        aria-hidden="true"
+      />
       <h2
         id={id}
-        className="max-w-xl text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
+        className={`max-w-xl font-bold leading-[1.05] tracking-tight text-(--color-text) ${
+          compact
+            ? 'text-[clamp(1.5rem,3vw,2.75rem)] [@media(min-height:901px)]:text-[clamp(1.625rem,3.35vw,3rem)] [@media(max-height:900px)]:text-[clamp(1.375rem,2.65vw,2.25rem)]'
+            : 'text-h2'
+        }`}
       >
         {WEB_DEV_PAIN.heading}
       </h2>
@@ -124,7 +135,11 @@ export default function PainSection() {
   const current = items[active] ?? items[0]
 
   return (
-    <section ref={scope} className="py-16 md:py-20" aria-labelledby="pain-heading">
+    <section
+      ref={scope}
+      className="py-16 md:py-20 xl:pt-12 xl:pb-16"
+      aria-labelledby="pain-heading"
+    >
       <div className="container">
         <div className="mb-10 md:mb-14 xl:hidden">
           <PainHeading id="pain-heading-mobile" />
@@ -144,16 +159,16 @@ export default function PainSection() {
         <div ref={trackRef} className="relative hidden xl:block xl:h-[300vh]">
           <div
             ref={pinRef}
-            className="sticky top-28 flex h-[calc(100svh-7rem)] flex-col xl:top-32 xl:h-[calc(100svh-8rem)]"
+            className="sticky top-24 flex h-[calc(100svh-6rem)] max-h-[calc(100svh-6rem)] flex-col justify-start overflow-visible xl:top-28 xl:h-[calc(100svh-7rem)] xl:max-h-[calc(100svh-7rem)]"
           >
-            <div className="shrink-0 [@media(max-height:800px)]:[&_h2]:text-[clamp(1.5rem,3.5vw,2.25rem)]">
-              <PainHeading id="pain-heading" />
+            <div className="shrink-0">
+              <PainHeading id="pain-heading" compact />
             </div>
 
             <div
-              className="mt-6 grid min-h-0 flex-1 grid-cols-12 grid-rows-[minmax(0,1fr)_auto] gap-x-10 gap-y-3 md:mt-8 [@media(max-height:800px)]:mt-4"
+              className="mt-3 grid min-h-0 flex-1 grid-cols-12 grid-rows-[auto_auto] content-start gap-x-10 gap-y-1.5 [@media(max-height:900px)]:mt-2"
             >
-              <div className="col-span-5 row-start-1 flex min-h-0 items-center">
+              <div className="col-span-5 row-start-1 flex min-h-0 items-center self-stretch">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={current.id}
@@ -168,9 +183,9 @@ export default function PainSection() {
                 </AnimatePresence>
               </div>
 
-              <div className="@container col-span-7 row-start-1 flex h-full min-h-0 items-center justify-center">
+              <div className="col-span-7 row-start-1 flex items-center justify-center self-stretch">
                 <div
-                  className="relative aspect-video w-[min(100cqw,calc(100cqh*16/9))] max-w-full overflow-hidden border border-(--color-border) bg-(--color-bg-muted)"
+                  className="relative aspect-video w-full max-w-full overflow-hidden border border-(--color-border) bg-(--color-bg-muted)"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div
@@ -193,7 +208,7 @@ export default function PainSection() {
                 </div>
               </div>
 
-              <div className="col-span-7 col-start-6 row-start-2 shrink-0 pb-0.5">
+              <div className="col-span-7 col-start-6 row-start-2 shrink-0">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.p
                     key={current.id}
@@ -201,7 +216,7 @@ export default function PainSection() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={reduceMotion ? undefined : { opacity: 0 }}
                     transition={{ duration: 0.3, ease: REVEAL_EASE }}
-                    className="text-body-lg leading-snug text-(--color-text)"
+                    className="w-full pb-1 text-body-lg leading-snug text-(--color-text) [@media(max-height:900px)]:text-base"
                   >
                     {current.hook}
                   </motion.p>
