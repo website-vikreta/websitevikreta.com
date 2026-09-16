@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { CALENDLY_URL } from '@/config/site'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import PhoneDemo from '../components/PhoneDemo'
+import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
   { n: '68+', label: 'projects shipped' },
@@ -117,9 +118,6 @@ export default function Hero() {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-xs leading-relaxed text-(--color-text-faint)">
-                Connects with Shopify, WooCommerce, Meta, Razorpay, and the tools you already use.
-              </p>
             </div>
           </div>
 
@@ -128,6 +126,13 @@ export default function Hero() {
             <PhoneDemo />
           </div>
 
+        </div>
+
+        <div className="mt-14 border-t border-(--color-border) pt-6 md:mt-16 md:flex md:items-center md:gap-10">
+          <p className="mb-4 shrink-0 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) md:mb-0">
+            Works with your existing stack
+          </p>
+          <IntegrationLogoRail />
         </div>
       </div>
     </section>
