@@ -146,7 +146,7 @@ export default function ProductRevealSection() {
             <div className="reveal-visual relative overflow-hidden border border-(--color-border) bg-(--color-surface)">
               <Image
                 src="/services/whatsapp-commerce-hub.webp"
-                alt="All sales channels feeding into a single WhatsApp Business dashboard — catalog, automated flows, live chat support, and a unified team inbox."
+                alt="All sales channels feeding into a single WhatsApp Business dashboard: catalog, automated flows, live chat support, and a unified team inbox."
                 width={1448}
                 height={1086}
                 sizes="(min-width: 1024px) 50vw, 100vw"
@@ -170,28 +170,30 @@ export default function ProductRevealSection() {
             {/* Left side */}
             <div>
               <p className="text-meta-label mb-4 font-medium uppercase tracking-widest text-(--color-text-faint)">
-                Automated COD Verification
+                Before you ship
               </p>
               <h2
                 id="cod-heading"
                 className="text-h2 font-bold tracking-tight text-(--color-text)"
-                style={{ maxWidth: '14ch', lineHeight: 1.05, marginBottom: '1.5rem' }}
+                style={{ maxWidth: '18ch', lineHeight: 1.05, marginBottom: '1.5rem' }}
               >
-                Stop fake orders before they ship.
+                Every COD order gets a quick yes or no.
               </h2>
               <p
                 className="cod-intro text-body-lg leading-relaxed text-(--color-text-muted)"
                 style={{ maxWidth: '44ch', marginBottom: '2rem' }}
               >
-                Every cash on delivery purchase triggers an instant WhatsApp confirmation. Customers can approve or cancel their purchase with one tap, saving your team hours of manual calling.
+                As soon as a cash on delivery order comes in, WhatsApp asks the customer to confirm it. Your team gets a clear answer before the package leaves.
               </p>
 
-              <ol className="grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border)" style={{ listStyle: 'none' }}>
-                {COD_STEPS.map(({ n, title, body }) => (
-                  <li key={n} className="cod-step bg-(--color-surface) p-6 md:p-7">
-                    <span className="font-mono text-xs tracking-widest" style={{ color: '#1a8a5a' }}>{n}</span>
-                    <h3 className="mt-3 text-base font-bold tracking-tight text-(--color-text)">{title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-(--color-text-muted)">{body}</p>
+              <ol className="border-y border-(--color-border)" style={{ listStyle: 'none' }}>
+                {COD_STEPS.map(({ n, title, body }, index) => (
+                  <li key={n} className={`cod-step grid grid-cols-[3rem_minmax(0,1fr)] gap-4 py-5 md:grid-cols-[4.5rem_minmax(0,1fr)] md:gap-6 md:py-6 ${index > 0 ? 'border-t border-(--color-border)' : ''}`}>
+                    <span className="font-mono text-2xl font-semibold leading-none tracking-tight" style={{ color: '#1a8a5a' }}>{n}</span>
+                    <div>
+                      <h3 className="text-base font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
+                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-(--color-text-muted)">{body}</p>
+                    </div>
                   </li>
                 ))}
               </ol>
