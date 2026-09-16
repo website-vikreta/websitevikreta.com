@@ -1,21 +1,23 @@
 'use client'
 
 import { useRef } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
 const CAUSES = [
-  { cause: 'Unexpected costs at checkout',     fix: 'All-in pricing shown early + recovery message with final total' },
-  { cause: 'Forced account creation',           fix: 'Guest checkout default + one-tap recovery link in WhatsApp' },
-  { cause: 'Long or complicated form',          fix: 'Field reduction + PIN autofill + checkout deep link in chat' },
-  { cause: 'Limited payment options',           fix: 'UPI, wallets, COD first on mobile + payment link in message' },
-  { cause: 'Slow page speed',                   fix: 'LCP audit. Target under 2.5 seconds.' },
-  { cause: 'Trust hesitation at payment step',  fix: 'Trust badges at checkout + COD double-confirm on WhatsApp' },
+  { cause: 'The final price feels higher than expected', fix: 'Show the full price early and remind them of the exact total' },
+  { cause: 'Customers have to create an account',        fix: 'Let them check out as guests and send a direct WhatsApp link' },
+  { cause: 'Checkout takes too long',                    fix: 'Ask for fewer details and send them straight to checkout' },
+  { cause: 'Their preferred payment option is missing',  fix: 'Put UPI, wallets, and COD first, with a payment link in WhatsApp' },
+  { cause: 'The checkout page loads too slowly',          fix: 'Speed up the page so customers can finish their order' },
+  { cause: 'Customers do not feel ready to pay',          fix: 'Show trust signals and confirm COD orders on WhatsApp' },
 ]
 
 type MessageCard = {
   timing: string
   clockTime: string
   label: string
+  purpose: string
   badge: string
   badgeColor: string
   preview: string
@@ -27,7 +29,8 @@ const MESSAGES: MessageCard[] = [
   {
     timing: '+15 min',
     clockTime: '10:15',
-    label: 'Plain reminder',
+    label: 'Bring them back',
+    purpose: 'A simple reminder while the cart is still fresh.',
     badge: 'Utility',
     badgeColor: '#1a8a5a',
     preview: 'Hi Priya, you left something in your cart. Your Block Print Kurta (M) is still available. Tap to complete your order.',
@@ -35,15 +38,17 @@ const MESSAGES: MessageCard[] = [
   {
     timing: '+4 hrs',
     clockTime: '14:00',
-    label: 'Social proof',
+    label: 'Build confidence',
+    purpose: 'Show that other customers are buying too.',
     badge: 'Utility',
     badgeColor: '#1a8a5a',
-    preview: '12 people bought this kurta in the last 24 hours. Sizes are going fast. Your cart is saved — complete your order now.',
+    preview: '12 people bought this kurta in the last 24 hours. Sizes are going fast. Your cart is saved. Complete your order now.',
   },
   {
     timing: '+24 hrs',
     clockTime: '10:00',
-    label: 'Last chance offer',
+    label: 'Give one last reason',
+    purpose: 'Make one clear offer before the cart expires.',
     badge: 'Marketing',
     badgeColor: '#b45309',
     preview: 'Final reminder. Use code SAVE10 for 10% off your order. This offer expires tonight at midnight.',
@@ -189,37 +194,56 @@ export default function CartRecoverySection() {
             Fix checkout first. Recover the carts that still leave.
           </h2>
           <p className="cart-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Six reasons carts die — all fixable. We tackle checkout friction before sending a single
-            message. Then we run a three-step WhatsApp sequence on what still abandons. No discount
-            on message one — that trains buyers to leave on purpose.
+            Six reasons customers leave their carts, and all of them are fixable. We improve checkout before sending a single
+            message. Then we send three WhatsApp messages to the people who still leave. No discount
+            on the first message. That teaches buyers to wait for one.
           </p>
         </div>
 
-        {/* Cause / fix grid */}
-        <div className="mb-12 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:mb-16 md:grid-cols-2">
-          {CAUSES.map(({ cause, fix }) => (
-            <div key={cause} className="cart-pair grid grid-cols-1 gap-3 bg-(--color-surface) p-6 sm:grid-cols-2 sm:gap-5 md:p-7">
+        {/* Cause / fix audit */}
+        <div className="cart-pair mb-12 border-y border-(--color-border) md:mb-16">
+          <div className="hidden grid-cols-[3rem_minmax(0,1fr)_2rem_minmax(0,1.15fr)] items-center gap-6 border-b border-(--color-border) py-3 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) sm:grid md:gap-8">
+            <span>Step</span>
+            <span>What loses the sale</span>
+            <span aria-hidden="true" />
+            <span>What we change</span>
+          </div>
+
+          {CAUSES.map(({ cause, fix }, index) => (
+            <div
+              key={cause}
+              className="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 gap-y-4 border-b border-(--color-border) py-6 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)_2rem_minmax(0,1.15fr)] sm:items-center sm:gap-6 md:gap-8 md:py-7"
+            >
+              <span className="font-mono text-xs font-semibold text-(--color-accent)">
+                {String(index + 1).padStart(2, '0')}
+              </span>
               <div>
-                <p className="text-meta-label mb-1.5 font-medium uppercase tracking-widest text-(--color-text-faint)">
+                <p className="mb-1 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) sm:hidden">
                   Root cause
                 </p>
-                <p className="text-sm font-medium leading-snug text-(--color-text)">{cause}</p>
+                <p className="text-base font-bold leading-snug text-(--color-text)">{cause}</p>
               </div>
-              <div>
-                <p className="text-meta-label mb-1.5 font-medium uppercase tracking-widest text-(--color-text-faint)">
+              <ArrowRight size={18} strokeWidth={1.5} aria-hidden className="col-start-2 row-start-3 hidden text-(--color-text-faint) sm:col-start-3 sm:row-start-1 sm:block" />
+              <div className="col-start-2 sm:col-start-4">
+                <p className="mb-1 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) sm:hidden">
                   Fix
                 </p>
-                <p className="text-sm leading-snug text-(--color-text-muted)">{fix}</p>
+                <p className="text-sm leading-relaxed text-(--color-text-muted)">{fix}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* 3-message sequence */}
-        <div className="mb-8 flex items-baseline justify-between gap-6">
-          <h3 className="text-xl font-bold tracking-tight text-(--color-text) md:text-2xl">
-            The 3-message recovery sequence
-          </h3>
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+          <div>
+            <h3 className="text-xl font-bold tracking-tight text-(--color-text) md:text-2xl">
+              Three messages. Three reasons to return.
+            </h3>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-(--color-text-muted)">
+              We start with a reminder, build confidence, and only then make one offer.
+            </p>
+          </div>
           <p className="hidden shrink-0 text-sm text-(--color-text-faint) sm:block">
             No discount on message one
           </p>
@@ -240,7 +264,7 @@ export default function CartRecoverySection() {
                     {msg.timing}
                   </p>
                   <p className="text-sm font-bold tracking-tight text-(--color-text)">{msg.label}</p>
-                  <p className="mt-0.5 text-xs text-(--color-text-faint)">after abandonment</p>
+                  <p className="mt-1 max-w-[15rem] text-xs leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
                 </div>
                 <span style={{
                   flexShrink: 0,
