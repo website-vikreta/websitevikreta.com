@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Check } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
-import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const PACKAGES = [
   {
@@ -60,8 +59,8 @@ export default function PackagesSection() {
             Two tiers. Pick what your store actually needs.
           </h2>
           <p className="packages-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Platform subscription billed quarterly. WhatsApp message charges — Utility
-            messages at around 11 paise and Marketing messages — are billed separately
+            Platform subscription billed quarterly. WhatsApp message charges for Utility
+            messages at around 11 paise and Marketing messages are billed separately
             based on actual usage. Setup and onboarding are quoted once.
           </p>
         </div>
@@ -132,8 +131,6 @@ export default function PackagesSection() {
           </Button>
         </div>
 
-        {/* Integrations */}
-        <IntegrationLogoRail className="packages-footer mt-10 md:mt-12" />
       </div>
     </section>
   )
