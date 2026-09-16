@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/Button'
 import { CALENDLY_URL } from '@/config/site'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import PhoneDemo from '../components/PhoneDemo'
-import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
   { n: '68+', label: 'projects shipped' },
@@ -105,9 +104,9 @@ export default function Hero() {
               )}
             </div>
 
-            {/* Stats + integrations */}
+            {/* Proof */}
             <div ref={proofRef}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {STATS.map(({ n, label }) => (
                   <div
                     key={n}
@@ -118,13 +117,14 @@ export default function Hero() {
                   </div>
                 ))}
               </div>
-
-              <IntegrationLogoRail />
+              <p className="mt-4 text-xs leading-relaxed text-(--color-text-faint)">
+                Connects with Shopify, WooCommerce, Meta, Razorpay, and the tools you already use.
+              </p>
             </div>
           </div>
 
           {/* ── Right: phone demo ── */}
-          <div className="wa-phone-reveal mx-auto w-full max-w-[380px] lg:mx-0 lg:max-w-none">
+          <div className="wa-phone-reveal mx-auto w-full max-w-95 lg:mx-0 lg:max-w-none">
             <PhoneDemo />
           </div>
 
