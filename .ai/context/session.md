@@ -6,7 +6,7 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize.
+Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize. Hero: `min-h-svh` + vertical center only at `xl+` (fixes iPad Pro dead space); headline uses block lines not `<br>` for GSAP line reveal.
 
 Previous: Digital Marketing page
 
