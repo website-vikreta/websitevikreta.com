@@ -11,10 +11,14 @@ function PainCopy({
   item,
   index,
   active,
+  showHook = true,
+  showDetail = true,
 }: {
   item: WebDevPainItem
   index: number
   active: boolean
+  showHook?: boolean
+  showDetail?: boolean
 }) {
   const step = String(index + 1).padStart(2, '0')
 
@@ -36,8 +40,12 @@ function PainCopy({
         <span className="sr-only">{`Friction ${step}: `}</span>
         {item.title}
       </h3>
-      <p className="mt-3 max-w-sm text-body-lg leading-relaxed text-(--color-text-muted)">{item.hook}</p>
-      <p className="mt-3 max-w-sm text-sm leading-relaxed text-(--color-text-faint)">{item.detail}</p>
+      {showHook ? (
+        <p className="mt-3 max-w-sm text-body-lg leading-relaxed text-(--color-text-muted)">{item.hook}</p>
+      ) : null}
+      {showDetail ? (
+        <p className="mt-4 max-w-sm text-body leading-relaxed text-(--color-text-muted)">{item.detail}</p>
+      ) : null}
     </>
   )
 }
@@ -118,11 +126,11 @@ export default function PainSection() {
   return (
     <section ref={scope} className="py-16 md:py-20" aria-labelledby="pain-heading">
       <div className="container">
-        <div className="mb-10 md:mb-14 lg:hidden">
+        <div className="mb-10 md:mb-14 xl:hidden">
           <PainHeading id="pain-heading-mobile" />
         </div>
 
-        <div className="flex flex-col gap-16 lg:hidden">
+        <div className="flex flex-col gap-16 xl:hidden">
           {items.map((item, index) => (
             <article key={item.id}>
               <PainCopy item={item} index={index} active />
@@ -133,12 +141,19 @@ export default function PainSection() {
           ))}
         </div>
 
-        <div ref={trackRef} className="relative hidden lg:block lg:h-[300vh]">
-          <div ref={pinRef} className="sticky top-28 xl:top-32">
-            <PainHeading id="pain-heading" />
+        <div ref={trackRef} className="relative hidden xl:block xl:h-[300vh]">
+          <div
+            ref={pinRef}
+            className="sticky top-28 flex h-[calc(100svh-7rem)] flex-col xl:top-32 xl:h-[calc(100svh-8rem)]"
+          >
+            <div className="shrink-0 [@media(max-height:800px)]:[&_h2]:text-[clamp(1.5rem,3.5vw,2.25rem)]">
+              <PainHeading id="pain-heading" />
+            </div>
 
-            <div className="mt-10 grid grid-cols-12 gap-x-12 md:mt-14">
-              <div className="col-span-5 overflow-hidden">
+            <div
+              className="mt-6 grid min-h-0 flex-1 grid-cols-12 grid-rows-[minmax(0,1fr)_auto] gap-x-10 gap-y-3 md:mt-8 [@media(max-height:800px)]:mt-4"
+            >
+              <div className="col-span-5 row-start-1 flex min-h-0 items-center">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={current.id}
@@ -146,15 +161,17 @@ export default function PainSection() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={reduceMotion ? undefined : { y: -28, opacity: 0 }}
                     transition={{ duration: 0.45, ease: REVEAL_EASE }}
-                    className="max-w-md"
+                    className="max-w-md overflow-hidden"
                   >
-                    <PainCopy item={current} index={active} active />
+                    <PainCopy item={current} index={active} active showHook={false} />
                   </motion.div>
                 </AnimatePresence>
               </div>
 
-              <div className="col-span-7">
-                <div className="relative aspect-video w-full overflow-hidden border border-(--color-border) bg-(--color-bg-muted)">
+              <div className="@container col-span-7 row-start-1 flex h-full min-h-0 items-center justify-center">
+                <div
+                  className="relative aspect-video w-[min(100cqw,calc(100cqh*16/9))] max-w-full overflow-hidden border border-(--color-border) bg-(--color-bg-muted)"
+                >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={current.id}
@@ -168,13 +185,27 @@ export default function PainSection() {
                         src={current.image}
                         alt={current.imageAlt}
                         fill
-                        sizes="(min-width: 1024px) 58vw, 100vw"
-                        className="object-cover"
+                        sizes="(min-width: 1280px) 58vw, 100vw"
+                        className="object-contain"
                       />
                     </motion.div>
                   </AnimatePresence>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-(--color-text-muted)">{current.hook}</p>
+              </div>
+
+              <div className="col-span-7 col-start-6 row-start-2 shrink-0 pb-0.5">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.p
+                    key={current.id}
+                    initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={reduceMotion ? undefined : { opacity: 0 }}
+                    transition={{ duration: 0.3, ease: REVEAL_EASE }}
+                    className="text-body-lg leading-snug text-(--color-text)"
+                  >
+                    {current.hook}
+                  </motion.p>
+                </AnimatePresence>
               </div>
             </div>
           </div>
