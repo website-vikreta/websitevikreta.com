@@ -250,10 +250,10 @@ Adds client-side and server-side validation to the contact form
 
 Check these files for detailed guidelines:
 
-- `.claude/standards/code-standards.md` - Coding conventions
-- `.claude/standards/design-system.md` - Design guidelines
-- `.claude/standards/motion-system.md` - Animation standards
-- `.claude/standards/seo-geo.md` - SEO best practices
+- `.ai/standards/code-standards.md` - Coding conventions
+- `.ai/standards/design-system.md` - Design guidelines
+- `.ai/standards/motion-system.md` - Animation standards
+- `.ai/standards/seo-geo.md` - SEO best practices
 
 ### Key Points
 
@@ -325,7 +325,7 @@ git push --force-with-lease origin feature/your-feature-name
 
 ## 📞 Getting Help
 
-- Check existing documentation in `.claude/` directory
+- Check existing documentation in `.ai/` directory (see `AGENTS.md` for the index)
 - Review `README.md` for project overview
 - Ask your team lead or maintainers
 - Check existing issues and PRs for similar problems

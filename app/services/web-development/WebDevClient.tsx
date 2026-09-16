@@ -1,74 +1,127 @@
 'use client'
 
+import dynamic from 'next/dynamic'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { ENSURE_HASH_TARGET_EVENT } from '@/lib/scroll-to-hash'
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
-import { FaqSection } from '@/components/sections/FaqSection'
-import type { FaqItem } from '@/lib/faq-data'
+import { WEB_DEV_FAQS } from './data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
-import WhatWeBuildSection from './sections/WhatWeBuildSection'
-import ProjectsSection from './sections/ProjectsSection'
-import HowWeWork from './sections/HowWeWork'
-import WhySection from './sections/WhySection'
-import ContactSection from './sections/ContactSection'
+import ProofSection from './sections/ProofSection'
 
-const webDevFaqs: FaqItem[] = [
-  {
-    id: 'webdev-1',
-    question: 'How long does it take to build a website?',
-    answer:
-      'Most business websites take 3 to 6 weeks from kickoff to launch, depending on the number of pages, content readiness, and how quickly feedback comes back during review. Larger builds with custom features or CMS integration can take longer. We\'ll give you a realistic timeline upfront, not an aggressive one we can\'t hit.',
-  },
-  {
-    id: 'webdev-2',
-    question: 'Do you build custom websites or use templates?',
-    answer:
-      'Every site we build is custom-coded from scratch using Next.js and Tailwind CSS, not a theme with your logo swapped in. That means your site is built around your brand and goals, not squeezed into someone else\'s layout, and it\'s faster and more flexible to extend later.',
-  },
-  {
-    id: 'webdev-3',
-    question: 'Will my website be optimized for SEO and mobile from day one?',
-    answer:
-      'Yes. Every site we ship includes proper metadata, sitemaps, semantic HTML, fast load times, and mobile-first responsive design as standard, not as an add-on. SEO isn\'t something we bolt on after launch; it\'s part of how the site is built.',
-  },
-  {
-    id: 'webdev-4',
-    question: 'How much does a custom website cost?',
-    answer:
-      'Pricing depends on scope. Number of pages, custom functionality, and CMS needs all factor in. We\'ll give you a clear, itemized quote after understanding your requirements, with no hidden costs added later.',
-  },
-  {
-    id: 'webdev-5',
-    question: 'Do I own the code and content after the project is delivered?',
-    answer:
-      'Yes, completely. Once the project is delivered, the code and content are yours. No licensing fees, no lock-in, and no dependency on us to keep the site running.',
-  },
-  {
-    id: 'webdev-6',
-    question: 'Do you offer support or maintenance after launch?',
-    answer:
-      'Yes. We offer post-launch support for bug fixes, content updates, and ongoing maintenance, so your site keeps running smoothly as your business grows. We can walk you through options once your site is live.',
-  },
-]
+const SolutionSection = dynamic(() => import('./sections/SolutionSection'))
+const HowWeWork = dynamic(() => import('./sections/HowWeWork'))
+const SupportSection = dynamic(() => import('./sections/SupportSection'))
+const StatsRail = dynamic(() => import('./sections/StatsRail'))
+const WorkTestimonialsSection = dynamic(() =>
+  import('@/components/sections/work/WorkTestimonialsSection').then((mod) => ({
+    default: mod.WorkTestimonialsSection,
+  })),
+)
+const ContactSection = dynamic(() => import('./sections/ContactSection'))
+const FaqSection = dynamic(() =>
+  import('@/components/sections/FaqSection').then((mod) => ({ default: mod.FaqSection })),
+)
+
+/** Mount every lazy section up to and including this anchor when hash-navigating. */
+const HASH_MOUNT_LEVEL: Record<string, number> = {
+  proof: 5,
+  'get-quote': 8,
+}
+
+function LazySection({
+  index,
+  minMountedIndex,
+  children,
+}: {
+  index: number
+  minMountedIndex: number
+  children: ReactNode
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+  const mounted = inView || minMountedIndex >= index
+
+  useEffect(() => {
+    if (mounted) return
+    const node = ref.current
+    if (!node) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '320px 0px' },
+    )
+
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [mounted])
+
+  return <div ref={ref}>{mounted ? children : null}</div>
+}
 
 export default function WebDevClient() {
+  const [minMountedIndex, setMinMountedIndex] = useState(0)
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      const id = window.location.hash.slice(1)
+      const level = HASH_MOUNT_LEVEL[id]
+      if (level) setMinMountedIndex((prev) => Math.max(prev, level))
+    }
+
+    syncFromHash()
+
+    const onEnsure = (event: Event) => {
+      const id = (event as CustomEvent<{ id: string }>).detail?.id
+      if (!id) return
+      const level = HASH_MOUNT_LEVEL[id]
+      if (level) setMinMountedIndex((prev) => Math.max(prev, level))
+    }
+
+    window.addEventListener(ENSURE_HASH_TARGET_EVENT, onEnsure)
+    window.addEventListener('hashchange', syncFromHash)
+    return () => {
+      window.removeEventListener(ENSURE_HASH_TARGET_EVENT, onEnsure)
+      window.removeEventListener('hashchange', syncFromHash)
+    }
+  }, [])
+
   return (
     <>
       <DotGrid global />
       <main id="main-content" className="relative z-10">
         <Hero />
-        {/* SHIFT — capability up front, then the problem it solves, then how it happens */}
-        <WhatWeBuildSection />
         <PainSection />
-        <HowWeWork />
-        {/* RESOLUTION — proof, back to back, then trust + objections */}
-        <ProjectsSection />
-        <TestimonialsSection />
-        <WhySection />
-        {/* INVITATION */}
-        <ContactSection />
-        <FaqSection items={webDevFaqs} ariaLabel="Web Development FAQs" />
+        <LazySection index={1} minMountedIndex={minMountedIndex}>
+          <SolutionSection />
+        </LazySection>
+        <LazySection index={2} minMountedIndex={minMountedIndex}>
+          <HowWeWork />
+        </LazySection>
+        <LazySection index={3} minMountedIndex={minMountedIndex}>
+          <SupportSection />
+        </LazySection>
+        <LazySection index={4} minMountedIndex={minMountedIndex}>
+          <StatsRail />
+        </LazySection>
+        <LazySection index={5} minMountedIndex={minMountedIndex}>
+          <ProofSection />
+        </LazySection>
+        <LazySection index={6} minMountedIndex={minMountedIndex}>
+          <WorkTestimonialsSection />
+        </LazySection>
+        <LazySection index={7} minMountedIndex={minMountedIndex}>
+          <FaqSection items={WEB_DEV_FAQS} heading="FAQ" ariaLabel="Web Development FAQs" />
+        </LazySection>
+        <LazySection index={8} minMountedIndex={minMountedIndex}>
+          <ContactSection />
+        </LazySection>
       </main>
       <ScrollToTop />
     </>

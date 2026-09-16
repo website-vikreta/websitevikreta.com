@@ -10,7 +10,7 @@ import {
 } from '@/lib/gsap/reveals'
 
 // Real figures, sourced from components/sections/StatsCounters.tsx so they
-// can't drift — never invented (see .claude/learning.md [Hero] proof band).
+// can't drift — never invented (see .ai/learning.md [Hero] proof band).
 const PROOF = ['Pune, India', '68 projects shipped', 'Five years in']
 
 export default function Hero() {

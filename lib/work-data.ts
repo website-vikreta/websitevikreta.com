@@ -34,7 +34,7 @@ export interface WebProject {
   description: string
   href: string
   logo: string
-  // image, imageAlt — screenshot previews, not rendered for now (logo-only), see ExternalProjectLink
+  // image, imageAlt — screenshot previews, not rendered on /work (logo-only), see ExternalProjectLink
   image?: string
   imageAlt?: string
   skills: string
@@ -147,17 +147,6 @@ export const WEB_PROJECTS: WebProject[] = [
     skills: 'UI/UX DESIGN / DESIGN SYSTEM',
   },
   {
-    slug: 'earth-by-blancora',
-    title: 'Earth by Blancora',
-    description:
-      "A sustainable e-commerce storefront for a women's clothing brand.",
-    href: 'https://blancoraclothing.com/shop',
-    logo: '/client-logos/blancora.svg',
-    image: '/our-services/web-mobile-crm.webp',
-    imageAlt: 'Earth by Blancora website preview',
-    skills: 'UI/UX DESIGN / E-COMMERCE DEVELOPMENT',
-  },
-  {
     slug: 'ap-cleanco-site',
     title: 'AP Cleanco',
     description:
@@ -178,6 +167,17 @@ export const WEB_PROJECTS: WebProject[] = [
     image: '/our-services/ai-automation.webp',
     imageAlt: 'Archmodal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
+  },
+  {
+    slug: 'earth-by-blancora',
+    title: 'Earth by Blancora',
+    description:
+      "A sustainable e-commerce storefront for a women's clothing brand.",
+    href: 'https://blancoraclothing.com/shop',
+    logo: '/client-logos/blancora.svg',
+    image: '/our-services/web-mobile-crm.webp',
+    imageAlt: 'Earth by Blancora website preview',
+    skills: 'UI/UX DESIGN / E-COMMERCE DEVELOPMENT',
   },
   {
     slug: 'katalyst-consulting',

@@ -88,7 +88,7 @@ export function WorkTestimonialsSection() {
   const cards = [...WORK_TESTIMONIALS, ...WORK_TESTIMONIALS]
 
   return (
-    <section className="py-16 md:py-20 overflow-hidden" aria-label="Client testimonials">
+    <section className="overflow-x-clip py-16 md:py-20" aria-label="Client testimonials">
       <div className="container flex items-end justify-between gap-6 mb-10 md:mb-14">
         <RevealText as="h2" className="text-h2 font-bold text-(--color-text)">
           What clients say
@@ -105,7 +105,7 @@ export function WorkTestimonialsSection() {
       </div>
 
       <div
-        className="relative"
+        className="relative overflow-x-clip"
         role="group"
         aria-roledescription="carousel"
         onMouseEnter={pause}
