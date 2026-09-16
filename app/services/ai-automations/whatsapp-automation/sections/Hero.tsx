@@ -9,7 +9,7 @@ import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
   { n: '68+', label: 'projects shipped' },
-  { n: '7–14', label: 'days to go live' },
+  { n: '7 to 14', label: 'days to go live' },
   { n: '98%', label: 'WhatsApp open rate' },
 ]
 
