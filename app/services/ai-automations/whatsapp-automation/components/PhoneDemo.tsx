@@ -114,8 +114,9 @@ function Ticks() {
 /* ─── Component ─────────────────────────────────────────────────────────── */
 export default function PhoneDemo() {
   const [key, setKey]     = useState<ScenarioKey>('confirm')
-  const [stage, setStage] = useState(0)
+  const [stage, setStage] = useState(2)
   const reduced           = useRef(false)
+  const firstScenario     = useRef(true)
   const nodes             = SCENARIOS[key].nodes
 
   useEffect(() => {
@@ -124,8 +125,13 @@ export default function PhoneDemo() {
 
   /* reset on scenario change */
   useEffect(() => {
+    if (firstScenario.current) {
+      firstScenario.current = false
+      setStage(reduced.current ? nodes.length : 2)
+      return
+    }
     setStage(reduced.current ? nodes.length : 0)
-  }, [key, nodes.length])
+  }, [nodes])
 
   /* tick */
   useEffect(() => {

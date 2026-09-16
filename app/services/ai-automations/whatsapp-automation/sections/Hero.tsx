@@ -2,15 +2,16 @@
 
 import { useRef } from 'react'
 import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
 import { CALENDLY_URL } from '@/config/site'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import PhoneDemo from '../components/PhoneDemo'
 import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
-  { n: '68+', label: 'projects shipped' },
+  { n: '68+', label: 'client projects shipped' },
   { n: '7 to 14', label: 'days to go live' },
-  { n: '98%', label: 'WhatsApp open rate' },
+  { n: '98%', label: 'average WhatsApp open rate' },
 ]
 
 /* Singleton — avoids re-injecting on every render */
@@ -91,30 +92,27 @@ export default function Hero() {
               connected to your Shopify or WooCommerce store.
             </p>
 
-            <div
-              ref={ctaRef}
-              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', marginBottom: '2.75rem' }}
-            >
+            <div ref={ctaRef} className="mb-11 flex flex-wrap items-center gap-5">
               <Button href="#whatsapp-demo" variant="primary" size="lg" showArrow>
                 Book a Platform Demo
               </Button>
               {CALENDLY_URL && (
-                <Button href={CALENDLY_URL} external variant="ghost" size="lg" showArrow>
-                  Schedule a Call
-                </Button>
+                <TextLink href={CALENDLY_URL} external arrow="diagonal">
+                  Prefer a call? Schedule one
+                </TextLink>
               )}
             </div>
 
             {/* Proof */}
             <div ref={proofRef}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {STATS.map(({ n, label }) => (
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                {STATS.map(({ n, label }, index) => (
                   <div
                     key={n}
-                    className="flex items-baseline gap-1.5 border border-(--color-border) bg-(--color-surface) px-3.5 py-2"
+                    className={`flex min-w-0 items-baseline gap-1 border border-(--color-border) bg-(--color-surface) px-2.5 py-2 sm:gap-1.5 sm:px-3.5 ${index === 2 ? 'col-span-2 sm:col-span-1' : ''}`}
                   >
-                    <span style={{ fontSize: '1.125rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--color-text)' }}>{n}</span>
-                    <span style={{ fontSize: '13px', color: 'var(--color-text-faint)' }}>{label}</span>
+                    <span className="shrink-0 text-[1.05rem] font-extrabold tracking-tight text-(--color-text) sm:text-[1.125rem]">{n}</span>
+                    <span className="text-[11px] leading-tight text-(--color-text-faint) sm:text-[13px]">{label}</span>
                   </div>
                 ))}
               </div>
@@ -128,7 +126,7 @@ export default function Hero() {
 
         </div>
 
-        <div className="mt-14 border-t border-(--color-border) pt-6 md:mt-16 md:flex md:items-center md:gap-10">
+        <div className="mt-14 pt-2 md:mt-16 md:flex md:items-center md:gap-10">
           <p className="mb-4 shrink-0 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) md:mb-0">
             Works with your existing stack
           </p>
