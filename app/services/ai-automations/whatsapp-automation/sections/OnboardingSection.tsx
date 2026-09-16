@@ -106,6 +106,20 @@ const PHASES = [
   { number: '04', title: 'Launch', detail: 'Review, approve, and start sending.', steps: STEPS.slice(9, 12) },
 ]
 
+const YOUR_PART = [
+  'Business registration documents',
+  'Your logo, colours, and message preferences',
+  'Access to your Shopify or WooCommerce store',
+  'Two quick approvals before launch',
+]
+
+const OUR_PART = [
+  'Set up and verify your WhatsApp account',
+  'Write and submit your message templates',
+  'Connect your store and build the automations',
+  'Test everything and support you for 30 days',
+]
+
 export default function OnboardingSection() {
   const scope = useRef<HTMLElement>(null)
 
@@ -143,7 +157,7 @@ export default function OnboardingSection() {
             className="flex shrink-0 flex-col items-center justify-center self-start border border-(--color-border) bg-(--color-surface) px-8 py-6 text-center"
           >
             <span className="text-h2 font-bold tracking-tight text-(--color-accent)" style={{ lineHeight: 1 }}>
-              7–14
+              7 to 14
             </span>
             <span className="mt-1 text-sm text-(--color-text-muted)">days to go live</span>
           </div>
@@ -194,28 +208,46 @@ export default function OnboardingSection() {
         </div>
 
         {/* Responsibility split */}
-        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) sm:grid-cols-2 md:mt-14">
-          <div className="bg-(--color-surface) p-6 md:p-8">
-            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">You provide</p>
-            <ul className="space-y-1.5 text-sm text-(--color-text-muted)">
-              {['Business registration documents', 'Brand assets (logo, brand colours)', 'Store access (Shopify / WooCommerce)', 'Two approvals — templates and go-live'].map(i => (
-                <li key={i} className="flex items-start gap-2">
-                  <span aria-hidden className="mt-1 h-1 w-1 shrink-0 rounded-full bg-(--color-text-faint)" />
-                  {i}
-                </li>
-              ))}
-            </ul>
+        <div className="onboarding-responsibilities mt-14 md:mt-20">
+          <div className="mb-8 max-w-xl">
+            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">
+              Your part is small
+            </p>
+            <p className="text-xl font-bold leading-tight tracking-tight text-(--color-text) md:text-2xl">
+              You give us the access and approvals. We do the heavy lifting.
+            </p>
           </div>
-          <div className="bg-(--color-surface) p-6 md:p-8">
-            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">We handle</p>
-            <ul className="space-y-1.5 text-sm text-(--color-text-muted)">
-              {['Meta verification and WABA setup', 'All template drafting and submission', 'Automation build and store wiring', 'End-to-end testing before go-live', '30-day post-launch support'].map(i => (
-                <li key={i} className="flex items-start gap-2">
-                  <span aria-hidden className="mt-1 h-1 w-1 shrink-0 rounded-full bg-(--color-text-faint)" />
-                  {i}
-                </li>
-              ))}
-            </ul>
+
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+            <div className="relative">
+              <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-(--color-border) pb-4">
+                <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">You provide</h3>
+                <span className="text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">4 things</span>
+              </div>
+              <ol className="divide-y divide-(--color-border)">
+                {YOUR_PART.map((item, index) => (
+                  <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
+                    <span className="font-mono text-xs font-semibold text-(--color-accent)">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="text-sm leading-relaxed text-(--color-text-muted)">{item}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="relative lg:border-l lg:border-(--color-border) lg:pl-16">
+              <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-(--color-border) pb-4">
+                <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">We handle</h3>
+                <span className="text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">End to end</span>
+              </div>
+              <ol className="divide-y divide-(--color-border)">
+                {OUR_PART.map((item, index) => (
+                  <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
+                    <span className="font-mono text-xs font-semibold text-(--color-text-faint)">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="text-sm leading-relaxed text-(--color-text-muted)">{item}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </div>
       </div>
