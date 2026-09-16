@@ -6,18 +6,17 @@ type Integration = {
   name: string
   src?: string
   mark?: string
-  compact?: boolean
 }
 
 const INTEGRATIONS: Integration[] = [
-  { name: 'Shopify', src: '/tools-logos/20-Shopify.svg' },
-  { name: 'WooCommerce', mark: 'Woo' },
-  { name: 'Razorpay', mark: 'Rz' },
-  { name: 'PayU', mark: 'PayU', compact: true },
-  { name: 'Meta Ads', src: '/tools-logos/26-Meta.svg' },
+  { name: 'Shopify', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/shopify/default.svg' },
+  { name: 'WooCommerce', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/woocommerce/default.svg' },
+  { name: 'Razorpay', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/razorpay/default.svg' },
+  { name: 'PayU', mark: 'PayU' },
+  { name: 'Meta', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/meta/default.svg' },
   { name: 'IndiaMART', mark: 'IM' },
   { name: 'Justdial', mark: 'Jd' },
-  { name: 'Google Sheets', src: '/tools-logos/27-GoogleLabs(GoogleLogo).svg' },
+  { name: 'Google Sheets', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/google-sheets/default.svg' },
 ]
 
 type IntegrationLogoRailProps = {
@@ -27,34 +26,19 @@ type IntegrationLogoRailProps = {
 export default function IntegrationLogoRail({ className = '' }: IntegrationLogoRailProps) {
   return (
     <div className={className}>
-      <p className="mb-4 text-sm text-(--color-text-faint)">Connects to what you already use</p>
-      <ul className="flex flex-wrap gap-2" aria-label="Supported commerce and marketing integrations">
-        {INTEGRATIONS.map(({ name, src, mark, compact }) => (
+      <ul className="flex flex-wrap items-center gap-3" aria-label="Supported commerce and marketing integrations">
+        {INTEGRATIONS.map(({ name, src, mark }) => (
           <li
             key={name}
-            className="flex h-12 items-center gap-2 border border-(--color-border) bg-(--color-surface) px-4 text-sm font-medium text-(--color-text-muted) transition-colors duration-300 hover:border-(--color-border-strong) hover:text-(--color-text)"
+            className="grid h-12 w-12 place-items-center border border-(--color-border) bg-(--color-surface) transition-colors duration-300 hover:border-(--color-border-strong)"
           >
             {src ? (
-              <span className="relative block h-5 w-5 shrink-0 grayscale">
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="20px"
-                  className="object-contain"
-                />
-              </span>
+              <Image src={src} alt="" width={24} height={24} className="h-6 w-6 object-contain grayscale" />
             ) : (
-              <span
-                aria-hidden="true"
-                className={`grid h-6 shrink-0 place-items-center border border-(--color-border-strong) px-1.5 text-[10px] font-bold leading-none text-(--color-text) ${
-                  compact ? 'min-w-8' : 'min-w-6'
-                }`}
-              >
+              <span aria-hidden="true" className="text-[10px] font-bold tracking-tight text-(--color-text)">
                 {mark}
               </span>
             )}
-            <span>{name}</span>
           </li>
         ))}
       </ul>
