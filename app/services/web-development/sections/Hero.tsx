@@ -36,23 +36,23 @@ export default function Hero() {
   return (
     <section
       ref={scope}
-      className="relative flex min-h-svh flex-col justify-center overflow-x-clip"
+      className="relative flex flex-col overflow-x-clip xl:min-h-svh xl:justify-center"
       aria-label="Web Development Services"
     >
       <div
         ref={contentRef}
-        className="container relative z-10 pt-28 pb-20 opacity-0 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28"
+        className="container relative z-10 pt-28 pb-16 opacity-0 md:pt-32 md:pb-20 xl:pt-36 xl:pb-28"
       >
         <h1
           ref={headingRef}
-          className="mb-6 max-w-4xl text-balance font-sans text-h1 font-bold text-(--color-text) md:font-semibold"
+          className="mb-6 max-w-4xl font-sans text-h1 font-bold leading-[1.02] text-(--color-text) md:font-semibold"
         >
-          {WEB_DEV_HERO.line1}
-          <br />
-          {WEB_DEV_HERO.line2}
-          <br />
-          {WEB_DEV_HERO.line3Before}
-          <span style={{ color: 'var(--color-accent)' }}>{WEB_DEV_HERO.line3Accent}</span>
+          <span className="block">{WEB_DEV_HERO.line1}</span>
+          <span className="block">{WEB_DEV_HERO.line2}</span>
+          <span className="block">
+            {WEB_DEV_HERO.line3Before}
+            <span style={{ color: 'var(--color-accent)' }}>{WEB_DEV_HERO.line3Accent}</span>
+          </span>
         </h1>
 
         <p
