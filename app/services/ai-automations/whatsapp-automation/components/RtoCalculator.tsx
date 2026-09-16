@@ -153,7 +153,7 @@ export default function RtoCalculator() {
       </dl>
 
       <p style={{ marginTop: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '18px', fontSize: '11.5px', lineHeight: 1.75, color: 'rgba(255,255,255,0.35)' }}>
-        Assumes 30% RTO rate and ₹250 per round trip. India COD runs 28–35%; fashion and footwear
+        Assumes 30% RTO rate and ₹250 per round trip. India COD runs 28 to 35%; fashion and footwear
         often higher. Adjust the slider to your own volume.
       </p>
     </div>
