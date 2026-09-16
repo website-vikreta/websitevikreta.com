@@ -22,7 +22,6 @@ export default function PainSection() {
     <section ref={scope} className="py-16 md:py-20" aria-labelledby="pain-heading">
       <div className="container">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-          
           <PainMetricsReveal />
 
           <div>

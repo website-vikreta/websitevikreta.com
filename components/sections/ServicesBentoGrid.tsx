@@ -26,7 +26,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'AI Automation & Workflow Optimization',
     description:
       'We audit the hours your team spends on CRM, reporting, and support, then build custom AI agents and workflow automation that take that work off their plate.',
-    image: '/our-services/ai-automation-systems.webp',
+    image: '/services/landing/ai-automation.webp',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
   },
@@ -36,7 +36,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Website Development',
     description:
       'Custom, SEO-ready websites for growing businesses. Fast to load, written to rank, and built around how you sell.',
-    image: '/services/web-development-showcase.webp',
+    image: '/services/landing/web-development.webp',
     href: '/services/web-development',
     FallbackIcon: Globe,
   },
@@ -46,7 +46,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'UI/UX Design',
     description:
       'User research, wireframes, and product design for web and mobile. Design systems and prototypes your developers can actually ship.',
-    image: '/our-services/uiux-design-systems.webp',
+    image: '/services/landing/ui-ux.webp',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
   },
@@ -56,7 +56,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Web & Mobile Apps / CRM Systems',
     description:
       'Custom CRMs, customer portals, internal tools, and e-commerce. Web and mobile apps built around how your business runs.',
-    image: '/our-services/web-mobile-crm-systems.webp',
+    image: '/services/landing/web-mobile-apps.webp',
     href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
   },
@@ -66,7 +66,7 @@ const SERVICE_CARDS: ServiceCard[] = [
     title: 'Digital Marketing / SEO & GEO',
     description:
       'SEO, GEO, content, and paid campaigns built to bring in leads. Local SEO and growth marketing you can measure in enquiries.',
-    image: '/our-services/digital-marketing-systems.webp',
+    image: '/services/landing/digital-marketing-seo-geo.webp',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
   },
