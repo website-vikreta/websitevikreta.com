@@ -27,28 +27,10 @@ const FEATURES = [
   },
 ]
 
-const COD_STEPS = [
-  {
-    n: '01',
-    title: 'Order received on your storefront',
-    body: 'A cash on delivery order drops into your Shopify or WooCommerce backend. Our system detects it instantly without manual input.',
-  },
-  {
-    n: '02',
-    title: 'Instant WhatsApp verification',
-    body: 'The buyer receives a personalized message with order details and quick reply buttons to confirm or decline the order. No typing needed.',
-  },
-  {
-    n: '03',
-    title: 'Approved orders move to fulfillment',
-    body: 'A confirmation click instantly tags the order for shipping. A cancellation tap automatically updates your store inventory.',
-  },
-]
-
 const TIMELINE = [
-  { at: 'Under 5 minutes', title: 'Verification message delivered',  body: 'The WhatsApp prompt is sent out as soon as the checkout is completed. Your team does nothing.' },
-  { at: '3 hours',         title: 'Automated follow up sent',     body: 'If the buyer has not replied, the system sends one final nudge to get their attention.' },
-  { at: '24 hours',        title: 'Order automatically voided', body: 'No response means no shipment. The order is seamlessly cancelled in your system to prevent RTO losses.' },
+  { at: 'Under 5 minutes', title: 'Message goes out', body: 'The order lands, and WhatsApp sends the confirmation request. Nobody on your team needs to call.' },
+  { at: '3 hours later', title: 'One reminder', body: 'If the customer has not replied, the system sends one final reminder.' },
+  { at: '24 hours', title: 'Order cancels itself', body: 'No reply means no shipment. The order is cancelled before it reaches your packing table.' },
 ]
 
 /* Singleton keyframes — safe from re-injection */
@@ -89,7 +71,6 @@ export default function ProductRevealSection() {
   useGsapSection(codScope, () => {
     revealLines('#cod-heading', { trigger: codScope.current })
     revealFadeUp('.cod-intro',  { y: 20, trigger: codScope.current })
-    revealFadeUp('.cod-step',   { y: 20, stagger: STAGGER.base, trigger: codScope.current })
   })
 
   useEffect(() => {
@@ -167,56 +148,31 @@ export default function ProductRevealSection() {
         <div className="container">
           <div className="grid grid-cols-1 items-start gap-[clamp(2.5rem,5vw,5rem)] lg:grid-cols-2">
 
-            {/* Left side */}
+            {/* The rule */}
             <div>
               <p className="text-meta-label mb-4 font-medium uppercase tracking-widest text-(--color-text-faint)">
-                Before you ship
+                The rule that does the work
               </p>
               <h2
                 id="cod-heading"
                 className="text-h2 font-bold tracking-tight text-(--color-text)"
-                style={{ maxWidth: '18ch', lineHeight: 1.05, marginBottom: '1.5rem' }}
+                style={{ maxWidth: '14ch', lineHeight: 1.05, marginBottom: '1.5rem' }}
               >
-                Every COD order gets a quick yes or no.
+                No answer in 24 hours is an answer.
               </h2>
               <p
                 className="cod-intro text-body-lg leading-relaxed text-(--color-text-muted)"
-                style={{ maxWidth: '44ch', marginBottom: '2rem' }}
+                style={{ maxWidth: '44ch' }}
               >
-                As soon as a cash on delivery order comes in, WhatsApp asks the customer to confirm it. Your team gets a clear answer before the package leaves.
+                Someone who ordered at 2am on impulse may not reply. Someone who typed a fake number cannot. The system keeps those orders from reaching your packing table.
               </p>
-
-              <ol className="border-y border-(--color-border)" style={{ listStyle: 'none' }}>
-                {COD_STEPS.map(({ n, title, body }, index) => (
-                  <li key={n} className={`cod-step grid grid-cols-[3rem_minmax(0,1fr)] gap-4 py-5 md:grid-cols-[4.5rem_minmax(0,1fr)] md:gap-6 md:py-6 ${index > 0 ? 'border-t border-(--color-border)' : ''}`}>
-                    <span className="font-mono text-2xl font-semibold leading-none tracking-tight" style={{ color: '#1a8a5a' }}>{n}</span>
-                    <div>
-                      <h3 className="text-base font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
-                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-(--color-text-muted)">{body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
             </div>
 
-            {/* Right side */}
+            {/* The timeline */}
             <div>
-              <p className="text-meta-label mb-4 font-medium uppercase tracking-widest text-(--color-text-faint)">
-                Handling silent or fake orders
-              </p>
-              <h2
-                className="font-bold tracking-tight text-(--color-text)"
-                style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', lineHeight: 1.05, maxWidth: '14ch', marginBottom: '1.25rem' }}
-              >
-                Unresponsive orders are automatically dropped.
-              </h2>
-              <p className="text-body-lg leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '44ch' }}>
-                Customers who provide fake numbers or place impulse orders often ignore verification messages. If an order remains unconfirmed, our system automatically marks it as cancelled so you never ship a package that will be rejected at the door.
-              </p>
-
               <ol
                 ref={timelineRef}
-                className="wa-cod-timeline mt-10"
+                className="wa-cod-timeline"
                 style={{ position: 'relative', paddingLeft: '44px', listStyle: 'none' }}
               >
                 <span
@@ -250,8 +206,7 @@ export default function ProductRevealSection() {
               </ol>
 
               <p className="mt-8 text-sm leading-relaxed text-(--color-text-faint)" style={{ maxWidth: '42ch' }}>
-                The confirmation window can be adjusted to match your dispatch
-                schedule. Most stores use 24 hours.
+                You can adjust the confirmation window to match your dispatch schedule. Most stores use 24 hours.
               </p>
             </div>
           </div>
