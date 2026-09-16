@@ -5,7 +5,7 @@ import { AuditForm } from '@/components/ui/AuditForm'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
 const WHAT_HAPPENS = [
-  'We look at your store — checkout friction, cart abandonment, current recovery rate.',
+  'We look at your store: checkout friction, cart abandonment, and current recovery rate.',
   'We show you what the platform looks like on your brand, not a generic demo.',
   'We give you a straight read on what is fixable and what WhatsApp will actually move.',
 ]
