@@ -165,23 +165,23 @@ export default function ProductRevealSection() {
         aria-labelledby="cod-heading"
       >
         <div className="container">
-          <div className="mb-10 max-w-2xl md:mb-14">
-            <p className="mb-4 text-sm text-(--color-text-muted)">
-              How the confirmation works
-            </p>
+          <div className="mb-12 max-w-3xl md:mb-16">
             <h2
               id="cod-heading"
               className="text-h2 font-bold tracking-tight text-(--color-text)"
-              style={{ lineHeight: 1.05 }}
+              style={{ lineHeight: 1.05, marginBottom: '1.25rem' }}
             >
               Every COD order gets a quick yes or no.
             </h2>
+            <p className="text-body-lg leading-relaxed text-(--color-text-muted)">
+              As soon as a cash on delivery order lands, WhatsApp asks the customer to confirm it. Your team gets a clear answer before the package leaves.
+            </p>
           </div>
 
           <ol className="grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) sm:grid-cols-3">
             {COD_STEPS.map(({ n, title, body }) => (
               <li key={n} className="cod-step bg-(--color-surface) p-7 md:p-9">
-                <span className="font-mono text-xs font-bold tracking-widest text-(--color-text-faint)">{n}</span>
+                <span className="font-mono text-lg font-bold tracking-tight text-(--color-accent)">{n}</span>
                 <h3 className="mt-4 text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{body}</p>
               </li>

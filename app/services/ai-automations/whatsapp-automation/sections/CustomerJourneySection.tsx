@@ -66,8 +66,8 @@ export default function CustomerJourneySection() {
             Selling on WhatsApp. It can be anything.
           </h2>
           <p className="journey-intro mt-5 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)">
-            Because your customers are already there, the entire customer lifecycle—from
-            initial enquiry to post-purchase retention—happens in a single chat thread.
+            Because your customers are already there, the entire customer lifecycle from
+            initial enquiry to post-purchase retention happens in a single chat thread.
           </p>
         </div>
 

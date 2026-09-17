@@ -105,11 +105,11 @@ export default function Hero() {
 
             {/* Proof */}
             <div ref={proofRef}>
-              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                {STATS.map(({ n, label }, index) => (
+              <div className="flex flex-wrap gap-2">
+                {STATS.map(({ n, label }) => (
                   <div
                     key={n}
-                    className={`flex min-w-0 items-baseline gap-1 border border-(--color-border) bg-(--color-surface) px-2.5 py-2 sm:gap-1.5 sm:px-3.5 ${index === 2 ? 'col-span-2 sm:col-span-1' : ''}`}
+                    className="flex min-w-0 items-baseline gap-1 border border-(--color-border) bg-(--color-surface) px-2.5 py-2 sm:gap-1.5 sm:px-3.5"
                   >
                     <span className="shrink-0 text-[1.05rem] font-extrabold tracking-tight text-(--color-text) sm:text-[1.125rem]">{n}</span>
                     <span className="text-[11px] leading-tight text-(--color-text-muted) sm:text-[13px]">{label}</span>
