@@ -191,7 +191,7 @@ export default function ProductRevealSection() {
       </section>
 
       {/* ── COD confirmation: The 24-hour rule ── */}
-      <section className="border-b border-(--color-border) bg-(--color-surface) py-16 md:py-20">
+      <section className="bg-(--color-surface) py-16 md:py-20">
         <div className="container">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
