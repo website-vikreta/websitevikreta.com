@@ -27,10 +27,28 @@ const FEATURES = [
   },
 ]
 
+const COD_STEPS = [
+  {
+    n: '01',
+    title: 'Order received on your storefront',
+    body: 'A cash on delivery order drops into your Shopify or WooCommerce backend. Our system detects it instantly without manual input.',
+  },
+  {
+    n: '02',
+    title: 'Instant WhatsApp verification',
+    body: 'The buyer receives a personalized message with order details and quick reply buttons to confirm or decline the order. No typing needed.',
+  },
+  {
+    n: '03',
+    title: 'Approved orders move to fulfillment',
+    body: 'A confirmation click instantly tags the order for shipping. A cancellation tap automatically updates your store inventory.',
+  },
+]
+
 const TIMELINE = [
-  { at: 'Under 5 minutes', title: 'Message goes out', body: 'The order lands, and WhatsApp sends the confirmation request. Nobody on your team needs to call.' },
-  { at: '3 hours later', title: 'One reminder', body: 'If the customer has not replied, the system sends one final reminder.' },
-  { at: '24 hours', title: 'Order cancels itself', body: 'No reply means no shipment. The order is cancelled before it reaches your packing table.' },
+  { at: 'Under 5 minutes', title: 'Verification message delivered', body: 'The WhatsApp prompt is sent out as soon as the checkout is completed. Your team does nothing.' },
+  { at: '3 hours', title: 'Automated follow up sent', body: 'If the buyer has not replied, the system sends one final nudge to get their attention.' },
+  { at: '24 hours', title: 'Order automatically voided', body: 'No response means no shipment. The order is seamlessly cancelled in your system to prevent RTO losses.' },
 ]
 
 /* Singleton keyframes — safe from re-injection */
@@ -71,6 +89,7 @@ export default function ProductRevealSection() {
   useGsapSection(codScope, () => {
     revealLines('#cod-heading', { trigger: codScope.current })
     revealFadeUp('.cod-intro',  { y: 20, trigger: codScope.current })
+    revealFadeUp('.cod-step',   { y: 20, stagger: STAGGER.base, trigger: codScope.current })
   })
 
   useEffect(() => {
@@ -138,7 +157,7 @@ export default function ProductRevealSection() {
         </div>
       </section>
 
-      {/* ── COD confirmation ── */}
+      {/* ── COD confirmation: How it works ── */}
       <section
         ref={codScope}
         id="cod-confirmation"
@@ -146,30 +165,51 @@ export default function ProductRevealSection() {
         aria-labelledby="cod-heading"
       >
         <div className="container">
-          <div className="grid grid-cols-1 items-start gap-[clamp(2.5rem,5vw,5rem)] lg:grid-cols-2">
+          <div className="mb-10 max-w-2xl md:mb-14">
+            <p className="mb-4 text-sm text-(--color-text-muted)">
+              How the confirmation works
+            </p>
+            <h2
+              id="cod-heading"
+              className="text-h2 font-bold tracking-tight text-(--color-text)"
+              style={{ lineHeight: 1.05 }}
+            >
+              Every COD order gets a quick yes or no.
+            </h2>
+          </div>
 
-            {/* The rule */}
+          <ol className="grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) sm:grid-cols-3">
+            {COD_STEPS.map(({ n, title, body }) => (
+              <li key={n} className="cod-step bg-(--color-surface) p-7 md:p-9">
+                <span className="font-mono text-xs font-bold tracking-widest text-(--color-text-faint)">{n}</span>
+                <h3 className="mt-4 text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── COD confirmation: The 24-hour rule ── */}
+      <section className="border-b border-(--color-border) bg-(--color-surface) py-16 md:py-20">
+        <div className="container">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <p className="text-meta-label mb-4 font-medium uppercase tracking-widest text-(--color-text-faint)">
+              <p className="mb-4 text-sm text-(--color-text-muted)">
                 The rule that does the work
               </p>
               <h2
-                id="cod-heading"
                 className="text-h2 font-bold tracking-tight text-(--color-text)"
-                style={{ maxWidth: '14ch', lineHeight: 1.05, marginBottom: '1.5rem' }}
+                style={{ lineHeight: 1.05, maxWidth: '14ch', marginBottom: '1.25rem' }}
               >
                 No answer in 24 hours is an answer.
               </h2>
-              <p
-                className="cod-intro text-body-lg leading-relaxed text-(--color-text-muted)"
-                style={{ maxWidth: '44ch' }}
-              >
-                Someone who ordered at 2am on impulse may not reply. Someone who typed a fake number cannot. The system keeps those orders from reaching your packing table.
+              <p className="mt-6 text-body-lg leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '44ch' }}>
+                Someone who ordered at 2am on impulse won't reply. Someone who typed a fake number can't. And the person who ordered the same shoes from three stores to compare prices will only answer one of you.
               </p>
             </div>
 
-            {/* The timeline */}
-            <div>
+            <div className="lg:pt-2">
               <ol
                 ref={timelineRef}
                 className="wa-cod-timeline"
@@ -198,15 +238,14 @@ export default function ProductRevealSection() {
                     >
                       <span style={{ height: '8px', width: '8px', borderRadius: '50%', background: i === TIMELINE.length - 1 ? '#25d366' : 'var(--color-text-faint)' }} />
                     </span>
-                    <p className="text-meta-label mb-1 font-medium uppercase tracking-widest text-(--color-text-faint)">{item.at}</p>
+                    <p className="mb-1 text-sm text-(--color-text-muted)">{item.at}</p>
                     <h3 className="text-base font-bold tracking-tight text-(--color-text)">{item.title}</h3>
                     <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '40ch' }}>{item.body}</p>
                   </li>
                 ))}
               </ol>
-
-              <p className="mt-8 text-sm leading-relaxed text-(--color-text-faint)" style={{ maxWidth: '42ch' }}>
-                You can adjust the confirmation window to match your dispatch schedule. Most stores use 24 hours.
+              <p className="mt-8 text-sm leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '42ch' }}>
+                You can set the window to whatever suits your dispatch. Most stores leave it at 24 hours.
               </p>
             </div>
           </div>

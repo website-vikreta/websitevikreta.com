@@ -32,7 +32,7 @@ export default function ContactSection() {
 
           {/* Left — what happens */}
           <div>
-            <p className="text-meta-label mb-5 font-medium uppercase tracking-widest text-(--color-text-faint)">
+            <p className="mb-5 text-sm text-(--color-text-muted)">
               No commitment
             </p>
             <h2
@@ -62,7 +62,7 @@ export default function ContactSection() {
               ))}
             </ul>
 
-            <p className="mt-8 text-sm text-(--color-text-faint)">
+            <p className="mt-8 text-sm text-(--color-text-muted)">
               Takes 20 minutes. Goes to a real person, not a sales queue.
             </p>
           </div>

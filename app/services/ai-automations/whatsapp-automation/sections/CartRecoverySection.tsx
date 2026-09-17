@@ -9,8 +9,8 @@ const CAUSES = [
   { cause: 'Customers have to create an account',        fix: 'Let them check out as guests and send a direct WhatsApp link' },
   { cause: 'Checkout takes too long',                    fix: 'Ask for fewer details and send them straight to checkout' },
   { cause: 'Their preferred payment option is missing',  fix: 'Put UPI, wallets, and COD first, with a payment link in WhatsApp' },
-  { cause: 'The checkout page loads too slowly',          fix: 'Speed up the page so customers can finish their order' },
-  { cause: 'Customers do not feel ready to pay',          fix: 'Show trust signals and confirm COD orders on WhatsApp' },
+  { cause: 'The checkout page loads too slowly',         fix: 'Speed up the page so customers can finish their order' },
+  { cause: 'Customers do not feel ready to pay',         fix: 'Show trust signals and confirm COD orders on WhatsApp' },
 ]
 
 type MessageCard = {
@@ -57,17 +57,17 @@ const MESSAGES: MessageCard[] = [
   },
 ]
 
-function RecoveryPhone({ clockTime, preview, hasOffer, offerText }: MessageCard) {
+function RecoveryPhone({ messages }: { messages: MessageCard[] }) {
   return (
-    /* Outer shell — dark, rounded like a real phone */
-    <div style={{
-      borderRadius: '2.2rem',
-      background: '#1a1a1a',
-      padding: '10px',
-      boxShadow: '0 32px 64px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06) inset',
-    }}>
-      {/* Screen */}
-      <div style={{ borderRadius: '1.65rem', background: '#efe7de', overflow: 'hidden' }}>
+    <div style={{ maxWidth: 330, width: '100%', margin: '0 auto' }}>
+      <div style={{
+        borderRadius: '2.4rem',
+        border: '1px solid rgba(0,0,0,0.1)',
+        background: '#1a1a1a',
+        padding: 10,
+        boxShadow: '0 40px 80px -30px rgba(20,18,15,0.45), 0 0 0 1px rgba(255,255,255,0.05) inset',
+      }}>
+        <div style={{ overflow: 'hidden', borderRadius: '1.9rem', background: '#efe7de' }}>
 
         {/* Status bar */}
         <div style={{
@@ -75,7 +75,7 @@ function RecoveryPhone({ clockTime, preview, hasOffer, offerText }: MessageCard)
           background: '#008069', padding: '8px 14px 4px',
           fontFamily: 'ui-monospace, monospace', fontSize: '10px', color: 'rgba(255,255,255,0.9)',
         }}>
-          <span>{clockTime}</span>
+          <span>10:15</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
             {[8, 10, 12].map((h, i) => (
               <span key={i} style={{ display: 'inline-block', height: h, width: 3, borderRadius: 2, background: i < 2 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.35)' }} />
@@ -110,52 +110,65 @@ function RecoveryPhone({ clockTime, preview, hasOffer, offerText }: MessageCard)
           </span>
         </div>
 
-        {/* Messages area — fixed height, bottom-anchored */}
+        {/* Messages area */}
         <div style={{
           position: 'relative',
-          minHeight: '220px',
           padding: '12px 10px 14px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
-          gap: '4px',
+          gap: '8px',
+          height: 452,
+          overflow: 'hidden',
           background: 'radial-gradient(circle at 1px 1px, rgba(20,18,15,0.045) 1px, transparent 0) 0 0 / 4px 4px',
         }}>
-          {/* Inbound bubble */}
-          <div style={{
-            maxWidth: '88%',
-            borderRadius: '12px 12px 12px 3px',
-            background: '#fff',
-            padding: '10px 12px',
-            fontSize: '12.5px',
-            lineHeight: 1.55,
-            color: '#121212',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
-          }}>
-            {preview}
-
-            {hasOffer && (
+          
+          {messages.map((msg, i) => (
+            <div key={i}>
+              {/* Date/Time divider for context */}
+              {i > 0 && (
+                <div style={{ textAlign: 'center', margin: '8px 0', fontSize: '10px', color: '#666', background: 'rgba(255,255,255,0.6)', borderRadius: '4px', padding: '2px 8px', display: 'inline-block', position: 'relative', left: '50%', transform: 'translateX(-50%)' }}>
+                  {msg.timing} later
+                </div>
+              )}
+              {/* Inbound bubble */}
               <div style={{
-                marginTop: '8px', borderRadius: '6px',
-                background: 'rgba(180,83,9,0.08)',
-                border: '1px solid rgba(180,83,9,0.22)',
-                padding: '6px 10px',
-                fontSize: '11.5px', fontWeight: 600, color: '#92400e',
+                maxWidth: '92%',
+                borderRadius: '12px 12px 12px 3px',
+                background: '#fff',
+                padding: '10px 12px',
+                fontSize: '12.5px',
+                lineHeight: 1.55,
+                color: '#121212',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
+                marginBottom: i === messages.length - 1 ? '4px' : '0'
               }}>
-                🏷 {offerText}
+                {msg.preview}
+
+                {msg.hasOffer && (
+                  <div style={{
+                    marginTop: '8px', borderRadius: '6px',
+                    background: 'rgba(180,83,9,0.08)',
+                    border: '1px solid rgba(180,83,9,0.22)',
+                    padding: '6px 10px',
+                    fontSize: '11.5px', fontWeight: 600, color: '#92400e',
+                  }}>
+                    🏷 {msg.offerText}
+                  </div>
+                )}
+
+                <span style={{
+                  display: 'block', textAlign: 'right',
+                  fontFamily: 'ui-monospace, monospace',
+                  fontSize: '9.5px', color: '#a09890', marginTop: '5px',
+                }}>
+                  {msg.clockTime}
+                </span>
               </div>
-            )}
+            </div>
+          ))}
 
-            <span style={{
-              display: 'block', textAlign: 'right',
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: '9.5px', color: '#a09890', marginTop: '5px',
-            }}>
-              {clockTime}
-            </span>
-          </div>
-
-          {/* CTA quick-reply button */}
+          {/* CTA quick-reply button on the last message */}
           <div style={{
             borderRadius: '8px',
             background: '#fff',
@@ -170,6 +183,7 @@ function RecoveryPhone({ clockTime, preview, hasOffer, offerText }: MessageCard)
           </div>
         </div>
       </div>
+      </div>
     </div>
   )
 }
@@ -181,11 +195,12 @@ export default function CartRecoverySection() {
     revealLines('#cart-heading',  { trigger: scope.current })
     revealFadeUp('.cart-intro',   { y: 20, trigger: scope.current })
     revealFadeUp('.cart-pair',    { y: 16, stagger: STAGGER.tight, trigger: scope.current })
-    revealFadeUp('.cart-msg',     { y: 28, stagger: STAGGER.base,  trigger: scope.current })
+    revealFadeUp('.cart-msg',     { y: 20, stagger: STAGGER.base,  trigger: scope.current })
+    revealFadeUp('.cart-phone',   { y: 30, trigger: scope.current })
   })
 
   return (
-    <section ref={scope} id="cart-recovery" className="scroll-mt-32 py-16 md:py-20" aria-labelledby="cart-heading">
+    <section ref={scope} id="cart-recovery" className="scroll-mt-32 bg-(--color-surface) py-16 md:py-20" aria-labelledby="cart-heading">
       <div className="container">
 
         {/* Heading */}
@@ -201,92 +216,74 @@ export default function CartRecoverySection() {
         </div>
 
         {/* Cause / fix audit */}
-        <div className="cart-pair mb-12 border-y border-(--color-border) md:mb-16">
-          <div className="hidden grid-cols-[3rem_minmax(0,1fr)_2rem_minmax(0,1.15fr)] items-center gap-6 border-b border-(--color-border) py-3 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) sm:grid md:gap-8">
-            <span>Step</span>
+        <div className="cart-pair mb-12 border-y border-(--color-border) md:mb-20">
+          <div className="hidden grid-cols-[minmax(0,1fr)_2rem_minmax(0,1.15fr)] items-center gap-6 border-b border-(--color-border) py-3 text-sm text-(--color-text-muted) sm:grid md:gap-8">
             <span>What loses the sale</span>
             <span aria-hidden="true" />
             <span>What we change</span>
           </div>
 
-          {CAUSES.map(({ cause, fix }, index) => (
+          {CAUSES.map(({ cause, fix }) => (
             <div
               key={cause}
-              className="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 gap-y-4 border-b border-(--color-border) py-6 last:border-b-0 sm:grid-cols-[3rem_minmax(0,1fr)_2rem_minmax(0,1.15fr)] sm:items-center sm:gap-6 md:gap-8 md:py-7"
+              className="grid grid-cols-1 gap-y-2 border-b border-(--color-border) py-6 last:border-b-0 sm:grid-cols-[minmax(0,1fr)_2rem_minmax(0,1.15fr)] sm:items-center sm:gap-6 md:gap-8 md:py-7"
             >
-              <span className="font-mono text-xs font-semibold text-(--color-accent)">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <div>
-                <p className="mb-1 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) sm:hidden">
-                  Root cause
-                </p>
-                <p className="text-base font-bold leading-snug text-(--color-text)">{cause}</p>
-              </div>
-              <ArrowRight size={18} strokeWidth={1.5} aria-hidden className="col-start-2 row-start-3 hidden text-(--color-text-faint) sm:col-start-3 sm:row-start-1 sm:block" />
-              <div className="col-start-2 sm:col-start-4">
-                <p className="mb-1 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) sm:hidden">
-                  Fix
-                </p>
-                <p className="text-sm leading-relaxed text-(--color-text-muted)">{fix}</p>
-              </div>
+              <p className="text-base font-bold leading-snug text-(--color-text)">{cause}</p>
+              <ArrowRight size={18} strokeWidth={1.5} aria-hidden className="hidden text-(--color-text-muted) sm:block" />
+              <p className="text-sm leading-relaxed text-(--color-text-muted)">{fix}</p>
             </div>
           ))}
         </div>
 
         {/* 3-message sequence */}
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
-          <div>
-            <h3 className="text-xl font-bold tracking-tight text-(--color-text) md:text-2xl">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+          
+          <div className="flex flex-col justify-center">
+            <h3 className="text-2xl font-bold tracking-tight text-(--color-text) md:text-3xl">
               Three messages. Three reasons to return.
             </h3>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-(--color-text-muted)">
-              We start with a reminder, build confidence, and only then make one offer.
+            <p className="mt-4 text-base leading-relaxed text-(--color-text-muted)">
+              We start with a reminder, build confidence, and only then make one offer. No discount on message one.
+            </p>
+            
+            <div className="mt-10 flex flex-col gap-6">
+              {MESSAGES.map((msg) => (
+                <div key={msg.timing} className="cart-msg flex items-start gap-4 rounded-md border border-(--color-border) bg-(--color-bg-muted) p-5">
+                  <div className="flex-1">
+                    <p className="font-mono text-xs font-semibold tracking-widest" style={{ color: 'var(--color-accent)', marginBottom: '4px' }}>
+                      {msg.timing}
+                    </p>
+                    <p className="text-base font-bold tracking-tight text-(--color-text)">{msg.label}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
+                  </div>
+                  <span style={{
+                    flexShrink: 0,
+                    borderRadius: '4px',
+                    padding: '3px 9px',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    background: `${msg.badgeColor}15`,
+                    color: msg.badgeColor,
+                    border: `1px solid ${msg.badgeColor}35`,
+                  }}>
+                    {msg.badge}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-8 text-sm text-(--color-text-muted)">
+              Explicit WhatsApp opt-in required before any message is sent.
+              Compliant with India&apos;s DPDP Act and Meta&apos;s WhatsApp Business policy.
             </p>
           </div>
-          <p className="hidden shrink-0 text-sm text-(--color-text-faint) sm:block">
-            No discount on message one
-          </p>
+
+          <div className="cart-phone flex items-center justify-center lg:justify-end">
+            <RecoveryPhone messages={MESSAGES} />
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-          {MESSAGES.map((msg) => (
-            <div key={msg.timing} className="cart-msg flex flex-col">
-              {/* Phone — constrained on mobile so it doesn't stretch full-width */}
-              <div className="mx-auto w-full max-w-[320px] sm:max-w-none">
-                <RecoveryPhone {...msg} />
-              </div>
-
-              {/* Timing marker */}
-              <div className="mt-5 flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-mono text-xs font-semibold tracking-widest" style={{ color: 'var(--color-accent)', marginBottom: '4px' }}>
-                    {msg.timing}
-                  </p>
-                  <p className="text-sm font-bold tracking-tight text-(--color-text)">{msg.label}</p>
-                  <p className="mt-1 max-w-[15rem] text-xs leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
-                </div>
-                <span style={{
-                  flexShrink: 0,
-                  borderRadius: '4px',
-                  padding: '3px 9px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  background: `${msg.badgeColor}15`,
-                  color: msg.badgeColor,
-                  border: `1px solid ${msg.badgeColor}35`,
-                }}>
-                  {msg.badge}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-10 text-sm text-(--color-text-faint) md:mt-12">
-          Explicit WhatsApp opt-in required before any message is sent.
-          Compliant with India&apos;s DPDP Act and Meta&apos;s WhatsApp Business policy.
-        </p>
       </div>
     </section>
   )

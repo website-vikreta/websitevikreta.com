@@ -68,7 +68,7 @@ export default function Hero() {
 
           {/* ── Left: copy ── */}
           <div>
-            <p className="text-meta-label mb-5 font-medium uppercase tracking-widest text-(--color-text-faint)">
+            <p className="mb-5 text-sm text-(--color-text-muted)">
               WhatsApp Commerce Platform for D2C Stores
             </p>
 
@@ -112,7 +112,7 @@ export default function Hero() {
                     className={`flex min-w-0 items-baseline gap-1 border border-(--color-border) bg-(--color-surface) px-2.5 py-2 sm:gap-1.5 sm:px-3.5 ${index === 2 ? 'col-span-2 sm:col-span-1' : ''}`}
                   >
                     <span className="shrink-0 text-[1.05rem] font-extrabold tracking-tight text-(--color-text) sm:text-[1.125rem]">{n}</span>
-                    <span className="text-[11px] leading-tight text-(--color-text-faint) sm:text-[13px]">{label}</span>
+                    <span className="text-[11px] leading-tight text-(--color-text-muted) sm:text-[13px]">{label}</span>
                   </div>
                 ))}
               </div>
@@ -127,7 +127,7 @@ export default function Hero() {
         </div>
 
         <div className="mt-14 pt-2 md:mt-16 md:flex md:items-center md:gap-10">
-          <p className="mb-4 shrink-0 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint) md:mb-0">
+          <p className="mb-4 shrink-0 text-(--color-text-muted) md:mb-0">
             Works with your existing stack
           </p>
           <IntegrationLogoRail />

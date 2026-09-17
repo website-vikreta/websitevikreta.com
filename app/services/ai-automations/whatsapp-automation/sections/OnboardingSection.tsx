@@ -164,7 +164,7 @@ export default function OnboardingSection() {
         </div>
 
         <div className="onboarding-map">
-          <p className="mb-5 text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">
+          <p className="mb-5 text-sm text-(--color-text-muted)">
             The journey
           </p>
           <div className="grid grid-cols-1 border-y border-(--color-border) sm:grid-cols-2 lg:grid-cols-4">
@@ -175,7 +175,7 @@ export default function OnboardingSection() {
               >
                 <div className="mb-8 flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">
+                    <p className="text-(--color-text-muted)">
                       Phase {phase.number}
                     </p>
                     <h3 className="mt-2 text-2xl font-bold tracking-tight text-(--color-text)">{phase.title}</h3>
@@ -188,12 +188,12 @@ export default function OnboardingSection() {
                     const Icon = item.icon
                     return (
                       <li key={item.step} className="flex gap-3">
-                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-(--color-border-strong) text-(--color-text-faint)">
+                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-(--color-border-strong) text-(--color-text-muted)">
                           <Icon size={14} strokeWidth={1.5} />
                         </span>
                         <div>
                           <p className="text-sm font-bold leading-tight text-(--color-text)">
-                            <span className="mr-1.5 font-mono text-xs font-normal text-(--color-text-faint)">{item.step}</span>
+                            <span className="mr-1.5 font-mono text-xs font-normal text-(--color-text-muted)">{item.step}</span>
                             {item.title}
                           </p>
                           <p className="mt-1 text-xs leading-relaxed text-(--color-text-muted)">{item.detail}</p>
@@ -210,7 +210,7 @@ export default function OnboardingSection() {
         {/* Responsibility split */}
         <div className="onboarding-responsibilities mt-14 md:mt-20">
           <div className="mb-8 max-w-xl">
-            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">
+            <p className="mb-3 text-sm text-(--color-text-muted)">
               Your part is small
             </p>
             <p className="text-xl font-bold leading-tight tracking-tight text-(--color-text) md:text-2xl">
@@ -222,7 +222,7 @@ export default function OnboardingSection() {
             <div className="relative">
               <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-(--color-border) pb-4">
                 <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">You provide</h3>
-                <span className="text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">4 things</span>
+                <span className="text-(--color-text-muted)">4 things</span>
               </div>
               <ol className="divide-y divide-(--color-border)">
                 {YOUR_PART.map((item, index) => (
@@ -237,12 +237,12 @@ export default function OnboardingSection() {
             <div className="relative lg:border-l lg:border-(--color-border) lg:pl-16">
               <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-(--color-border) pb-4">
                 <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">We handle</h3>
-                <span className="text-meta-label font-medium uppercase tracking-widest text-(--color-text-faint)">End to end</span>
+                <span className="text-(--color-text-muted)">End to end</span>
               </div>
               <ol className="divide-y divide-(--color-border)">
                 {OUR_PART.map((item, index) => (
                   <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
-                    <span className="font-mono text-xs font-semibold text-(--color-text-faint)">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-xs font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
                     <span className="text-sm leading-relaxed text-(--color-text-muted)">{item}</span>
                   </li>
                 ))}

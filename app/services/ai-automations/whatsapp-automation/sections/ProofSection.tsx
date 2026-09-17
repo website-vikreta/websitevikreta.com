@@ -78,14 +78,14 @@ export default function ProofSection() {
         {/* Case study results */}
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-meta-label mb-3 font-medium uppercase tracking-widest text-(--color-text-faint)">
+            <p className="mb-3 text-sm text-(--color-text-muted)">
               Published results
             </p>
             <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">
               What stores have seen after switching
             </h3>
           </div>
-          <p className="text-sm text-(--color-text-faint)">Results vary by store</p>
+          <p className="text-sm text-(--color-text-muted)">Results vary by store</p>
         </div>
 
         <div className="border-y border-(--color-border)">
@@ -94,25 +94,25 @@ export default function ProofSection() {
               key={brand}
               className="proof-card grid grid-cols-1 gap-4 border-b border-(--color-border) py-6 last:border-b-0 sm:grid-cols-[3rem_minmax(10rem,0.8fr)_minmax(0,1.5fr)_auto] sm:items-center sm:gap-6 md:py-7"
             >
-              <span className="font-mono text-xs font-semibold text-(--color-text-faint)">
+              <span className="font-mono text-xs font-semibold text-(--color-text-muted)">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div>
                 <p className="font-bold tracking-tight text-(--color-text)" style={{ fontSize: 'clamp(1.6rem,3vw,2.1rem)', lineHeight: 1.1 }}>
                   {result}
                 </p>
-                <p className="mt-1 text-sm font-medium text-(--color-text-muted)">{metric}</p>
+                <p className="mt-1 text-sm text-(--color-text-muted)">{metric}</p>
               </div>
               <div>
                 <h4 className="text-base font-bold text-(--color-text)">{brand}</h4>
                 <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{highlight}</p>
               </div>
-              <p className="text-xs text-(--color-text-faint) sm:text-right">{src}</p>
+              <p className="text-xs text-(--color-text-muted) sm:text-right">{src}</p>
             </article>
           ))}
         </div>
 
-        <p className="mt-8 text-sm leading-relaxed text-(--color-text-faint) md:mt-10">
+        <p className="mt-8 text-sm leading-relaxed text-(--color-text-muted) md:mt-10">
           Figures from published brand case studies. Results vary by store volume, checkout
           health, and opt-in rates. WhatsApp channel stats are Meta and industry benchmarks.
         </p>

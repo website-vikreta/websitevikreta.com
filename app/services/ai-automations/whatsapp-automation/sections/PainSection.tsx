@@ -87,7 +87,7 @@ export default function PainSection() {
             >
               {/* Copy */}
               <div>
-                <p className="text-meta-label mb-5 font-medium uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <p className="mb-5 text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
                   The math
                 </p>
                 <h2

@@ -9,6 +9,8 @@ import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
 import ProductRevealSection from './sections/ProductRevealSection'
 import CartRecoverySection from './sections/CartRecoverySection'
+import ConversationalAISection from './sections/ConversationalAISection'
+import CustomerJourneySection from './sections/CustomerJourneySection'
 import PackagesSection from './sections/PackagesSection'
 import OnboardingSection from './sections/OnboardingSection'
 import ProofSection from './sections/ProofSection'
@@ -67,6 +69,8 @@ export default function WhatsAppAutomationClient() {
         <PainSection />
         <ProductRevealSection />
         <CartRecoverySection />
+        <ConversationalAISection />
+        <CustomerJourneySection />
         <PackagesSection />
         <OnboardingSection />
         <ProofSection />

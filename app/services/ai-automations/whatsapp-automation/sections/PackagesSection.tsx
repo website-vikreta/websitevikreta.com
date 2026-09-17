@@ -91,7 +91,7 @@ export default function PackagesSection() {
 
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-3xl font-bold tracking-tight text-(--color-text)">{price}</span>
-                  <span className="text-sm text-(--color-text-faint)">{period}</span>
+                  <span className="text-sm text-(--color-text-muted)">{period}</span>
                 </div>
 
                 <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{description}</p>
