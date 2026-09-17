@@ -135,7 +135,7 @@ export default function ConversationalAISection() {
   })
 
   return (
-    <section ref={scope} id="conversational-ai" className="scroll-mt-32 border-y border-(--color-border) py-16 md:py-24" aria-labelledby="ai-heading">
+    <section ref={scope} id="conversational-ai" className="scroll-mt-32 border-y border-(--color-border) py-16 md:py-20" aria-labelledby="ai-heading">
       <div className="container">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-20">
           

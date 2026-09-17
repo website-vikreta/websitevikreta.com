@@ -120,7 +120,7 @@ export default function Hero() {
           </div>
 
           {/* ── Right: phone demo ── */}
-          <div className="wa-phone-reveal mx-auto w-full max-w-95 lg:mx-0 lg:max-w-none">
+          <div className="wa-phone-reveal mx-auto w-full max-w-[380px] lg:mx-0 lg:max-w-none">
             <PhoneDemo />
           </div>
 

@@ -23,7 +23,7 @@ export default function ContactSection() {
     <section
       ref={scope}
       id="whatsapp-demo"
-      className="scroll-mt-32 py-20 md:py-28"
+      className="scroll-mt-32 py-16 md:py-20"
       style={{ borderTop: '1px solid var(--color-border)' }}
       aria-labelledby="cta-form-heading"
     >
