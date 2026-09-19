@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { TextLink } from '@/components/ui/TextLink'
 import { CALENDLY_URL } from '@/config/site'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
-import PhoneDemo from '../components/PhoneDemo'
+import HeroJourneyPhone from '../components/HeroJourneyPhone'
 import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 const STATS = [
@@ -56,6 +56,7 @@ export default function Hero() {
   return (
     <section
       ref={scope}
+      id="hero"
       className="relative overflow-x-clip"
       style={{
         paddingTop: 'calc(var(--navbar-height) + clamp(3rem, 6vw, 5rem))',
@@ -68,10 +69,6 @@ export default function Hero() {
 
           {/* ── Left: copy ── */}
           <div>
-            <p className="mb-5 text-sm text-(--color-text-muted)">
-              WhatsApp Commerce Platform for D2C Stores
-            </p>
-
             <h1
               ref={headingRef}
               className="text-h1 font-bold"
@@ -121,7 +118,7 @@ export default function Hero() {
 
           {/* ── Right: phone demo ── */}
           <div className="wa-phone-reveal mx-auto w-full max-w-[380px] lg:mx-0 lg:max-w-none">
-            <PhoneDemo />
+            <HeroJourneyPhone />
           </div>
 
         </div>
