@@ -14,9 +14,9 @@ const INTEGRATIONS: Integration[] = [
   { name: 'WooCommerce', src: '/services/whatsapp-automation/integrations/woocommerce.svg' },
   { name: 'Razorpay', src: '/services/whatsapp-automation/integrations/razorpay.svg' },
   { name: 'Google Sheets', src: '/services/whatsapp-automation/integrations/google-sheets.svg' },
-  { name: 'PayU', mark: 'PayU' },
+  { name: 'PayU', src: '/services/whatsapp-automation/integrations/payu.svg' },
+  { name: 'Justdial', src: '/services/whatsapp-automation/integrations/justdial.svg' },
   { name: 'IndiaMART', mark: 'IM' },
-  { name: 'Justdial', mark: 'Jd' },
 ]
 
 type IntegrationLogoRailProps = {
@@ -33,7 +33,7 @@ export default function IntegrationLogoRail({ className = '' }: IntegrationLogoR
             className="grid h-12 w-12 place-items-center border border-(--color-border) bg-(--color-surface) transition-colors duration-300 hover:border-(--color-border-strong)"
           >
             {src ? (
-              <Image src={src} alt="" width={24} height={24} className="h-6 w-6 object-contain grayscale" />
+              <Image src={src} alt="" width={36} height={28} className="h-7 w-9 object-contain grayscale" />
             ) : (
               <span aria-hidden="true" className="text-[10px] font-bold tracking-tight text-(--color-text)">
                 {mark}
