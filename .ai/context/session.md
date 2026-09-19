@@ -69,7 +69,9 @@ _None yet_
 - No layout shift (CLS must be < 0.1)
 
 ## Last Updated
-2026-09-12 — WhatsApp automation visual pass: integration chips replaced with a sharp logo rail reused in Hero + Packages; page-level cards/grids squared off, with rounded corners kept only inside phone/chat/product mockups.
+2026-09-19 — WhatsApp automation consistency audit + fix pass: accent color cut from 17+ uses to 2 (Hero word + Packages featured strip) to match sitewide budget; dead `SnakePath.tsx` deleted; `IntegrationLogoRail` no longer hotlinks an external GitHub repo (Shopify/Meta now local, rest are initial marks); three duplicated phone-mockup components collapsed into shared `WhatsAppPhoneShell.tsx`; one stray `rounded-md` card squared off; COD-steps and Proof-cases grids pushed from `sm` to `md` breakpoint (were cramped on small tablets). Full findings + rationale in learning.md's 2026-09-19 `[Audit]` entry — also flags that the 2026-09-09 S-snake/subgrid entries above no longer describe current code. **Open, not done:** `CustomerJourneySection`'s 8-step copy still reads generic/buzzwordy next to the rest of the page's specific voice — flagged as a candidate cut or rewrite, not yet touched pending a content call.
+
+Previous: 2026-09-12 — WhatsApp automation visual pass: integration chips replaced with a sharp logo rail reused in Hero + Packages; page-level cards/grids squared off, with rounded corners kept only inside phone/chat/product mockups.
 
 Previous: 2026-09-09 — WhatsApp Journey + Onboarding: shared S-snake (3+3+2 / 5+5+2).
 
