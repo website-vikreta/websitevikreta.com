@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { ArrowDown, Gauge, Receipt, ShieldAlert, Timer, UserPlus, Wallet } from 'lucide-react'
+import { Gauge, Receipt, ShieldAlert, Timer, UserPlus, Wallet } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 import AbandonedCartDemo from '../components/AbandonedCartDemo'
 
@@ -89,13 +89,11 @@ export default function CartRecoverySection() {
         <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:mb-14 md:grid-cols-2 lg:grid-cols-3">
           {CAUSES.map(({ cause, fix, icon: Icon }) => (
             <div key={cause} className="cart-cause bg-(--color-surface) p-6 md:p-7">
-              <span className="flex h-9 w-9 items-center justify-center border border-(--color-border-strong) text-(--color-accent)">
-                <Icon size={16} strokeWidth={1.75} aria-hidden />
-              </span>
+              <Icon size={26} strokeWidth={1.5} aria-hidden className="text-(--color-accent)" />
               <p className="mt-4 text-base font-bold leading-snug text-(--color-text)">{cause}</p>
-              <div className="mt-3 flex items-start gap-2">
-                <ArrowDown size={14} strokeWidth={1.5} aria-hidden className="mt-0.5 shrink-0 text-(--color-text-faint)" />
-                <p className="text-sm leading-relaxed text-(--color-text-muted)">{fix}</p>
+              <div className="mt-4 border-t border-(--color-border) pt-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-(--color-text-faint)">Fix</p>
+                <p className="mt-1.5 text-base leading-relaxed text-(--color-text-muted)">{fix}</p>
               </div>
             </div>
           ))}
@@ -105,7 +103,7 @@ export default function CartRecoverySection() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
 
           <div className="cart-phone order-2 flex items-center justify-center lg:order-1">
-            <AbandonedCartDemo messages={MESSAGES} />
+            <AbandonedCartDemo messages={MESSAGES} storefront={false} />
           </div>
 
           <div className="order-1 flex flex-col justify-center lg:order-2">
@@ -120,17 +118,17 @@ export default function CartRecoverySection() {
               {MESSAGES.map((msg) => (
                 <div key={msg.timing} className="cart-msg flex items-start gap-4 border border-(--color-border) bg-(--color-bg-muted) p-5 md:p-6">
                   <div className="flex-1">
-                    <p className="font-mono text-xs font-semibold tracking-widest text-(--color-text-faint)" style={{ marginBottom: '4px' }}>
+                    <p className="font-mono text-sm font-semibold tracking-widest text-(--color-text-faint)" style={{ marginBottom: '4px' }}>
                       {msg.timing}
                     </p>
-                    <p className="text-base font-bold tracking-tight text-(--color-text)">{msg.label}</p>
-                    <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
+                    <p className="text-lg font-bold tracking-tight text-(--color-text)">{msg.label}</p>
+                    <p className="mt-1 text-base leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
                   </div>
                   <span style={{
                     flexShrink: 0,
                     borderRadius: '4px',
                     padding: '3px 9px',
-                    fontSize: '11px',
+                    fontSize: '12px',
                     fontWeight: 600,
                     background: `${msg.badgeColor}15`,
                     color: msg.badgeColor,
@@ -142,7 +140,7 @@ export default function CartRecoverySection() {
               ))}
             </div>
 
-            <p className="mt-8 text-sm text-(--color-text-muted)">
+            <p className="mt-8 text-sm leading-relaxed text-(--color-text-muted)">
               Explicit WhatsApp opt-in required before any message is sent.
               Compliant with India&apos;s DPDP Act and Meta&apos;s WhatsApp Business policy.
             </p>
