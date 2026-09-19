@@ -40,7 +40,7 @@ const STEPS: JourneyStep[] = [
   {
     step: '03',
     title: 'Meta Verification',
-    detail: 'We run the WhatsApp BSP verification. Usually 2 to 3 days.',
+    detail: 'We run the WhatsApp BSP verification, which usually takes 2 to 3 days.',
     icon: ShieldCheck,
   },
   {
@@ -52,31 +52,31 @@ const STEPS: JourneyStep[] = [
   {
     step: '05',
     title: 'Platform Config',
-    detail: 'Templates drafted, brand assets uploaded, store connected.',
+    detail: 'We draft your templates, upload your brand assets, and connect your store.',
     icon: SlidersHorizontal,
   },
   {
     step: '06',
     title: 'Branding',
-    detail: 'Your inbox and flows in your brand colours and copy.',
+    detail: 'Your inbox and flows start speaking in your brand colours and voice.',
     icon: Palette,
   },
   {
     step: '07',
     title: 'Automation Build',
-    detail: 'Cart recovery, COD confirmation, and order updates all wired up.',
+    detail: 'We wire up cart recovery, COD confirmation, and order updates.',
     icon: Waypoints,
   },
   {
     step: '08',
     title: 'Template Approval',
-    detail: 'We submit templates to Meta. Most clear in 24 to 48 hours.',
+    detail: 'We submit your templates to Meta. Most clear within 24 to 48 hours.',
     icon: BadgeCheck,
   },
   {
     step: '09',
     title: 'Testing',
-    detail: 'Full end-to-end test of every flow before anyone sees it.',
+    detail: 'We test every flow end to end before anyone else sees it.',
     icon: ListChecks,
   },
   {
@@ -165,18 +165,18 @@ export default function OnboardingSection() {
                   <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">{phase.title}</h3>
                   <span className="text-4xl font-bold leading-none tracking-tight text-(--color-accent)">{phase.number}</span>
                 </div>
-                <p className="mb-7 min-h-12 max-w-60 text-sm leading-relaxed text-(--color-text-muted)">{phase.detail}</p>
+                <p className="mb-7 min-h-14 max-w-60 text-base leading-relaxed text-(--color-text-muted)">{phase.detail}</p>
                 <ol className="space-y-5">
                   {phase.steps.map((item) => {
                     const Icon = item.icon
                     return (
                       <li key={item.step} className="flex gap-3">
-                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-(--color-border-strong) text-(--color-text-muted)">
-                          <Icon size={14} strokeWidth={1.5} />
+                        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center border border-(--color-border-strong) text-(--color-text-muted)">
+                          <Icon size={16} strokeWidth={1.5} />
                         </span>
                         <div>
-                          <p className="text-sm font-bold leading-tight text-(--color-text)">{item.title}</p>
-                          <p className="mt-1 text-xs leading-relaxed text-(--color-text-muted)">{item.detail}</p>
+                          <p className="text-base font-bold leading-tight text-(--color-text)">{item.title}</p>
+                          <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{item.detail}</p>
                         </div>
                       </li>
                     )
@@ -207,8 +207,8 @@ export default function OnboardingSection() {
               <ol className="divide-y divide-(--color-border)">
                 {YOUR_PART.map((item, index) => (
                   <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
-                    <span className="font-mono text-xs font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="text-sm leading-relaxed text-(--color-text-muted)">{item}</span>
+                    <span className="font-mono text-sm font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="text-base leading-relaxed text-(--color-text-muted)">{item}</span>
                   </li>
                 ))}
               </ol>
@@ -222,8 +222,8 @@ export default function OnboardingSection() {
               <ol className="divide-y divide-(--color-border)">
                 {OUR_PART.map((item, index) => (
                   <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
-                    <span className="font-mono text-xs font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="text-sm leading-relaxed text-(--color-text-muted)">{item}</span>
+                    <span className="font-mono text-sm font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="text-base leading-relaxed text-(--color-text-muted)">{item}</span>
                   </li>
                 ))}
               </ol>

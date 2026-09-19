@@ -97,8 +97,8 @@ export default function ConversationalAISection() {
               ))}
             </ul>
 
-            <p className="ai-benefit mt-6 text-sm leading-relaxed text-(--color-text-muted)">
-              <span className="font-mono text-xs text-(--color-text-faint)">Example: </span>
+            <p className="ai-benefit mt-6 text-base leading-relaxed text-(--color-text-muted)">
+              <span className="font-mono text-sm text-(--color-text-faint)">Example: </span>
               Someone types &quot;kurta&quot; or &quot;black t-shirts&quot;. The keyword is recognized and the right product conversation starts automatically, no typing a menu number.
             </p>
           </div>

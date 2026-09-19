@@ -147,12 +147,12 @@ export default function PackagesSection() {
                   )}
                 </div>
 
-                <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{description}</p>
+                <p className="mt-3 text-base leading-relaxed text-(--color-text-muted)">{description}</p>
 
-                <ul className="mt-6 flex flex-1 flex-col gap-2.5">
+                <ul className="mt-6 flex flex-1 flex-col gap-3">
                   {features.map(f => (
-                    <li key={f} className="flex items-start gap-3 text-sm leading-relaxed text-(--color-text-muted)">
-                      <Check size={15} strokeWidth={2.5} aria-hidden className="mt-0.5 shrink-0 text-(--color-text)" />
+                    <li key={f} className="flex items-start gap-3 text-base leading-relaxed text-(--color-text-muted)">
+                      <Check size={16} strokeWidth={2.5} aria-hidden className="mt-0.5 shrink-0 text-(--color-text)" />
                       {f}
                     </li>
                   ))}
@@ -174,7 +174,7 @@ export default function PackagesSection() {
         >
           <div>
             <p className="font-bold text-(--color-text)">Custom and Enterprise</p>
-            <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">
+            <p className="mt-1 text-base leading-relaxed text-(--color-text-muted)">
               AI WhatsApp agents, Instagram and Facebook inbox integration, custom API
               connections, and multi-brand setups. Quoted based on scope.
             </p>

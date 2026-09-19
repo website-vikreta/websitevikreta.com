@@ -69,7 +69,7 @@ export default function ProofSection() {
               >
                 {n}
               </p>
-              <p className="mt-2 text-sm font-semibold text-(--color-text)">{label}</p>
+              <p className="mt-2 text-base font-semibold text-(--color-text)">{label}</p>
               <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{context}</p>
             </div>
           ))}
@@ -94,20 +94,20 @@ export default function ProofSection() {
               key={brand}
               className="proof-card grid grid-cols-1 gap-4 border-b border-(--color-border) py-6 last:border-b-0 md:grid-cols-[3rem_minmax(10rem,0.8fr)_minmax(0,1.5fr)_auto] md:items-center md:gap-6 md:py-7"
             >
-              <span className="font-mono text-xs font-semibold text-(--color-text-muted)">
+              <span className="font-mono text-sm font-semibold text-(--color-text-muted)">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div>
                 <p className="font-bold tracking-tight" style={{ fontSize: 'clamp(1.6rem,3vw,2.1rem)', color: 'var(--color-accent)', lineHeight: 1.1 }}>
                   {result}
                 </p>
-                <p className="mt-1 text-sm text-(--color-text-muted)">{metric}</p>
+                <p className="mt-1 text-base text-(--color-text-muted)">{metric}</p>
               </div>
               <div>
-                <h4 className="text-base font-bold text-(--color-text)">{brand}</h4>
-                <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{highlight}</p>
+                <h4 className="text-lg font-bold text-(--color-text)">{brand}</h4>
+                <p className="mt-1 text-base leading-relaxed text-(--color-text-muted)">{highlight}</p>
               </div>
-              <p className="text-xs text-(--color-text-muted) md:text-right">{src}</p>
+              <p className="text-sm text-(--color-text-muted) md:text-right">{src}</p>
             </article>
           ))}
         </div>
