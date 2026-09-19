@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import UiUxClient from './UiUxClient'
 import { SITE_URL } from '@/config/site'
+import { UI_UX_PAGE_META } from './data'
 
-const PAGE_URL = `${SITE_URL}/services/uiux-design`
+const PAGE_URL = `${SITE_URL}/services/${UI_UX_PAGE_META.slug}`
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -10,9 +11,9 @@ const jsonLd = {
     {
       '@type': 'Service',
       '@id': `${PAGE_URL}#service`,
-      name: 'UI/UX Design Agency',
+      name: UI_UX_PAGE_META.serviceName,
       serviceType: 'UI/UX Design',
-      description: 'User research, Figma design systems, and dev-ready prototypes for web and mobile products.',
+      description: UI_UX_PAGE_META.description,
       url: PAGE_URL,
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
@@ -30,8 +31,8 @@ const jsonLd = {
 }
 
 export const metadata: Metadata = {
-  title: 'UI/UX Design Agency | Website Vikreta',
-  description: 'Custom UI/UX design for web and mobile products: user research, Figma design systems, and dev-ready prototypes. Free scoping call.',
+  title: UI_UX_PAGE_META.title,
+  description: UI_UX_PAGE_META.description,
   keywords: [
     // Primary
     'UI UX design agency',
@@ -50,8 +51,8 @@ export const metadata: Metadata = {
     'user flow and wireframe design services',
   ],
   openGraph: {
-    title: 'UI/UX Design Agency | Website Vikreta',
-    description: 'Custom UI/UX design for web and mobile products: user research, Figma design systems, and dev-ready prototypes. Free scoping call.',
+    title: UI_UX_PAGE_META.title,
+    description: UI_UX_PAGE_META.description,
     url: PAGE_URL,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -67,8 +68,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'UI/UX Design Agency | Website Vikreta',
-    description: 'Custom UI/UX design for web and mobile products: user research, Figma design systems, and dev-ready prototypes. Free scoping call.',
+    title: UI_UX_PAGE_META.title,
+    description: UI_UX_PAGE_META.description,
     images: ['/og-image.png'],
   },
   alternates: {
