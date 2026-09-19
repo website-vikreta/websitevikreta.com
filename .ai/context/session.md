@@ -7,12 +7,11 @@
 ## Current Task
 
 UI/UX page (`/services/uiux-design`) — Clean borderless pass & balanced proof slope:
-
 1. Removed outer borders, dashed dividers, and hard shadows from the 3 pain cards ("Landing never earns the scroll", "Checkout asks too much", "Handoff that dev can't trust") and the "Why clients leave" badge in `JourneyFrictionGrid.tsx`.
 2. Removed all dark borders, hard drop shadows, and heavy borders from the design system micro components in `SolutionMicroCanvas.tsx` (Typography slices, property tags, Aa/H1/P display boxes, Spacing cards, "Before/After" token boxes, and Auto-layout preview cards).
 3. Tools marquee scrolling below Hero CTA buttons with exact client marquee specs. Reduced the proof cards staggered slope step difference to a balanced offset (`lg:mt-6 xl:mt-8`, `lg:mt-12 xl:mt-16`) with borderless cards. All verified clean with `tsc --noEmit`.
 
-Previous: Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize.
+Previous: Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize. Hero: `min-h-svh` + vertical center only at `xl+` (fixes iPad Pro dead space); headline uses block lines not `<br>` for GSAP line reveal.
 
 Previous: Digital Marketing page
 
