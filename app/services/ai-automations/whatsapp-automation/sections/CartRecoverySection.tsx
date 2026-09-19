@@ -167,9 +167,13 @@ export default function CartRecoverySection() {
         </div>
 
         {/* 3-message sequence */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-          
-          <div className="flex flex-col justify-center">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+
+          <div className="cart-phone order-2 flex items-center justify-center lg:order-1">
+            <RecoveryPhone messages={MESSAGES} />
+          </div>
+
+          <div className="order-1 flex flex-col justify-center lg:order-2">
             <h3 className="text-2xl font-bold tracking-tight text-(--color-text) md:text-3xl">
               Three messages. Three reasons to return.
             </h3>
@@ -207,10 +211,6 @@ export default function CartRecoverySection() {
               Explicit WhatsApp opt-in required before any message is sent.
               Compliant with India&apos;s DPDP Act and Meta&apos;s WhatsApp Business policy.
             </p>
-          </div>
-
-          <div className="cart-phone flex items-center justify-center lg:justify-start">
-            <RecoveryPhone messages={MESSAGES} />
           </div>
 
         </div>
