@@ -31,7 +31,7 @@ export default function IntegrationLogoRail({ className = '' }: IntegrationLogoR
               alt={name}
               width={120}
               height={32}
-              className="h-7 w-auto max-w-26 object-contain opacity-60 grayscale transition-opacity duration-300 hover:opacity-100"
+              className="h-7 w-auto max-w-32 object-contain opacity-60 grayscale transition-opacity duration-300 hover:opacity-100"
             />
           </li>
         ))}
