@@ -137,30 +137,18 @@ export default function OnboardingSection() {
       aria-labelledby="onboarding-heading"
     >
       <div className="container">
-        <div className="mb-10 grid grid-cols-1 gap-6 md:mb-14 md:grid-cols-[1fr_auto]">
-          <div className="max-w-xl">
-            <h2
-              id="onboarding-heading"
-              className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
-            >
-              Live in 7 to 14 days. Here is exactly what happens.
-            </h2>
-            <p className="onboarding-copy mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-              We handle Meta verification, template drafting, store wiring, and
-              testing. You provide brand assets and two sign-offs. That is the
-              full ask on your side.
-            </p>
-          </div>
-
-          {/* Time callout */}
-          <div
-            className="flex shrink-0 flex-col items-center justify-center self-start border border-(--color-border) bg-(--color-surface) px-8 py-6 text-center"
+        <div className="mb-10 max-w-xl md:mb-14">
+          <h2
+            id="onboarding-heading"
+            className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
           >
-            <span className="text-h2 font-bold tracking-tight text-(--color-accent)" style={{ lineHeight: 1 }}>
-              7 to 14
-            </span>
-            <span className="mt-1 text-sm text-(--color-text-muted)">days to go live</span>
-          </div>
+            Live in <span className="text-(--color-accent)">7 to 14 days</span>. Here is exactly what happens.
+          </h2>
+          <p className="onboarding-copy mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
+            We handle Meta verification, template drafting, store wiring, and
+            testing. You provide brand assets and two sign-offs. That is the
+            full ask on your side.
+          </p>
         </div>
 
         <div className="onboarding-map">
@@ -173,16 +161,11 @@ export default function OnboardingSection() {
                 key={phase.number}
                 className="journey-phase border-b border-(--color-border) p-6 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0 lg:p-7"
               >
-                <div className="mb-8 flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-(--color-text-muted)">
-                      Phase {phase.number}
-                    </p>
-                    <h3 className="mt-2 text-2xl font-bold tracking-tight text-(--color-text)">{phase.title}</h3>
-                  </div>
+                <div className="mb-5 flex items-start justify-between gap-4">
+                  <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">{phase.title}</h3>
                   <span className="text-4xl font-bold leading-none tracking-tight text-(--color-accent)">{phase.number}</span>
                 </div>
-                <p className="mb-7 max-w-60 text-sm leading-relaxed text-(--color-text-muted)">{phase.detail}</p>
+                <p className="mb-7 min-h-12 max-w-60 text-sm leading-relaxed text-(--color-text-muted)">{phase.detail}</p>
                 <ol className="space-y-5">
                   {phase.steps.map((item) => {
                     const Icon = item.icon
@@ -192,10 +175,7 @@ export default function OnboardingSection() {
                           <Icon size={14} strokeWidth={1.5} />
                         </span>
                         <div>
-                          <p className="text-sm font-bold leading-tight text-(--color-text)">
-                            <span className="mr-1.5 font-mono text-xs font-normal text-(--color-text-muted)">{item.step}</span>
-                            {item.title}
-                          </p>
+                          <p className="text-sm font-bold leading-tight text-(--color-text)">{item.title}</p>
                           <p className="mt-1 text-xs leading-relaxed text-(--color-text-muted)">{item.detail}</p>
                         </div>
                       </li>
