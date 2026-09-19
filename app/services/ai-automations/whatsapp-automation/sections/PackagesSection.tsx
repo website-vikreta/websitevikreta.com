@@ -61,7 +61,7 @@ export default function PackagesSection() {
   useGsapSection(scope, () => {
     revealLines('#packages-heading',  { trigger: scope.current })
     revealFadeUp('.packages-intro',   { y: 20, trigger: scope.current })
-    revealFadeUp('.package-card',     { y: 24, stagger: STAGGER.loose, trigger: scope.current })
+    revealFadeUp('.package-card',     { y: 20, stagger: STAGGER.base, trigger: scope.current })
     revealFadeUp('.packages-footer',  { y: 16, trigger: scope.current })
   })
 

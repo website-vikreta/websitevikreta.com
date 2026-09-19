@@ -48,9 +48,9 @@ export default function Hero() {
     const proof = proofRef.current
     if (!heading || !sub || !cta || !proof) return
     revealLines(heading, { trigger: null })
-    revealFadeUp(sub, { y: 18, delay: 0.35, trigger: null })
-    revealFadeUp(cta, { y: 18, delay: 0.5, trigger: null })
-    revealFadeUp(proof, { y: 14, delay: 0.65, trigger: null })
+    revealFadeUp(sub, { y: 20, delay: 0.35, trigger: null })
+    revealFadeUp(cta, { y: 16, delay: 0.5, trigger: null })
+    revealFadeUp(proof, { y: 16, delay: 0.65, trigger: null })
   })
 
   return (

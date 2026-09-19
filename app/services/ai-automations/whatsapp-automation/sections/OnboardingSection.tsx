@@ -126,7 +126,7 @@ export default function OnboardingSection() {
   useGsapSection(scope, () => {
     revealLines('#onboarding-heading', { trigger: scope.current })
     revealFadeUp('.onboarding-copy',   { y: 20,   trigger: scope.current })
-    revealFadeUp('.journey-phase', { y: 20, stagger: STAGGER.tight, trigger: scope.current })
+    revealFadeUp('.journey-phase', { y: 16, stagger: STAGGER.tight, trigger: scope.current })
   })
 
   return (

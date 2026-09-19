@@ -28,13 +28,13 @@ export default function PainSection() {
 
   useGsapSection(painScope, () => {
     revealLines('#pain-heading', { trigger: painScope.current })
-    revealFadeUp('.pain-card', { y: 24, stagger: STAGGER.base, trigger: painScope.current })
+    revealFadeUp('.pain-card', { y: 20, stagger: STAGGER.base, trigger: painScope.current })
   })
 
   useGsapSection(mathScope, () => {
     revealLines('#math-heading', { trigger: mathScope.current })
     revealFadeUp('.math-copy',  { y: 20, trigger: mathScope.current })
-    revealFadeUp('.math-calc',  { y: 28, delay: 0.1, trigger: mathScope.current })
+    revealFadeUp('.math-calc',  { y: 30, delay: STAGGER.base, trigger: mathScope.current })
   })
 
   return (

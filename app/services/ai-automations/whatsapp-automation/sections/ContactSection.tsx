@@ -16,7 +16,7 @@ export default function ContactSection() {
   useGsapSection(scope, () => {
     revealLines('.cta-heading',   { trigger: scope.current })
     revealFadeUp('.cta-list',     { y: 16, stagger: STAGGER.tight, delay: STAGGER.base, trigger: scope.current })
-    revealFadeUp('.cta-form-card', { y: 24, delay: STAGGER.loose + STAGGER.base, trigger: scope.current })
+    revealFadeUp('.cta-form-card', { y: 30, delay: STAGGER.loose + STAGGER.base, trigger: scope.current })
   })
 
   return (

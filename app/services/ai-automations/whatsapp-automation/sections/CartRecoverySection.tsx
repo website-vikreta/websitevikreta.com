@@ -154,8 +154,8 @@ export default function CartRecoverySection() {
         <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:mb-14 md:grid-cols-2 lg:grid-cols-3">
           {CAUSES.map(({ cause, fix, icon: Icon }) => (
             <div key={cause} className="cart-cause bg-(--color-surface) p-6 md:p-7">
-              <span className="flex h-9 w-9 items-center justify-center border border-(--color-border-strong) text-(--color-text-muted)">
-                <Icon size={16} strokeWidth={1.5} aria-hidden />
+              <span className="flex h-9 w-9 items-center justify-center border border-(--color-border-strong) text-(--color-accent)">
+                <Icon size={16} strokeWidth={1.75} aria-hidden />
               </span>
               <p className="mt-4 text-base font-bold leading-snug text-(--color-text)">{cause}</p>
               <div className="mt-3 flex items-start gap-2">
