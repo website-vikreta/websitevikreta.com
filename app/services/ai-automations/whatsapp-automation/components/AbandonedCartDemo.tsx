@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronLeft, Search, Shirt, ShoppingBag } from 'lucide-react'
+import { ChevronLeft, Home, MessageCircle, Search, Shirt, ShoppingBag, User } from 'lucide-react'
 import {
   PhoneFrame,
   PhoneStatusBar,
@@ -19,6 +19,7 @@ export type RecoveryMessage = {
 
 const BODY_H = 452
 const HOLD_MS = 3000
+const ink = 'rgba(18,18,18,'
 
 const CATALOG = [
   { name: 'Block Print Kurta', price: '₹1,299' },
@@ -27,15 +28,17 @@ const CATALOG = [
   { name: 'Silk Dupatta', price: '₹749' },
 ]
 
-type StoreView = 'list' | 'detail' | 'tap' | 'added' | 'back' | 'exit'
+type Scene = 'list' | 'detail' | 'tap' | 'added' | 'back' | 'exit' | 'home' | 'notify'
 
-const STORE: { view: StoreView; ms: number }[] = [
+const FLOW: { view: Scene; ms: number }[] = [
   { view: 'list',   ms: 1500 },
-  { view: 'detail', ms: 1600 },
-  { view: 'tap',    ms: 550 },
-  { view: 'added',  ms: 1400 },
-  { view: 'back',   ms: 1300 },
-  { view: 'exit',   ms: 1500 },
+  { view: 'detail', ms: 1500 },
+  { view: 'tap',    ms: 500 },
+  { view: 'added',  ms: 1300 },
+  { view: 'back',   ms: 1100 },
+  { view: 'exit',   ms: 700 },
+  { view: 'home',   ms: 1300 },
+  { view: 'notify', ms: 1900 },
 ]
 
 type ChatNode =
@@ -44,22 +47,22 @@ type ChatNode =
   | { t: 'msg';     ms: number; m: RecoveryMessage }
   | { t: 'cta';     ms: number }
 
-const ink = 'rgba(18,18,18,'
+/* ── Store app ─────────────────────────────────────────────────────────── */
 
 function ProductBlock({ height }: { height: number }) {
   return (
-    <div style={{ display: 'grid', height, placeItems: 'center', background: '#f1ece4' }}>
-      <Shirt size={height > 110 ? 44 : 26} strokeWidth={1.1} style={{ color: `${ink}0.35)` }} aria-hidden />
+    <div style={{ display: 'grid', height, placeItems: 'center', borderRadius: 10, background: '#f1ece4' }}>
+      <Shirt size={height > 110 ? 46 : 26} strokeWidth={1.1} style={{ color: `${ink}0.32)` }} aria-hidden />
     </div>
   )
 }
 
-function StoreScreen({ view }: { view: StoreView }) {
+function StoreScreen({ view }: { view: Scene }) {
   const inCart = view === 'added' || view === 'back' || view === 'exit'
   const onDetail = view === 'detail' || view === 'tap' || view === 'added'
 
   return (
-    <div style={{ position: 'relative' }}>
+    <>
       <PhoneStatusBar time="10:00" background="#fff" color={`${ink}0.6)`} bars="18,18,18" />
 
       <div style={{
@@ -87,87 +90,158 @@ function StoreScreen({ view }: { view: StoreView }) {
         </span>
       </div>
 
-      <div style={{ position: 'relative', height: BODY_H, overflow: 'hidden', background: '#fff', padding: 14 }}>
-        {onDetail ? (
-          <div className="wa-fade" key="detail">
-            <span style={{ display: 'flex', alignItems: 'center', gap: 3, marginBottom: 10, fontSize: 11, color: `${ink}0.5)` }}>
-              <ChevronLeft size={13} strokeWidth={1.8} aria-hidden /> Kurtas
-            </span>
-            <ProductBlock height={196} />
-            <p style={{ marginTop: 12, fontSize: 14, fontWeight: 700, color: '#121212' }}>Block Print Kurta</p>
-            <p style={{ marginTop: 3, fontSize: 13, color: `${ink}0.6)` }}>₹1,299</p>
-
-            <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
-              {['S', 'M', 'L', 'XL'].map(size => (
-                <span key={size} style={{
-                  display: 'grid', height: 26, width: 30, placeItems: 'center',
-                  border: `1px solid ${size === 'M' ? '#121212' : `${ink}0.14)`}`,
-                  fontSize: 11, fontWeight: 600,
-                  background: size === 'M' ? '#121212' : '#fff',
-                  color: size === 'M' ? '#fff' : `${ink}0.6)`,
-                }}>
-                  {size}
-                </span>
-              ))}
-            </div>
-
-            <div style={{ position: 'relative', marginTop: 16 }}>
-              <span style={{
-                display: 'grid', height: 40, placeItems: 'center',
-                background: '#121212', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.02em', color: '#fff',
-                transform: view === 'tap' ? 'scale(0.97)' : 'none',
-                transition: 'transform 0.18s ease',
-              }}>
-                {view === 'added' ? 'Added to cart' : 'Add to cart'}
+      <div style={{ position: 'relative', height: BODY_H, overflow: 'hidden', background: '#fff' }}>
+        <div style={{ padding: 14 }}>
+          {onDetail ? (
+            <div className="wa-fade" key="detail">
+              <span style={{ display: 'flex', alignItems: 'center', gap: 3, marginBottom: 10, fontSize: 11, color: `${ink}0.5)` }}>
+                <ChevronLeft size={13} strokeWidth={1.8} aria-hidden /> Kurtas
               </span>
-              {view === 'tap' && (
-                <span aria-hidden className="wa-tap" style={{
-                  position: 'absolute', top: 6, left: '50%', height: 28, width: 28,
-                  marginLeft: -14, borderRadius: '50%', background: 'rgba(255,255,255,0.55)',
-                }} />
-              )}
+              <ProductBlock height={186} />
+              <p style={{ marginTop: 12, fontSize: 14, fontWeight: 700, color: '#121212' }}>Block Print Kurta</p>
+              <p style={{ marginTop: 3, fontSize: 13, color: `${ink}0.6)` }}>₹1,299</p>
+
+              <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
+                {['S', 'M', 'L', 'XL'].map(size => (
+                  <span key={size} style={{
+                    display: 'grid', height: 26, width: 30, placeItems: 'center', borderRadius: 6,
+                    border: `1px solid ${size === 'M' ? '#121212' : `${ink}0.14)`}`,
+                    fontSize: 11, fontWeight: 600,
+                    background: size === 'M' ? '#121212' : '#fff',
+                    color: size === 'M' ? '#fff' : `${ink}0.6)`,
+                  }}>
+                    {size}
+                  </span>
+                ))}
+              </div>
+
+              <div style={{ position: 'relative', marginTop: 16 }}>
+                <span style={{
+                  display: 'grid', height: 40, placeItems: 'center', borderRadius: 8,
+                  background: '#121212', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.02em', color: '#fff',
+                  transform: view === 'tap' ? 'scale(0.97)' : 'none',
+                  transition: 'transform 0.18s ease',
+                }}>
+                  {view === 'added' ? 'Added to cart' : 'Add to cart'}
+                </span>
+                {view === 'tap' && (
+                  <span aria-hidden className="wa-tap" style={{
+                    position: 'absolute', top: 6, left: '50%', height: 28, width: 28,
+                    marginLeft: -14, borderRadius: '50%', background: 'rgba(255,255,255,0.55)',
+                  }} />
+                )}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="wa-fade" key="list">
-            <span style={{
-              display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12,
-              border: `1px solid ${ink}0.1)`, padding: '7px 10px', fontSize: 11, color: `${ink}0.4)`,
-            }}>
-              <Search size={12} strokeWidth={1.7} aria-hidden /> Search Kaya Wear
-            </span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              {CATALOG.map(item => (
-                <div key={item.name}>
-                  <ProductBlock height={104} />
-                  <p style={{ marginTop: 6, fontSize: 11, fontWeight: 600, color: '#121212' }}>{item.name}</p>
-                  <p style={{ marginTop: 1, fontSize: 11, color: `${ink}0.5)` }}>{item.price}</p>
-                </div>
-              ))}
+          ) : (
+            <div className="wa-fade" key="list">
+              <span style={{
+                display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12, borderRadius: 8,
+                border: `1px solid ${ink}0.1)`, padding: '8px 10px', fontSize: 11, color: `${ink}0.4)`,
+              }}>
+                <Search size={12} strokeWidth={1.7} aria-hidden /> Search Kaya Wear
+              </span>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                {CATALOG.map(item => (
+                  <div key={item.name}>
+                    <ProductBlock height={104} />
+                    <p style={{ marginTop: 6, fontSize: 11, fontWeight: 600, color: '#121212' }}>{item.name}</p>
+                    <p style={{ marginTop: 1, fontSize: 11, color: `${ink}0.5)` }}>{item.price}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {view === 'added' && (
           <span className="wa-pop" style={{
-            position: 'absolute', bottom: 16, left: 14, right: 14,
-            display: 'grid', placeItems: 'center', background: '#121212',
+            position: 'absolute', bottom: 58, left: 14, right: 14,
+            display: 'grid', placeItems: 'center', borderRadius: 8, background: '#121212',
             padding: '9px 12px', fontSize: 11.5, fontWeight: 600, color: '#fff',
           }}>
             Block Print Kurta (M) added to your cart
           </span>
         )}
 
+        {/* App tab bar */}
+        <div style={{
+          position: 'absolute', insetInline: 0, bottom: 0,
+          display: 'flex', justifyContent: 'space-around', alignItems: 'center',
+          height: 46, background: '#fff', borderTop: `1px solid ${ink}0.08)`,
+        }}>
+          {[Home, Search, ShoppingBag, User].map((Icon, i) => (
+            <Icon key={i} size={16} strokeWidth={1.6} aria-hidden style={{ color: i === 0 ? '#121212' : `${ink}0.35)` }} />
+          ))}
+        </div>
       </div>
-
-      {view === 'exit' && (
-        <span aria-hidden className="wa-fade" style={{
-          position: 'absolute', inset: 0, background: 'rgba(12,12,12,0.82)',
-        }} />
-      )}
-    </div>
+    </>
   )
 }
+
+/* ── Android home screen ───────────────────────────────────────────────── */
+
+function HomeScreen({ notification }: { notification: boolean }) {
+  return (
+    <>
+      <PhoneStatusBar time="10:15" background="#12100e" />
+
+      <div style={{
+        position: 'relative', height: PHONE_HEADER_H + BODY_H, overflow: 'hidden',
+        padding: '24px 18px 0',
+        background: 'linear-gradient(170deg, #2b2620 0%, #12100e 55%, #0b0a09 100%)',
+      }}>
+        <p style={{ fontSize: 34, fontWeight: 300, letterSpacing: '-0.02em', color: '#fff', lineHeight: 1 }}>10:15</p>
+        <p style={{ marginTop: 5, fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Saturday</p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18, marginTop: 36 }}>
+          {Array.from({ length: 12 }, (_, i) => (
+            <span key={i} style={{
+              display: 'grid', height: 44, placeItems: 'center', borderRadius: 13,
+              background: i === 2 ? '#FFD600' : i === 5 ? '#25d366' : 'rgba(255,255,255,0.12)',
+            }}>
+              {i === 2 && <Shirt size={17} strokeWidth={1.8} style={{ color: '#121212' }} aria-hidden />}
+              {i === 5 && <MessageCircle size={17} strokeWidth={1.8} style={{ color: '#fff' }} aria-hidden />}
+            </span>
+          ))}
+        </div>
+
+        <div style={{
+          position: 'absolute', insetInline: 18, bottom: 22,
+          display: 'flex', justifyContent: 'space-around', alignItems: 'center',
+          borderRadius: 22, background: 'rgba(255,255,255,0.1)', padding: '10px 0',
+        }}>
+          {[0, 1, 2, 3].map(i => (
+            <span key={i} style={{ height: 34, width: 34, borderRadius: 11, background: i === 3 ? '#25d366' : 'rgba(255,255,255,0.16)' }} />
+          ))}
+        </div>
+
+        {notification && (
+          <div className="wa-pop" style={{
+            position: 'absolute', insetInline: 12, top: 12,
+            display: 'flex', alignItems: 'flex-start', gap: 9,
+            borderRadius: 16, background: '#fbf9f6', padding: '11px 12px',
+            boxShadow: '0 18px 30px -18px rgba(0,0,0,0.75)',
+          }}>
+            <span style={{ display: 'grid', height: 26, width: 26, flexShrink: 0, placeItems: 'center', borderRadius: 9, background: '#25d366' }}>
+              <MessageCircle size={14} strokeWidth={1.9} style={{ color: '#fff' }} aria-hidden />
+            </span>
+            <span style={{ minWidth: 0 }}>
+              <span style={{ display: 'block', fontSize: 9.5, letterSpacing: '0.04em', textTransform: 'uppercase', color: `${ink}0.45)` }}>
+                WhatsApp · now
+              </span>
+              <span style={{ display: 'block', marginTop: 2, fontSize: 12, fontWeight: 700, color: '#121212' }}>Kaya Wear</span>
+              <span style={{ display: 'block', marginTop: 1, fontSize: 11.5, lineHeight: 1.45, color: `${ink}0.65)` }}>
+                You left something in your cart
+              </span>
+            </span>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+/* ── Chat ──────────────────────────────────────────────────────────────── */
 
 function Bubble({ m }: { m: RecoveryMessage }) {
   return (
@@ -196,10 +270,18 @@ function Bubble({ m }: { m: RecoveryMessage }) {
   )
 }
 
-/* One loop of the story the section describes: a shopper adds to cart, leaves
-   the store, and WhatsApp brings them back. Store screens first, then the same
-   three messages the copy on the left walks through. */
-export default function AbandonedCartDemo({ messages }: { messages: RecoveryMessage[] }) {
+/* One loop of the story the section describes: a shopper adds to cart, closes
+   the app, sees the notification land on their home screen, and opens WhatsApp. */
+export default function AbandonedCartDemo({
+  messages,
+  storefront = true,
+}: {
+  messages: RecoveryMessage[]
+  /* false plays the chat half only, for a section that has already shown the store */
+  storefront?: boolean
+}) {
+  const flow = useMemo(() => (storefront ? FLOW : []), [storefront])
+
   const chat = useMemo<ChatNode[]>(() => {
     const nodes: ChatNode[] = []
     messages.forEach((m, i) => {
@@ -211,7 +293,7 @@ export default function AbandonedCartDemo({ messages }: { messages: RecoveryMess
     return nodes
   }, [messages])
 
-  const total = STORE.length + chat.length
+  const total = flow.length + chat.length
   const [stage, setStage] = useState(0)
   const reduced = useRef(false)
 
@@ -222,22 +304,40 @@ export default function AbandonedCartDemo({ messages }: { messages: RecoveryMess
 
   useEffect(() => {
     if (reduced.current) return
-    const step = stage < STORE.length ? STORE[stage] : chat[stage - STORE.length]
+    const step = stage < flow.length ? flow[stage] : chat[stage - flow.length]
     const id = window.setTimeout(() => setStage(s => (s >= total ? 0 : s + 1)), step ? step.ms : HOLD_MS)
     return () => window.clearTimeout(id)
-  }, [stage, chat, total])
+  }, [stage, chat, flow, total])
 
-  if (stage < STORE.length) {
+  if (stage < flow.length) {
+    const view = flow[stage].view
+    const closing = view === 'exit'
+
+    if (view === 'home' || view === 'notify') {
+      return (
+        <PhoneFrame>
+          <HomeScreen notification={view === 'notify'} />
+        </PhoneFrame>
+      )
+    }
+
     return (
       <PhoneFrame>
-        <div className="wa-fade" key="store">
-          <StoreScreen view={STORE[stage].view} />
+        <div style={{ background: '#0b0a09' }}>
+          <div style={{
+            transformOrigin: '50% 62%',
+            transform: closing ? 'scale(0.88)' : 'none',
+            opacity: closing ? 0.12 : 1,
+            transition: 'transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.55s ease',
+          }}>
+            <StoreScreen view={view} />
+          </div>
         </div>
       </PhoneFrame>
     )
   }
 
-  const visible = chat.slice(0, stage - STORE.length + 1)
+  const visible = chat.slice(0, stage - flow.length + 1)
 
   return (
     <PhoneFrame>
