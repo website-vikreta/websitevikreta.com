@@ -3,17 +3,17 @@
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaqSection } from '@/components/sections/FaqSection'
-import ContactSection from '@/app/services/ai-automations/sections/ContactSection'
 import type { FaqItem } from '@/lib/faq-data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
 import ProductRevealSection from './sections/ProductRevealSection'
 import CartRecoverySection from './sections/CartRecoverySection'
 import ConversationalAISection from './sections/ConversationalAISection'
-import CustomerJourneySection from './sections/CustomerJourneySection'
 import PackagesSection from './sections/PackagesSection'
 import OnboardingSection from './sections/OnboardingSection'
 import ProofSection from './sections/ProofSection'
+import ContactSection from './sections/ContactSection'
+import StickyMobileCta from './components/StickyMobileCta'
 
 const WHATSAPP_FAQS: FaqItem[] = [
   {
@@ -70,7 +70,6 @@ export default function WhatsAppAutomationClient() {
         <ProductRevealSection />
         <CartRecoverySection />
         <ConversationalAISection />
-        <CustomerJourneySection />
         <PackagesSection />
         <OnboardingSection />
         <ProofSection />
@@ -81,6 +80,7 @@ export default function WhatsAppAutomationClient() {
         />
         <ContactSection />
       </main>
+      <StickyMobileCta />
       <ScrollToTop />
     </>
   )
