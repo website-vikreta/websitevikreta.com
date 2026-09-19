@@ -62,31 +62,6 @@ const SCENARIOS = {
 type ScenarioKey = keyof typeof SCENARIOS
 const KEYS = Object.keys(SCENARIOS) as ScenarioKey[]
 
-/* ── Keyframes injected once at module level via a singleton style tag ── */
-const STYLE_ID = 'wa-phone-demo-styles'
-if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
-  const s = document.createElement('style')
-  s.id = STYLE_ID
-  s.textContent = `
-    @keyframes waPop {
-      from { opacity:0; transform:scale(0.93) translateY(7px); }
-      to   { opacity:1; transform:scale(1) translateY(0); }
-    }
-    @keyframes waFade { from{opacity:0} to{opacity:1} }
-    @keyframes waDot {
-      0%,60%,100% { transform:translateY(0);   opacity:.35; }
-      30%          { transform:translateY(-4px); opacity:1; }
-    }
-    .wa-pop  { animation: waPop  0.24s cubic-bezier(0.34,1.56,0.64,1) both; }
-    .wa-fade { animation: waFade 0.32s ease both; }
-    .wa-dot  { animation: waDot  1.2s  ease-in-out infinite; }
-    @media (prefers-reduced-motion:reduce) {
-      .wa-pop, .wa-fade { animation:none!important; opacity:1!important; }
-    }
-  `
-  document.head.appendChild(s)
-}
-
 /* ─── Component ─────────────────────────────────────────────────────────── */
 export default function PhoneDemo() {
   const [key, setKey]     = useState<ScenarioKey>('confirm')
