@@ -1,16 +1,17 @@
 'use client'
 
 import { useRef } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowDown, Gauge, Receipt, ShieldAlert, Timer, UserPlus, Wallet } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import WhatsAppPhoneShell from '../components/WhatsAppPhoneShell'
 
 const CAUSES = [
-  { cause: 'The final price feels higher than expected', fix: 'Show the full price early and remind them of the exact total' },
-  { cause: 'Customers have to create an account',        fix: 'Let them check out as guests and send a direct WhatsApp link' },
-  { cause: 'Checkout takes too long',                    fix: 'Ask for fewer details and send them straight to checkout' },
-  { cause: 'Their preferred payment option is missing',  fix: 'Put UPI, wallets, and COD first, with a payment link in WhatsApp' },
-  { cause: 'The checkout page loads too slowly',         fix: 'Speed up the page so customers can finish their order' },
-  { cause: 'Customers do not feel ready to pay',         fix: 'Show trust signals and confirm COD orders on WhatsApp' },
+  { cause: 'The final price feels higher than expected', fix: 'Show the full price early and remind them of the exact total', icon: Receipt },
+  { cause: 'Customers have to create an account',        fix: 'Let them check out as guests and send a direct WhatsApp link', icon: UserPlus },
+  { cause: 'Checkout takes too long',                    fix: 'Ask for fewer details and send them straight to checkout', icon: Timer },
+  { cause: 'Their preferred payment option is missing',  fix: 'Put UPI, wallets, and COD first, with a payment link in WhatsApp', icon: Wallet },
+  { cause: 'The checkout page loads too slowly',         fix: 'Speed up the page so customers can finish their order', icon: Gauge },
+  { cause: 'Customers do not feel ready to pay',         fix: 'Show trust signals and confirm COD orders on WhatsApp', icon: ShieldAlert },
 ]
 
 type MessageCard = {
@@ -40,8 +41,8 @@ const MESSAGES: MessageCard[] = [
     clockTime: '14:00',
     label: 'Build confidence',
     purpose: 'Show that other customers are buying too.',
-    badge: 'Utility',
-    badgeColor: '#1a8a5a',
+    badge: 'Marketing',
+    badgeColor: '#b45309',
     preview: '12 people bought this kurta in the last 24 hours. Sizes are going fast. Your cart is saved. Complete your order now.',
   },
   {
@@ -59,132 +60,66 @@ const MESSAGES: MessageCard[] = [
 
 function RecoveryPhone({ messages }: { messages: MessageCard[] }) {
   return (
-    <div style={{ maxWidth: 330, width: '100%', margin: '0 auto' }}>
-      <div style={{
-        borderRadius: '2.4rem',
-        border: '1px solid rgba(0,0,0,0.1)',
-        background: '#1a1a1a',
-        padding: 10,
-        boxShadow: '0 40px 80px -30px rgba(20,18,15,0.45), 0 0 0 1px rgba(255,255,255,0.05) inset',
-      }}>
-        <div style={{ overflow: 'hidden', borderRadius: '1.9rem', background: '#efe7de' }}>
-
-        {/* Status bar */}
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          background: '#008069', padding: '8px 14px 4px',
-          fontFamily: 'ui-monospace, monospace', fontSize: '10px', color: 'rgba(255,255,255,0.9)',
-        }}>
-          <span>10:15</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-            {[8, 10, 12].map((h, i) => (
-              <span key={i} style={{ display: 'inline-block', height: h, width: 3, borderRadius: 2, background: i < 2 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.35)' }} />
-            ))}
-            <span style={{ marginLeft: 4, display: 'inline-block', height: 9, width: 18, borderRadius: 3, border: '1px solid rgba(255,255,255,0.55)' }} />
-          </span>
-        </div>
-
-        {/* Chat header */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '8px',
-          background: '#008069', padding: '4px 12px 10px',
-        }}>
-          {/* Back arrow */}
-          <svg viewBox="0 0 24 24" width={15} height={15} style={{ flexShrink: 0, color: '#fff', opacity: 0.85 }}>
-            <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z" />
-          </svg>
-          {/* Avatar */}
-          <span style={{
-            display: 'grid', height: 30, width: 30, flexShrink: 0,
-            placeItems: 'center', borderRadius: '50%',
-            background: '#c9a227', fontSize: '11px', fontWeight: 700, color: '#fff',
-          }}>K</span>
-          {/* Name */}
-          <span>
-            <span style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>
-              Kaya Wear
-            </span>
-            <span style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.2 }}>
-              Business account
-            </span>
-          </span>
-        </div>
-
-        {/* Messages area */}
-        <div style={{
-          position: 'relative',
-          padding: '12px 10px 14px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          gap: '8px',
-          height: 452,
-          overflow: 'hidden',
-          background: 'radial-gradient(circle at 1px 1px, rgba(20,18,15,0.045) 1px, transparent 0) 0 0 / 4px 4px',
-        }}>
-          
-          {messages.map((msg, i) => (
-            <div key={i}>
-              {/* Date/Time divider for context */}
-              {i > 0 && (
-                <div style={{ textAlign: 'center', margin: '8px 0', fontSize: '10px', color: '#666', background: 'rgba(255,255,255,0.6)', borderRadius: '4px', padding: '2px 8px', display: 'inline-block', position: 'relative', left: '50%', transform: 'translateX(-50%)' }}>
-                  {msg.timing} later
-                </div>
-              )}
-              {/* Inbound bubble */}
-              <div style={{
-                maxWidth: '92%',
-                borderRadius: '12px 12px 12px 3px',
-                background: '#fff',
-                padding: '10px 12px',
-                fontSize: '12.5px',
-                lineHeight: 1.55,
-                color: '#121212',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
-                marginBottom: i === messages.length - 1 ? '4px' : '0'
-              }}>
-                {msg.preview}
-
-                {msg.hasOffer && (
-                  <div style={{
-                    marginTop: '8px', borderRadius: '6px',
-                    background: 'rgba(180,83,9,0.08)',
-                    border: '1px solid rgba(180,83,9,0.22)',
-                    padding: '6px 10px',
-                    fontSize: '11.5px', fontWeight: 600, color: '#92400e',
-                  }}>
-                    🏷 {msg.offerText}
-                  </div>
-                )}
-
-                <span style={{
-                  display: 'block', textAlign: 'right',
-                  fontFamily: 'ui-monospace, monospace',
-                  fontSize: '9.5px', color: '#a09890', marginTop: '5px',
-                }}>
-                  {msg.clockTime}
-                </span>
-              </div>
+    <WhatsAppPhoneShell time="10:15" name="Kaya Wear" subtitle="Business account" avatarLetter="K">
+      {messages.map((msg, i) => (
+        <div key={i}>
+          {/* Date/Time divider for context */}
+          {i > 0 && (
+            <div style={{ textAlign: 'center', margin: '8px 0', fontSize: '10px', color: '#666', background: 'rgba(255,255,255,0.6)', borderRadius: '4px', padding: '2px 8px', display: 'inline-block', position: 'relative', left: '50%', transform: 'translateX(-50%)' }}>
+              {msg.timing} later
             </div>
-          ))}
-
-          {/* CTA quick-reply button on the last message */}
+          )}
+          {/* Inbound bubble */}
           <div style={{
-            borderRadius: '8px',
+            maxWidth: '92%',
+            borderRadius: '12px 12px 12px 3px',
             background: '#fff',
-            textAlign: 'center',
-            padding: '9px 12px',
+            padding: '10px 12px',
             fontSize: '12.5px',
-            fontWeight: 500,
-            color: '#027eb5',
+            lineHeight: 1.55,
+            color: '#121212',
             boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
+            marginBottom: i === messages.length - 1 ? '4px' : '0'
           }}>
-            Complete my order →
+            {msg.preview}
+
+            {msg.hasOffer && (
+              <div style={{
+                marginTop: '8px', borderRadius: '6px',
+                background: 'rgba(180,83,9,0.08)',
+                border: '1px solid rgba(180,83,9,0.22)',
+                padding: '6px 10px',
+                fontSize: '11.5px', fontWeight: 600, color: '#92400e',
+              }}>
+                🏷 {msg.offerText}
+              </div>
+            )}
+
+            <span style={{
+              display: 'block', textAlign: 'right',
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: '9.5px', color: '#a09890', marginTop: '5px',
+            }}>
+              {msg.clockTime}
+            </span>
           </div>
         </div>
+      ))}
+
+      {/* CTA quick-reply button on the last message */}
+      <div style={{
+        borderRadius: '8px',
+        background: '#fff',
+        textAlign: 'center',
+        padding: '9px 12px',
+        fontSize: '12.5px',
+        fontWeight: 500,
+        color: '#027eb5',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
+      }}>
+        Complete my order →
       </div>
-      </div>
-    </div>
+    </WhatsAppPhoneShell>
   )
 }
 
@@ -194,7 +129,7 @@ export default function CartRecoverySection() {
   useGsapSection(scope, () => {
     revealLines('#cart-heading',  { trigger: scope.current })
     revealFadeUp('.cart-intro',   { y: 20, trigger: scope.current })
-    revealFadeUp('.cart-pair',    { y: 16, stagger: STAGGER.tight, trigger: scope.current })
+    revealFadeUp('.cart-cause',   { y: 16, stagger: STAGGER.tight, trigger: scope.current })
     revealFadeUp('.cart-msg',     { y: 20, stagger: STAGGER.base,  trigger: scope.current })
     revealFadeUp('.cart-phone',   { y: 30, trigger: scope.current })
   })
@@ -216,21 +151,17 @@ export default function CartRecoverySection() {
         </div>
 
         {/* Cause / fix audit */}
-        <div className="cart-pair mb-12 border-y border-(--color-border) md:mb-20">
-          <div className="hidden grid-cols-[minmax(0,1fr)_2rem_minmax(0,1.15fr)] items-center gap-6 border-b border-(--color-border) py-3 text-sm text-(--color-text-muted) sm:grid md:gap-8">
-            <span>What loses the sale</span>
-            <span aria-hidden="true" />
-            <span>What we change</span>
-          </div>
-
-          {CAUSES.map(({ cause, fix }) => (
-            <div
-              key={cause}
-              className="grid grid-cols-1 gap-y-2 border-b border-(--color-border) py-6 last:border-b-0 sm:grid-cols-[minmax(0,1fr)_2rem_minmax(0,1.15fr)] sm:items-center sm:gap-6 md:gap-8 md:py-7"
-            >
-              <p className="text-base font-bold leading-snug text-(--color-text)">{cause}</p>
-              <ArrowRight size={18} strokeWidth={1.5} aria-hidden className="hidden text-(--color-text-muted) sm:block" />
-              <p className="text-sm leading-relaxed text-(--color-text-muted)">{fix}</p>
+        <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:mb-14 md:grid-cols-2 lg:grid-cols-3">
+          {CAUSES.map(({ cause, fix, icon: Icon }) => (
+            <div key={cause} className="cart-cause bg-(--color-surface) p-6 md:p-7">
+              <span className="flex h-9 w-9 items-center justify-center border border-(--color-border-strong) text-(--color-text-muted)">
+                <Icon size={16} strokeWidth={1.5} aria-hidden />
+              </span>
+              <p className="mt-4 text-base font-bold leading-snug text-(--color-text)">{cause}</p>
+              <div className="mt-3 flex items-start gap-2">
+                <ArrowDown size={14} strokeWidth={1.5} aria-hidden className="mt-0.5 shrink-0 text-(--color-text-faint)" />
+                <p className="text-sm leading-relaxed text-(--color-text-muted)">{fix}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -248,9 +179,9 @@ export default function CartRecoverySection() {
             
             <div className="mt-10 flex flex-col gap-6">
               {MESSAGES.map((msg) => (
-                <div key={msg.timing} className="cart-msg flex items-start gap-4 rounded-md border border-(--color-border) bg-(--color-bg-muted) p-5">
+                <div key={msg.timing} className="cart-msg flex items-start gap-4 border border-(--color-border) bg-(--color-bg-muted) p-5 md:p-6">
                   <div className="flex-1">
-                    <p className="font-mono text-xs font-semibold tracking-widest" style={{ color: 'var(--color-accent)', marginBottom: '4px' }}>
+                    <p className="font-mono text-xs font-semibold tracking-widest text-(--color-text-faint)" style={{ marginBottom: '4px' }}>
                       {msg.timing}
                     </p>
                     <p className="text-base font-bold tracking-tight text-(--color-text)">{msg.label}</p>
@@ -278,7 +209,7 @@ export default function CartRecoverySection() {
             </p>
           </div>
 
-          <div className="cart-phone flex items-center justify-center lg:justify-end">
+          <div className="cart-phone flex items-center justify-center lg:justify-start">
             <RecoveryPhone messages={MESSAGES} />
           </div>
 
