@@ -28,8 +28,8 @@ const PACKAGES = [
     highlighted: false,
     pricing: {
       quarterly:  { price: '₹11,250', period: '/ quarter' },
-      halfYearly: { price: '₹21,000', period: '/ 6 months', save: 'Save 7%' },
-      yearly:     { price: '₹39,000', period: '/ year',     save: 'Save 13%' },
+      halfYearly: { price: '₹21,000', period: '/ 6 months', save: 'Save ₹1,500 · 7%' },
+      yearly:     { price: '₹39,000', period: '/ year',     save: 'Save ₹6,000 · 13%' },
     },
   },
   {
@@ -48,8 +48,8 @@ const PACKAGES = [
     highlighted: true,
     pricing: {
       quarterly:  { price: '₹15,750', period: '/ quarter' },
-      halfYearly: { price: '₹27,000', period: '/ 6 months', save: 'Save 14%' },
-      yearly:     { price: '₹49,200', period: '/ year',     save: 'Save 22%' },
+      halfYearly: { price: '₹27,000', period: '/ 6 months', save: 'Save ₹4,500 · 14%' },
+      yearly:     { price: '₹49,200', period: '/ year',     save: 'Save ₹13,800 · 22%' },
     },
   },
 ] as const
@@ -133,7 +133,17 @@ export default function PackagesSection() {
                   <span className="text-3xl font-bold tracking-tight text-(--color-text)">{price}</span>
                   <span className="text-sm text-(--color-text-muted)">{period}</span>
                   {save && (
-                    <span className="text-xs font-semibold text-(--color-text-muted)">· {save}</span>
+                    <span
+                      key={`${cycle}-${save}`}
+                      className="fade-in-on-mount px-2 py-1 text-xs font-bold"
+                      style={{
+                        background: 'rgba(26,138,90,0.1)',
+                        border: '1px solid rgba(26,138,90,0.3)',
+                        color: '#1a8a5a',
+                      }}
+                    >
+                      {save}
+                    </span>
                   )}
                 </div>
 
