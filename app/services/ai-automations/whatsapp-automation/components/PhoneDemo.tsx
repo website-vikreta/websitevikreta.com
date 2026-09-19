@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import WhatsAppPhoneShell, { Ticks } from './WhatsAppPhoneShell'
 
 const HOLD_MS = 3200
 
@@ -10,7 +11,6 @@ type MsgNode =
   | { t: 'buttons'; ms: number }
   | { t: 'tap';     ms: number; which: 'yes' | 'no' }
   | { t: 'out';     ms: number; text: string; time: string }
-  | { t: 'divider'; ms: number; text: string }
   | { t: 'status';  ms: number; text: string; tone: 'good' | 'bad' }
 
 /* ── message bodies defined outside component — never recreated ── */
@@ -28,10 +28,6 @@ const orderCard: ReactNode = (
     </div>
     <p style={{ marginTop: 6 }}>Please confirm this order so we can ship it.</p>
   </div>
-)
-
-const reminderCard: ReactNode = (
-  <p>Hi Ananya, we still haven&apos;t heard back on order #4127 (₹1,299). Please confirm so we can ship it today.</p>
 )
 
 const opening: MsgNode[] = [
@@ -59,17 +55,6 @@ const SCENARIOS = {
       { t: 'tap',    ms: 700, which: 'no' } as MsgNode,
       { t: 'out',    ms: 750, text: 'No, cancel', time: '10:47' } as MsgNode,
       { t: 'status', ms: 800, text: 'Cancelled in your store. ₹250 you did not spend.', tone: 'bad' } as MsgNode,
-    ],
-  },
-  silent: {
-    tab: 'No reply',
-    caption: 'The one that saves you the most money.',
-    nodes: [
-      ...opening,
-      { t: 'divider', ms: 900,  text: '3 hours later' } as MsgNode,
-      { t: 'in',      ms: 1500, body: reminderCard, time: '13:42' } as MsgNode,
-      { t: 'divider', ms: 950,  text: '24 hours later' } as MsgNode,
-      { t: 'status',  ms: 850,  text: 'No reply. Order cancelled automatically.', tone: 'bad' } as MsgNode,
     ],
   },
 } as const
@@ -100,15 +85,6 @@ if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
     }
   `
   document.head.appendChild(s)
-}
-
-function Ticks() {
-  return (
-    <svg viewBox="0 0 16 11" width={16} height={11} style={{ flexShrink: 0, color: '#4fc3f7' }}>
-      <path fill="currentColor" d="M11.07.65 5.4 6.32 3.6 4.5l-.9.9 2.7 2.7 6.57-6.57zM15.35.65 9.68 6.32l-.72-.72-.9.9 1.62 1.62L15.35 1.55z" />
-      <path fill="currentColor" d="m.65 5.4 2.7 2.7.9-.9-2.7-2.7z" />
-    </svg>
-  )
 }
 
 /* ─── Component ─────────────────────────────────────────────────────────── */
@@ -190,141 +166,81 @@ export default function PhoneDemo() {
       </div>
 
       {/* ── Phone shell ── */}
-      <div style={{ maxWidth: 330, width: '100%', margin: '0 auto' }}>
-        <div style={{
-          borderRadius: '2.4rem',
-          border: '1px solid rgba(0,0,0,0.1)',
-          background: '#1a1a1a',
-          padding: 10,
-          boxShadow: '0 40px 80px -30px rgba(20,18,15,0.45), 0 0 0 1px rgba(255,255,255,0.05) inset',
-        }}>
-          <div style={{ overflow: 'hidden', borderRadius: '1.9rem', background: '#efe7de' }}>
+      <WhatsAppPhoneShell time="9:41" name="Kaya Wear" subtitle="Business account" avatarLetter="K" topFade>
+        {visible.map((node, i) => {
+          const isLast = i === visible.length - 1
 
-            {/* status bar */}
-            <div style={{
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              background: '#008069', padding: '10px 16px 4px',
-              fontFamily: 'ui-monospace,monospace', fontSize: 10.5, color: 'rgba(255,255,255,0.9)',
-            }}>
-              <span>9:41</span>
-              <span style={{ display:'flex', alignItems:'center', gap: 3 }}>
-                {[8,10,12].map((h,i) => (
-                  <span key={i} style={{ display:'inline-block', height: h, width: 3, borderRadius: 2, background: i<2 ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)' }} />
-                ))}
-                <span style={{ marginLeft: 4, display:'inline-block', height: 10, width: 20, borderRadius: 3, border:'1px solid rgba(255,255,255,0.5)' }} />
-              </span>
-            </div>
+          if (node.t === 'typing') {
+            if (!isLast) return null
+            return (
+              <div key={i} className="wa-pop" style={bubble({ display:'flex', alignItems:'center', gap:4, width:'fit-content', borderRadius:'16px 16px 16px 4px', background:'#fff', padding:'12px 14px' })}>
+                {[0,1,2].map(d => <span key={d} className="wa-dot" style={{ display:'inline-block', height:6, width:6, borderRadius:'50%', background:'#b0a89a', animationDelay:`${d*0.16}s` }} />)}
+              </div>
+            )
+          }
 
-            {/* chat header */}
-            <div style={{ display:'flex', alignItems:'center', gap:10, background:'#008069', padding:'0 12px 10px', color:'#fff' }}>
-              <svg viewBox="0 0 24 24" width={16} height={16} style={{ flexShrink:0, opacity:0.9 }}>
-                <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/>
-              </svg>
-              <span style={{ display:'grid', height:32, width:32, flexShrink:0, placeItems:'center', borderRadius:'50%', background:'#c9a227', fontSize:13, fontWeight:700, color:'#fff' }}>K</span>
-              <span style={{ minWidth:0 }}>
-                <span style={{ display:'block', fontSize:13.5, fontWeight:600, lineHeight:1.2 }}>Kaya Wear</span>
-                <span style={{ display:'block', fontSize:10.5, lineHeight:1.2, color:'rgba(255,255,255,0.7)' }}>Business account</span>
-              </span>
-            </div>
+          if (node.t === 'in') {
+            return (
+              <div key={i} className="wa-pop" style={bubble({ maxWidth:'85%', borderRadius:'16px 16px 16px 4px', background:'#fff', padding:'10px 12px', fontSize:13.5, lineHeight:1.5, color:'#121212' })}>
+                {node.body}
+                <span style={{ display:'block', textAlign:'right', fontFamily:'ui-monospace,monospace', fontSize:10, color:'#a09890', marginTop:4 }}>{node.time}</span>
+              </div>
+            )
+          }
 
-            {/* messages */}
-            <div style={{
-              position:'relative', display:'flex', flexDirection:'column',
-              justifyContent:'flex-end', gap:6,
-              height: 452, overflow:'hidden', padding: '12px 12px 14px',
-            }}>
-              {/* top fade */}
-              <span aria-hidden style={{
-                pointerEvents:'none', position:'absolute', inset:'0 0 auto 0',
-                height: 36, zIndex:10,
-                background:'linear-gradient(to bottom, #efe7de, transparent)',
-              }} />
-
-              {visible.map((node, i) => {
-                const isLast = i === visible.length - 1
-
-                if (node.t === 'typing') {
-                  if (!isLast) return null
+          if (node.t === 'buttons') {
+            return (
+              <div key={i} style={{ maxWidth:'85%', display:'flex', flexDirection:'column', gap:4 }}>
+                {(['yes','no'] as const).map((id, bi) => {
+                  const label   = id === 'yes' ? 'Yes, ship it' : 'No, cancel'
+                  const isTapped = tapped?.which === id
+                  const anyTapped = Boolean(tapped)
                   return (
-                    <div key={i} className="wa-pop" style={bubble({ display:'flex', alignItems:'center', gap:4, width:'fit-content', borderRadius:'16px 16px 16px 4px', background:'#fff', padding:'12px 14px' })}>
-                      {[0,1,2].map(d => <span key={d} className="wa-dot" style={{ display:'inline-block', height:6, width:6, borderRadius:'50%', background:'#b0a89a', animationDelay:`${d*0.16}s` }} />)}
+                    <div key={id} className="wa-pop" style={bubble({ borderRadius:8, background:'#fff', textAlign:'center', animationDelay:`${bi*90}ms` })}>
+                      <div style={{
+                        padding:'10px 12px', fontSize:13.5, fontWeight:500,
+                        color:  isTapped ? '#008069' : anyTapped ? '#c0b8b0' : '#027eb5',
+                        background: isTapped ? 'rgba(0,128,105,0.1)' : 'transparent',
+                        transition: 'all 0.3s',
+                      }}>{label}</div>
                     </div>
                   )
-                }
+                })}
+              </div>
+            )
+          }
 
-                if (node.t === 'in') {
-                  return (
-                    <div key={i} className="wa-pop" style={bubble({ maxWidth:'85%', borderRadius:'16px 16px 16px 4px', background:'#fff', padding:'10px 12px', fontSize:13.5, lineHeight:1.5, color:'#121212' })}>
-                      {node.body}
-                      <span style={{ display:'block', textAlign:'right', fontFamily:'ui-monospace,monospace', fontSize:10, color:'#a09890', marginTop:4 }}>{node.time}</span>
-                    </div>
-                  )
-                }
+          if (node.t === 'out') {
+            return (
+              <div key={i} className="wa-pop" style={bubble({ display:'flex', alignItems:'flex-end', gap:6, marginLeft:'auto', maxWidth:'80%', borderRadius:'16px 16px 4px 16px', background:'#d9fdd3', padding:'8px 12px', fontSize:13.5, color:'#121212' })}>
+                <span>{node.text}</span>
+                <span style={{ display:'flex', flexShrink:0, alignItems:'center', gap:2, paddingBottom:1, fontFamily:'ui-monospace,monospace', fontSize:10, color:'#a09890' }}>
+                  {node.time}<Ticks />
+                </span>
+              </div>
+            )
+          }
 
-                if (node.t === 'buttons') {
-                  return (
-                    <div key={i} style={{ maxWidth:'85%', display:'flex', flexDirection:'column', gap:4 }}>
-                      {(['yes','no'] as const).map((id, bi) => {
-                        const label   = id === 'yes' ? 'Yes, ship it' : 'No, cancel'
-                        const isTapped = tapped?.which === id
-                        const anyTapped = Boolean(tapped)
-                        return (
-                          <div key={id} className="wa-pop" style={bubble({ borderRadius:8, background:'#fff', textAlign:'center', animationDelay:`${bi*90}ms` })}>
-                            <div style={{
-                              padding:'10px 12px', fontSize:13.5, fontWeight:500,
-                              color:  isTapped ? '#008069' : anyTapped ? '#c0b8b0' : '#027eb5',
-                              background: isTapped ? 'rgba(0,128,105,0.1)' : 'transparent',
-                              transition: 'all 0.3s',
-                            }}>{label}</div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )
-                }
+          if (node.t === 'status') {
+            return (
+              <div key={i} className="wa-pop" style={{ display:'flex', alignItems:'center', gap:8, marginTop:4, borderRadius:12, padding:'10px 12px', fontSize:12.5, fontWeight:600, lineHeight:1.3, background: node.tone === 'good' ? '#1a8a5a' : '#1a1a1a', color:'#fff' }}>
+                <span style={{ flexShrink:0, fontFamily:'ui-monospace,monospace', fontSize:10, fontWeight:400, textTransform:'uppercase', letterSpacing:'0.12em', opacity:0.6 }}>store</span>
+                {node.text}
+              </div>
+            )
+          }
 
-                if (node.t === 'out') {
-                  return (
-                    <div key={i} className="wa-pop" style={bubble({ display:'flex', alignItems:'flex-end', gap:6, marginLeft:'auto', maxWidth:'80%', borderRadius:'16px 16px 4px 16px', background:'#d9fdd3', padding:'8px 12px', fontSize:13.5, color:'#121212' })}>
-                      <span>{node.text}</span>
-                      <span style={{ display:'flex', flexShrink:0, alignItems:'center', gap:2, paddingBottom:1, fontFamily:'ui-monospace,monospace', fontSize:10, color:'#a09890' }}>
-                        {node.time}<Ticks />
-                      </span>
-                    </div>
-                  )
-                }
+          return null
+        })}
+      </WhatsAppPhoneShell>
 
-                if (node.t === 'divider') {
-                  return (
-                    <div key={i} className="wa-fade" style={{ margin:'2px auto', borderRadius:999, background:'rgba(0,0,0,0.07)', padding:'4px 12px', fontFamily:'ui-monospace,monospace', fontSize:10.5, letterSpacing:'0.04em', color:'rgba(18,18,18,0.5)' }}>
-                      {node.text}
-                    </div>
-                  )
-                }
-
-                if (node.t === 'status') {
-                  return (
-                    <div key={i} className="wa-pop" style={{ display:'flex', alignItems:'center', gap:8, marginTop:4, borderRadius:12, padding:'10px 12px', fontSize:12.5, fontWeight:600, lineHeight:1.3, background: node.tone === 'good' ? '#1a8a5a' : '#1a1a1a', color:'#fff' }}>
-                      <span style={{ flexShrink:0, fontFamily:'ui-monospace,monospace', fontSize:10, fontWeight:400, textTransform:'uppercase', letterSpacing:'0.12em', opacity:0.6 }}>store</span>
-                      {node.text}
-                    </div>
-                  )
-                }
-
-                return null
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* caption */}
-        <p key={key} className="wa-fade" style={{ marginTop:16, textAlign:'center', maxWidth:300, marginInline:'auto', fontSize:13, lineHeight:1.5, color:'var(--color-text-muted)' }}>
-          {SCENARIOS[key].caption}
-        </p>
-        <p style={{ marginTop:6, textAlign:'center', maxWidth:300, marginInline:'auto', fontFamily:'ui-monospace,monospace', fontSize:10.5, lineHeight:1.5, color:'var(--color-text-faint)' }}>
-          Example message. Your store&apos;s name, product and order number.
-        </p>
-      </div>
+      {/* caption */}
+      <p key={key} className="wa-fade" style={{ marginTop:16, textAlign:'center', maxWidth:300, marginInline:'auto', fontSize:13, lineHeight:1.5, color:'var(--color-text-muted)' }}>
+        {SCENARIOS[key].caption}
+      </p>
+      <p style={{ marginTop:6, textAlign:'center', maxWidth:300, marginInline:'auto', fontFamily:'ui-monospace,monospace', fontSize:10.5, lineHeight:1.5, color:'var(--color-text-faint)' }}>
+        Example message. Your store&apos;s name, product and order number.
+      </p>
 
       <span className="sr-only" aria-live="off">
         {buttonsShown ? 'Two reply buttons: Yes, ship it. No, cancel.' : ''}
