@@ -8,12 +8,6 @@ import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import HeroJourneyPhone from '../components/HeroJourneyPhone'
 import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
-const STATS = [
-  { n: '68+', label: 'client projects shipped' },
-  { n: '7 to 14', label: 'days to go live' },
-  { n: '98%', label: 'average WhatsApp open rate' },
-]
-
 /* Singleton — avoids re-injecting on every render */
 const HERO_STYLE_ID = 'wa-hero-styles'
 if (typeof document !== 'undefined' && !document.getElementById(HERO_STYLE_ID)) {
@@ -89,7 +83,7 @@ export default function Hero() {
               connected to your Shopify or WooCommerce store.
             </p>
 
-            <div ref={ctaRef} className="mb-11 flex flex-wrap items-center gap-5">
+            <div ref={ctaRef} className="flex flex-wrap items-center gap-5">
               <Button href="#whatsapp-demo" variant="primary" size="lg" showArrow>
                 Book a Platform Demo
               </Button>
@@ -100,20 +94,6 @@ export default function Hero() {
               )}
             </div>
 
-            {/* Proof */}
-            <div ref={proofRef}>
-              <div className="flex flex-wrap gap-2">
-                {STATS.map(({ n, label }) => (
-                  <div
-                    key={n}
-                    className="flex min-w-0 items-baseline gap-1 border border-(--color-border) bg-(--color-surface) px-2.5 py-2 sm:gap-1.5 sm:px-3.5"
-                  >
-                    <span className="shrink-0 text-[1.05rem] font-extrabold tracking-tight text-(--color-text) sm:text-[1.125rem]">{n}</span>
-                    <span className="text-[11px] leading-tight text-(--color-text-muted) sm:text-[13px]">{label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* ── Right: phone demo ── */}
@@ -123,10 +103,7 @@ export default function Hero() {
 
         </div>
 
-        <div className="mt-14 pt-2 md:mt-16 md:flex md:items-center md:gap-10">
-          <p className="mb-4 shrink-0 text-(--color-text-muted) md:mb-0">
-            Works with your existing stack
-          </p>
+        <div ref={proofRef} className="mt-14 pt-2 md:mt-16">
           <IntegrationLogoRail />
         </div>
       </div>
