@@ -9,14 +9,14 @@ type Integration = {
 }
 
 const INTEGRATIONS: Integration[] = [
-  { name: 'Shopify', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/shopify/default.svg' },
-  { name: 'WooCommerce', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/woocommerce/default.svg' },
-  { name: 'Razorpay', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/razorpay/default.svg' },
+  { name: 'Shopify', src: '/tools-logos/20-Shopify.svg' },
+  { name: 'Meta', src: '/tools-logos/26-Meta.svg' },
+  { name: 'WooCommerce', src: '/services/whatsapp-automation/integrations/woocommerce.svg' },
+  { name: 'Razorpay', src: '/services/whatsapp-automation/integrations/razorpay.svg' },
+  { name: 'Google Sheets', src: '/services/whatsapp-automation/integrations/google-sheets.svg' },
   { name: 'PayU', mark: 'PayU' },
-  { name: 'Meta', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/meta/default.svg' },
   { name: 'IndiaMART', mark: 'IM' },
   { name: 'Justdial', mark: 'Jd' },
-  { name: 'Google Sheets', src: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/google-sheets/default.svg' },
 ]
 
 type IntegrationLogoRailProps = {

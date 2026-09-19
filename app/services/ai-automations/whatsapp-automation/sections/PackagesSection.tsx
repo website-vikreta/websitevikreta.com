@@ -1,15 +1,21 @@
 'use client'
 
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Check } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
+const CYCLES = [
+  { key: 'quarterly', label: 'Quarterly' },
+  { key: 'halfYearly', label: 'Half-yearly' },
+  { key: 'yearly', label: 'Yearly' },
+] as const
+
+type CycleKey = (typeof CYCLES)[number]['key']
+
 const PACKAGES = [
   {
     name: 'WA Starter',
-    price: '₹11,250',
-    period: '/ quarter',
     description: 'CRM, WhatsApp Business channel, and lead management for teams getting started on WhatsApp.',
     cta: 'Ask about Starter',
     features: [
@@ -20,28 +26,37 @@ const PACKAGES = [
       '2 team seats with shared inbox',
     ],
     highlighted: false,
+    pricing: {
+      quarterly:  { price: '₹11,250', period: '/ quarter' },
+      halfYearly: { price: '₹21,000', period: '/ 6 months', save: 'Save 7%' },
+      yearly:     { price: '₹39,000', period: '/ year',     save: 'Save 13%' },
+    },
   },
   {
     name: 'WA eCommerce',
-    price: '₹15,750',
-    period: '/ quarter',
     description: 'Full WhatsApp commerce stack with abandoned cart recovery, COD confirmation, and Shopify integration.',
     cta: 'Book a platform demo',
     eyebrow: 'Most stores start here',
     features: [
       'Everything in WA Starter',
-      'Abandoned cart recovery with 3-step sequence',
+      'Abandoned cart recovery with automated sequence',
       'COD order confirmation with auto-cancel',
       'Order and shipping status notifications',
       'WhatsApp product catalog',
       'Shopify and WooCommerce integration',
     ],
     highlighted: true,
+    pricing: {
+      quarterly:  { price: '₹15,750', period: '/ quarter' },
+      halfYearly: { price: '₹27,000', period: '/ 6 months', save: 'Save 14%' },
+      yearly:     { price: '₹49,200', period: '/ year',     save: 'Save 22%' },
+    },
   },
 ] as const
 
 export default function PackagesSection() {
   const scope = useRef<HTMLElement>(null)
+  const [cycle, setCycle] = useState<CycleKey>('quarterly')
 
   useGsapSection(scope, () => {
     revealLines('#packages-heading',  { trigger: scope.current })
@@ -59,16 +74,41 @@ export default function PackagesSection() {
             Two tiers. Pick what your store actually needs.
           </h2>
           <p className="packages-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Platform subscription billed quarterly. WhatsApp message charges for Utility
-            messages at around 11 paise and Marketing messages are billed separately
-            based on actual usage. Setup and onboarding are quoted once.
+            Platform subscription billed quarterly, half-yearly, or yearly. WhatsApp message
+            charges for Utility messages at around 11 paise and Marketing messages are billed
+            separately based on actual usage. Setup and onboarding are quoted once.
           </p>
+        </div>
+
+        {/* Billing cycle */}
+        <div
+          role="tablist"
+          aria-label="Billing cycle"
+          className="packages-intro mb-8 inline-flex border border-(--color-border)"
+        >
+          {CYCLES.map(({ key, label }) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              aria-selected={cycle === key}
+              onClick={() => setCycle(key)}
+              className={`px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                cycle === key
+                  ? 'bg-(--color-text) text-white'
+                  : 'bg-(--color-surface) text-(--color-text-muted) hover:text-(--color-text)'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
         {/* Tier cards */}
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
-          {PACKAGES.map(({ name, price, period, description, features, cta, highlighted, ...rest }) => {
+          {PACKAGES.map(({ name, pricing, description, features, cta, highlighted, ...rest }) => {
             const eyebrow = 'eyebrow' in rest ? rest.eyebrow : undefined
+            const { price, period, save } = { save: undefined as string | undefined, ...pricing[cycle] }
             return (
               <article
                 key={name}
@@ -89,9 +129,12 @@ export default function PackagesSection() {
                   )}
                 </div>
 
-                <div className="mt-4 flex items-baseline gap-1">
+                <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="text-3xl font-bold tracking-tight text-(--color-text)">{price}</span>
                   <span className="text-sm text-(--color-text-muted)">{period}</span>
+                  {save && (
+                    <span className="text-xs font-semibold text-(--color-text-muted)">· {save}</span>
+                  )}
                 </div>
 
                 <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{description}</p>
