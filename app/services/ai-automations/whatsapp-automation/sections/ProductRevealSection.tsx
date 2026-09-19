@@ -3,6 +3,18 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { revealLines, revealFadeUp, revealClipImage, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import PhoneDemo from '../components/PhoneDemo'
+
+const JOURNEY_STAGES = [
+  'Pre-purchase questions',
+  'Product recommendations',
+  'Cart & checkout',
+  'Order tracking',
+  'Returns & refunds',
+  'Warranty & support',
+  'Reviews & feedback',
+  'Win-back offers',
+]
 
 const FEATURES = [
   {
@@ -24,6 +36,14 @@ const FEATURES = [
   {
     label: 'Omnichannel Inbox',
     detail: 'WhatsApp, Instagram DMs, and Facebook Messenger managed from one team inbox',
+  },
+  {
+    label: 'Returns and Refunds',
+    detail: 'Return requests and refund status updates automated over WhatsApp, no support ticket needed',
+  },
+  {
+    label: 'Review Collection',
+    detail: 'Automatic WhatsApp request for a rating and review once an order is delivered',
   },
 ]
 
@@ -82,6 +102,7 @@ export default function ProductRevealSection() {
   useGsapSection(platformScope, () => {
     revealLines('#reveal-heading',    { trigger: platformScope.current })
     revealFadeUp('.reveal-copy',      { y: 20, trigger: platformScope.current })
+    revealFadeUp('.reveal-stages',    { y: 16, trigger: platformScope.current })
     revealFadeUp('.reveal-feature',   { y: 16, stagger: STAGGER.tight, trigger: platformScope.current })
     revealClipImage('.reveal-visual', { scale: true, trigger: platformScope.current })
   })
@@ -90,6 +111,7 @@ export default function ProductRevealSection() {
     revealLines('#cod-heading', { trigger: codScope.current })
     revealFadeUp('.cod-intro',  { y: 20, trigger: codScope.current })
     revealFadeUp('.cod-step',   { y: 20, stagger: STAGGER.base, trigger: codScope.current })
+    revealFadeUp('.cod-phone',  { y: 30, trigger: codScope.current })
   })
 
   useEffect(() => {
@@ -117,11 +139,22 @@ export default function ProductRevealSection() {
               >
                 Not a chatbot. Your entire WhatsApp commerce stack.
               </h2>
-              <p className="reveal-copy text-body-lg leading-relaxed text-(--color-text-muted)" style={{ marginBottom: '2rem' }}>
+              <p className="reveal-copy text-body-lg leading-relaxed text-(--color-text-muted)" style={{ marginBottom: '1.5rem' }}>
                 Every lead from every channel lands in one WhatsApp CRM. Cart
                 recovery, COD confirmation, and order updates run automatically.
                 Your team works from one dashboard instead of five tabs.
               </p>
+
+              <div className="reveal-stages mb-8 flex flex-wrap gap-2">
+                {JOURNEY_STAGES.map(stage => (
+                  <span
+                    key={stage}
+                    className="border border-(--color-border) px-2.5 py-1 text-xs font-semibold text-(--color-text-muted)"
+                  >
+                    {stage}
+                  </span>
+                ))}
+              </div>
 
               <ul className="space-y-3.5">
                 {FEATURES.map(({ label, detail }) => (
@@ -130,7 +163,7 @@ export default function ProductRevealSection() {
                       aria-hidden
                       style={{
                         width: '7px', height: '7px', borderRadius: '50%',
-                        background: 'var(--color-accent)',
+                        background: 'var(--color-text)',
                         flexShrink: 0, marginTop: '7px',
                       }}
                     />
@@ -165,7 +198,7 @@ export default function ProductRevealSection() {
         aria-labelledby="cod-heading"
       >
         <div className="container">
-          <div className="mb-12 max-w-3xl md:mb-16">
+          <div className="mb-10 max-w-3xl md:mb-14">
             <h2
               id="cod-heading"
               className="text-h2 font-bold tracking-tight text-(--color-text)"
@@ -174,19 +207,27 @@ export default function ProductRevealSection() {
               Every COD order gets a quick yes or no.
             </h2>
             <p className="text-body-lg leading-relaxed text-(--color-text-muted)">
-              As soon as a cash on delivery order lands, WhatsApp asks the customer to confirm it. Your team gets a clear answer before the package leaves.
+              As soon as a cash on delivery order lands, WhatsApp asks the customer to confirm it. Your team gets a clear answer before the package leaves. Try both outcomes on the phone.
             </p>
           </div>
 
-          <ol className="grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) sm:grid-cols-3">
-            {COD_STEPS.map(({ n, title, body }) => (
-              <li key={n} className="cod-step bg-(--color-surface) p-7 md:p-9">
-                <span className="font-mono text-lg font-bold tracking-tight text-(--color-accent)">{n}</span>
-                <h3 className="mt-4 text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)">{body}</p>
-              </li>
-            ))}
-          </ol>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+            <ol className="divide-y divide-(--color-border) border-y border-(--color-border) lg:self-center">
+              {COD_STEPS.map(({ n, title, body }) => (
+                <li key={n} className="cod-step flex gap-5 py-6 first:pt-0 last:pb-0">
+                  <span className="font-mono text-lg font-bold tracking-tight text-(--color-text-faint)">{n}</span>
+                  <div>
+                    <h3 className="text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-(--color-text-muted)">{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="cod-phone flex items-center justify-center lg:justify-start">
+              <PhoneDemo />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -195,17 +236,14 @@ export default function ProductRevealSection() {
         <div className="container">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <p className="mb-4 text-sm text-(--color-text-muted)">
-                The rule that does the work
-              </p>
               <h2
                 className="text-h2 font-bold tracking-tight text-(--color-text)"
                 style={{ lineHeight: 1.05, maxWidth: '14ch', marginBottom: '1.25rem' }}
               >
                 No answer in 24 hours is an answer.
               </h2>
-              <p className="mt-6 text-body-lg leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '44ch' }}>
-                Someone who ordered at 2am on impulse won't reply. Someone who typed a fake number can't. And the person who ordered the same shoes from three stores to compare prices will only answer one of you.
+              <p className="mt-5 text-body-lg leading-relaxed text-(--color-text-muted)" style={{ maxWidth: '44ch' }}>
+                Someone who ordered at 2am on impulse won&apos;t reply. Someone who typed a fake number can&apos;t. And the person who ordered the same shoes from three stores to compare prices will only answer one of you.
               </p>
             </div>
 
