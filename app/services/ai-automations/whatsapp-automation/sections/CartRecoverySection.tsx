@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { ArrowDown, Gauge, Receipt, ShieldAlert, Timer, UserPlus, Wallet } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
-import WhatsAppPhoneShell from '../components/WhatsAppPhoneShell'
+import AbandonedCartDemo from '../components/AbandonedCartDemo'
 
 const CAUSES = [
   { cause: 'The final price feels higher than expected', fix: 'Show the full price early and remind them of the exact total', icon: Receipt },
@@ -58,71 +58,6 @@ const MESSAGES: MessageCard[] = [
   },
 ]
 
-function RecoveryPhone({ messages }: { messages: MessageCard[] }) {
-  return (
-    <WhatsAppPhoneShell time="10:15" name="Kaya Wear" subtitle="Business account" avatarLetter="K">
-      {messages.map((msg, i) => (
-        <div key={i}>
-          {/* Date/Time divider for context */}
-          {i > 0 && (
-            <div style={{ textAlign: 'center', margin: '8px 0', fontSize: '10px', color: '#666', background: 'rgba(255,255,255,0.6)', borderRadius: '4px', padding: '2px 8px', display: 'inline-block', position: 'relative', left: '50%', transform: 'translateX(-50%)' }}>
-              {msg.timing} later
-            </div>
-          )}
-          {/* Inbound bubble */}
-          <div style={{
-            maxWidth: '92%',
-            borderRadius: '12px 12px 12px 3px',
-            background: '#fff',
-            padding: '10px 12px',
-            fontSize: '12.5px',
-            lineHeight: 1.55,
-            color: '#121212',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
-            marginBottom: i === messages.length - 1 ? '4px' : '0'
-          }}>
-            {msg.preview}
-
-            {msg.hasOffer && (
-              <div style={{
-                marginTop: '8px', borderRadius: '6px',
-                background: 'rgba(180,83,9,0.08)',
-                border: '1px solid rgba(180,83,9,0.22)',
-                padding: '6px 10px',
-                fontSize: '11.5px', fontWeight: 600, color: '#92400e',
-              }}>
-                🏷 {msg.offerText}
-              </div>
-            )}
-
-            <span style={{
-              display: 'block', textAlign: 'right',
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: '9.5px', color: '#a09890', marginTop: '5px',
-            }}>
-              {msg.clockTime}
-            </span>
-          </div>
-        </div>
-      ))}
-
-      {/* CTA quick-reply button on the last message */}
-      <div style={{
-        borderRadius: '8px',
-        background: '#fff',
-        textAlign: 'center',
-        padding: '9px 12px',
-        fontSize: '12.5px',
-        fontWeight: 500,
-        color: '#027eb5',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
-      }}>
-        Complete my order →
-      </div>
-    </WhatsAppPhoneShell>
-  )
-}
-
 export default function CartRecoverySection() {
   const scope = useRef<HTMLElement>(null)
 
@@ -170,7 +105,7 @@ export default function CartRecoverySection() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
 
           <div className="cart-phone order-2 flex items-center justify-center lg:order-1">
-            <RecoveryPhone messages={MESSAGES} />
+            <AbandonedCartDemo messages={MESSAGES} />
           </div>
 
           <div className="order-1 flex flex-col justify-center lg:order-2">
