@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
+import { scrollToHash } from '@/lib/scroll-to-hash'
 
 const MIN = 20
 const MAX = 600
@@ -156,6 +158,18 @@ export default function RtoCalculator() {
         Assumes 30% RTO rate and ₹250 per round trip. India COD runs 28 to 35%; fashion and footwear
         often higher. Adjust the slider to your own volume.
       </p>
+
+      <a
+        href="#cart-recovery"
+        onClick={e => scrollToHash(e, '#cart-recovery')}
+        style={{
+          marginTop: '20px', display: 'inline-flex', alignItems: 'center', gap: '6px',
+          fontSize: '13px', fontWeight: 600, color: '#fff',
+        }}
+      >
+        See exactly how we stop this
+        <ArrowRight size={14} strokeWidth={2} aria-hidden />
+      </a>
     </div>
   )
 }

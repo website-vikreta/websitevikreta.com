@@ -60,7 +60,7 @@ export default function ProofSection() {
         </div>
 
         {/* Channel benchmarks */}
-        <div className="mb-12 grid grid-cols-1 border-y border-(--color-border) sm:grid-cols-3 md:mb-16">
+        <div className="mb-10 grid grid-cols-1 border-y border-(--color-border) sm:grid-cols-3 md:mb-14">
           {CHANNEL_STATS.map(({ n, label, context }) => (
             <div key={n} className="proof-stat border-b border-(--color-border) py-6 sm:border-b-0 sm:border-r sm:px-7 sm:py-7 sm:last:border-r-0 md:px-8">
               <p
@@ -92,13 +92,13 @@ export default function ProofSection() {
           {CASES.map(({ brand, result, metric, highlight, src }, index) => (
             <article
               key={brand}
-              className="proof-card grid grid-cols-1 gap-4 border-b border-(--color-border) py-6 last:border-b-0 sm:grid-cols-[3rem_minmax(10rem,0.8fr)_minmax(0,1.5fr)_auto] sm:items-center sm:gap-6 md:py-7"
+              className="proof-card grid grid-cols-1 gap-4 border-b border-(--color-border) py-6 last:border-b-0 md:grid-cols-[3rem_minmax(10rem,0.8fr)_minmax(0,1.5fr)_auto] md:items-center md:gap-6 md:py-7"
             >
               <span className="font-mono text-xs font-semibold text-(--color-text-muted)">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div>
-                <p className="font-bold tracking-tight text-(--color-text)" style={{ fontSize: 'clamp(1.6rem,3vw,2.1rem)', lineHeight: 1.1 }}>
+                <p className="font-bold tracking-tight" style={{ fontSize: 'clamp(1.6rem,3vw,2.1rem)', color: 'var(--color-accent)', lineHeight: 1.1 }}>
                   {result}
                 </p>
                 <p className="mt-1 text-sm text-(--color-text-muted)">{metric}</p>
@@ -107,7 +107,7 @@ export default function ProofSection() {
                 <h4 className="text-base font-bold text-(--color-text)">{brand}</h4>
                 <p className="mt-1 text-sm leading-relaxed text-(--color-text-muted)">{highlight}</p>
               </div>
-              <p className="text-xs text-(--color-text-muted) sm:text-right">{src}</p>
+              <p className="text-xs text-(--color-text-muted) md:text-right">{src}</p>
             </article>
           ))}
         </div>

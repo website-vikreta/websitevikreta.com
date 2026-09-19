@@ -87,9 +87,6 @@ export default function PainSection() {
             >
               {/* Copy */}
               <div>
-                <p className="mb-5 text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                  The math
-                </p>
                 <h2
                   id="math-heading"
                   className="text-h2 font-bold tracking-tight"
@@ -98,7 +95,7 @@ export default function PainSection() {
                   Nobody puts this number on a slide.
                 </h2>
                 <p
-                  className="math-copy mt-6 text-body-lg leading-relaxed"
+                  className="math-copy mt-5 text-body-lg leading-relaxed"
                   style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '44ch' }}
                 >
                   A returned COD order costs more than the sale ever made. Shipping

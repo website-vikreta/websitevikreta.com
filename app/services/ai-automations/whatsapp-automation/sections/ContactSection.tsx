@@ -32,9 +32,6 @@ export default function ContactSection() {
 
           {/* Left — what happens */}
           <div>
-            <p className="mb-5 text-sm text-(--color-text-muted)">
-              No commitment
-            </p>
             <h2
               id="cta-form-heading"
               className="cta-heading text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"

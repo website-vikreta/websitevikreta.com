@@ -227,7 +227,7 @@ export default function OnboardingSection() {
               <ol className="divide-y divide-(--color-border)">
                 {YOUR_PART.map((item, index) => (
                   <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
-                    <span className="font-mono text-xs font-semibold text-(--color-accent)">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-xs font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
                     <span className="text-sm leading-relaxed text-(--color-text-muted)">{item}</span>
                   </li>
                 ))}
