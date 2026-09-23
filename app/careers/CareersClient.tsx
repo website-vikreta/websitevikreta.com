@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import SkillsPills from '@/components/ui/SkillsPills'
+import { stipendAmount } from '@/lib/careers'
 
 interface Opening {
   _id: string
@@ -46,7 +47,7 @@ function visibleFlagsOf(opening: Opening): string[] {
 
 export default function CareersClient({ openings }: Props) {
   const filters = useMemo(() => {
-    const flags = Array.from(new Set(openings.flatMap(o => flagsOf(o.flag))))
+    const flags = Array.from(new Set(openings.flatMap(visibleFlagsOf)))
     const hasClosedRoles = openings.some(o => !o.isActive)
     return [...(hasClosedRoles ? [ACTIVE_FILTER] : []), ...flags, ALL_FILTER]
   }, [openings])
@@ -156,7 +157,7 @@ export default function CareersClient({ openings }: Props) {
                   {opening.skills.length > 0 && <SkillsPills skills={opening.skills} />}
 
                   <div className="mt-auto flex items-center justify-between pt-2">
-                    <span className="text-sm text-(--color-text-muted)">₹{opening.stipend}</span>
+                    <span className="text-sm text-(--color-text-muted)">₹{stipendAmount(opening.stipend)}</span>
                     <span className="inline-flex items-center gap-1.5 text-base font-medium text-(--color-text)">
                       <span className="relative">
                         View &amp; Apply

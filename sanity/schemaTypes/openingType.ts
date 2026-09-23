@@ -45,8 +45,13 @@ export const openingType = defineType({
       title: 'Stipend / Salary',
       type: 'string',
       group: 'details',
-      description: 'e.g. ₹5,000 – ₹8,000 / month',
-      validation: r => r.required(),
+      description: 'Amount only — the ₹ and "/ month" are added by the site. e.g. 5,000 – 8,000',
+      validation: r =>
+        r.required().custom(v =>
+          typeof v === 'string' && v.includes('₹')
+            ? 'Leave out the ₹ — the site adds it, so typing it here renders "₹₹".'
+            : true,
+        ),
     }),
     defineField({
       name: 'positions',

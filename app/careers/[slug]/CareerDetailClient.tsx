@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
 import { trackJobApplicationSubmit } from '@/lib/analytics'
+import { stipendAmount } from '@/lib/careers'
 
 const SUBHEAD = 'text-h4 font-bold tracking-tight text-(--color-text) mb-6'
 
@@ -122,7 +123,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
             {opening.shortDescription}
           </p>
           <p className="mt-4 text-sm text-(--color-text-muted)">
-            ₹{opening.stipend} / month · {opening.positions} {opening.positions === 1 ? 'position' : 'positions'} available
+            ₹{stipendAmount(opening.stipend)} / month · {opening.positions} {opening.positions === 1 ? 'position' : 'positions'} available
           </p>
           <div className="mt-6">
             <SocialShare path={`/careers/${opening.slug}`} title={opening.title} campaign="careers" />
