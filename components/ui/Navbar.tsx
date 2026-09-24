@@ -197,7 +197,6 @@ export function Navbar() {
                             <li
                               key={dropItem.href}
                               role="none"
-                              className="relative"
                               onMouseEnter={() =>
                                 setNestedOpen(
                                   dropItem.children ? dropItem.href : null,
@@ -249,7 +248,7 @@ export function Navbar() {
                                       <li key={child.href} role="none">
                                         <Link
                                           href={child.href}
-                                          className={DROP_LINK}
+                                          className={`${DROP_LINK} !py-2`}
                                           role="menuitem"
                                           onClick={() => setActiveDropdown(null)}
                                         >
