@@ -36,40 +36,31 @@ export default function ProductRevealSection() {
   return (
     <section ref={platformScope} id="product" className="scroll-mt-32 py-16 md:py-20" aria-labelledby="reveal-heading">
       <div className="container">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h2
-              id="reveal-heading"
-              className="text-h2 font-bold tracking-tight text-(--color-text)"
-              style={{ marginBottom: '1.25rem', lineHeight: 1.05 }}
-            >
-              Not a chatbot. Your entire WhatsApp commerce stack.
-            </h2>
-            <p className="reveal-copy text-body-lg leading-relaxed text-(--color-text-muted)" style={{ marginBottom: '1.5rem' }}>
-              Every lead from every channel lands in one WhatsApp CRM. Cart
-              recovery, COD confirmation, and order updates run automatically.
-              Your team works from one dashboard instead of five tabs.
-            </p>
+        <div className="mb-10 max-w-2xl md:mb-14">
+          <h2 id="reveal-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
+            Not a chatbot. Your entire WhatsApp commerce stack.
+          </h2>
+          <p className="reveal-copy mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
+            Every lead from every channel lands in one WhatsApp CRM. Cart
+            recovery, COD confirmation, and order updates run automatically.
+            Your team works from one dashboard instead of five tabs.
+          </p>
+        </div>
 
-            <ul className="space-y-3.5">
-              {FEATURES.map(({ label, detail }) => (
-                <li key={label} className="reveal-feature flex items-start gap-3">
-                  <span
-                    aria-hidden
-                    style={{
-                      width: '7px', height: '7px', borderRadius: '50%',
-                      background: 'var(--color-text)',
-                      flexShrink: 0, marginTop: '7px',
-                    }}
-                  />
-                  <span>
-                    <span className="text-base font-bold text-(--color-text)">{label}.</span>{' '}
-                    <span className="text-base leading-relaxed text-(--color-text-muted)">{detail}.</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-20">
+          <ol>
+            {FEATURES.map(({ label, detail }, i) => (
+              <li key={label} className="reveal-feature flex gap-5 py-5 first:pt-0 last:pb-0">
+                <span className="w-7 shrink-0 font-mono text-lg font-bold tabular-nums tracking-tight text-(--color-text-faint)">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 className="text-xl font-bold leading-snug tracking-tight text-(--color-text)">{label}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-(--color-text-muted)">{detail}.</p>
+                </div>
+              </li>
+            ))}
+          </ol>
 
           <div className="reveal-visual">
             <CommerceInbox />

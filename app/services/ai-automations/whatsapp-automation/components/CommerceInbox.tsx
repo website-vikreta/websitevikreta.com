@@ -55,7 +55,7 @@ export default function CommerceInbox() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr]">
-        <ul className="flex flex-wrap gap-x-6 gap-y-2.5 border-b border-(--color-border) px-5 py-4 sm:block sm:w-48 sm:space-y-3.5 sm:border-b-0 sm:border-r">
+        <ul className="grid grid-cols-2 gap-x-8 gap-y-2.5 border-b border-(--color-border) px-5 py-4 sm:flex sm:w-48 sm:flex-col sm:gap-0 sm:space-y-3.5 sm:border-b-0 sm:border-r">
           {CHANNELS.map(({ name, count }, i) => (
             <li
               key={name}
@@ -80,7 +80,7 @@ export default function CommerceInbox() {
                   <span className="text-base font-bold text-(--color-text)">{name}</span>
                   <span className="font-mono text-xs uppercase tracking-wider text-(--color-text-faint)">{via}</span>
                 </span>
-                <span className="mt-1 block text-sm leading-relaxed text-(--color-text-muted)">{snippet}</span>
+                <span className="mt-1 block text-sm sm:truncate leading-relaxed text-(--color-text-muted)">{snippet}</span>
               </span>
               <span
                 className="shrink-0 whitespace-nowrap px-2 py-1 text-xs font-semibold"
@@ -93,10 +93,6 @@ export default function CommerceInbox() {
         </ul>
       </div>
 
-      <p className="border-t border-(--color-border) px-5 py-4 text-sm leading-relaxed text-(--color-text-muted)">
-        Every channel lands here. Cart recovery, COD confirmation, and order updates run
-        from the same inbox, on your number.
-      </p>
     </div>
   )
 }

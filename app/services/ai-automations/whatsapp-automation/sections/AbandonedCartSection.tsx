@@ -62,11 +62,11 @@ export default function AbandonedCartSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-20">
           <ol>
             {STEPS.map(({ n, title, body }) => (
               <li key={n} className="abandon-step flex gap-5 py-6 first:pt-0 last:pb-0">
-                <span className="font-mono text-lg font-bold tracking-tight text-(--color-text-faint)">{n}</span>
+                <span className="w-7 shrink-0 font-mono text-lg font-bold tabular-nums tracking-tight text-(--color-text-faint)">{n}</span>
                 <div>
                   <h3 className="text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
                   <p className="mt-2 text-base leading-relaxed text-(--color-text-muted)">{body}</p>
@@ -75,7 +75,7 @@ export default function AbandonedCartSection() {
             ))}
           </ol>
 
-          <div className="abandon-phone flex items-center justify-center lg:justify-end">
+          <div className="abandon-phone flex justify-center">
             <AbandonedCartDemo messages={REMINDER} />
           </div>
         </div>
