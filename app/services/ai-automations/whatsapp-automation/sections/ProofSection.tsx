@@ -38,6 +38,7 @@ export default function ProofSection() {
 
   useGsapSection(scope, () => {
     revealLines('#proof-heading',  { trigger: scope.current })
+    revealFadeUp('.proof-intro',   { y: 20, trigger: scope.current })
     revealFadeUp('.proof-stat',    { y: 16, stagger: STAGGER.tight, trigger: scope.current })
     revealFadeUp('.proof-card',    { y: 20, stagger: STAGGER.base,  trigger: scope.current })
   })
@@ -54,7 +55,7 @@ export default function ProofSection() {
           >
             Why WhatsApp works. What stores have done with it.
           </h2>
-          <p className="mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
+          <p className="proof-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             The channel difference is real. These are the numbers that make it worth switching.
           </p>
         </div>
@@ -112,7 +113,7 @@ export default function ProofSection() {
           ))}
         </div>
 
-        <p className="mt-8 text-sm leading-relaxed text-(--color-text-muted) md:mt-10">
+        <p className="mt-10 text-sm leading-relaxed text-(--color-text-muted) md:mt-14">
           Figures from published brand case studies. Results vary by store volume, checkout
           health, and opt-in rates. WhatsApp channel stats are Meta and industry benchmarks.
         </p>

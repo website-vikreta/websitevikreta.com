@@ -127,6 +127,7 @@ export default function OnboardingSection() {
     revealLines('#onboarding-heading', { trigger: scope.current })
     revealFadeUp('.onboarding-copy',   { y: 20,   trigger: scope.current })
     revealFadeUp('.journey-phase', { y: 16, stagger: STAGGER.tight, trigger: scope.current })
+    revealFadeUp('.onboarding-responsibilities', { y: 20, trigger: scope.current })
   })
 
   return (
@@ -137,7 +138,7 @@ export default function OnboardingSection() {
       aria-labelledby="onboarding-heading"
     >
       <div className="container">
-        <div className="mb-10 max-w-xl md:mb-14">
+        <div className="mb-10 max-w-2xl md:mb-14">
           <h2
             id="onboarding-heading"
             className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
@@ -188,7 +189,7 @@ export default function OnboardingSection() {
         </div>
 
         {/* Responsibility split */}
-        <div className="onboarding-responsibilities mt-14 md:mt-20">
+        <div className="onboarding-responsibilities mt-10 md:mt-14">
           <div className="mb-8 max-w-xl">
             <p className="mb-3 text-sm text-(--color-text-muted)">
               Your part is small

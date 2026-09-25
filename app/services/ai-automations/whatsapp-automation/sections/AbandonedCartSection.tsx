@@ -48,15 +48,14 @@ export default function AbandonedCartSection() {
       aria-labelledby="abandon-heading"
     >
       <div className="container">
-        <div className="mb-10 max-w-3xl md:mb-14">
+        <div className="mb-10 max-w-2xl md:mb-14">
           <h2
             id="abandon-heading"
-            className="text-h2 font-bold tracking-tight text-(--color-text)"
-            style={{ lineHeight: 1.05, marginBottom: '1.25rem' }}
+            className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
           >
             They did not say no. They got interrupted.
           </h2>
-          <p className="abandon-intro text-body-lg leading-relaxed text-(--color-text-muted)">
+          <p className="abandon-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             Someone picks a size, adds it to the cart, and then the day gets in the way.
             The order is still there. Nobody has asked for it again. That is the job we
             give WhatsApp.
@@ -64,13 +63,13 @@ export default function AbandonedCartSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-          <ol className="divide-y divide-(--color-border) border-y border-(--color-border)">
+          <ol>
             {STEPS.map(({ n, title, body }) => (
               <li key={n} className="abandon-step flex gap-5 py-6 first:pt-0 last:pb-0">
                 <span className="font-mono text-lg font-bold tracking-tight text-(--color-text-faint)">{n}</span>
                 <div>
                   <h3 className="text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-(--color-text-muted)">{body}</p>
+                  <p className="mt-2 text-base leading-relaxed text-(--color-text-muted)">{body}</p>
                 </div>
               </li>
             ))}
