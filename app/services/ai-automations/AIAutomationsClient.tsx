@@ -4,16 +4,19 @@ import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { StatsCounters } from '@/components/sections/StatsCounters'
 import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
+import { WorkTestimonialsSection } from '@/components/sections/work/WorkTestimonialsSection'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { ALL_FAQS } from '@/lib/faq-data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
+import ImpactSection from './sections/ImpactSection'
 import PillarsSection from './sections/PillarsSection'
 import FixesSection from './sections/FixesSection'
 import CalendlyCTABanner from './sections/CalendlyCTABanner'
 import HowWeWork from './sections/HowWeWork'
 import CapabilitiesStrip from './sections/CapabilitiesStrip'
 import WhySection from './sections/WhySection'
+import ProofSection from './sections/ProofSection'
 import ContactSection from './sections/ContactSection'
 
 /**
@@ -31,22 +34,31 @@ export default function AIAutomationsClient() {
     <>
       <DotGrid global />
       <main id="main-content" className="relative z-10">
-        {/* TENSION */}
+        {/* TENSION — Pain (now a tabbed component: content vs. support, one
+            unified section rather than two stacked ones) */}
         <Hero />
         <PainSection />
-        {/* SHIFT */}
-        <PillarsSection />
-        {/* RESOLUTION */}
+        {/* Impact — how the pain above is costing them growth right now */}
+        <ImpactSection />
+        {/* SHIFT — Solution */}
         <FixesSection />
-        {/* Proof — real, already-published numbers and real client logos.
-            Reuses the existing sitewide sections rather than forking a
-            page-local variant (see the ONE-case-study-section rule). */}
+        {/* Payoff — what changes once this is built */}
+        <PillarsSection />
+        {/* RESOLUTION — Procedure */}
+        <HowWeWork />
+        {/* Support / differentiators, ahead of the proof cluster */}
+        <CapabilitiesStrip />
+        <WhySection />
+        {/* Proof — sitewide numbers + real client logos, reused rather than
+            forked (see the ONE-case-study-section rule). */}
         <StatsCounters bgClassName="" />
         <CalendlyCTABanner />
         <ClientLogosSection />
-        <HowWeWork />
-        <CapabilitiesStrip />
-        <WhySection />
+        {/* Proof — the one real automation case study (Simpli Home) */}
+        <ProofSection />
+        {/* Client Testimonial — shared carousel, same component web-development
+            and uiux-design use, not a page-local fork */}
+        <WorkTestimonialsSection />
         {/* emitSchema={false}: these Q&As are verbatim from ALL_FAQS, which
             /faq already emits as FAQPage — two blocks for the same Q&As is
             duplicate content. */}

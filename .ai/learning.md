@@ -909,3 +909,352 @@ _None logged yet._
 - Where: `app/services/web-development/sections/PainSection.tsx`, `data.ts` (`WEB_DEV_PAIN.items[].image`).
 - Date: 2026-09-08
 
+### [Page] — AI Automations rebuilt to the sitewide Pain→Impact→Solution→Procedure→Proof→Testimonial spine
+- Rule: User asked for a lead-gen-focused restructure matching the spine `web-development` and
+  `uiux-design` already use, explicitly: reuse the same components for content types that are
+  genuinely shared (proof-card pattern, the testimonial carousel), but research real
+  AI-automation agencies — not an invented spec — for the page-specific pieces. Researched two
+  live agency sites via WebFetch: **Axe Automation** (axeautomation.co — problems/outcomes as a
+  scannable list, a standalone metrics banner, case-study cards with industry tag + outcome
+  headline + client quote) and **Morningside AI** (morningside.ai — pain section is pure
+  typography, 3 stacked statements shrinking in size, zero imagery). Morningside's approach won
+  (confirmed via AskUserQuestion + a text preview) because it maps directly onto this site's own
+  `brand.md` direction ("Large. Bold. Words fill the screen," extreme size contrast) rather than
+  introducing a new diagram-heavy visual language.
+- New `ImpactSection.tsx` (`app/services/ai-automations/sections/`): 3 stacked lines,
+  decreasing size/weight/color (`text-h2 font-bold text-(--color-text)` →
+  `text-h3 font-semibold text-(--color-text-muted)` → `text-body-lg text-(--color-text-faint)`),
+  one accent-colored phrase per line (`style={{ color: 'var(--color-accent)' }}`, same
+  established "one accent phrase in display type" precedent as the homepage hero and the About
+  page pivot headline — not a new pattern). Content is the direct consequence of `PainSection`'s
+  actual pains (photo editing, repeat questions, photo shoots) so Pain→Impact reads as one
+  continuous thought. **Gotcha**: `revealLines()` only masks the FIRST element a selector
+  matches (`firstElement()` internally) — a shared `.impact-line` class across 3 separate
+  elements needs 3 separate `revealLines()` calls (looped, `delay: i * 0.15`), not one call with
+  a multi-match selector. Don't repeat the one-call-multi-element mistake elsewhere on this page.
+- New `ProofSection.tsx` (rebuilt after an earlier version of this same file was discarded along
+  with a premature reorder — the component itself wasn't the problem): surfaces the one real,
+  previously-unused automation case study — `CASE_STUDIES` slug `simpli-home` in
+  `lib/work-data.ts` ("Bulk media generation, automated," real metric 11 hrs/week saved, real
+  testimonial from Darcy McGilvery) — via `CaseStudyFeaturedLink`
+  (`components/sections/work/CaseStudyCard.tsx`). Wrap it in a bare
+  `border border-(--color-border)` div with **no** width cap and **no** background override —
+  matches its one other real usage (`FeaturedWorkSection.tsx`), since the component supplies its
+  own `bg-(--color-bg)` + hover treatment and is built to run full-width, not sit in a narrow
+  `max-w-2xl` card (that was tried, looked cramped, corrected before shipping). Pull-quote below
+  it copies `digital-marketing`/`uiux-design` ProofSection's proven `.proof-quote` treatment.
+- Client Testimonial: added `WorkTestimonialsSection` (`components/sections/work/`) **unfiltered**,
+  exactly as `WebDevClient.tsx` and `UiUxClient.tsx` already do — the literal "reuse it, don't
+  fork it" instruction. No new testimonial component.
+- Final order: Hero → Pain → Impact(NEW) → Solution(Fixes) → Pillars(payoff, moved here from
+  right after Pain — "what changes when you automate" reads as the Solution's payoff, not the
+  Impact beat, which is negative/cost-framed) → HowWeWork(Procedure) → CapabilitiesStrip/
+  WhySection(support) → StatsCounters/CalendlyCTABanner/ClientLogosSection(sitewide proof) →
+  ProofSection(NEW) → WorkTestimonialsSection(NEW) → FAQ → Contact.
+- Where: `app/services/ai-automations/AIAutomationsClient.tsx`,
+  `app/services/ai-automations/sections/{ImpactSection,ProofSection}.tsx`.
+- Date: 2026-09-25
+
+### [Component] — AgentLogicInspector (Pain) + WorkflowOrchestrator (Procedure): same-day follow-up, re-added with reframed placement
+- Rule: These two components were built once already this session (n8n/Decagon-inspired, per
+  the user's explicit request — see the earlier `[Component] WorkflowOrchestrator +
+  AgentLogicInspector` note if still present, or its equivalent reasoning: real interactive
+  content, no fake app-UI chrome, no invented client data), then discarded along with a full
+  page reset. User asked for them back, this time with an explicit placement: one inside Pain,
+  one inside Procedure — not both bundled after Solution like the first pass.
+- `AgentLogicInspector` → **Pain**, placed directly after `PainSection`. Content reframed for
+  this new home: heading changed from a solution-pitch ("We turn it into resilient code") to a
+  problem-framing one ("Right now, a message like this needs a person every time"), and the
+  AOP card's label changed from "Agent operating procedure" to "What has to happen next" — same
+  exact component/mechanic (user message bubble + `@variable`/`#id`-highlighted step list,
+  auto-cycling highlighter), different narrative frame. It still ends by implying the fix, which
+  is the honest bridge into the Impact/Solution sections that follow — it isn't pretending the
+  fix doesn't exist, just centers the current manual burden.
+- `WorkflowOrchestrator` → **Procedure**, placed directly after `HowWeWork`. No content changes
+  from the first build — a technical "how it works" diagram is already procedure-shaped content,
+  needed no reframing.
+- Where: `components/sections/ai-automations/{AgentLogicInspector,WorkflowOrchestrator}.tsx`,
+  `app/services/ai-automations/AIAutomationsClient.tsx`.
+- Date: 2026-09-25
+
+### [Page] — AI Automations third pass: Pain merged, Impact rebuilt, Solution → accordion; "louder accent, no new hues" resolved via AskUserQuestion
+- Rule: User said the page needed to be more attractive/"colorful"/high-level. This directly
+  touches the site's locked monochrome + single-yellow-accent rule (`brand.md`, enforced on
+  every page, contrast failures knowingly accepted elsewhere rather than compromise it) — asked
+  via AskUserQuestion rather than silently diverging or silently refusing. Resolved: **no new
+  hues anywhere** — "colorful/attractive" means the accent used far more boldly in the page's
+  interactive components (filled pills instead of hairline borders, bigger scale, more motion),
+  not a new palette. Apply this reading to any future "make it more colorful" ask on this site
+  before reaching for new hex values.
+- **Pain merged**: `AgentLogicInspector` (added last pass, standalone section after Pain) folded
+  directly into `PainSection.tsx` as a second tab, alongside the original photo-shoot content —
+  one unified two-tab component, not two stacked sections.
+  `components/sections/ai-automations/AgentLogicInspector.tsx` deleted (dead after the merge).
+  **Gotcha discovered here**: don't make an `revealLines()`-masked heading's *text* depend on
+  component state that changes after mount (e.g. a tab-switched H2). `revealLines` calls GSAP
+  `SplitText` once at mount, which physically rewraps the heading's text into new `.rl-line`/
+  `.rl-inner` DOM nodes — if the text later changes via React state, React's reconciliation can
+  land on stale node references SplitText already replaced, silently failing to update the
+  visible text. Fix used here: keep the `revealLines()`-masked H2 permanently static ("The part
+  of the job nobody talks about"), and put all tab-dependent copy in a plain (non-`revealLines`)
+  paragraph below it instead. Applies to any future tabbed/stateful heading on this page.
+- **Impact rebuilt** (`ImpactSection.tsx`, same file, new content — the flat 3-line manifesto
+  from the prior pass is gone): 3 tabs (Revenue/Team/Growth) carrying the *exact same 3 lines*
+  as headlines now instead of stacked text, each paired with a small SVG "stuck loop" diagram
+  (3 `foreignObject` nodes in a triangle, all-dashed connectors closing back on the first node)
+  styled deliberately duller than `WorkflowOrchestrator`'s crisp working-system nodes
+  (`bg-(--color-bg-muted)`/`text-(--color-text-muted)`, not `bg-surface`/`text-text`) — a clean
+  trigger→action diagram reads as "a system working," which is wrong for a section meant to
+  agitate the problem, so this got its own visual grammar instead of reusing that one relabeled.
+  A `motion.circle` slowly rotates around the loop (`animate={{rotate:360}}`, 12s linear infinite,
+  `useReducedMotion()` guard) for "spinning in place." An illustrative ticking counter
+  (`setInterval`, +1 every 900ms) sits beside the headline, explicitly captioned "illustrative,
+  resets each visit" and styled as a small utility widget (not `ProofSection`'s real-metric
+  styling) so it can never be mistaken for a sourced business statistic.
+  **Gotcha**: resetting a counter's state per-tab inside a `useEffect` body (`setValue(0)` then
+  starting an interval) trips the `react-hooks/set-state-in-effect` lint rule (cascading-render
+  risk). Fixed the React way — `key={preset.id}` on the counter at its call site so switching
+  tabs mounts a fresh instance instead of manually resetting state in an effect.
+- **Solution rebuilt** (`FixesSection.tsx`, same 5 `SERVICES`, no new assets): sticky-index +
+  always-visible-stacked-panels replaced with a single-open accordion matching decagon.ai's
+  researched "Complete, unified platform" structure. Reused `@radix-ui/react-accordion` exactly
+  as `components/sections/FaqSection.tsx` already does (`type="single" collapsible`, controlled
+  `value`/`onValueChange`), and generalized `components/ui/FaqAnswer.tsx`'s measured-height
+  collapse technique (`ref.scrollHeight` → `motion.div animate={{height}}`) into a local
+  `ServicePanel` that also fits an image + CTA, not just a paragraph — same mechanism, not a new
+  one. First service open by default. "Louder": open row gets a thick `h-8 w-1 bg-(--color-
+  accent)` left bar + bigger title type; collapsed rows are plain muted text at a smaller size —
+  same understated-collapsed/bold-expanded contrast Decagon's own accordion uses.
+- Where: `app/services/ai-automations/sections/{PainSection,ImpactSection,FixesSection}.tsx`,
+  `app/services/ai-automations/AIAutomationsClient.tsx`.
+- Date: 2026-09-25
+
+### [Corrected same-day] — FixesSection's accordion was wrong; the real decagon.ai component is a passive scroll rail, not a click accordion
+- Rule: The `FixesSection` accordion logged directly above was built from a **text-only**
+  WebFetch summary of decagon.ai's "Complete, unified platform" section, which was misleading —
+  user correctly called this out ("did you see the actual component"). Went back and actually
+  browsed decagon.ai (`mcp__claude-in-chrome`, screenshots) this time. **The real component is
+  not an accordion at all**: a vertical rail with a dot that lights up as you scroll (no click),
+  3 stages stacked top-to-bottom in normal document flow (Build/Optimize/Scale all visible on
+  scroll, never collapsed/hidden), each with its own companion visual on the right that differs
+  per stage (an AOP card for Build, comparison stat cards for Optimize, layered analytics cards
+  for Scale). **Lesson: a WebFetch text summary of a visually-driven component is not a
+  substitute for actually looking at it — for "make this look like reference site X," browse the
+  real page before building, don't build from a paraphrase.**
+- Rebuilt `FixesSection.tsx` again: dropped the Radix accordion entirely, adapted `HowWeWork.tsx`'s
+  proven `reached`-state `IntersectionObserver` rail mechanic (monotonic highlight, scroll-only,
+  no click) instead — but with a plain dot-on-a-line rail (`size-3 rounded-full`, fills
+  `bg-(--color-accent)` when reached) rather than HowWeWork's big numerals, since that numeral
+  treatment is logged as HowWeWork's own signature and shouldn't be duplicated elsewhere on the
+  same page. Each row pairs its dot+title+description+CTA with the service's existing image in a
+  2-col grid, matching Decagon's "text + per-stage companion visual" shape with zero new assets.
+  This also directly answers the user's separate complaint ("don't rely on the user to go
+  through the components, they're not that free") — nothing on this page should require a click
+  just to see it; scroll-only reveals are required, not merely a style preference.
+- Same complaint applied to `ImpactSection`: having a separate click-tabbed diagram there
+  *and* a visually-similar-but-different click-tabbed diagram in Procedure (`WorkflowOrchestrator`)
+  was two near-identical interactive widgets stacked on one page. Resolved per the user's explicit,
+  repeated instruction: **one diagram, not two.** `ImpactSection.tsx` rebuilt again — dropped the
+  "duller stuck-loop" visual grammar from the prior pass (that was this agent's own guess at
+  differentiation, explicitly overridden) in favor of the *same crisp visual language* as the
+  deleted `WorkflowOrchestrator` (full-width canvas, side tabs, `bg-(--color-surface)` nodes,
+  `motion.path` pathLength draws) — content is a straight 4-node manual-chain-to-cost diagram
+  (Revenue/Team/Growth tabs) ending in an accent-outlined "cost" node, not the trigger→agent→
+  condition→action shape (that content shape stays retired, it inherently reads as "a system
+  working"). `WorkflowOrchestrator.tsx` and its now-empty `components/sections/ai-automations/`
+  directory were deleted — its content doesn't exist anywhere else on the page anymore, this
+  isn't a duplicate-in-spirit, it's a genuine single instance.
+- On images: user pushed back hard on this agent repeatedly declining "do you need images" —
+  reasonable claim was "Decagon's own component doesn't use real photography either, it's
+  UI-mockup/diagram art, same category as our existing SVGs/diagrams" — true, but the one
+  legitimate gap on this page is `SERVICES[4]` ("+ Anything AI") in `FixesSection`, which has
+  never had an image (catch-all category, nothing to depict). Asked the user directly rather
+  than deciding either way silently.
+- Where: `app/services/ai-automations/sections/{ImpactSection,FixesSection}.tsx`,
+  `app/services/ai-automations/AIAutomationsClient.tsx` (removed `WorkflowOrchestrator` import
+  and its Procedure placement).
+- Date: 2026-09-25
+
+### [Corrected same-day, again] — Impact needed ONE diagram not three tabs; FixesSection's rail belongs centered between columns, not as a left gutter
+- Rule: The Revenue/Team/Growth tabbed version of `ImpactSection` (logged directly above) still
+  violated "don't make the user click to see it" — 3 tab-gated diagrams is still tab-gating, even
+  reusing the crisp visual style. User: "I said one single diagram." Rebuilt once more with
+  **no tabs, one always-visible diagram**: a single trigger ("The manual step happens") → one
+  manual-handling node → fans out into three parallel accent-outlined cost nodes rendered
+  simultaneously (margin / best hire's time / growth), not switched between. This keeps all
+  three consequence themes from the earlier passes without hiding any of them behind interaction
+  — the fan-out shape is what let one diagram do what three tabs were doing. One `TickingCounter`
+  (no longer per-tab/keyed) sits beside it.
+- `FixesSection`'s rail (dot + line) moved from a left-gutter column before the text to the
+  **center column** between text and image (`grid-cols-[1fr_auto_1fr]`, rail is the middle
+  column) — matches decagon.ai's actual layout, where the progress line runs down the center of
+  the page with text on its left and the visual on its right, not as a small marginal gutter.
+  Rail is `hidden lg:flex` — mobile just stacks text then image directly, no centered-line
+  concept to preserve at that width.
+- Broader pattern for this page now: **any component with more than one "view" of content
+  either shows all views at once (fan-out diagram, stacked scroll rows) or doesn't exist as
+  multiple views at all** — tabs/accordions that hide content behind a click are off the table
+  for this specific page per the user's repeated, explicit instruction. Don't reach for a tab
+  switcher here again without being asked.
+- Applied proactively to `PainSection` too, before being asked a third time: its 2-tab switcher
+  (Photo shoots & content / Support messages) had the same problem. Rebuilt as two stacked rows,
+  both always visible in normal scroll flow — no tab state, no `AnimatePresence`, same
+  `revealClipImage`/`revealFadeUp` per-row reveal pattern `FixesSection` and the rest of this
+  page's older sections already use.
+- Where: `app/services/ai-automations/sections/{PainSection,ImpactSection,FixesSection}.tsx`.
+- Date: 2026-09-25
+
+### [Page] — Pain and HowWeWork now literally reuse web-development's components; two real user-generated illustrations added; Impact goes illustrated too
+- Rule: User explicitly asked to reuse two more `web-development` components verbatim rather
+  than build new ones: `PainSection.tsx`'s "Friction" sticky-pin scroll reveal (numeral, sticky
+  `xl:h-[220vh]` track, `AnimatePresence` crossfade between items — same mechanic, no eyebrow
+  since this page never uses one elsewhere) replaces the stacked-rows version from the prior
+  pass, scaled to this page's 2 items instead of web-dev's set; `HowWeWork.tsx`'s 4-col offset
+  grid (big accent numeral, alternating `lg:mt-12` zigzag, no rail/connector) replaces the
+  numeral-rail version — same 4 `STEPS`, new layout only.
+- User generated and supplied two real illustrations (ChatGPT-generated, same cream-background/
+  black-linework/yellow-accent explainer style already used sitewide as a confirmed exception —
+  see the Apps & CRM real-image precedent). Found via `ls -lt` on their Downloads folder (most
+  recently modified files, both from minutes before the message) rather than asking them to
+  re-locate/re-upload — worth doing whenever a user says "I downloaded X" without a path.
+  Copied into `public/services/`: `support-messages-fifty-times-a-day.png` (now
+  `PainSection`'s second item image, replacing the interactive `SupportMessageCard`/`Highlighted`
+  mechanic entirely — the real illustration does what the interactive card was standing in for)
+  and `anything-ai-automated.png` (now `FixesSection`'s `anything-ai` entry's image — that
+  category never had one before). Both are 1672×941, matching this page's standing image
+  convention exactly, confirmed via a tiny inline Node PNG-header read rather than reaching for
+  a Python/PIL dependency that wasn't installed.
+- Once two of three problem/solution sections were real illustrations, `ImpactSection`'s abstract
+  SVG fan-out diagram was the odd one out — asked via AskUserQuestion whether that was the actual
+  complaint behind "not as we needed... only 3 points" (rather than guess a fourth time) and
+  confirmed yes. `ImpactSection.tsx` rebuilt once more: dropped the SVG canvas entirely for a
+  plain text+image row (same shape as a `PainSection` item), referencing
+  `/services/cost-of-manual-work.png` — **not yet created**, a prompt was handed to the user
+  (same visual style as their two supplied images) to generate and send back the same way.
+- Where: `app/services/ai-automations/sections/{PainSection,HowWeWork,FixesSection,
+  ImpactSection}.tsx`, `public/services/{support-messages-fifty-times-a-day,anything-ai-automated}.png`.
+- Date: 2026-09-25
+
+### [Corrected same-day, third time] — Impact reverted from illustration back to a diagram, now a real list of business impacts
+- Rule: User reversed the illustrated-image direction from directly above the same day — "create
+  the diagram... list all the bad impacts it has on business." `ImpactSection.tsx` rebuilt again,
+  no longer waiting on `/services/cost-of-manual-work.png` (that image is no longer needed —
+  don't chase it if the user sends it later without being asked). Dropped both the SVG canvas
+  (rejected twice already) and the photo-illustration (rejected once) for the simplest correct
+  read of "list all the bad impacts": a flat bordered grid of 6 real, qualitative business
+  impacts — Margin, Team time, Response speed, Mistakes, Burnout, Growth — each a Lucide icon +
+  short title + one-line consequence, no invented numbers. Layout reuses the sitewide
+  `border-t border-l` / cell `border-r border-b` flat-grid pattern (`FeaturedWorkSection.tsx`,
+  `CareersClient.tsx` openings grid) rather than `CapabilitiesStrip.tsx`'s dashed-divider variant
+  — that component's divider classes are hand-tuned for exactly 4 items at a 4-col breakpoint,
+  and re-deriving the same index math for 6 items at 3 columns wasn't worth it when a simpler,
+  already-proven pattern fits any item/column count without per-index logic.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day] — Impact diagram: no board behind it, small n8n-style connector ports
+- Rule: The diagram's outer wrapper had `border + bg-(--color-surface)` around the whole canvas
+  — user: keep it "as background not that white board." Removed that wrapper styling entirely
+  (now just `overflow-x-auto`, no border/fill) so the page's own background — and the sitewide
+  `DotGrid` dotted pattern already rendered behind every page — shows through the canvas, the
+  same way n8n's own canvas is a dotted surface, not a white panel sitting on top of one. Only
+  the individual node cards keep `bg-(--color-surface)` (that part IS correct n8n-like — nodes
+  are light cards floating on the dotted canvas). Added a small `Port` circle
+  (`fill="var(--color-bg)"`, ringed border) at every line/node connection point, the detail that
+  makes a node-link diagram read as a workflow canvas rather than a plain flowchart.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day, again] — Impact diagram: hub-and-spoke, not a one-sided fan-out
+- Rule: User: "don't put all elements in one side instead keep them around and only one in the
+  center." The trigger+manual nodes on the left with 6 impacts stacked down the right was still
+  one-sided. Rebuilt as a true hub-and-spoke radial layout: the two source nodes collapsed into
+  one central hub ("Someone does it by hand, every time"), all 6 impact nodes placed evenly
+  around it by angle (`angleFor(i) = -90° + (360/6)*i`, `Math.cos`/`Math.sin` off a fixed
+  `RADIUS`), spokes as straight `motion.line` (not bezier — a hub-and-spoke reads better with
+  straight radial lines than the left-to-right S-curve used elsewhere on this page). Small
+  connector-port dots kept only at the hub's outgoing edge (computed at `HUB.w/2` along the same
+  angle) — precise port placement on each outer node's rectangle edge at an arbitrary angle
+  wasn't worth the geometry for a 4px dot; the node's own opaque box already occludes the line
+  up to its edge, so the approximation is visually invisible.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day, third] — Impact diagram: rectangle arrangement, not a circle
+- Rule: User: "not exactly as circle as rectangle." The radial/circular hub-and-spoke layout
+  directly above still wasn't it — swapped the trigonometry (`angleFor`/`RADIUS`) for a plain
+  3×3 grid: `SLOTS` places the 6 impact nodes at (col,row) `[0,0][1,0][2,0]` (top row) and
+  `[0,2][1,2][2,2]` (bottom row), leaving the two middle-row side cells empty so the hub sits
+  alone in the visual center with breathing room either side. `VB` is now derived from
+  `COL_X`/`ROW_Y`/`PAD` rather than hand-picked — comes out ~900×390, a landscape rectangle, not
+  the near-square the circular version needed. Connector `hubPort()` still uses a circular
+  approximation for where the dot sits on the hub's boundary (hub is small relative to the grid
+  gap, so this reads fine even though the arrangement itself is now rectangular, not radial).
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day, fourth] — Impact: text left, diagram right
+- Rule: Heading + intro were full-width stacked above the diagram — user wanted the standard
+  text-left/visual-right split this page uses everywhere else (Pain, FixesSection rows).
+  Wrapped both in `grid grid-cols-1 lg:grid-cols-2 lg:items-center lg:gap-16`, text column
+  capped `max-w-md`, diagram column keeps its own `overflow-x-auto` + `min-w-[680px]` svg so
+  node text stays legible even squeezed into a half-width column on large screens.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day, fifth] — Impact: title pinned top, description centered in the remaining space
+- Rule: Title + description were one tightly-grouped block, vertically centered as a unit
+  against the diagram. User wanted the title pinned to the top of the column and the
+  description sitting in the middle of the space below it instead. Outer grid switched from
+  `items-center` to `lg:items-stretch` so the text column can actually take the row's full
+  height (matching the diagram column); left column is `flex flex-col lg:h-full`, heading stays
+  in normal flow at the top, paragraph wrapped in `lg:flex lg:flex-1 lg:items-center` — that
+  wrapper eats the leftover vertical space below the heading and centers the paragraph inside
+  it. Below `lg`, both just stack normally (`mt-4`), the centering is a large-screen-only effect.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day, sixth] — Impact diagram: drop the forced min-width, let it scale to fit
+- Rule: The svg had `min-w-[680px]` plus a wrapping `overflow-x-auto` — inside a `lg:grid-cols-2`
+  half-width column that's narrower than 680px at most real viewport widths, this forced a
+  horizontal scrollbar inside the diagram every time. Removed `min-w-[680px]` entirely (now just
+  `h-auto w-full`, no `overflow-x-auto` wrapper needed either) — since the content is
+  `viewBox`-based including the `foreignObject` node text, the whole diagram (text and icons
+  included) scales down proportionally with its container instead of clipping/scrolling. Applies
+  to any other `viewBox` diagram on this page too: prefer letting it scale to the column over a
+  hardcoded `min-w` + scroll fallback, unless the content genuinely can't shrink further.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Refinement same-day, seventh] — Impact restructured to literally match PainSection's shape
+- Rule: User: "keep its structure as the structure of 'The part of the job nobody talks
+  about'" (PainSection's heading). Previous layout grouped the h2 inside the narrower text
+  column beside the diagram; PainSection instead puts its heading in its own full-width block
+  above the row, then a narrower text column (`col-span-5`) beside a wider visual
+  (`col-span-7`). Restructured `ImpactSection` to match exactly: `<div className="max-w-2xl">`
+  heading block first, then a separate `mt-10 grid lg:grid-cols-12` row with `lg:col-span-5`
+  text / `lg:col-span-7` diagram. Heading size also dropped to `text-h3` to match — this is the
+  same logged `[Hierarchy]` step-down rule Pain uses for "heading immediately followed by a
+  two-col text/visual row" sections, so this isn't a one-off, it's the established pattern for
+  this exact shape.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+
+### [Corrected same-day, fourth time] — Impact back to the crisp canvas diagram, now fanning into 6 impacts instead of 3
+- Rule: User explicitly asked to go back to the exact diagram mechanic quoted from their own
+  earlier message ("that diagram same as How the orchestration actually runs") and put the
+  6-impact content (from the flat-grid version directly above) *inside* that diagram as its
+  fan-out nodes, rather than the plain bordered-grid list. `ImpactSection.tsx` rebuilt once
+  more: same crisp canvas (`bg-(--color-surface)` nodes, `motion.path` pathLength draws,
+  `foreignObject` HTML nodes, always visible, no tabs) as the deleted `WorkflowOrchestrator`,
+  but the fan-out target is now all 6 impact nodes (icon + title + line each, in
+  `bg-(--color-accent)/10` accent-outlined boxes) instead of 3 bare-text ones. Canvas height is
+  now content-derived (`VB_H = items.length * NODE_H + gaps + padding`) rather than a hardcoded
+  constant, so the node count can change again later without hand-recomputing the viewBox.
+- Given how many times this one section has flipped (typographic manifesto → 3-tab loop
+  diagram → 3-tab crisp diagram → single fan-out diagram → photo illustration → flat grid list →
+  6-node fan-out diagram), **don't restyle `ImpactSection` again on a guess** — if asked to
+  change it further, confirm the exact target shape first rather than picking a new one.
+- Where: `app/services/ai-automations/sections/ImpactSection.tsx`.
+- Date: 2026-09-25
+

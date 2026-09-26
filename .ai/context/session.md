@@ -6,7 +6,27 @@
 
 ## Current Task
 <!-- What are we building right now? -->
-Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize. Hero: `min-h-svh` + vertical center only at `xl+` (fixes iPad Pro dead space); headline uses block lines not `<br>` for GSAP line reveal.
+AI Automations page (`/services/ai-automations`) — rebuilt across 6 same-day passes to the
+sitewide lead-gen spine (Pain → Impact → Solution → Procedure → Proof → Client Testimonial).
+Current state: `PainSection` and `HowWeWork` now literally reuse `web-development`'s components
+(the "Friction" sticky-pin scroll mechanic; the 4-col offset-numeral grid). `PainSection`'s
+2nd item and `FixesSection`'s "+ Anything AI" entry use two real user-generated illustrations
+(`public/services/support-messages-fifty-times-a-day.png`, `anything-ai-automated.png`).
+`ImpactSection` has flipped between illustration/diagram/grid several times same day — now back
+to the crisp canvas diagram mechanic (same as the deleted `WorkflowOrchestrator`), fanning one
+manual-step trigger into all 6 impact nodes (icon+title+line each) at once, no tabs. No longer
+waiting on any image for this section. **Don't restyle this section again on a guess** — see
+learning.md's `[Corrected same-day, fourth time]` entry; confirm the target shape first. `ProofSection` (real `simpli-home` case study) and
+`WorkTestimonialsSection` (shared, unfiltered) cover Proof/Testimonial. Nothing on this page is
+click-gated (tabs/accordions were tried and explicitly rejected — always-visible/scroll-reveal
+only, per repeated user instruction). `tsc --noEmit` + `eslint` clean throughout.
+Full pass-by-pass detail (WebFetch vs. actually-browsed-the-reference lesson, `revealLines()`
+SplitText gotcha, `set-state-in-effect` gotcha, the decagon.ai research) is in `.ai/learning.md`
+under the six `[Page]`/`[Component]`/`[Corrected same-day]` entries dated 2026-09-25 — read
+those before touching this page again, don't re-derive from git history.
+**Not yet visually checked in a running dev server** — ask before starting one.
+
+Previous: Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize. Hero: `min-h-svh` + vertical center only at `xl+` (fixes iPad Pro dead space); headline uses block lines not `<br>` for GSAP line reveal.
 
 Previous: Digital Marketing page
 
