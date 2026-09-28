@@ -1,171 +1,160 @@
 'use client'
 
 /**
- * Sticky chapter index + full-width panels — the "Where we focus" pattern
- * from app/services/ai-automations/sections/FixesSection.tsx, reused here
- * instead of the sticky scroll-stack this section used to be. Same reason
- * that page moved off a card grid: each system's visual needs real room to
- * read, not a thumbnail, and a scroll-spied index lets the visitor jump
- * straight to the one they came for.
+ * `AutoExpandingCards` below is a page-local adaptation of
+ * `components/ui/expanding-cards.tsx` — same grid-column-resize mechanic and
+ * the same token-colored/black-to-transparent-scrim styling, but with an
+ * autoplay timer driving the active card instead of requiring hover/click.
+ * `expanding-cards.tsx` only exposes `defaultActiveIndex` (uncontrolled
+ * internal state), so there's no way to drive it externally without forking
+ * it — same "copy, don't mutate the shared scaffold" precedent as
+ * ProofSection.tsx. Hover/click still work as a manual override; they just
+ * aren't required to see all three systems.
  */
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { Button } from '@/components/ui/Button'
-import { useGsapSection, revealLines, revealFadeUp, revealClipImage } from '@/lib/gsap/reveals'
-
-interface SystemImage {
-  src: string
-  alt: string
-}
+import { LayoutDashboard, ShoppingBag, Users, type LucideIcon } from 'lucide-react'
+import { useGsapSection, revealLines, revealFadeUp } from '@/lib/gsap/reveals'
 
 interface System {
-  id:          string
-  title:       string
-  /** Short label for the sticky index — the full title is too long to scan there. */
-  indexLabel:  string
+  id: string
+  title: string
   description: string
-  cta:         string
-  image:       SystemImage
+  imgSrc: string
+  icon: LucideIcon
 }
 
 const SYSTEMS: System[] = [
   {
-    id:          'custom-crms',
-    title:       'Custom CRMs & internal tools',
-    indexLabel:  'CRMs & tools',
+    id: 'custom-crms',
+    title: 'Custom CRMs & internal tools',
     description: 'Leads, orders, and ops dashboards in one place your team already understands.',
-    cta:         'See how we scope a build',
-    image: {
-      src: '/services/crm-dashboard-overview.webp',
-      alt: 'CRM dashboard showing a lead funnel, customer profile, order pipeline, and revenue charts in one screen',
-    },
+    imgSrc: '/services/crm-dashboard-overview.webp',
+    icon: LayoutDashboard,
   },
   {
-    id:          'customer-portals',
-    title:       'Customer & partner portals',
-    indexLabel:  'Portals',
+    id: 'customer-portals',
+    title: 'Customer & partner portals',
     description: 'Your customers log in, check their own status, and stop emailing you for it.',
-    cta:         'See how portals work',
-    image: {
-      src: '/services/customer-portal-overview.webp',
-      alt: 'Customer portal showing a secure login, live order status tracker, downloadable invoices, and support chat',
-    },
+    imgSrc: '/services/customer-portal-overview.webp',
+    icon: Users,
   },
   {
-    id:          'ecommerce-apps',
-    title:       'E-commerce & mobile apps',
-    indexLabel:  'E-commerce & apps',
+    id: 'ecommerce-apps',
+    title: 'E-commerce & mobile apps',
     description: 'Storefront, stock, and checkout wired as one system. The app follows when you need it.',
-    cta:         'See what we’ve shipped',
-    image: {
-      src: '/services/ecommerce-storefront-overview.webp',
-      alt: 'E-commerce storefront on laptop and mobile with product catalog, cart, checkout, and delivery tracking',
-    },
+    imgSrc: '/services/ecommerce-storefront-overview.webp',
+    icon: ShoppingBag,
   },
 ]
 
+const CYCLE_MS = 3800
+
+function AutoExpandingCards() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(false)
+  const paused = useRef(false)
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (paused.current) return
+      setActiveIndex((prev) => (prev + 1) % SYSTEMS.length)
+    }, CYCLE_MS)
+    return () => clearInterval(id)
+  }, [])
+
+  const select = (index: number) => {
+    setActiveIndex(index)
+    paused.current = true
+  }
+
+  const gridStyle = isDesktop
+    ? { gridTemplateColumns: SYSTEMS.map((_, i) => (i === activeIndex ? '8fr' : '1fr')).join(' ') }
+    : { gridTemplateRows: SYSTEMS.map((_, i) => (i === activeIndex ? '8fr' : '1fr')).join(' ') }
+
+  return (
+    <ul
+      className="solution-cards grid h-[600px] w-full gap-2 transition-[grid-template-columns,grid-template-rows] duration-500 ease-out md:h-[58svh] md:max-h-[480px] md:min-h-[380px]"
+      style={gridStyle}
+      onMouseLeave={() => {
+        paused.current = false
+      }}
+    >
+      {SYSTEMS.map((system, index) => {
+        const isActive = index === activeIndex
+        const Icon = system.icon
+        return (
+          <li
+            key={system.id}
+            className="group relative min-h-0 min-w-0 cursor-pointer overflow-hidden border border-(--color-border) bg-(--color-surface) md:min-w-[80px]"
+            onMouseEnter={() => select(index)}
+            onFocus={() => select(index)}
+            onClick={() => select(index)}
+            tabIndex={0}
+            data-active={isActive}
+          >
+            <Image
+              src={system.imgSrc}
+              alt={system.title}
+              fill
+              sizes="(min-width: 768px) 33vw, 100vw"
+              className="scale-110 object-cover grayscale transition-all duration-300 ease-out group-data-[active=true]:scale-100 group-data-[active=true]:grayscale-0"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+
+            <article className="absolute inset-0 flex flex-col justify-end gap-3 p-5 md:p-6">
+              <h3 className="hidden origin-left rotate-90 text-base font-medium uppercase tracking-wider text-white/85 opacity-100 transition-all duration-300 ease-out md:block group-data-[active=true]:opacity-0">
+                {system.title}
+              </h3>
+              <Icon
+                size={30}
+                strokeWidth={1.5}
+                aria-hidden="true"
+                className="text-white opacity-0 transition-all duration-300 delay-75 ease-out group-data-[active=true]:opacity-100"
+              />
+              <h3 className="text-2xl font-bold text-white opacity-0 transition-all duration-300 delay-150 ease-out group-data-[active=true]:opacity-100 sm:text-3xl">
+                {system.title}
+              </h3>
+              <p className="w-full max-w-xs text-base text-white/90 opacity-0 transition-all duration-300 delay-225 ease-out group-data-[active=true]:opacity-100">
+                {system.description}
+              </p>
+            </article>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
 export default function SolutionSection() {
   const scope = useRef<HTMLElement>(null)
-  const [activeId, setActiveId] = useState(SYSTEMS[0].id)
 
   useGsapSection(scope, () => {
     revealLines('#solution-heading', { trigger: scope.current })
-    scope.current?.querySelectorAll<HTMLElement>('.service-panel').forEach((panel) => {
-      const img = panel.querySelector<HTMLElement>('.service-image')
-      if (img) revealClipImage(img, { scale: false, trigger: panel })
-      revealFadeUp(panel.querySelectorAll('.service-copy'), { y: 20, trigger: panel })
-    })
+    revealFadeUp('.solution-cards', { y: 24, trigger: scope.current })
   })
-
-  // Scroll-spy for the sticky index — same technique as FixesSection: panels
-  // are tall blocks, so a thin band near the top of the viewport reliably has
-  // exactly one crossing it.
-  useEffect(() => {
-    const panels = scope.current?.querySelectorAll<HTMLElement>('.service-panel')
-    if (!panels?.length) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.find((entry) => entry.isIntersecting)
-        if (hit?.target.id) setActiveId(hit.target.id)
-      },
-      { rootMargin: '-25% 0px -65% 0px' },
-    )
-
-    panels.forEach((panel) => observer.observe(panel))
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section ref={scope} className="py-16 md:py-20" aria-labelledby="solution-heading">
       <div className="container">
-        <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12">
-
-          {/* ── Sticky chapter index ── */}
-          <div className="lg:col-span-4 lg:sticky lg:top-32">
-            <h2
-              id="solution-heading"
-              className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
-            >
-              Three Systems We Build Most Often
-            </h2>
-
-            <nav aria-label="Systems" className="mt-8 hidden lg:block">
-              <ul className="flex flex-col">
-                {SYSTEMS.map((system) => {
-                  const isActive = system.id === activeId
-                  return (
-                    <li key={system.id}>
-                      <a
-                        href={`#${system.id}`}
-                        aria-current={isActive ? 'true' : undefined}
-                        className={`block border-l-2 py-2 pl-4 text-[15px] transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
-                          isActive
-                            ? 'border-(--color-text) text-(--color-text) [text-shadow:0_0_0.5px_currentColor]'
-                            : 'border-(--color-border) text-(--color-text-muted) hover:text-(--color-text)'
-                        }`}
-                      >
-                        {system.indexLabel}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-            </nav>
-          </div>
-
-          {/* ── System panels ── */}
-          <div className="mt-10 flex flex-col gap-20 lg:col-span-8 lg:mt-0 md:gap-24">
-            {SYSTEMS.map((system) => (
-              <article key={system.id} id={system.id} className="service-panel scroll-mt-32">
-                <div className="service-image relative mb-6 overflow-hidden border border-(--color-border) bg-(--color-surface)">
-                  <Image
-                    src={system.image.src}
-                    alt={system.image.alt}
-                    width={1672}
-                    height={941}
-                    sizes="(min-width: 1024px) 830px, 100vw"
-                    className="h-auto w-full"
-                  />
-                </div>
-
-                <h3 className="service-copy font-sans text-2xl font-bold leading-[1.1] text-(--color-text) sm:text-3xl">
-                  {system.title}
-                </h3>
-                <p className="service-copy mt-3 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)">
-                  {system.description}
-                </p>
-                <div className="service-copy mt-6">
-                  <Button href="#start-project" variant="ghost" size="sm" showArrow>
-                    {system.cta}
-                  </Button>
-                </div>
-              </article>
-            ))}
-          </div>
-
+        <div className="mb-10 max-w-2xl md:mb-14">
+          <h2
+            id="solution-heading"
+            className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
+          >
+            Three Systems We Build Most Often
+          </h2>
         </div>
+
+        <AutoExpandingCards />
       </div>
     </section>
   )
