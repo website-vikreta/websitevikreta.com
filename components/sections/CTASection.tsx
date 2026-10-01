@@ -1,8 +1,16 @@
 'use client'
 
 import React from 'react'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
+import { RevealText, RevealFade } from '@/components/ui/Reveal'
+
+const CTAMapBackground = dynamic(
+  () => import('@/components/ui/CTAMapBackground').then((mod) => mod.CTAMapBackground),
+  { ssr: false }
+)
+
 interface CTAProps {
   badge?: {
     text: string
@@ -14,6 +22,7 @@ interface CTAProps {
     href: string
   }
   withGlow?: boolean
+  withMap?: boolean
 }
 
 export function CTASection({
@@ -21,44 +30,65 @@ export function CTASection({
   title,
   description,
   action,
-  withGlow = true,
+  withMap = true,
 }: CTAProps) {
   return (
-    <section className="relative overflow-hidden pt-0 md:pt-0">
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex w-full max-w-container flex-col items-center gap-6 px-8 py-8 text-center sm:gap-6 md:py-12">
-        {/* Badge */}
-        {badge && (
-          <Badge text={badge.text} />
-        )}
+    <section
+      aria-labelledby="cta-heading"
+      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] py-20 sm:py-24 md:py-28 lg:py-32"
+    >
+      {/* Background Curved Natural Earth Map Strip */}
+      {withMap && (
+        <div className="opacity-70 sm:opacity-100 transition-opacity duration-500">
+          <CTAMapBackground />
+        </div>
+      )}
 
-        {/* Title */}
-        <h2 className="text-3xl font-semibold sm:text-5xl">
-          {title}
-        </h2>
+      {/* Optional Badge if explicitly passed */}
+      {badge && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 sm:bottom-8 z-20">
+          <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
+            <div className="pointer-events-auto inline-block">
+              <Badge text={badge.text} />
+            </div>
+          </div>
+        </div>
+      )}
 
-        {/* Description */}
-        {description && (
-          <p className="text-muted-foreground">
-            {description}
-          </p>
-        )}
-
-        {/* Action Button */}
-        <Button
-          href={action.href}
-          variant="accent"
-          size="lg"
-          showArrow
+      {/* Content Container (elevated, commanding hero typography) */}
+      <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-col items-center gap-3.5 px-6 text-center sm:gap-5">
+        {/* Title — Signature Masked Vertical Line Reveal */}
+        <RevealText
+          as="h2"
+          className="text-3xl font-bold tracking-tight text-[#121212] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[1.08]"
         >
-          {action.text}
-        </Button>
+          <span id="cta-heading">{title}</span>
+        </RevealText>
 
-        {/* Glow Effect */}
-        {withGlow && (
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-yellow-400/20 to-transparent opacity-50" />
+        {/* Description — Staggered Fade Up */}
+        {description && (
+          <RevealFade delay={0.12} y={16}>
+            <p className="max-w-lg text-sm sm:text-base text-[var(--color-text-muted,#525252)] leading-relaxed">
+              {description}
+            </p>
+          </RevealFade>
         )}
+
+        {/* Action Button — Staggered Fade Up with Hover Scale */}
+        <RevealFade delay={0.22} y={16}>
+          <div className="mt-1 sm:mt-2">
+            <Button
+              href={action.href}
+              variant="accent"
+              size="lg"
+              showArrow
+            >
+              {action.text}
+            </Button>
+          </div>
+        </RevealFade>
       </div>
     </section>
   )
 }
+
