@@ -12,8 +12,8 @@ interface CountriesTopology extends Topology<Objects> {
   }
 }
 
-// All client network hubs across North America, Europe, India, and East Asia
-const CTA_HUBS = [
+// Global client hubs
+const ALL_HUBS = [
   { id: 'la', name: 'Archmodal (Los Angeles)', coords: [-118.2437, 34.0522] as [number, number], isMajor: true },
   { id: 'dallas', name: 'Cozmo Realty (Dallas)', coords: [-96.7970, 32.7767] as [number, number], isMajor: false },
   { id: 'chicago', name: 'Champion Lenders (Chicago)', coords: [-87.6298, 41.8781] as [number, number], isMajor: false },
@@ -28,22 +28,60 @@ const CTA_HUBS = [
   { id: 'singapore', name: 'Global Asia Node (Singapore)', coords: [103.8198, 1.3521] as [number, number], isMajor: true },
 ]
 
-// Module-level in-memory cache: fetches once per session, instant for all subsequent pages
+const ALL_LINKS: [string, string][] = [
+  ['la', 'toronto'],
+  ['la', 'dallas'],
+  ['dallas', 'chicago'],
+  ['chicago', 'toronto'],
+  ['toronto', 'montreal'],
+  ['toronto', 'zurich'],
+  ['montreal', 'manchester'],
+  ['manchester', 'zurich'],
+  ['zurich', 'delhi'],
+  ['delhi', 'pune'],
+  ['mumbai', 'pune'],
+  ['pune', 'bengaluru'],
+  ['pune', 'singapore'],
+  ['la', 'zurich'],
+]
+
+// West Region (Americas & Western Europe)
+const WEST_HUB_IDS = new Set(['la', 'dallas', 'chicago', 'toronto', 'montreal', 'manchester', 'zurich'])
+const WEST_LINKS: [string, string][] = [
+  ['la', 'toronto'],
+  ['la', 'dallas'],
+  ['dallas', 'chicago'],
+  ['chicago', 'toronto'],
+  ['toronto', 'montreal'],
+  ['toronto', 'zurich'],
+  ['montreal', 'manchester'],
+  ['manchester', 'zurich'],
+  ['la', 'zurich'],
+]
+
+// East Region (Europe, India & Asia-Pacific)
+const EAST_HUB_IDS = new Set(['zurich', 'delhi', 'mumbai', 'pune', 'bengaluru', 'singapore'])
+const EAST_LINKS: [string, string][] = [
+  ['zurich', 'delhi'],
+  ['delhi', 'pune'],
+  ['mumbai', 'pune'],
+  ['pune', 'bengaluru'],
+  ['pune', 'singapore'],
+]
+
+// Module-level in-memory cache
 let cachedWorldData: FeatureCollection<Geometry> | null = null
 
-export function CTAMapBackground() {
+interface CTAMapBackgroundProps {
+  variant?: 'desktop' | 'mobile'
+}
+
+export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps) {
   const [worldData, setWorldData] = useState<FeatureCollection<Geometry> | null>(() => cachedWorldData)
+  const [activeRegion, setActiveRegion] = useState<'west' | 'east'>('west')
+  const [userInteracted, setUserInteracted] = useState(false)
 
-  // Natural Earth projection scaled and centered with extra top headroom for flight arcs
-  const { projection, pathGenerator } = useMemo(() => {
-    const proj = geoNaturalEarth1()
-      .rotate([-11, 0, 0])
-      .scale(270)
-      .translate([600, 318])
-    const path = geoPath().projection(proj)
-    return { projection: proj, pathGenerator: path }
-  }, [])
-
+  // Fetch world data once
   useEffect(() => {
     if (cachedWorldData) {
       if (!worldData) setWorldData(cachedWorldData)
@@ -67,7 +105,6 @@ export function CTAMapBackground() {
         setWorldData(inhabited)
       })
       .catch((err) => {
-        // Fails gracefully: CTA section remains 100% styled and fully functional
         console.warn('Map background unavailable, continuing with flat CTA:', err)
       })
     return () => {
@@ -75,69 +112,335 @@ export function CTAMapBackground() {
     }
   }, [worldData])
 
-  // Projected landmass SVG paths
-  const countryPaths = useMemo(() => {
-    if (!worldData) return []
-    return worldData.features
-      .map((f, i) => ({
-        id: (f.id as string) || `cta-c-${i}`,
-        d: pathGenerator(f) || '',
-      }))
-      .filter((c) => c.d.length > 0)
-  }, [worldData, pathGenerator])
+  // Mobile auto-cycle between West and East maps every 4.5 seconds
+  useEffect(() => {
+    if (variant !== 'mobile') return
 
-  // Projected hub coordinates
-  const projectedHubs = useMemo(() => {
-    return CTA_HUBS.map((hub) => {
-      const pos = projection(hub.coords)
-      return {
-        ...hub,
-        x: pos ? pos[0] : 0,
-        y: pos ? pos[1] : 0,
-      }
+    const interval = setInterval(() => {
+      setActiveRegion((prev) => (prev === 'west' ? 'east' : 'west'))
+    }, userInteracted ? 8000 : 4500)
+
+    return () => clearInterval(interval)
+  }, [variant, userInteracted])
+
+  // Desktop Projection & Elements
+  const desktopData = useMemo(() => {
+    if (variant !== 'desktop') return null
+    const proj = geoNaturalEarth1().rotate([-11, 0, 0]).scale(270).translate([600, 318])
+    const pathGen = geoPath().projection(proj)
+
+    const countries = worldData
+      ? worldData.features
+          .map((f, i) => ({ id: (f.id as string) || `c-${i}`, d: pathGen(f) || '' }))
+          .filter((c) => c.d.length > 0)
+      : []
+
+    const hubs = ALL_HUBS.map((hub) => {
+      const pos = proj(hub.coords)
+      return { ...hub, x: pos ? pos[0] : 0, y: pos ? pos[1] : 0 }
     })
-  }, [projection])
 
-  // Connecting network arcs
-  const arcs = useMemo(() => {
     const hubMap = new Map<string, { x: number; y: number }>()
-    projectedHubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
+    hubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
 
-    const links: [string, string][] = [
-      ['la', 'toronto'],
-      ['la', 'dallas'],
-      ['dallas', 'chicago'],
-      ['chicago', 'toronto'],
-      ['toronto', 'montreal'],
-      ['toronto', 'zurich'],
-      ['montreal', 'manchester'],
-      ['manchester', 'zurich'],
-      ['zurich', 'delhi'],
-      ['delhi', 'pune'],
-      ['mumbai', 'pune'],
-      ['pune', 'bengaluru'],
-      ['pune', 'singapore'],
-      ['la', 'zurich'],
-    ]
+    const arcs = ALL_LINKS.map(([fromId, toId], idx) => {
+      const p1 = hubMap.get(fromId)
+      const p2 = hubMap.get(toId)
+      if (!p1 || !p2) return null
+      const midX = (p1.x + p2.x) / 2
+      const midY = (p1.y + p2.y) / 2
+      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+      const cpY = midY - Math.min(dist * 0.16, 26)
+      return { id: `d-arc-${idx}`, d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}` }
+    }).filter(Boolean) as { id: string; d: string }[]
 
-    return links
-      .map(([fromId, toId], idx) => {
-        const p1 = hubMap.get(fromId)
-        const p2 = hubMap.get(toId)
-        if (!p1 || !p2) return null
-        const midX = (p1.x + p2.x) / 2
-        const midY = (p1.y + p2.y) / 2
-        const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
-        const curveOffset = Math.min(dist * 0.16, 26)
-        const cpY = midY - curveOffset
-        return {
-          id: `cta-arc-${idx}`,
-          d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}`,
-        }
-      })
-      .filter(Boolean) as { id: string; d: string }[]
-  }, [projectedHubs])
+    return { countries, hubs, arcs }
+  }, [variant, worldData])
 
+  // Mobile Projections & Elements for Both Regions
+  // Region 1: West (Americas & EU)
+  const mobileWestData = useMemo(() => {
+    if (variant !== 'mobile') return null
+    const proj = geoNaturalEarth1().rotate([48, 0, 0]).scale(160).translate([200, 215])
+    const pathGen = geoPath().projection(proj)
+
+    const countries = worldData
+      ? worldData.features
+          .map((f, i) => ({ id: `mw-c-${f.id || i}`, d: pathGen(f) || '' }))
+          .filter((c) => c.d.length > 0)
+      : []
+
+    const hubs = ALL_HUBS.filter((h) => WEST_HUB_IDS.has(h.id)).map((hub) => {
+      const pos = proj(hub.coords)
+      return { ...hub, x: pos ? pos[0] : 0, y: pos ? pos[1] : 0 }
+    })
+
+    const hubMap = new Map<string, { x: number; y: number }>()
+    hubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
+
+    const arcs = WEST_LINKS.map(([fromId, toId], idx) => {
+      const p1 = hubMap.get(fromId)
+      const p2 = hubMap.get(toId)
+      if (!p1 || !p2) return null
+      const midX = (p1.x + p2.x) / 2
+      const midY = (p1.y + p2.y) / 2
+      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+      const cpY = midY - Math.min(dist * 0.16, 22)
+      return { id: `mw-arc-${idx}`, d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}` }
+    }).filter(Boolean) as { id: string; d: string }[]
+
+    return { countries, hubs, arcs }
+  }, [variant, worldData])
+
+  // Region 2: East (India & Asia)
+  const mobileEastData = useMemo(() => {
+    if (variant !== 'mobile') return null
+    const proj = geoNaturalEarth1().rotate([-70, 0, 0]).scale(160).translate([195, 215])
+    const pathGen = geoPath().projection(proj)
+
+    const countries = worldData
+      ? worldData.features
+          .map((f, i) => ({ id: `me-c-${f.id || i}`, d: pathGen(f) || '' }))
+          .filter((c) => c.d.length > 0)
+      : []
+
+    const hubs = ALL_HUBS.filter((h) => EAST_HUB_IDS.has(h.id)).map((hub) => {
+      const pos = proj(hub.coords)
+      return { ...hub, x: pos ? pos[0] : 0, y: pos ? pos[1] : 0 }
+    })
+
+    const hubMap = new Map<string, { x: number; y: number }>()
+    hubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
+
+    const arcs = EAST_LINKS.map(([fromId, toId], idx) => {
+      const p1 = hubMap.get(fromId)
+      const p2 = hubMap.get(toId)
+      if (!p1 || !p2) return null
+      const midX = (p1.x + p2.x) / 2
+      const midY = (p1.y + p2.y) / 2
+      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
+      const cpY = midY - Math.min(dist * 0.16, 22)
+      return { id: `me-arc-${idx}`, d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}` }
+    }).filter(Boolean) as { id: string; d: string }[]
+
+    return { countries, hubs, arcs }
+  }, [variant, worldData])
+
+  // ==========================================
+  // MOBILE DUAL-REGION BACKGROUND
+  // ==========================================
+  if (variant === 'mobile') {
+    return (
+      <div className="absolute inset-0 overflow-hidden select-none" aria-hidden="true">
+        <style jsx>{`
+          @keyframes ctaArcFlow {
+            from {
+              stroke-dashoffset: 0;
+            }
+            to {
+              stroke-dashoffset: -20;
+            }
+          }
+          .cta-arc-flow {
+            animation: ctaArcFlow 3.2s linear infinite;
+          }
+          @keyframes ctaPulse {
+            0% {
+              r: 5px;
+              opacity: 0.7;
+            }
+            50% {
+              r: 13px;
+              opacity: 0.25;
+            }
+            100% {
+              r: 19px;
+              opacity: 0;
+            }
+          }
+          .cta-hub-pulse {
+            animation: ctaPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .cta-arc-flow,
+            .cta-hub-pulse {
+              animation: none;
+            }
+          }
+        `}</style>
+
+        {/* Map 1: Americas & Western Europe (West) */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            activeRegion === 'west' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          {mobileWestData && (
+            <svg
+              viewBox="0 0 390 340"
+              preserveAspectRatio="xMidYMid slice"
+              className="w-full h-full min-w-full"
+            >
+              {/* Landmasses */}
+              <g className="cta-countries">
+                {mobileWestData.countries.map((c) => (
+                  <path
+                    key={c.id}
+                    d={c.d}
+                    fill="var(--color-bg-muted)"
+                    stroke="var(--color-border)"
+                    strokeWidth="0.5"
+                    strokeLinejoin="round"
+                  />
+                ))}
+              </g>
+
+              {/* Connecting Arcs */}
+              <g className="cta-arcs">
+                {mobileWestData.arcs.map((arc) => (
+                  <path
+                    key={arc.id}
+                    d={arc.d}
+                    fill="none"
+                    stroke="var(--color-accent)"
+                    strokeWidth="1.3"
+                    strokeDasharray="3 5"
+                    opacity="0.9"
+                    className="cta-arc-flow"
+                  />
+                ))}
+              </g>
+
+              {/* Hub Pins */}
+              <g className="cta-hubs">
+                {mobileWestData.hubs.map((hub) => (
+                  <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
+                    {hub.isMajor && (
+                      <>
+                        <circle r="14" fill="var(--color-accent)" opacity="0.25" className="pointer-events-none" />
+                        <circle r="11" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
+                      </>
+                    )}
+                    <circle r={hub.isMajor ? 4.2 : 2.8} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
+                    <circle r={hub.isMajor ? 2 : 1.2} fill="var(--color-text)" />
+                  </g>
+                ))}
+              </g>
+            </svg>
+          )}
+        </div>
+
+        {/* Map 2: Europe, India & Asia (East) */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            activeRegion === 'east' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          {mobileEastData && (
+            <svg
+              viewBox="0 0 390 340"
+              preserveAspectRatio="xMidYMid slice"
+              className="w-full h-full min-w-full"
+            >
+              {/* Landmasses */}
+              <g className="cta-countries">
+                {mobileEastData.countries.map((c) => (
+                  <path
+                    key={c.id}
+                    d={c.d}
+                    fill="var(--color-bg-muted)"
+                    stroke="var(--color-border)"
+                    strokeWidth="0.5"
+                    strokeLinejoin="round"
+                  />
+                ))}
+              </g>
+
+              {/* Connecting Arcs */}
+              <g className="cta-arcs">
+                {mobileEastData.arcs.map((arc) => (
+                  <path
+                    key={arc.id}
+                    d={arc.d}
+                    fill="none"
+                    stroke="var(--color-accent)"
+                    strokeWidth="1.3"
+                    strokeDasharray="3 5"
+                    opacity="0.9"
+                    className="cta-arc-flow"
+                  />
+                ))}
+              </g>
+
+              {/* Hub Pins */}
+              <g className="cta-hubs">
+                {mobileEastData.hubs.map((hub) => (
+                  <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
+                    {hub.isMajor && (
+                      <>
+                        <circle r="14" fill="var(--color-accent)" opacity="0.25" className="pointer-events-none" />
+                        <circle r="11" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
+                      </>
+                    )}
+                    <circle r={hub.isMajor ? 4.2 : 2.8} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
+                    <circle r={hub.isMajor ? 2 : 1.2} fill="var(--color-text)" />
+                  </g>
+                ))}
+              </g>
+            </svg>
+          )}
+        </div>
+
+        {/* Minimal Bottom Switcher Pills */}
+        <div className="pointer-events-auto absolute bottom-2.5 sm:bottom-3 inset-x-0 flex items-center justify-center z-20">
+          <div className="inline-flex items-center gap-1 p-0.5 bg-[var(--color-surface)] border border-[var(--color-border,#E8E8E8)] rounded-full text-[10px] font-mono tracking-tight">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveRegion('west')
+                setUserInteracted(true)
+              }}
+              className={`px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1.5 ${
+                activeRegion === 'west'
+                  ? 'bg-[var(--color-text)] text-[var(--color-accent)] font-medium'
+                  : 'text-[var(--color-text-muted,#737373)] hover:text-[var(--color-text)]'
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  activeRegion === 'west' ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-border-strong)]'
+                }`}
+              />
+              Americas & EU
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveRegion('east')
+                setUserInteracted(true)
+              }}
+              className={`px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1.5 ${
+                activeRegion === 'east'
+                  ? 'bg-[var(--color-text)] text-[var(--color-accent)] font-medium'
+                  : 'text-[var(--color-text-muted,#737373)] hover:text-[var(--color-text)]'
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  activeRegion === 'east' ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-border-strong)]'
+                }`}
+              />
+              India & Asia
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ==========================================
+  // DESKTOP FULL-BLEED AMBIENT MAP (ORIGINAL)
+  // ==========================================
   return (
     <div
       className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none"
@@ -172,23 +475,28 @@ export function CTAMapBackground() {
         .cta-hub-pulse {
           animation: ctaPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
         }
+        @media (prefers-reduced-motion: reduce) {
+          .cta-arc-flow,
+          .cta-hub-pulse {
+            animation: none;
+          }
+        }
       `}</style>
 
       {/* Layer 1: Landmasses */}
-      <div className={`absolute inset-0 w-full h-full transition-opacity duration-700 ${worldData ? 'opacity-100' : 'opacity-0'}`}>
-        <svg
-          viewBox="0 0 1200 400"
-          preserveAspectRatio="xMidYMid slice"
-          className="w-full h-full min-w-full"
-        >
-          {/* Curved World Landmasses */}
+      <div
+        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ${
+          worldData ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" className="w-full h-full min-w-full">
           <g className="cta-countries">
-            {countryPaths.map((country) => (
+            {desktopData?.countries.map((country) => (
               <path
                 key={country.id}
                 d={country.d}
-                fill="#EFEFE9"
-                stroke="#DDDDCF"
+                fill="var(--color-bg-muted)"
+                stroke="var(--color-border)"
                 strokeWidth="0.45"
                 strokeLinejoin="round"
               />
@@ -197,21 +505,20 @@ export function CTAMapBackground() {
         </svg>
       </div>
 
-      {/* Layer 3: High-Z-Index Flight Arcs & Glowing Client Hub Pins */}
-      <div className={`relative z-10 w-full h-full transition-opacity duration-700 ${worldData ? 'opacity-100' : 'opacity-0'}`}>
-        <svg
-          viewBox="0 0 1200 400"
-          preserveAspectRatio="xMidYMid slice"
-          className="w-full h-full min-w-full"
-        >
-          {/* Animated Flowing Connecting Arcs */}
+      {/* Layer 2: Arcs & Client Hub Pins */}
+      <div
+        className={`relative z-10 w-full h-full transition-opacity duration-700 ${
+          worldData ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" className="w-full h-full min-w-full">
           <g className="cta-arcs">
-            {arcs.map((arc) => (
+            {desktopData?.arcs.map((arc) => (
               <path
                 key={arc.id}
                 d={arc.d}
                 fill="none"
-                stroke="#FFD600"
+                stroke="var(--color-accent)"
                 strokeWidth="1.25"
                 strokeDasharray="3 5"
                 opacity="0.9"
@@ -220,37 +527,17 @@ export function CTAMapBackground() {
             ))}
           </g>
 
-          {/* Client Hub Nodes with Glowing Radar Halos (Always on top) */}
           <g className="cta-hubs">
-            {projectedHubs.map((hub) => (
+            {desktopData?.hubs.map((hub) => (
               <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
                 {hub.isMajor && (
                   <>
-                    <circle
-                      r="14"
-                      fill="#FFD600"
-                      opacity="0.2"
-                      className="pointer-events-none"
-                    />
-                    <circle
-                      r="11"
-                      fill="none"
-                      stroke="#FFD600"
-                      strokeWidth="1.2"
-                      className="cta-hub-pulse"
-                    />
+                    <circle r="14" fill="var(--color-accent)" opacity="0.2" className="pointer-events-none" />
+                    <circle r="11" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
                   </>
                 )}
-                <circle
-                  r={hub.isMajor ? 4 : 2.5}
-                  fill="#FFD600"
-                  stroke="#121212"
-                  strokeWidth="1"
-                />
-                <circle
-                  r={hub.isMajor ? 2 : 1.2}
-                  fill="#121212"
-                />
+                <circle r={hub.isMajor ? 4 : 2.5} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
+                <circle r={hub.isMajor ? 2 : 1.2} fill="var(--color-text)" />
               </g>
             ))}
           </g>

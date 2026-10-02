@@ -35,13 +35,18 @@ export function CTASection({
   return (
     <section
       aria-labelledby="cta-heading"
-      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] py-20 sm:py-24 md:py-28 lg:py-32"
+      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] pt-10 pb-14 sm:py-24 md:py-28 lg:py-32"
     >
-      {/* Background Curved Natural Earth Map Strip */}
+      {/* Background Curved Natural Earth Map: Desktop full strip + Mobile dual-region switcher */}
       {withMap && (
-        <div className="opacity-70 sm:opacity-100 transition-opacity duration-500">
-          <CTAMapBackground />
-        </div>
+        <>
+          <div className="hidden md:block">
+            <CTAMapBackground variant="desktop" />
+          </div>
+          <div className="block md:hidden">
+            <CTAMapBackground variant="mobile" />
+          </div>
+        </>
       )}
 
       {/* Optional Badge if explicitly passed */}
@@ -60,7 +65,7 @@ export function CTASection({
         {/* Title — Signature Masked Vertical Line Reveal */}
         <RevealText
           as="h2"
-          className="text-3xl font-bold tracking-tight text-[#121212] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[1.08]"
+          className="text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[1.08]"
         >
           <span id="cta-heading">{title}</span>
         </RevealText>
@@ -91,4 +96,3 @@ export function CTASection({
     </section>
   )
 }
-
