@@ -19,6 +19,12 @@ const staticRoutes: MetadataRoute.Sitemap = [
 
   // Services
   {
+    url: `${BASE}/services`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  },
+  {
     url: `${BASE}/services/ai-automations`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
