@@ -114,6 +114,26 @@ export const ptComponents: any = {
   },
 }
 
+// Some imported posts store spans as `marks: [null]` (plus link markDefs with
+// `href: null`). @portabletext/react then misreads every span as an unknown
+// block type and renders it `display:none`, so the whole post body is blank.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function sanitize(value: any[]): PortableTextBlock[] {
+  return value.map((block) =>
+    block?._type !== 'block'
+      ? block
+      : {
+          ...block,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          markDefs: (block.markDefs ?? []).filter((d: any) => d && (d._type !== 'link' || d.href)),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          children: (block.children ?? []).map((c: any) =>
+            Array.isArray(c?.marks) ? { ...c, marks: c.marks.filter(Boolean) } : c
+          ),
+        }
+  )
+}
+
 export default function PortableTextContent({ value }: { value: PortableTextBlock[] }) {
-  return <PortableText value={value} components={ptComponents} />
+  return <PortableText value={sanitize(value ?? [])} components={ptComponents} />
 }
