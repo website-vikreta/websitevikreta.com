@@ -30,6 +30,16 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  // Temporary until the /services hub page ships; remove then
+  async redirects() {
+    return [
+      {
+        source: '/services',
+        destination: '/services/ai-automations',
+        permanent: false,
+      },
+    ]
+  },
 };
 
 export default nextConfig;
