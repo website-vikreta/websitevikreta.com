@@ -17,6 +17,8 @@ interface CTAProps {
   }
   title: string
   description?: string
+  /** Shorter copy for < md screens; falls back to `description` */
+  mobileDescription?: string
   action: {
     text: string
     href: string
@@ -29,13 +31,14 @@ export function CTASection({
   badge,
   title,
   description,
+  mobileDescription,
   action,
   withMap = true,
 }: CTAProps) {
   return (
     <section
       aria-labelledby="cta-heading"
-      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] pt-10 pb-14 sm:py-24 md:py-28 lg:py-32"
+      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] pt-8 pb-12 sm:pt-10 sm:pb-14 md:py-20"
     >
       {/* Background Curved Natural Earth Map: Desktop full strip + Mobile dual-region switcher */}
       {withMap && (
@@ -61,27 +64,34 @@ export function CTASection({
       )}
 
       {/* Content Container (elevated, commanding hero typography) */}
-      <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-col items-center gap-3.5 px-6 text-center sm:gap-5">
+      <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-2xl flex-col items-center gap-3.5 px-6 text-center sm:gap-5">
         {/* Title — Signature Masked Vertical Line Reveal */}
         <RevealText
           as="h2"
           className="text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[1.08]"
         >
-          <span id="cta-heading">{title}</span>
+          <span id="cta-heading" className="pointer-events-auto">{title}</span>
         </RevealText>
 
         {/* Description — Staggered Fade Up */}
         {description && (
           <RevealFade delay={0.12} y={16}>
-            <p className="max-w-lg text-sm sm:text-base text-[var(--color-text-muted,#525252)] leading-relaxed">
-              {description}
+            <p className="pointer-events-auto max-w-lg text-sm sm:text-base text-[var(--color-text-muted,#525252)] leading-relaxed">
+              {mobileDescription ? (
+                <>
+                  <span className="md:hidden">{mobileDescription}</span>
+                  <span className="hidden md:inline">{description}</span>
+                </>
+              ) : (
+                description
+              )}
             </p>
           </RevealFade>
         )}
 
         {/* Action Button — Staggered Fade Up with Hover Scale */}
         <RevealFade delay={0.22} y={16}>
-          <div className="mt-1 sm:mt-2">
+          <div className="pointer-events-auto mt-1 inline-flex sm:mt-2">
             <Button
               href={action.href}
               variant="accent"
