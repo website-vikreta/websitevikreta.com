@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import WebDevClient from './WebDevClient'
-import { SITE_URL } from '@/config/site'
+import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/services/web-development`
 
@@ -12,9 +12,9 @@ const jsonLd = {
       '@id': `${PAGE_URL}#service`,
       name: 'Web Development Services',
       serviceType: 'Web Development',
-      description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
+      description: 'Custom websites built for speed, local SEO, and conversion. Fast to load, written to rank, and designed to turn visitors into enquiries. Get a free quote.',
       url: PAGE_URL,
-      provider: { '@id': `${SITE_URL}/#organization` },
+      provider: ORGANIZATION_REF,
       areaServed: { '@type': 'Country', name: 'India' },
     },
     {
@@ -22,16 +22,15 @@ const jsonLd = {
       '@id': `${PAGE_URL}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
-        { '@type': 'ListItem', position: 3, name: 'Web Development', item: PAGE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Web Development', item: PAGE_URL },
       ],
     },
   ],
 }
 
 export const metadata: Metadata = {
-  title: 'Web Development Services | Website Vikreta',
-  description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
+  title: 'Custom Web Development Company | Website Vikreta',
+  description: 'Custom websites built for speed, local SEO, and conversion. Fast to load, written to rank, and designed to turn visitors into enquiries. Get a free quote.',
   keywords: [
     // Primary
     'web development company',
@@ -50,8 +49,8 @@ export const metadata: Metadata = {
     'fast SEO-optimized website development services',
   ],
   openGraph: {
-    title: 'Web Development Services | Website Vikreta',
-    description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
+    title: 'Custom Web Development Company | Website Vikreta',
+    description: 'Custom websites built for speed, local SEO, and conversion. Fast to load, written to rank, and designed to turn visitors into enquiries. Get a free quote.',
     url: `${SITE_URL}/services/web-development`,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -61,14 +60,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 675,
-        alt: 'Web Development Services | Website Vikreta',
+        alt: 'Custom Web Development Company | Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Web Development Services | Website Vikreta',
-    description: 'Custom websites engineered for speed, local SEO, and conversion — built to load fast, rank, and turn visitors into enquiries.',
+    title: 'Custom Web Development Company | Website Vikreta',
+    description: 'Custom websites built for speed, local SEO, and conversion. Fast to load, written to rank, and designed to turn visitors into enquiries. Get a free quote.',
     images: ['/og-image.png'],
   },
   alternates: {

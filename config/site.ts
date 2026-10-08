@@ -12,6 +12,18 @@
 export const SITE_URL = 'https://www.websitevikreta.com'
 
 /**
+ * JSON-LD `provider` for service pages. The full ProfessionalService node only
+ * ships on the homepage, so a bare `{ '@id' }` here would be an unresolved
+ * reference on every other page; name + url make it stand on its own.
+ */
+export const ORGANIZATION_REF = {
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#organization`,
+  name: 'Website Vikreta',
+  url: SITE_URL,
+}
+
+/**
  * Calendly booking link behind every "schedule a call" CTA.
  *
  * Env-driven (unlike SITE_URL) so the booking target can change without a code
