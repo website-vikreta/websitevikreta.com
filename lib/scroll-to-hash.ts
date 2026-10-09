@@ -1,9 +1,6 @@
 import type { MouseEvent } from 'react'
 import { prefersReducedMotion } from '@/lib/gsap/reveals'
 
-/** Lets lazy-mounted sections render before we scroll to a hash target. */
-export const ENSURE_HASH_TARGET_EVENT = 'ensure-hash-target'
-
 /**
  * Click handler for same-page `#hash` links. Takes over from next/link's
  * built-in hash handling (instant jump, and — per user report — occasional
@@ -11,15 +8,14 @@ export const ENSURE_HASH_TARGET_EVENT = 'ensure-hash-target'
  * idempotent smooth scroll. No-ops for non-hash hrefs so normal page
  * navigation is untouched.
  *
- * When the target lives in a lazy section (not mounted yet), dispatches
- * `ensure-hash-target` and watches the DOM until the element appears.
+ * If the target isn't in the DOM yet (e.g. a dynamic section still loading),
+ * watches the DOM until the element appears.
  */
 export function scrollToHash(event: MouseEvent, href: string) {
   if (!href.startsWith('#')) return
   event.preventDefault()
 
   const id = href.slice(1)
-  window.dispatchEvent(new CustomEvent(ENSURE_HASH_TARGET_EVENT, { detail: { id } }))
 
   const behavior: ScrollBehavior = prefersReducedMotion() ? 'auto' : 'smooth'
 
