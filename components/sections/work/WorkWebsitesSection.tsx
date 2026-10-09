@@ -33,6 +33,8 @@ export function WorkWebsitesSection() {
                 description={project.description}
                 href={project.href}
                 logo={project.logo}
+                image={project.image}
+                imageAlt={project.imageAlt}
                 skills={project.skills}
                 className="h-full"
               />
