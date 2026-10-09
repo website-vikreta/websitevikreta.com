@@ -53,6 +53,17 @@ export function CaseStudyCardContent({ study, showReadLink = true }: CaseStudyCa
   )
 }
 
+function getDisplayDomain(study: CaseStudy): string {
+  if (study.externalUrl) {
+    try {
+      return new URL(study.externalUrl).hostname.replace(/^www\./, '')
+    } catch {
+      // fallback
+    }
+  }
+  return `${study.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`
+}
+
 export function CaseStudyVisual({
   study,
   showImage = true,
@@ -60,34 +71,52 @@ export function CaseStudyVisual({
   study: CaseStudy
   showImage?: boolean
 }) {
-  return (
-    <div className="h-full border border-(--color-border) bg-(--color-surface) p-2">
-      <div className="relative flex aspect-[14/9] h-full w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)">
-        {showImage && study.image ? (
-          // alt="": study.image is a generic service illustration, not a
-          // preview of this client's project — calling it one describes
-          // something that isn't in the frame. Restore a real alt with real
-          // screenshots. The logo branch below IS the company, so it keeps one.
+  if (showImage && study.image) {
+    const domain = getDisplayDomain(study)
+
+    return (
+      <div className="w-full overflow-hidden border border-(--color-border) bg-(--color-surface) transition-colors duration-300 ease-out group-hover:border-(--color-border-strong)">
+        {/* Minimal browser chrome bar */}
+        <div className="flex items-center justify-between border-b border-(--color-border) bg-(--color-bg-muted) px-3.5 py-2">
+          <div className="flex items-center gap-1.5" aria-hidden="true">
+            <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+            <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+            <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+          </div>
+          <div className="flex h-5 max-w-[200px] flex-1 items-center justify-center rounded-xs border border-(--color-border) bg-(--color-surface) px-2.5 text-[11px] text-(--color-text-faint)">
+            <span className="truncate">{domain}</span>
+          </div>
+          <div className="w-9" aria-hidden="true" />
+        </div>
+
+        {/* 16:9 Viewport content */}
+        <div className="relative aspect-video w-full overflow-hidden bg-(--color-bg-muted)">
           <RevealImage className="relative h-full w-full">
             <Image
               src={study.image}
-              alt=""
+              alt={`${study.company} case study preview`}
               fill
-              className="object-cover grayscale"
+              className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </RevealImage>
-        ) : (
-          <Image
-            src={study.logo}
-            alt={`${study.company} logo`}
-            height={48}
-            width={200}
-            className="opacity-80"
-            style={{ height: '48px', width: 'auto' }}
-            unoptimized
-          />
-        )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex h-full w-full items-center justify-center border border-(--color-border) bg-(--color-surface) p-6">
+      <div className="relative flex aspect-video h-full w-full items-center justify-center overflow-hidden bg-(--color-bg-muted)">
+        <Image
+          src={study.logo}
+          alt={`${study.company} logo`}
+          height={48}
+          width={200}
+          className="opacity-80"
+          style={{ height: '48px', width: 'auto' }}
+          unoptimized
+        />
       </div>
     </div>
   )
@@ -102,8 +131,8 @@ export function CaseStudyFeaturedLink({ study }: { study: CaseStudy }) {
       <div className="flex flex-col justify-between gap-8 pt-10 md:pt-14 lg:pb-14">
         <CaseStudyCardContent study={study} />
       </div>
-      <div className="py-10 lg:py-14">
-        <CaseStudyVisual study={study} showImage={false} />
+      <div className="flex items-center pb-10 pt-0 lg:py-14">
+        <CaseStudyVisual study={study} showImage={true} />
       </div>
     </Link>
   )

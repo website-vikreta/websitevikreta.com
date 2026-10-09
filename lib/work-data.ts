@@ -34,7 +34,7 @@ export interface WebProject {
   description: string
   href: string
   logo: string
-  // image, imageAlt — screenshot previews, not rendered on /work (logo-only), see ExternalProjectLink
+  // image, imageAlt — screenshot previews from /services/web-development/proof/
   image?: string
   imageAlt?: string
   skills: string
@@ -53,6 +53,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       'Simpli Home needed to produce large volumes of product visuals without adding headcount. We mapped the manual Figma workflow and rebuilt it as an automated pipeline.',
     featured: true,
     metric: { value: '11 hrs', label: 'Saved per week' },
+    image: '/services/web-development/proof/simpli-home.webp',
     challenge:
       'The media team was spending hours on repetitive bulk content generation inside Figma: resizing, exporting, and organizing assets collection by collection.',
     approach:
@@ -76,6 +77,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       'An early-stage protocol product with fragmented UX and no design foundation. We rebuilt the experience layer and stayed on as the product evolved.',
     metric: { value: '3+ yrs', label: 'Ongoing partnership' },
     externalUrl: 'https://www.sustainablebtc.org/',
+    image: '/services/web-development/proof/sustainable-bitcoin-protocol.webp',
     challenge:
       'The product had rough user flows, no consistent design system, and an interface that did not match the credibility the protocol needed in market.',
     approach:
@@ -99,6 +101,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     excerpt:
       'A local service business with no digital presence. We built a fast marketing site with local SEO and copy written to convert enquiries.',
     metric: { value: '3 weeks', label: 'Concept to launch' },
+    image: '/services/web-development/proof/ap-cleanco.webp',
     challenge:
       'AP Cleanco had no website, no search visibility, and no system for turning local enquiries into booked jobs.',
     approach:
@@ -131,7 +134,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A sleek product site for DbyT Dynamics with a clean, modern presentation.',
     href: 'https://tocal.in/',
     logo: '/client-logos/tocal.svg',
-    image: '/our-services/webdevelopment.webp',
+    image: '/services/web-development/proof/tocal.webp',
     imageAlt: 'Tocal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
@@ -142,7 +145,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'The public site for a protocol that needed to read as credible to institutional users.',
     href: 'https://www.sustainablebtc.org/',
     logo: '/client-logos/sustainable-bitcoin-protocol.svg',
-    image: '/our-services/ui-ux-design.webp',
+    image: '/services/web-development/proof/sustainable-bitcoin-protocol.webp',
     imageAlt: 'Sustainable Bitcoin Protocol website preview',
     skills: 'UI/UX DESIGN / DESIGN SYSTEM',
   },
@@ -153,7 +156,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A local service business taken from no web presence at all to a site built to convert.',
     href: 'https://apcleanco.com/',
     logo: '/client-logos/ap-cleanco.svg',
-    image: '/our-services/digital-marketing-seo-geo.webp',
+    image: '/services/web-development/proof/ap-cleanco.webp',
     imageAlt: 'AP Cleanco website preview',
     skills: 'WEB DEVELOPMENT / LOCAL SEO',
   },
@@ -164,7 +167,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
     logo: '/client-logos/archmodal.svg',
-    image: '/our-services/ai-automation.webp',
+    image: '/services/web-development/proof/archmodal.webp',
     imageAlt: 'Archmodal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
@@ -175,20 +178,20 @@ export const WEB_PROJECTS: WebProject[] = [
       "A sustainable e-commerce storefront for a women's clothing brand.",
     href: 'https://blancoraclothing.com/shop',
     logo: '/client-logos/blancora.svg',
-    image: '/our-services/web-mobile-crm.webp',
+    image: '/services/web-development/proof/earth-by-blancora.webp',
     imageAlt: 'Earth by Blancora website preview',
     skills: 'UI/UX DESIGN / E-COMMERCE DEVELOPMENT',
   },
   {
-    slug: 'katalyst-consulting',
-    title: 'Katalyst Consulting',
+    slug: 'simpli-home-site',
+    title: 'Simpli Home',
     description:
-      'A professional consulting firm site focused on credibility and growth.',
-    href: 'https://www.katalystcs.co.in/',
-    logo: '/client-logos/katalyst.png',
-    image: '/our-services/webdevelopment.webp',
-    imageAlt: 'Katalyst Consulting website preview',
-    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
+      'A media team doing bulk content generation by hand. We automated the whole pipeline inside Figma Buzz.',
+    href: 'https://www.simpli-home.com/',
+    logo: '/client-logos/simpli-home.svg',
+    image: '/services/web-development/proof/simpli-home.webp',
+    imageAlt: 'Simpli Home website preview',
+    skills: 'AI AUTOMATION / MEDIA OPS',
   },
 ]
 
