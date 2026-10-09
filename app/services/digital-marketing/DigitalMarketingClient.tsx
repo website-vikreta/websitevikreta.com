@@ -3,11 +3,18 @@
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaqSection } from '@/components/sections/FaqSection'
+import { StatsCounters } from '@/components/sections/StatsCounters'
+import { WorkTestimonialsSection } from '@/components/sections/work/WorkTestimonialsSection'
 import type { FaqItem } from '@/lib/faq-data'
 import Hero from './sections/Hero'
 import PainSection from './sections/PainSection'
+import ProblemFixSection from './sections/ProblemFixSection'
 import SolutionSection from './sections/SolutionSection'
+import PaidAdsSection from './sections/PaidAdsSection'
+import LocalSeoSection from './sections/LocalSeoSection'
+import AiMarketingSection from './sections/AiMarketingSection'
 import HowWeWork from './sections/HowWeWork'
+import MeasurementSection from './sections/MeasurementSection'
 import ProofSection from './sections/ProofSection'
 import ContactSection from './sections/ContactSection'
 
@@ -47,9 +54,16 @@ export default function DigitalMarketingClient() {
       <main id="main-content" className="relative z-10">
         <Hero />
         <PainSection />
+        <ProblemFixSection />
         <SolutionSection />
-        <HowWeWork />
         <ProofSection />
+        <StatsCounters bgClassName="" />
+        <PaidAdsSection />
+        <LocalSeoSection />
+        <AiMarketingSection />
+        <HowWeWork />
+        <MeasurementSection />
+        <WorkTestimonialsSection />
         <FaqSection items={digitalMarketingFaqs} ariaLabel="Digital Marketing FAQs" />
         <ContactSection />
       </main>
