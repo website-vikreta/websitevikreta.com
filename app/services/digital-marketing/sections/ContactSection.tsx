@@ -34,7 +34,7 @@ export default function ContactSection() {
           <div className='md:py-8'>
             <h2
               id="cta-form-heading"
-              className="cta-heading text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6"
+              className="cta-heading text-h2 font-bold tracking-tight text-(--color-text) mb-6"
             >
               Let&rsquo;s Fix What Isn&rsquo;t Converting
             </h2>
