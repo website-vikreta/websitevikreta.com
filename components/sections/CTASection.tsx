@@ -38,7 +38,7 @@ export function CTASection({
   return (
     <section
       aria-labelledby="cta-heading"
-      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] flex flex-col items-center justify-center py-8 sm:py-10 md:py-20 lg:py-24 min-h-0 md:min-h-[500px] lg:min-h-[540px]"
+      className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] flex flex-col items-center pt-8 sm:pt-10 md:pt-20 lg:pt-24 pb-6 sm:pb-7 md:pb-10 lg:pb-12 min-h-0 md:min-h-[420px] lg:min-h-[460px]"
     >
       {/* Background Curved Natural Earth Map: Desktop full strip + Mobile dual-region switcher */}
       {withMap && (

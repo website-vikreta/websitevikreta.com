@@ -95,8 +95,8 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
   // ==========================================
   const desktopData = useMemo(() => {
     if (variant !== 'desktop') return null
-    // Center at Atlantic/Europe with wide Natural Earth curvature for taller canvas
-    const proj = geoNaturalEarth1().rotate([-11, 0, 0]).scale(235).translate([600, 355])
+    // Center at Atlantic/Europe, shifted downwards to balance reduced container bottom height
+    const proj = geoNaturalEarth1().rotate([-11, 0, 0]).scale(235).translate([600, 395])
     const pathGen = geoPath().projection(proj)
 
     // Spherical graticule lines (latitude/longitude curves across the Earth)
@@ -441,7 +441,7 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
 
           {/* Curved Horizon Dome Atmosphere Arc (Overarching Globe Horizon) */}
           <path
-            d="M 40 450 Q 600 70 1160 450"
+            d="M 40 485 Q 600 105 1160 485"
             fill="url(#cta-horizon-fade)"
             stroke="var(--color-border)"
             strokeWidth="0.8"
@@ -532,7 +532,7 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
       <div className="pointer-events-none absolute inset-0 z-10 mx-auto max-w-7xl px-4 sm:px-6">
         {/* Pill 1: Americas / West (Simpli Home) */}
         <div
-          className="pointer-events-auto absolute left-[3%] sm:left-[5%] xl:left-[7%] top-[60%] lg:top-[64%] cta-pill-float-a hidden sm:block"
+          className="pointer-events-auto absolute left-[3%] sm:left-[5%] xl:left-[7%] top-[62%] lg:top-[66%] cta-pill-float-a hidden sm:block"
         >
           <Link
             href="/work/simpli-home"
@@ -558,7 +558,7 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
 
         {/* Pill 2: Europe / Atlantic (Sustainable Bitcoin Protocol) */}
         <div
-          className="pointer-events-auto absolute left-[4%] sm:left-[6%] xl:left-[8%] top-[16%] lg:top-[18%] cta-pill-float-b hidden sm:block"
+          className="pointer-events-auto absolute left-[4%] sm:left-[6%] xl:left-[8%] top-[18%] lg:top-[20%] cta-pill-float-b hidden sm:block"
         >
           <Link
             href="/work/sustainable-bitcoin-protocol"
@@ -584,7 +584,7 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
 
         {/* Pill 3: Asia / East (Tocal & MetaThumbz) */}
         <div
-          className="pointer-events-auto absolute right-[3%] sm:right-[5%] xl:right-[7%] top-[50%] lg:top-[54%] cta-pill-float-c hidden sm:block"
+          className="pointer-events-auto absolute right-[3%] sm:right-[5%] xl:right-[7%] top-[52%] lg:top-[56%] cta-pill-float-c hidden sm:block"
         >
           <Link
             href="/work"
