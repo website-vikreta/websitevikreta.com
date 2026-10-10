@@ -1,8 +1,10 @@
 'use client'
 
 import React, { useEffect, useState, useMemo } from 'react'
-import { geoNaturalEarth1, geoPath } from 'd3-geo'
+import Link from 'next/link'
+import { geoNaturalEarth1, geoPath, geoGraticule } from 'd3-geo'
 import { feature } from 'topojson-client'
+import { Layers, ShieldCheck, Cpu, ArrowUpRight } from 'lucide-react'
 import type { Topology, Objects } from 'topojson-specification'
 import type { FeatureCollection, Geometry } from 'geojson'
 
@@ -45,30 +47,6 @@ const ALL_LINKS: [string, string][] = [
   ['la', 'zurich'],
 ]
 
-// West Region (Americas & Western Europe)
-const WEST_HUB_IDS = new Set(['la', 'dallas', 'chicago', 'toronto', 'montreal', 'manchester', 'zurich'])
-const WEST_LINKS: [string, string][] = [
-  ['la', 'toronto'],
-  ['la', 'dallas'],
-  ['dallas', 'chicago'],
-  ['chicago', 'toronto'],
-  ['toronto', 'montreal'],
-  ['toronto', 'zurich'],
-  ['montreal', 'manchester'],
-  ['manchester', 'zurich'],
-  ['la', 'zurich'],
-]
-
-// East Region (Europe, India & Asia-Pacific)
-const EAST_HUB_IDS = new Set(['zurich', 'delhi', 'mumbai', 'pune', 'bengaluru', 'singapore'])
-const EAST_LINKS: [string, string][] = [
-  ['zurich', 'delhi'],
-  ['delhi', 'pune'],
-  ['mumbai', 'pune'],
-  ['pune', 'bengaluru'],
-  ['pune', 'singapore'],
-]
-
 // Module-level in-memory cache
 let cachedWorldData: FeatureCollection<Geometry> | null = null
 
@@ -78,8 +56,6 @@ interface CTAMapBackgroundProps {
 
 export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps) {
   const [worldData, setWorldData] = useState<FeatureCollection<Geometry> | null>(() => cachedWorldData)
-  const [activeRegion, setActiveRegion] = useState<'west' | 'east'>('west')
-  const [userInteracted, setUserInteracted] = useState(false)
 
   // Fetch world data once
   useEffect(() => {
@@ -112,22 +88,19 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
     }
   }, [worldData])
 
-  // Mobile auto-cycle between West and East maps every 4.5 seconds
-  useEffect(() => {
-    if (variant !== 'mobile') return
 
-    const interval = setInterval(() => {
-      setActiveRegion((prev) => (prev === 'west' ? 'east' : 'west'))
-    }, userInteracted ? 8000 : 4500)
 
-    return () => clearInterval(interval)
-  }, [variant, userInteracted])
-
-  // Desktop Projection & Elements
+  // ==========================================
+  // DESKTOP PROJECTION & PARABOLIC ARCS
+  // ==========================================
   const desktopData = useMemo(() => {
     if (variant !== 'desktop') return null
-    const proj = geoNaturalEarth1().rotate([-11, 0, 0]).scale(270).translate([600, 318])
+    // Center at Atlantic/Europe with wide Natural Earth curvature for taller canvas
+    const proj = geoNaturalEarth1().rotate([-11, 0, 0]).scale(235).translate([600, 355])
     const pathGen = geoPath().projection(proj)
+
+    // Spherical graticule lines (latitude/longitude curves across the Earth)
+    const graticulePath = pathGen(geoGraticule().step([30, 20])()) || ''
 
     const countries = worldData
       ? worldData.features
@@ -143,34 +116,52 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
     const hubMap = new Map<string, { x: number; y: number }>()
     hubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
 
+    // High parabolic leaping arcs (3D trajectories like reference image)
     const arcs = ALL_LINKS.map(([fromId, toId], idx) => {
       const p1 = hubMap.get(fromId)
       const p2 = hubMap.get(toId)
       if (!p1 || !p2) return null
-      const midX = (p1.x + p2.x) / 2
-      const midY = (p1.y + p2.y) / 2
-      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
-      const cpY = midY - Math.min(dist * 0.16, 26)
-      return { id: `d-arc-${idx}`, d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}` }
-    }).filter(Boolean) as { id: string; d: string }[]
+      const dx = p2.x - p1.x
+      const dy = p2.y - p1.y
+      const dist = Math.hypot(dx, dy)
 
-    return { countries, hubs, arcs }
+      // Parabolic apex: leap up into the sky
+      const archApex = Math.min(Math.max(dist * 0.42, 50), 125)
+      const cp1X = p1.x + dx * 0.22
+      const cp1Y = p1.y - archApex * 0.95
+      const cp2X = p1.x + dx * 0.78
+      const cp2Y = p2.y - archApex * 0.95
+
+      const d = `M ${p1.x} ${p1.y} C ${cp1X.toFixed(1)} ${cp1Y.toFixed(1)} ${cp2X.toFixed(1)} ${cp2Y.toFixed(1)} ${p2.x} ${p2.y}`
+      const isMajor =
+        (fromId === 'toronto' && toId === 'zurich') ||
+        (fromId === 'zurich' && toId === 'delhi') ||
+        (fromId === 'pune' && toId === 'singapore') ||
+        (fromId === 'la' && toId === 'toronto')
+
+      return { id: `d-arc-${idx}`, d, isMajor, duration: 3.5 + (idx % 3) * 0.8 }
+    }).filter(Boolean) as { id: string; d: string; isMajor: boolean; duration: number }[]
+
+    return { countries, graticulePath, hubs, arcs, hubMap }
   }, [variant, worldData])
 
-  // Mobile Projections & Elements for Both Regions
-  // Region 1: West (Americas & EU)
-  const mobileWestData = useMemo(() => {
+  // ==========================================
+  // MOBILE PROJECTION (SCALED GLOBAL WORLD MAP)
+  // ==========================================
+  const mobileData = useMemo(() => {
     if (variant !== 'mobile') return null
-    const proj = geoNaturalEarth1().rotate([48, 0, 0]).scale(160).translate([200, 215])
+    // Full world map scaled larger to span full width and height of mobile canvas
+    const proj = geoNaturalEarth1().rotate([-11, 0, 0]).scale(108).translate([200, 160])
     const pathGen = geoPath().projection(proj)
+    const graticulePath = pathGen(geoGraticule().step([30, 20])()) || ''
 
     const countries = worldData
       ? worldData.features
-          .map((f, i) => ({ id: `mw-c-${f.id || i}`, d: pathGen(f) || '' }))
+          .map((f, i) => ({ id: `m-c-${f.id || i}`, d: pathGen(f) || '' }))
           .filter((c) => c.d.length > 0)
       : []
 
-    const hubs = ALL_HUBS.filter((h) => WEST_HUB_IDS.has(h.id)).map((hub) => {
+    const hubs = ALL_HUBS.map((hub) => {
       const pos = proj(hub.coords)
       return { ...hub, x: pos ? pos[0] : 0, y: pos ? pos[1] : 0 }
     })
@@ -178,318 +169,299 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
     const hubMap = new Map<string, { x: number; y: number }>()
     hubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
 
-    const arcs = WEST_LINKS.map(([fromId, toId], idx) => {
+    // Clean East-West arterial global backbone for mobile (no tangled clutter)
+    const mobileLinks: [string, string][] = [
+      ['la', 'toronto'],
+      ['toronto', 'zurich'],
+      ['zurich', 'pune'],
+      ['pune', 'singapore'],
+    ]
+
+    const arcs = mobileLinks.map(([fromId, toId], idx) => {
       const p1 = hubMap.get(fromId)
       const p2 = hubMap.get(toId)
       if (!p1 || !p2) return null
-      const midX = (p1.x + p2.x) / 2
-      const midY = (p1.y + p2.y) / 2
-      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
-      const cpY = midY - Math.min(dist * 0.16, 22)
-      return { id: `mw-arc-${idx}`, d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}` }
-    }).filter(Boolean) as { id: string; d: string }[]
+      const dx = p2.x - p1.x
+      const dy = p2.y - p1.y
+      const dist = Math.hypot(dx, dy)
+      const archApex = Math.min(Math.max(dist * 0.35, 18), 42)
+      const cp1X = p1.x + dx * 0.22
+      const cp1Y = p1.y - archApex
+      const cp2X = p1.x + dx * 0.78
+      const cp2Y = p2.y - archApex
 
-    return { countries, hubs, arcs }
-  }, [variant, worldData])
+      const d = `M ${p1.x} ${p1.y} C ${cp1X.toFixed(1)} ${cp1Y.toFixed(1)} ${cp2X.toFixed(1)} ${cp2Y.toFixed(1)} ${p2.x} ${p2.y}`
 
-  // Region 2: East (India & Asia)
-  const mobileEastData = useMemo(() => {
-    if (variant !== 'mobile') return null
-    const proj = geoNaturalEarth1().rotate([-70, 0, 0]).scale(160).translate([195, 215])
-    const pathGen = geoPath().projection(proj)
+      return { id: `m-arc-${idx}`, d, duration: 3.2 + idx * 0.6 }
+    }).filter(Boolean) as { id: string; d: string; duration: number }[]
 
-    const countries = worldData
-      ? worldData.features
-          .map((f, i) => ({ id: `me-c-${f.id || i}`, d: pathGen(f) || '' }))
-          .filter((c) => c.d.length > 0)
-      : []
-
-    const hubs = ALL_HUBS.filter((h) => EAST_HUB_IDS.has(h.id)).map((hub) => {
-      const pos = proj(hub.coords)
-      return { ...hub, x: pos ? pos[0] : 0, y: pos ? pos[1] : 0 }
-    })
-
-    const hubMap = new Map<string, { x: number; y: number }>()
-    hubs.forEach((h) => hubMap.set(h.id, { x: h.x, y: h.y }))
-
-    const arcs = EAST_LINKS.map(([fromId, toId], idx) => {
-      const p1 = hubMap.get(fromId)
-      const p2 = hubMap.get(toId)
-      if (!p1 || !p2) return null
-      const midX = (p1.x + p2.x) / 2
-      const midY = (p1.y + p2.y) / 2
-      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y)
-      const cpY = midY - Math.min(dist * 0.16, 22)
-      return { id: `me-arc-${idx}`, d: `M ${p1.x} ${p1.y} Q ${midX} ${cpY} ${p2.x} ${p2.y}` }
-    }).filter(Boolean) as { id: string; d: string }[]
-
-    return { countries, hubs, arcs }
+    return { countries, graticulePath, hubs, arcs }
   }, [variant, worldData])
 
   // ==========================================
-  // MOBILE DUAL-REGION BACKGROUND
+  // SHARED STYLES (Keyframes & Utilities)
   // ==========================================
+  const sharedStyles = (
+    <style jsx global>{`
+      @keyframes ctaArcFlow {
+        from {
+          stroke-dashoffset: 0;
+        }
+        to {
+          stroke-dashoffset: -24;
+        }
+      }
+      .cta-arc-flow {
+        animation: ctaArcFlow 3.4s linear infinite;
+      }
+      @keyframes ctaHubPulse {
+        0% {
+          r: 5px;
+          opacity: 0.8;
+        }
+        50% {
+          r: 15px;
+          opacity: 0.25;
+        }
+        100% {
+          r: 22px;
+          opacity: 0;
+        }
+      }
+      .cta-hub-pulse {
+        animation: ctaHubPulse 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      }
+      @keyframes ctaPillFloatA {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+      @keyframes ctaPillFloatB {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      @keyframes ctaPillFloatC {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+      .cta-pill-float-a {
+        animation: ctaPillFloatA 4.4s ease-in-out infinite;
+      }
+      .cta-pill-float-b {
+        animation: ctaPillFloatB 5.1s ease-in-out 0.8s infinite;
+      }
+      .cta-pill-float-c {
+        animation: ctaPillFloatC 4.6s ease-in-out 1.6s infinite;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .cta-arc-flow,
+        .cta-hub-pulse,
+        .cta-pill-float-a,
+        .cta-pill-float-b,
+        .cta-pill-float-c {
+          animation: none !important;
+        }
+      }
+    `}</style>
+  )
+
   if (variant === 'mobile') {
     return (
       <div className="absolute inset-0 overflow-hidden select-none" aria-hidden="true">
-        <style jsx>{`
-          @keyframes ctaArcFlow {
-            from {
-              stroke-dashoffset: 0;
-            }
-            to {
-              stroke-dashoffset: -20;
-            }
-          }
-          .cta-arc-flow {
-            animation: ctaArcFlow 3.2s linear infinite;
-          }
-          @keyframes ctaPulse {
-            0% {
-              r: 5px;
-              opacity: 0.7;
-            }
-            50% {
-              r: 13px;
-              opacity: 0.25;
-            }
-            100% {
-              r: 19px;
-              opacity: 0;
-            }
-          }
-          .cta-hub-pulse {
-            animation: ctaPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .cta-arc-flow,
-            .cta-hub-pulse {
-              animation: none;
-            }
-          }
-        `}</style>
+        {sharedStyles}
 
-        {/* Map 1: Americas & Western Europe (West) */}
         <div
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            activeRegion === 'west' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          className={`pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
+            worldData ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          {mobileWestData && (
+          {mobileData && (
             <svg
-              viewBox="0 0 390 340"
+              viewBox="0 0 390 260"
               preserveAspectRatio="xMidYMid slice"
               className="w-full h-full min-w-full"
             >
-              {/* Landmasses */}
+              <defs>
+                <marker
+                  id="cta-arrow-mobile"
+                  viewBox="0 0 10 10"
+                  refX="6"
+                  refY="5"
+                  markerWidth="4"
+                  markerHeight="4"
+                  orient="auto"
+                >
+                  <path d="M 0 2 L 7 5 L 0 8 z" fill="var(--color-accent)" />
+                </marker>
+
+                <linearGradient id="cta-horizon-fade-m" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.06" />
+                  <stop offset="100%" stopColor="var(--color-bg)" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+
+              {/* Curved Atmospheric Horizon Dome */}
+              <path
+                d="M 5 235 Q 195 20 385 235"
+                fill="url(#cta-horizon-fade-m)"
+                stroke="var(--color-border)"
+                strokeWidth="0.6"
+                strokeDasharray="3 5"
+                opacity="0.45"
+              />
+
+              {/* Spherical Graticule Grid */}
+              <path
+                d={mobileData.graticulePath}
+                fill="none"
+                stroke="var(--color-border)"
+                strokeWidth="0.35"
+                strokeDasharray="2 4"
+                opacity="0.35"
+              />
+
+              {/* Solid Vector Landmasses (Zero Dots) */}
               <g className="cta-countries">
-                {mobileWestData.countries.map((c) => (
+                {mobileData.countries.map((c) => (
                   <path
                     key={c.id}
                     d={c.d}
                     fill="var(--color-bg-muted)"
                     stroke="var(--color-border)"
-                    strokeWidth="0.5"
+                    strokeWidth="0.4"
                     strokeLinejoin="round"
                   />
                 ))}
               </g>
 
-              {/* Connecting Arcs */}
+              {/* High Parabolic Arcs */}
               <g className="cta-arcs">
-                {mobileWestData.arcs.map((arc) => (
+                {mobileData.arcs.map((arc) => (
                   <path
                     key={arc.id}
                     d={arc.d}
                     fill="none"
                     stroke="var(--color-accent)"
-                    strokeWidth="1.3"
+                    strokeWidth="1.1"
                     strokeDasharray="3 5"
-                    opacity="0.9"
+                    opacity="0.85"
+                    markerEnd="url(#cta-arrow-mobile)"
                     className="cta-arc-flow"
                   />
                 ))}
               </g>
 
-              {/* Hub Pins */}
+              {/* Signal Pulse Traveling Dots */}
+              {mobileData.arcs.map((arc) => (
+                <circle
+                  key={`dot-${arc.id}`}
+                  r="1.6"
+                  fill="var(--color-text)"
+                  stroke="var(--color-accent)"
+                  strokeWidth="0.8"
+                >
+                  <animateMotion
+                    dur={`${arc.duration}s`}
+                    repeatCount="indefinite"
+                    path={arc.d}
+                    keyPoints="0;1"
+                    keyTimes="0;1"
+                  />
+                </circle>
+              ))}
+
+              {/* Hub Pins with Clean Subtle Radar Pulses */}
               <g className="cta-hubs">
-                {mobileWestData.hubs.map((hub) => (
+                {mobileData.hubs.map((hub) => (
                   <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
-                    {hub.isMajor && (
-                      <>
-                        <circle r="14" fill="var(--color-accent)" opacity="0.25" className="pointer-events-none" />
-                        <circle r="11" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
-                      </>
+                    {(hub.id === 'zurich' || hub.id === 'pune') && (
+                      <circle r="7" fill="none" stroke="var(--color-accent)" strokeWidth="0.8" className="cta-hub-pulse" />
                     )}
-                    <circle r={hub.isMajor ? 4.2 : 2.8} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
-                    <circle r={hub.isMajor ? 2 : 1.2} fill="var(--color-text)" />
+                    <circle r={hub.isMajor ? 2.6 : 1.6} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="0.8" />
+                    <circle r={hub.isMajor ? 1.2 : 0.7} fill="var(--color-text)" />
                   </g>
                 ))}
               </g>
             </svg>
           )}
-        </div>
-
-        {/* Map 2: Europe, India & Asia (East) */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            activeRegion === 'east' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
-        >
-          {mobileEastData && (
-            <svg
-              viewBox="0 0 390 340"
-              preserveAspectRatio="xMidYMid slice"
-              className="w-full h-full min-w-full"
-            >
-              {/* Landmasses */}
-              <g className="cta-countries">
-                {mobileEastData.countries.map((c) => (
-                  <path
-                    key={c.id}
-                    d={c.d}
-                    fill="var(--color-bg-muted)"
-                    stroke="var(--color-border)"
-                    strokeWidth="0.5"
-                    strokeLinejoin="round"
-                  />
-                ))}
-              </g>
-
-              {/* Connecting Arcs */}
-              <g className="cta-arcs">
-                {mobileEastData.arcs.map((arc) => (
-                  <path
-                    key={arc.id}
-                    d={arc.d}
-                    fill="none"
-                    stroke="var(--color-accent)"
-                    strokeWidth="1.3"
-                    strokeDasharray="3 5"
-                    opacity="0.9"
-                    className="cta-arc-flow"
-                  />
-                ))}
-              </g>
-
-              {/* Hub Pins */}
-              <g className="cta-hubs">
-                {mobileEastData.hubs.map((hub) => (
-                  <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
-                    {hub.isMajor && (
-                      <>
-                        <circle r="14" fill="var(--color-accent)" opacity="0.25" className="pointer-events-none" />
-                        <circle r="11" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
-                      </>
-                    )}
-                    <circle r={hub.isMajor ? 4.2 : 2.8} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
-                    <circle r={hub.isMajor ? 2 : 1.2} fill="var(--color-text)" />
-                  </g>
-                ))}
-              </g>
-            </svg>
-          )}
-        </div>
-
-        {/* Minimal Bottom Switcher Pills */}
-        <div className="pointer-events-auto absolute bottom-2.5 sm:bottom-3 inset-x-0 flex items-center justify-center z-20">
-          <div className="inline-flex items-center gap-1 p-0.5 bg-[var(--color-surface)] border border-[var(--color-border,#E8E8E8)] rounded-full text-[10px] font-mono tracking-tight">
-            <button
-              type="button"
-              onClick={() => {
-                setActiveRegion('west')
-                setUserInteracted(true)
-              }}
-              className={`px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1.5 ${
-                activeRegion === 'west'
-                  ? 'bg-[var(--color-text)] text-[var(--color-accent)] font-medium'
-                  : 'text-[var(--color-text-muted,#737373)] hover:text-[var(--color-text)]'
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  activeRegion === 'west' ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-border-strong)]'
-                }`}
-              />
-              Americas & EU
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setActiveRegion('east')
-                setUserInteracted(true)
-              }}
-              className={`px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1.5 ${
-                activeRegion === 'east'
-                  ? 'bg-[var(--color-text)] text-[var(--color-accent)] font-medium'
-                  : 'text-[var(--color-text-muted,#737373)] hover:text-[var(--color-text)]'
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  activeRegion === 'east' ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-border-strong)]'
-                }`}
-              />
-              India & Asia
-            </button>
-          </div>
         </div>
       </div>
     )
   }
 
   // ==========================================
-  // DESKTOP FULL-BLEED AMBIENT MAP (ORIGINAL)
+  // DESKTOP FULL-BLEED CURVED MAP & PILLS
   // ==========================================
   return (
-    <div
-      className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none"
-      aria-hidden="true"
-    >
-      <style jsx>{`
-        @keyframes ctaArcFlow {
-          from {
-            stroke-dashoffset: 0;
-          }
-          to {
-            stroke-dashoffset: -20;
-          }
-        }
-        .cta-arc-flow {
-          animation: ctaArcFlow 3.2s linear infinite;
-        }
-        @keyframes ctaPulse {
-          0% {
-            r: 5px;
-            opacity: 0.7;
-          }
-          50% {
-            r: 13px;
-            opacity: 0.25;
-          }
-          100% {
-            r: 19px;
-            opacity: 0;
-          }
-        }
-        .cta-hub-pulse {
-          animation: ctaPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .cta-arc-flow,
-          .cta-hub-pulse {
-            animation: none;
-          }
-        }
-      `}</style>
+    <div className="absolute inset-0 overflow-hidden select-none" aria-hidden="true">
+      {sharedStyles}
 
-      {/* Layer 1: Landmasses */}
+      {/* SVG Map Canvas (Pointer Events None) */}
       <div
-        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ${
+        className={`pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
           worldData ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" className="w-full h-full min-w-full">
+        <svg
+          viewBox="0 0 1200 580"
+          preserveAspectRatio="xMidYMid slice"
+          className="w-full h-full min-w-full"
+        >
+          <defs>
+            {/* Directional Arrowhead Marker */}
+            <marker
+              id="cta-arrow-desktop"
+              viewBox="0 0 10 10"
+              refX="6"
+              refY="5"
+              markerWidth="4.5"
+              markerHeight="4.5"
+              orient="auto"
+            >
+              <path d="M 0 2 L 7 5 L 0 8 z" fill="var(--color-accent)" />
+            </marker>
+
+            {/* Top Atmospheric Horizon Gradient */}
+            <linearGradient id="cta-horizon-fade" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.06" />
+              <stop offset="100%" stopColor="var(--color-bg)" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {/* Curved Horizon Dome Atmosphere Arc (Overarching Globe Horizon) */}
+          <path
+            d="M 40 450 Q 600 70 1160 450"
+            fill="url(#cta-horizon-fade)"
+            stroke="var(--color-border)"
+            strokeWidth="0.8"
+            strokeDasharray="4 6"
+            opacity="0.55"
+          />
+
+          {/* Spherical Graticule Grid (Curving Latitude/Longitude Guides) */}
+          {desktopData?.graticulePath && (
+            <path
+              d={desktopData.graticulePath}
+              fill="none"
+              stroke="var(--color-border)"
+              strokeWidth="0.45"
+              strokeDasharray="3 5"
+              opacity="0.4"
+            />
+          )}
+
+          {/* Solid Vector Landmasses (Crisp TopoJSON Polygons - NOT Dotted) */}
           <g className="cta-countries">
             {desktopData?.countries.map((country) => (
               <path
@@ -497,21 +469,13 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
                 d={country.d}
                 fill="var(--color-bg-muted)"
                 stroke="var(--color-border)"
-                strokeWidth="0.45"
+                strokeWidth="0.5"
                 strokeLinejoin="round"
               />
             ))}
           </g>
-        </svg>
-      </div>
 
-      {/* Layer 2: Arcs & Client Hub Pins */}
-      <div
-        className={`relative z-10 w-full h-full transition-opacity duration-700 ${
-          worldData ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" className="w-full h-full min-w-full">
+          {/* High Parabolic Leaping Arcs (3D Trajectories) */}
           <g className="cta-arcs">
             {desktopData?.arcs.map((arc) => (
               <path
@@ -519,29 +483,130 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
                 d={arc.d}
                 fill="none"
                 stroke="var(--color-accent)"
-                strokeWidth="1.25"
-                strokeDasharray="3 5"
+                strokeWidth={arc.isMajor ? '1.4' : '1.15'}
+                strokeDasharray="4 6"
                 opacity="0.9"
+                markerEnd="url(#cta-arrow-desktop)"
                 className="cta-arc-flow"
               />
             ))}
           </g>
 
+          {/* Signal Pulse Traveling Dots on Major Arcs */}
+          {desktopData?.arcs
+            .filter((a) => a.isMajor)
+            .map((arc, i) => (
+              <circle key={`dot-${arc.id}`} r="2.2" fill="var(--color-text)" stroke="var(--color-accent)" strokeWidth="1.2">
+                <animateMotion
+                  dur={`${arc.duration}s`}
+                  repeatCount="indefinite"
+                  path={arc.d}
+                  keyPoints="0;1"
+                  keyTimes="0;1"
+                />
+              </circle>
+            ))}
+
+          {/* Hub Pins with Concentric Radar Pulses */}
           <g className="cta-hubs">
             {desktopData?.hubs.map((hub) => (
               <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
                 {hub.isMajor && (
                   <>
-                    <circle r="14" fill="var(--color-accent)" opacity="0.2" className="pointer-events-none" />
-                    <circle r="11" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
+                    <circle r="15" fill="var(--color-accent)" opacity="0.22" className="pointer-events-none" />
+                    <circle r="12" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
                   </>
                 )}
-                <circle r={hub.isMajor ? 4 : 2.5} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
+                <circle r={hub.isMajor ? 4.2 : 2.6} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />
                 <circle r={hub.isMajor ? 2 : 1.2} fill="var(--color-text)" />
               </g>
             ))}
           </g>
         </svg>
+      </div>
+
+      {/* ==========================================
+          FLOATING CLIENT PILL BADGES (POINTER-EVENTS-AUTO)
+          Inspired by Reference Image: 3 Elevated Floating Cards
+          ========================================== */}
+      <div className="pointer-events-none absolute inset-0 z-10 mx-auto max-w-7xl px-4 sm:px-6">
+        {/* Pill 1: Americas / West (Simpli Home) */}
+        <div
+          className="pointer-events-auto absolute left-[3%] sm:left-[5%] xl:left-[7%] top-[60%] lg:top-[64%] cta-pill-float-a hidden sm:block"
+        >
+          <Link
+            href="/work/simpli-home"
+            className="group/pill flex items-center gap-3 rounded-full border border-[var(--color-border,#E8E8E8)] bg-[var(--color-surface,#FFFFFF)] px-3.5 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.06)] backdrop-blur-xs transition-all duration-300 hover:scale-105 hover:border-[var(--color-border-strong,#D4D4D4)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-accent,#FFD600)] text-[var(--color-text,#121212)] shadow-xs transition-transform duration-300 group-hover/pill:rotate-6">
+              <Layers size={13} className="stroke-[2.4]" />
+            </div>
+            <div className="flex flex-col text-left pr-1">
+              <span className="text-xs font-bold tracking-tight text-[var(--color-text,#121212)] leading-snug">
+                Simpli Home
+              </span>
+              <span className="text-[10px] text-[var(--color-text-muted,#737373)] leading-tight font-mono">
+                Toronto · 11 hrs/wk saved
+              </span>
+            </div>
+            <ArrowUpRight
+              size={12}
+              className="text-[var(--color-text-faint)] transition-transform duration-300 group-hover/pill:translate-x-0.5 group-hover/pill:-translate-y-0.5 group-hover/pill:text-[var(--color-text)]"
+            />
+          </Link>
+        </div>
+
+        {/* Pill 2: Europe / Atlantic (Sustainable Bitcoin Protocol) */}
+        <div
+          className="pointer-events-auto absolute left-[4%] sm:left-[6%] xl:left-[8%] top-[16%] lg:top-[18%] cta-pill-float-b hidden sm:block"
+        >
+          <Link
+            href="/work/sustainable-bitcoin-protocol"
+            className="group/pill flex items-center gap-3 rounded-full border border-[var(--color-border,#E8E8E8)] bg-[var(--color-surface,#FFFFFF)] px-3.5 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.06)] backdrop-blur-xs transition-all duration-300 hover:scale-105 hover:border-[var(--color-border-strong,#D4D4D4)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-text,#121212)] text-[var(--color-accent,#FFD600)] shadow-xs transition-transform duration-300 group-hover/pill:rotate-6">
+              <ShieldCheck size={13} className="stroke-[2.4]" />
+            </div>
+            <div className="flex flex-col text-left pr-1">
+              <span className="text-xs font-bold tracking-tight text-[var(--color-text,#121212)] leading-snug">
+                Sustainable BTC
+              </span>
+              <span className="text-[10px] text-[var(--color-text-muted,#737373)] leading-tight font-mono">
+                Zurich · Institutional UX
+              </span>
+            </div>
+            <ArrowUpRight
+              size={12}
+              className="text-[var(--color-text-faint)] transition-transform duration-300 group-hover/pill:translate-x-0.5 group-hover/pill:-translate-y-0.5 group-hover/pill:text-[var(--color-text)]"
+            />
+          </Link>
+        </div>
+
+        {/* Pill 3: Asia / East (Tocal & MetaThumbz) */}
+        <div
+          className="pointer-events-auto absolute right-[3%] sm:right-[5%] xl:right-[7%] top-[50%] lg:top-[54%] cta-pill-float-c hidden sm:block"
+        >
+          <Link
+            href="/work"
+            className="group/pill flex items-center gap-3 rounded-full border border-[var(--color-border,#E8E8E8)] bg-[var(--color-surface,#FFFFFF)] px-3.5 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.06)] backdrop-blur-xs transition-all duration-300 hover:scale-105 hover:border-[var(--color-border-strong,#D4D4D4)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]"
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-accent,#FFD600)] text-[var(--color-text,#121212)] shadow-xs transition-transform duration-300 group-hover/pill:rotate-6">
+              <Cpu size={13} className="stroke-[2.4]" />
+            </div>
+            <div className="flex flex-col text-left pr-1">
+              <span className="text-xs font-bold tracking-tight text-[var(--color-text,#121212)] leading-snug">
+                Tocal (DbyT)
+              </span>
+              <span className="text-[10px] text-[var(--color-text-muted,#737373)] leading-tight font-mono">
+                Pune · Hardware & Web
+              </span>
+            </div>
+            <ArrowUpRight
+              size={12}
+              className="text-[var(--color-text-faint)] transition-transform duration-300 group-hover/pill:translate-x-0.5 group-hover/pill:-translate-y-0.5 group-hover/pill:text-[var(--color-text)]"
+            />
+          </Link>
+        </div>
       </div>
     </div>
   )
