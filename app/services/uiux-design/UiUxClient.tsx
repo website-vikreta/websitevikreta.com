@@ -1,37 +1,61 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { WorkTestimonialsSection } from '@/components/sections/work/WorkTestimonialsSection'
-import { FaqSection } from '@/components/sections/FaqSection'
-import { ALL_FAQS } from '@/lib/faq-data'
-import Hero from './sections/Hero'
-import PainSection from './sections/PainSection'
-import SolutionSection from './sections/SolutionSection'
-import PrinciplesSection from './sections/PrinciplesSection'
-import HowWeWork from './sections/HowWeWork'
-import ProofSection from './sections/ProofSection'
-import ContactSection from './sections/ContactSection'
+import { UiUxHero } from '@/components/sections/ui-ux/UiUxHero'
+import { JourneyFrictionGrid } from '@/components/sections/ui-ux/JourneyFrictionGrid'
+import { UI_UX_FAQS } from './data'
 
-// Reuses the sitewide FAQ list — only the questions relevant to a design engagement.
-const uiUxFaqs = ALL_FAQS.filter((f) => ['5', '6', '11'].includes(f.id))
+const ComponentSystemToggle = dynamic(() =>
+  import('@/components/sections/ui-ux/ComponentSystemToggle').then((m) => ({
+    default: m.ComponentSystemToggle,
+  })),
+)
+const WorkflowGallery = dynamic(() =>
+  import('@/components/sections/ui-ux/HeroVisualStack').then((m) => ({
+    default: m.WorkflowGallery,
+  })),
+)
+const NodeTreeScroll = dynamic(() =>
+  import('@/components/sections/ui-ux/NodeTreeScroll').then((m) => ({
+    default: m.NodeTreeScroll,
+  })),
+)
+const MetricReportSection = dynamic(() =>
+  import('@/components/sections/ui-ux/MetricReportCard').then((m) => ({
+    default: m.MetricReportSection,
+  })),
+)
+const UiUxProjectsSection = dynamic(() =>
+  import('@/components/sections/ui-ux/UiUxProjectsSection').then((m) => ({
+    default: m.UiUxProjectsSection,
+  })),
+)
+const UiUxTestimonialsSection = dynamic(() =>
+  import('@/components/sections/ui-ux/UiUxTestimonialsSection').then((m) => ({
+    default: m.UiUxTestimonialsSection,
+  })),
+)
+const ContactSection = dynamic(() => import('./sections/ContactSection'))
+const FaqSection = dynamic(() =>
+  import('@/components/sections/FaqSection').then((mod) => ({ default: mod.FaqSection })),
+)
 
 export default function UiUxClient() {
   return (
     <>
       <DotGrid global />
       <main id="main-content" className="relative z-10">
-        <Hero />
-        <PainSection />
-        <SolutionSection />
-        <PrinciplesSection />
-        <HowWeWork />
-        <ProofSection />
-        <WorkTestimonialsSection />
-        {/* emitSchema={false}: these Q&As are verbatim from ALL_FAQS, which
-            /faq already emits as FAQPage — two blocks for the same Q&As is
-            duplicate content. */}
-        <FaqSection items={uiUxFaqs} viewAllHref="/faq" ariaLabel="UI/UX design FAQs" emitSchema={false} />
+        <UiUxHero />
+        <JourneyFrictionGrid />
+        <ComponentSystemToggle />
+        <WorkflowGallery />
+        <NodeTreeScroll />
+        <MetricReportSection />
+        <UiUxProjectsSection />
+        <UiUxTestimonialsSection />
+        <FaqSection items={UI_UX_FAQS} ariaLabel="UI/UX design FAQs" />
         <ContactSection />
       </main>
       <ScrollToTop />

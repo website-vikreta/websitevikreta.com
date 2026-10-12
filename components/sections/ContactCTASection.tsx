@@ -1,8 +1,8 @@
 'use client'
 
-import type { ReactNode } from 'react'
-import { RevealText, RevealFade } from '@/components/ui/Reveal'
+import { useRef, type ReactNode } from 'react'
 import { AuditForm } from '@/components/ui/AuditForm'
+import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
 interface ContactCTASectionProps {
   /** Anchor id for the section (e.g. for #book-a-call links), and the GA4 formName. */
@@ -35,30 +35,43 @@ export function ContactCTASection({
   messagePlaceholder = "Describe what isn't working…",
   className = 'py-16 md:py-20',
 }: ContactCTASectionProps) {
+  const scope = useRef<HTMLElement>(null)
+
+  useGsapSection(scope, () => {
+    revealLines('.cta-heading', { trigger: scope.current })
+    revealFadeUp('.cta-sub', { y: 20, delay: STAGGER.loose, trigger: scope.current })
+    revealFadeUp('.cta-form-card', { y: 24, delay: STAGGER.loose + STAGGER.base, trigger: scope.current })
+    revealFadeUp('.cta-field-row', {
+      y: 16,
+      stagger: STAGGER.tight,
+      delay: STAGGER.loose + STAGGER.base * 2,
+      trigger: scope.current,
+    })
+  })
+
   return (
-    <section id={id} className={className} aria-label={heading}>
+    <section ref={scope} id={id} className={className} aria-labelledby="cta-form-heading">
       <div className="container">
         <div className="grid gap-12 lg:grid-cols-[2fr_3fr] lg:gap-16 lg:items-start">
 
           <div>
-            <RevealText as="h2" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6">
+            <h2
+              id="cta-form-heading"
+              className="cta-heading text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) mb-6"
+            >
               {heading}
-            </RevealText>
-            <RevealFade delay={0.1}>
-              <p className="text-body-lg leading-relaxed text-(--color-text-muted)">{subheading}</p>
-            </RevealFade>
+            </h2>
+            <p className="cta-sub text-body-lg leading-relaxed text-(--color-text-muted)">{subheading}</p>
           </div>
 
-          <RevealFade delay={0.2}>
-            <div className="bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
-              <AuditForm
-                formName={id}
-                heading={formHeading}
-                subjectPlaceholder={subjectPlaceholder}
-                messagePlaceholder={messagePlaceholder}
-              />
-            </div>
-          </RevealFade>
+          <div className="cta-form-card bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
+            <AuditForm
+              formName={id}
+              heading={formHeading}
+              subjectPlaceholder={subjectPlaceholder}
+              messagePlaceholder={messagePlaceholder}
+            />
+          </div>
 
         </div>
       </div>

@@ -38,6 +38,12 @@ function flagsOf(flag: Opening['flag']): string[] {
   return Array.isArray(flag) ? flag : [flag]
 }
 
+// A closed role can't be "Hiring Urgently" — drop that flag once isActive is false.
+function visibleFlagsOf(opening: Opening): string[] {
+  const flags = flagsOf(opening.flag)
+  return opening.isActive ? flags : flags.filter(f => f !== 'Hiring Urgently')
+}
+
 export default function CareersClient({ openings }: Props) {
   const filters = useMemo(() => {
     const flags = Array.from(new Set(openings.flatMap(o => flagsOf(o.flag))))
@@ -50,7 +56,7 @@ export default function CareersClient({ openings }: Props) {
   const filteredOpenings = useMemo(() => {
     if (activeFilter === ALL_FILTER) return openings
     if (activeFilter === ACTIVE_FILTER) return openings.filter(o => o.isActive)
-    return openings.filter(o => flagsOf(o.flag).includes(activeFilter))
+    return openings.filter(o => visibleFlagsOf(o).includes(activeFilter))
   }, [openings, activeFilter])
 
   return (
@@ -114,7 +120,7 @@ export default function CareersClient({ openings }: Props) {
           ) : (
           <div className="grid grid-cols-1 border-t border-l border-(--color-border) md:grid-cols-2 lg:grid-cols-3">
             {filteredOpenings.map((opening, i) => {
-              const openingFlags = flagsOf(opening.flag)
+              const openingFlags = visibleFlagsOf(opening)
               return (
               <RevealFade key={opening.slug} delay={(i % 3) * 0.08} className="border-r border-b border-(--color-border)">
                 <Link

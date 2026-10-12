@@ -11,7 +11,15 @@ const GAP = 24
 const SPEED = 40 // px / s
 const RESUME_DELAY = 4000
 
-export function WorkTestimonialsSection() {
+export function WorkTestimonialsSection({
+  testimonials = WORK_TESTIMONIALS,
+  heading = 'What clients say',
+  ariaLabel = 'Client testimonials',
+}: {
+  testimonials?: WorkTestimonial[]
+  heading?: string
+  ariaLabel?: string
+} = {}) {
   const x = useMotionValue(0)
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -85,13 +93,13 @@ export function WorkTestimonialsSection() {
     resume(RESUME_DELAY)
   }
 
-  const cards = [...WORK_TESTIMONIALS, ...WORK_TESTIMONIALS]
+  const cards = [...testimonials, ...testimonials]
 
   return (
-    <section className="overflow-x-clip py-16 md:py-20" aria-label="Client testimonials">
+    <section className="overflow-x-clip py-16 md:py-20" aria-label={ariaLabel}>
       <div className="container flex items-end justify-between gap-6 mb-10 md:mb-14">
         <RevealText as="h2" className="text-h2 font-bold text-(--color-text)">
-          What clients say
+          {heading}
         </RevealText>
 
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -129,7 +137,7 @@ export function WorkTestimonialsSection() {
             // Second copy exists only so the marquee can loop seamlessly.
             // aria-hidden keeps it out of the a11y tree; data-nosnippet keeps
             // Google from reading every quote twice.
-            const isLoopCopy = i >= WORK_TESTIMONIALS.length
+            const isLoopCopy = i >= testimonials.length
             return (
               <TestimonialCard
                 key={testimonial.slug + i}

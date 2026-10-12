@@ -2,6 +2,16 @@
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import { AuditModal } from '@/components/ui/AuditModal'
+import {
+  UI_UX_BOOK_MODAL_CONFIG,
+  UI_UX_QUOTE_MODAL_CONFIG,
+} from '@/app/services/uiux-design/data'
+
+export interface AuditModalProjectLink {
+  title: string
+  href: string
+  skills: string
+}
 
 export interface AuditModalConfig {
   /** GA4 form_name + button_location label for this popup's submissions. */
@@ -12,6 +22,8 @@ export interface AuditModalConfig {
   messagePlaceholder: string
   /** Screen-reader-only dialog description (Radix requires one). */
   dialogDescription: string
+  projectsHeading?: string
+  projects?: AuditModalProjectLink[]
 }
 
 const AUDIT_CONFIG: AuditModalConfig = {
@@ -57,6 +69,8 @@ export const AUDIT_MODAL_CONFIGS: Record<string, AuditModalConfig> = {
   '#start-project':     PROJECT_CALL_CONFIG,
   '#get-quote':         FREE_QUOTE_CONFIG,
   '#marketing-audit':   MARKETING_AUDIT_CONFIG,
+  '#book-uiux-call':      UI_UX_BOOK_MODAL_CONFIG,
+  '#get-uiux-quote':      UI_UX_QUOTE_MODAL_CONFIG,
 }
 
 /** Back-compat default for any caller that opens the modal with no config. */
