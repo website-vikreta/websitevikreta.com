@@ -77,17 +77,19 @@ export function CaseStudyVisual({
     return (
       <div className="w-full overflow-hidden border border-(--color-border) bg-(--color-surface) transition-colors duration-300 ease-out group-hover:border-(--color-border-strong)">
         {/* Minimal browser chrome bar */}
-        <div className="flex items-center justify-between border-b border-(--color-border) bg-(--color-bg-muted) px-3.5 py-2">
-          <div className="flex items-center gap-1.5" aria-hidden="true">
-            <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
-            <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
-            <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+        {study.imageFrame !== false && (
+          <div className="flex items-center justify-between border-b border-(--color-border) bg-(--color-bg-muted) px-3.5 py-2">
+            <div className="flex items-center gap-1.5" aria-hidden="true">
+              <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+              <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+              <span className="h-2 w-2 rounded-full bg-(--color-border-strong)" />
+            </div>
+            <div className="flex h-5 max-w-[200px] flex-1 items-center justify-center rounded-xs border border-(--color-border) bg-(--color-surface) px-2.5 text-[11px] text-(--color-text-faint)">
+              <span className="truncate">{domain}</span>
+            </div>
+            <div className="w-9" aria-hidden="true" />
           </div>
-          <div className="flex h-5 max-w-[200px] flex-1 items-center justify-center rounded-xs border border-(--color-border) bg-(--color-surface) px-2.5 text-[11px] text-(--color-text-faint)">
-            <span className="truncate">{domain}</span>
-          </div>
-          <div className="w-9" aria-hidden="true" />
-        </div>
+        )}
 
         {/* 16:9 Viewport content */}
         <div className="relative aspect-video w-full overflow-hidden bg-(--color-bg-muted)">
