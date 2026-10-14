@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures/test';
+import { test, expect } from '../../fixtures/test';
 
 test.describe('SEO Metadata, OpenGraph & JSON-LD Structured Data', () => {
   const auditPages = ['/', '/services/ai-automations', '/about', '/contact', '/careers'];
