@@ -11,10 +11,8 @@ export class HomePage extends BasePage {
   readonly secondaryCta: Locator;
   readonly stats: Locator;
   readonly serviceCards: Locator;
-  readonly clientLogos: Locator;
   readonly featuredWork: Locator;
-  readonly techStack: Locator;
-  readonly testimonialSwitcher: Locator;
+  readonly testimonials: Locator;
   readonly blogPreviewCards: Locator;
 
   constructor(page: Page) {
@@ -25,10 +23,8 @@ export class HomePage extends BasePage {
     this.secondaryCta = this.hero.getByRole('link', { name: 'See our work' });
     this.stats = page.getByRole('region', { name: 'Impact Statistics' });
     this.serviceCards = main.locator('article').filter({ has: page.locator('h3') }).filter({ hasText: 'Explore More' });
-    this.clientLogos = page.locator('[aria-label="Client logos"] img');
     this.featuredWork = page.getByRole('region', { name: 'Featured Work' });
-    this.techStack = page.locator('section', { hasText: 'The AI stack we actually use.' });
-    this.testimonialSwitcher = page.getByRole('button', { name: /^View .* testimonial$/ });
+    this.testimonials = page.locator('section', { has: page.getByRole('heading', { name: 'Work that moved numbers.' }) });
     this.blogPreviewCards = page.locator('section', { hasText: 'behind the work.' }).locator('article');
   }
 
