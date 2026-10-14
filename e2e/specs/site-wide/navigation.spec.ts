@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures/test';
+import { test, expect } from '../../fixtures/test';
 
 test.describe('Global Navigation, Scroll States & Mobile Drawer', () => {
   test('Desktop Header contains logo, navigation items, dropdown services, and Contact CTA', async ({
