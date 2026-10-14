@@ -25,10 +25,8 @@ export function InsightsSection() {
     <section className="relative py-16 md:py-20" aria-label="How We Work">
       <div className="container">
         <div className="mb-10 max-w-2xl md:mb-14">
-          <RevealText>
-            <h2 className="text-h2 font-bold text-(--color-text)">
-              What working with us actually looks like
-            </h2>
+          <RevealText as="h2" className="text-h2 font-bold text-(--color-text)">
+            What working with us actually looks like
           </RevealText>
           <RevealFade delay={0.1}>
             <p className="mt-4 text-body-lg text-(--color-text-muted) leading-(--leading-body)">

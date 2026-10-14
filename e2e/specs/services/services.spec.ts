@@ -48,7 +48,7 @@ test.describe('Services Directory, Sub-Pages & 308 Permanent Redirects', () => {
  */
 const SERVICE_PAGES = [
   { path: '/services/ai-automations', cta: /Book a Free Process Audit/, formId: 'book-audit', faq: 'AI automation frequently asked questions', faqCount: 6, carousel: null },
-  { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, ctaIsCalendly: true, formId: 'start-project', faq: 'Apps & CRM FAQs', faqCount: 3, carousel: 'Client testimonials' },
+  { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, formId: 'start-project', faq: 'Apps & CRM FAQs', faqCount: 3, carousel: 'Client testimonials' },
   { path: '/services/web-development', cta: /Book a call/, formId: 'get-quote', faq: 'Web Development FAQs', faqCount: 5, carousel: 'Client testimonials' },
   { path: '/services/uiux-design', cta: /Book a call/, formId: 'get-quote', faq: 'UI/UX design FAQs', faqCount: 5, carousel: 'UI/UX client testimonials' },
   { path: '/services/digital-marketing', cta: /Book a Free Marketing Audit/, formId: 'marketing-audit', faq: 'Digital Marketing FAQs', faqCount: 4, carousel: null },
@@ -68,23 +68,15 @@ for (const svc of SERVICE_PAGES) {
       await expectAllLinksWork(page);
     });
 
-    if (svc.ctaIsCalendly) {
-      // This hero CTA is a Calendly link, not the popup. Its href comes from NEXT_PUBLIC_CALENDLY_URL.
-      test('the hero call-to-action links to Calendly in a new, safe tab', async ({ page, basePage }) => {
-        // Known bug: NEXT_PUBLIC_CALENDLY_URL is not set in .env.local or CI, so Button gets an empty href
-        // and renders a dead <button> that does nothing on click. test.fail() keeps the suite green while
-        // it is open, and starts failing (= tells us) once the env var is set or the code is fixed.
-        test.fail();
-        await basePage.navigate(svc.path);
-        const cta = page.locator('main').getByRole('link', { name: svc.cta }).first();
-        await expect(cta, 'Hero CTA is not a link (dead button: NEXT_PUBLIC_CALENDLY_URL unset)').toHaveAttribute('href', /calendly\.com/, { timeout: 5000 });
-        await expect(cta).toHaveAttribute('target', '_blank');
-        await expect(cta).toHaveAttribute('rel', /noopener/);
-      });
-    } else test('the hero call-to-action opens the lead popup, and Escape closes it', async ({ page, basePage, auditModal }) => {
+    test('the hero call-to-action works: Calendly in a safe new tab if configured, else the lead popup', async ({ page, basePage, auditModal }) => {
       await basePage.navigate(svc.path);
       const main = page.locator('main');
       const cta = main.getByRole('link', { name: svc.cta }).or(main.getByRole('button', { name: svc.cta })).first();
+      if (/calendly\.com/.test((await cta.getAttribute('href')) ?? '')) {
+        await expect(cta).toHaveAttribute('target', '_blank');
+        await expect(cta).toHaveAttribute('rel', /noopener/);
+        return;
+      }
       await auditModal.openViaTrigger(cta);
       await expect(auditModal.firstNameInput).toBeVisible();
       await auditModal.closeViaEscape();

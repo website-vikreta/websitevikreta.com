@@ -23,11 +23,14 @@ const VIEWPORT = { once: true, amount: 0.1, margin: REVEAL_MARGIN } as const
  */
 export function RevealText({
   as = 'div',
+  id,
   className,
   children,
   delay = 0,
 }: {
   as?: ElementType
+  /** Put ids here, not on an inner element: SplitText copies inner elements into every line. */
+  id?: string
   className?: string
   children: ReactNode
   delay?: number
@@ -42,7 +45,7 @@ export function RevealText({
   })
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag ref={ref} id={id} className={className}>
       {children}
     </Tag>
   )
