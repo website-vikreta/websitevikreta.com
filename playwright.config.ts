@@ -26,7 +26,11 @@ export default defineConfig({
   expect: { timeout: 10_000 }, // GSAP word reveals + font stabilisation
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
+  reporter: [
+    ['list'],
+    ['html', { open: 'never', outputFolder: 'playwright-report' }],
+    ['./e2e/qa-reporter.ts'],
+  ],
   use: {
     baseURL: BASE_URL,
     actionTimeout: 15_000,
