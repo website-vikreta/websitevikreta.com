@@ -33,6 +33,14 @@ export class BasePage {
   async waitForStability(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
 
+    // Wait for React hydration: React tags hydrated DOM nodes with a `__reactFiber$…` key.
+    // Without this, a test can scroll before ScrollManager's mount-time jumpScroll(0) runs
+    // and gets reset to the top (seen as flaky navbar scroll tests in headed Chrome).
+    await this.page.waitForFunction(() => {
+      const el = document.querySelector('header') ?? document.body;
+      return Object.keys(el).some((k) => k.startsWith('__reactFiber'));
+    });
+
     // Wait for Epilogue web fonts to fully load to prevent layout-shift locator drift
     try {
       await this.page.evaluate(() => document.fonts.ready);
@@ -42,6 +50,29 @@ export class BasePage {
 
     // Brief breather for GSAP timeline mount
     await this.page.waitForTimeout(200);
+  }
+
+  /**
+   * Scrolls top-to-bottom in viewport-sized steps so every lazy section, lazy image and
+   * scroll-triggered reveal mounts. Re-reads the height each step: lazy sections grow the page.
+   */
+  async scrollThroughPage(): Promise<void> {
+    for (let y = 0; y < (await this.page.evaluate(() => document.documentElement.scrollHeight)); y += 600) {
+      await this.scrollTo(y);
+    }
+  }
+
+  /**
+   * Waits until React has hydrated this specific element. Needed for controls inside a Suspense
+   * boundary that streams in after the header: before hydration a select/button looks ready but
+   * has no handlers attached, so the interaction silently does nothing.
+   */
+  async waitForHydrated(locator: Locator): Promise<void> {
+    await expect
+      .poll(() => locator.evaluate((el) => Object.keys(el).some((k) => k.startsWith('__reactFiber'))), {
+        message: 'Element never hydrated',
+      })
+      .toBe(true);
   }
 
   /**
