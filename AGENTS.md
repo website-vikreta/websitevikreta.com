@@ -71,6 +71,8 @@ Do not bulk-load the entire `.ai/` folder. Preserve context for implementation w
 
 Recipes in `.ai/commands/` are **tool-agnostic execution workflows**. Invoke by name or by slash command if your tool supports it (`/humanize`, `/design-page`, etc.).
 
+Claude Code only discovers slash commands in `.claude/commands/`, so each recipe has a thin wrapper there (frontmatter `description` + "follow `.ai/commands/<kind>/<name>.md`"). **Adding a recipe? Add its wrapper too**, or it won't appear in the `/` menu. Never put recipe logic in the wrapper.
+
 ### Macro (full workflows)
 
 | Recipe | File | When to use |
