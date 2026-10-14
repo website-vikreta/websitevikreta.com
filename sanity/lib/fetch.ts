@@ -77,7 +77,7 @@ function toDisplayPost(post: Post): DisplayPost {
     likes: post.likes,
     commentsCount: post.commentsCount ?? 0,
     imageUrl: post.featuredImage?.asset
-      ? urlFor(post.featuredImage).width(800).fit('crop').url()
+      ? urlFor(post.featuredImage).width(800).fit('crop').auto('format').url()
       : undefined,
     labels: post.labels,
     tags: post.tags,

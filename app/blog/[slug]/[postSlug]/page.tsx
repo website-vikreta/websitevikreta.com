@@ -284,7 +284,7 @@ export default async function BlogPostPage({
           {post.source === 'sanity' && post.featuredImage && (
             <div className="relative mx-auto mb-6 aspect-video w-full max-w-[720px] overflow-hidden md:mb-8">
               <Image
-                src={urlFor(post.featuredImage).width(1200).height(675).url()}
+                src={urlFor(post.featuredImage).width(1200).height(675).auto('format').url()}
                 alt={post.featuredImage.alt ?? post.title}
                 fill
                 className="object-cover"
@@ -341,7 +341,7 @@ export default async function BlogPostPage({
                     {post.author.image && (
                       <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0 border border-[var(--color-border)]">
                         <Image
-                          src={urlFor(post.author.image).width(80).height(80).url()}
+                          src={urlFor(post.author.image).width(80).height(80).auto('format').url()}
                           alt={post.author.name}
                           fill
                           className="object-cover"
