@@ -6,7 +6,7 @@ import { ContactPage } from '../pages/ContactPage';
 import { ServicesPage } from '../pages/ServicesPage';
 import { BlogPage } from '../pages/BlogPage';
 import { HomePage } from '../pages/HomePage';
-import { setupEmailJSMock } from '../helpers/mock-emailjs';
+import { blockServerActions, setupCareersApplyMock, setupEmailJSMock } from '../helpers/mock-emailjs';
 
 /**
  * Custom Playwright test fixture extending base test with
@@ -26,6 +26,11 @@ export const test = base.extend<ExtendedFixtures>({
   page: async ({ page }, use) => {
     // 1. Auto-mock EmailJS API calls across all tests
     await setupEmailJSMock(page);
+    // 1b. Auto-mock the careers Apply endpoint (it writes to Sanity and emails HR server-side)
+    await setupCareersApplyMock(page);
+    // 1c. Block Next server actions (blog likes/comments write to Sanity). Registered last so it
+    //     runs first; it falls back to the mocks above for every non-action request.
+    await blockServerActions(page);
 
     // 2. Production safety: monitor console for unhandled Next.js runtime exceptions
     page.on('pageerror', (err) => {
