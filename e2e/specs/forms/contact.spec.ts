@@ -1,6 +1,9 @@
-import { test, expect } from './fixtures/test';
+import { test, expect } from '../../fixtures/test';
+import { TEST_LEAD } from '../../fixtures/test-data';
+import { PRODUCTION_VIEWPORTS } from '../../helpers/responsive-viewports';
+import { expectAllLinksWork, expectCleanFullScroll } from '../../helpers/page-checks';
 
-test.describe('Contact Page: Form Validations, Submission & Links', () => {
+test.describe('Contact Page: Form Validations, Submission & Links', { tag: '@forms' }, () => {
   test.beforeEach(async ({ contactPage }) => {
     await contactPage.goto();
   });
@@ -43,8 +46,8 @@ test.describe('Contact Page: Form Validations, Submission & Links', () => {
 
   test('Invalid email and invalid phone numbers are rejected', async ({ contactPage }) => {
     await contactPage.fillForm({
-      name: 'Aman',
-      jobOrWebsite: 'Web App',
+      name: TEST_LEAD.name,
+      jobOrWebsite: TEST_LEAD.jobOrWebsite,
       email: 'invalid-email-address',
       phone: '1234',
     });
@@ -55,18 +58,20 @@ test.describe('Contact Page: Form Validations, Submission & Links', () => {
     await expect(contactPage.phoneError).toBeVisible();
   });
 
-  test('Happy Path: Submitting valid form sends mock EmailJS and displays success message', async ({
+  test('Happy Path: Submitting valid form sends mock EmailJS and displays success message', { tag: '@critical' }, async ({
+    page,
     contactPage,
   }) => {
-    await contactPage.fillForm({
-      name: 'Aman Sharma',
-      jobOrWebsite: 'Custom E-commerce Store',
-      email: 'aman.sharma@example.com',
-      phone: '+91 9823012345',
-    });
+    const { name, jobOrWebsite, email, phone } = TEST_LEAD;
+    await contactPage.fillForm({ name, jobOrWebsite, email, phone });
 
+    const sent = page.waitForRequest(/api\.emailjs\.com/);
     await contactPage.submit();
     await contactPage.verifySuccessState();
+
+    // The (mocked) EmailJS call carries the fake identity, never a real-looking person.
+    const params = (await sent).postDataJSON().template_params;
+    expect(params).toMatchObject({ name, email, mobile: phone, service: jobOrWebsite });
 
     // Click "Submit another request" to reset the form
     await contactPage.reset();
@@ -82,4 +87,25 @@ test.describe('Contact Page: Form Validations, Submission & Links', () => {
     const count = await externalLinks.count();
     expect(count).toBeGreaterThanOrEqual(1);
   });
+});
+
+test.describe('Contact Page: Health & Responsive', () => {
+  test('scrolling the whole page throws no JS errors and no same-origin request fails', { tag: '@critical' }, async ({ page, basePage, baseURL }) => {
+    await expectCleanFullScroll(page, basePage, '/contact', baseURL!);
+  });
+
+  test('every link on the page works', { tag: '@critical' }, async ({ page, contactPage }) => {
+    await contactPage.goto();
+    await expectAllLinksWork(page);
+  });
+
+  for (const vp of PRODUCTION_VIEWPORTS.filter((v) => [320, 768, 1440].includes(v.width))) {
+    test(`no horizontal overflow at ${vp.name}, and the form is fully usable`, async ({ page, contactPage }) => {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await contactPage.goto();
+      await contactPage.verifyNoHorizontalOverflow();
+      await contactPage.submitButton.scrollIntoViewIfNeeded();
+      await expect(contactPage.submitButton).toBeInViewport();
+    });
+  }
 });
