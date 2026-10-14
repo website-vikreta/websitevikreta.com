@@ -1,6 +1,7 @@
-import { test, expect } from './fixtures/test';
+import { test, expect } from '../../fixtures/test';
+import { TEST_LEAD } from '../../fixtures/test-data';
 
-test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', () => {
+test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', { tag: '@forms' }, () => {
   test.beforeEach(async ({ basePage }) => {
     await basePage.navigate('/services/ai-automations');
   });
@@ -23,14 +24,7 @@ test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', () =>
   test('Phone field enforces valid digit structure', async ({ auditModal }) => {
     await auditModal.openViaTrigger();
 
-    await auditModal.fillForm({
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '123', // invalid phone
-      subject: 'Workflow Automation',
-      message: 'Automate manual reporting.',
-    });
+    await auditModal.fillForm({ ...TEST_LEAD, phone: '123' }); // invalid phone
 
     await auditModal.submit();
 
@@ -38,22 +32,26 @@ test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', () =>
     await expect(phoneError).toBeVisible();
   });
 
-  test('Happy Path: Submitting valid form sends mock EmailJS and displays success banner', async ({
+  test('Happy Path: Submitting valid form sends mock EmailJS and displays success banner', { tag: '@critical' }, async ({
+    page,
     auditModal,
   }) => {
     await auditModal.openViaTrigger();
+    await auditModal.fillForm(TEST_LEAD);
 
-    await auditModal.fillForm({
-      firstName: 'Rajesh',
-      lastName: 'Sharma',
-      email: 'rajesh.sharma@example.com',
-      phone: '+91 9823012345',
-      subject: 'CRM Integration',
-      message: 'Connect HubSpot with our internal billing database.',
-    });
-
+    const sent = page.waitForRequest(/api\.emailjs\.com/);
     await auditModal.submit();
     await auditModal.verifySuccessState();
+
+    // The (mocked) EmailJS call carries the fake identity, never a real-looking person.
+    const params = (await sent).postDataJSON().template_params;
+    expect(params).toMatchObject({
+      name: TEST_LEAD.name,
+      email: TEST_LEAD.email,
+      mobile: TEST_LEAD.phone,
+      service_type: TEST_LEAD.subject,
+      message: TEST_LEAD.message,
+    });
   });
 
   test('Modal closes cleanly via Escape key and close button', async ({ auditModal }) => {
