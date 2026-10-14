@@ -62,6 +62,7 @@ Do not bulk-load the entire `.ai/` folder. Preserve context for implementation w
 | Visual design | `.ai/standards/design-system.md` |
 | Animation | `.ai/standards/motion-system.md` |
 | SEO/GEO | `.ai/standards/seo-geo.md` |
+| Images + assets (format, size, naming, alt, Sanity, OG) | `.ai/standards/image-asset-standards.md` |
 | Code rules | `.ai/standards/code-standards.md` |
 | Copy that sounds human | `.ai/commands/macro/humanize.md` |
 | Design/code conventions log | `.ai/learning.md` |
