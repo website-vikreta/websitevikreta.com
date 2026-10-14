@@ -96,7 +96,7 @@ export async function generateMetadata({
                     alt: post.title,
                   },
                 ]
-              : [{ url: '/og-image.png', width: 1200, height: 675 }],
+              : [{ url: '/og-image.png', width: 1200, height: 630 }],
           },
           twitter: {
             card: 'summary_large_image',
@@ -136,7 +136,7 @@ export async function generateMetadata({
         {
           url: '/og-image.png',
           width: 1200,
-          height: 675,
+          height: 630,
           alt: post.title,
         },
       ],
