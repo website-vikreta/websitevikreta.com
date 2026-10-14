@@ -16,7 +16,18 @@ const PORT = process.env.PORT || 3005;
 const EXISTING = process.env.PROD ? undefined : runningDevUrl();
 const BASE_URL = process.env.BASE_URL || EXISTING || `http://localhost:${PORT}`;
 
-/** Headless by default (CI-safe). Use `npm run test:e2e:headed` to watch; SLOWMO=500 to pace it. */
+/**
+ * Headless by default (CI-safe). Use `npm run test:e2e:headed` to watch; SLOWMO=500 to pace it.
+ *
+ * Specs live in e2e/specs/<area>/ (marketing, services, blog, careers, forms, site-wide). No per-page npm
+ * scripts — filter instead:
+ *   npm run test:e2e -- work               any spec whose path contains "work"
+ *   npm run test:e2e -- e2e/specs/forms    a whole area
+ *   npm run test:e2e -- --grep @critical   by tag (append --headed to watch in Chrome)
+ * Tags: @critical = page health + lead capture (run before a deploy),
+ *       @forms = anything that fills/submits a form (EmailJS is always mocked),
+ *       @smoke = every route loads with 200 + h1.
+ */
 export default defineConfig({
   testDir: './e2e',
   testMatch: '**/*.spec.ts',
