@@ -54,7 +54,7 @@ export default function Hero() {
       className="relative overflow-x-clip"
       style={{
         // Fixed 5rem, not var(--navbar-height): that var shrinks on scroll and would jerk the page up 24px.
-        paddingTop: 'calc(5rem + clamp(3rem, 6vw, 5rem))',
+        paddingTop: 'calc(5rem + clamp(2.25rem, 4.5vw, 3.75rem))',
         paddingBottom: 'clamp(3rem, 6vw, 5rem)',
       }}
       aria-label="WhatsApp Commerce Platform for Indian D2C Stores"
