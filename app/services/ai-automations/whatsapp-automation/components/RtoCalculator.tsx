@@ -1,175 +1,154 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { ArrowRight } from 'lucide-react'
-import { scrollToHash } from '@/lib/scroll-to-hash'
+import { useState } from 'react'
+import { Button } from '@/components/ui/Button'
 
-const MIN = 20
-const MAX = 600
-const RTO_RATE = 0.3
-const COST_PER_RTO = 250
+/* COD confirmation before dispatch brings India RTO from ~30–35% to ~18–22% (research brief):
+   modelled as roughly a third fewer returns */
+const CONFIRMED_FACTOR = 0.65
 
 function inr(value: number) {
   return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(Math.round(value))
 }
 
-/* Slider thumb styles injected once — avoids re-injecting on every render */
+/* Slider styles injected once — avoids re-injecting on every render */
 const STYLE_ID = 'wa-rto-calculator-styles'
 if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
   const s = document.createElement('style')
   s.id = STYLE_ID
   s.textContent = `
-    #rto-orders { -webkit-appearance:none; appearance:none; background:transparent; }
-    #rto-orders::-webkit-slider-runnable-track {
-      height:4px; border-radius:2px; background:var(--rto-track);
+    .rto-range { -webkit-appearance:none; appearance:none; background:transparent; width:100%; outline:none; }
+    .rto-range::-webkit-slider-runnable-track { height:3px; background:var(--rto-track); }
+    .rto-range::-moz-range-track { height:3px; background:var(--rto-track); }
+    .rto-range::-webkit-slider-thumb {
+      -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%;
+      background:#121212; cursor:grab; border:4px solid #fff; box-shadow:0 0 0 1px #121212;
+      margin-top:-9.5px;
     }
-    #rto-orders::-moz-range-track {
-      height:4px; border-radius:2px; background:var(--rto-track);
+    .rto-range::-moz-range-thumb {
+      width:16px; height:16px; border-radius:50%; background:#121212; cursor:grab;
+      border:4px solid #fff; box-shadow:0 0 0 1px #121212;
     }
-    #rto-orders::-webkit-slider-thumb {
-      -webkit-appearance:none; appearance:none;
-      width:22px; height:22px; border-radius:50%;
-      background:#25d366; cursor:grab;
-      border:3px solid rgba(255,255,255,0.9);
-      box-shadow:0 2px 10px rgba(0,0,0,0.35);
-      margin-top:-9px;
-    }
-    #rto-orders::-moz-range-thumb {
-      width:20px; height:20px; border-radius:50%;
-      background:#25d366; cursor:grab;
-      border:3px solid rgba(255,255,255,0.9);
-      box-shadow:0 2px 10px rgba(0,0,0,0.35);
-    }
-    #rto-orders:active::-webkit-slider-thumb { cursor:grabbing; }
-    #rto-orders:focus-visible::-webkit-slider-thumb {
-      outline:2px solid #25d366; outline-offset:2px;
-    }
+    .rto-range:active::-webkit-slider-thumb { cursor:grabbing; }
+    .rto-range:focus-visible::-webkit-slider-thumb { outline:2px solid #121212; outline-offset:3px; }
   `
   document.head.appendChild(s)
 }
 
+/* One input: a slider plus a number box you can type into. Typed values outside the slider's
+   range still count (a store doing 900 orders a day is real); the slider just pins to its end. */
+function Field({ id, label, unit, prefix = '', value, min, max, step, onChange }: {
+  id: string; label: string; unit?: string; prefix?: string; value: number; min: number; max: number; step: number; onChange: (v: number) => void
+}) {
+  const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
+  return (
+    <div>
+      <div className="flex items-center justify-between gap-4">
+        <label htmlFor={id} className="text-[15px] font-semibold text-(--color-text)">{label}</label>
+        <span className="flex items-center gap-1 border border-(--color-border-strong) bg-(--color-surface) px-3 py-1.5 text-sm focus-within:border-(--color-text)">
+          {prefix && <span className="text-(--color-text-muted)">{prefix}</span>}
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={value}
+            onChange={(e) => onChange(Math.max(0, Number(e.target.value) || 0))}
+            aria-label={`${label} value`}
+            className="w-14 bg-transparent text-right font-semibold tabular-nums text-(--color-text) outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          />
+          {unit && <span className="text-(--color-text-muted)">{unit}</span>}
+        </span>
+      </div>
+      <input
+        id={id}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={Math.min(max, Math.max(min, value))}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="rto-range mt-5"
+        style={{ '--rto-track': `linear-gradient(to right, #121212 ${pct}%, #e4e4e7 ${pct}%)` } as React.CSSProperties}
+      />
+      <div className="mt-2 flex justify-between text-[13px] text-(--color-text-faint)">
+        <span>{prefix}{min}{unit === '%' ? '%' : ''}</span><span>{prefix}{max}{unit === '%' ? '%' : ''}+</span>
+      </div>
+    </div>
+  )
+}
+
 export default function RtoCalculator() {
   const [orders, setOrders] = useState(120)
-  const [intro, setIntro] = useState(0)
-  const hostRef = useRef<HTMLDivElement>(null)
-  const started = useRef(false)
+  const [rate, setRate] = useState(30)
+  const [cost, setCost] = useState(250)
+  const [yearly, setYearly] = useState(false)
 
-  useEffect(() => {
-    const node = hostRef.current
-    if (!node) return
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      started.current = true
-      const id = requestAnimationFrame(() => setIntro(1))
-      return () => cancelAnimationFrame(id)
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || started.current) return
-        started.current = true
-        observer.disconnect()
-        const t0 = performance.now()
-        const tick = (now: number) => {
-          const p = Math.min(1, (now - t0) / 1100)
-          setIntro(1 - Math.pow(1 - p, 4))
-          if (p < 1) requestAnimationFrame(tick)
-        }
-        requestAnimationFrame(tick)
-      },
-      { threshold: 0.35 },
-    )
-
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
-
-  const monthly  = orders * 30
-  const returned = monthly * RTO_RATE
-  const cost     = returned * COST_PER_RTO
-  const percent  = ((orders - MIN) / (MAX - MIN)) * 100
-  const trackGrad = `linear-gradient(to right, #25d366 ${percent}%, rgba(255,255,255,0.18) ${percent}%)`
+  const months = yearly ? 12 : 1
+  const returned = orders * 30 * (rate / 100) * months
+  const lost = returned * cost
+  const confirmedRate = rate * CONFIRMED_FACTOR
+  const saved = orders * 30 * ((rate - confirmedRate) / 100) * cost * months
+  const period = yearly ? 'year' : 'month'
 
   return (
-    <div
-      ref={hostRef}
-      style={{
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        padding: 'clamp(20px, 4vw, 32px)',
-      }}
-    >
-      <label
-        htmlFor="rto-orders"
-        style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.16em', color: 'rgba(255,255,255,0.45)', marginBottom: '10px' }}
-      >
-        COD orders per day
-      </label>
+    <div className="grid grid-cols-1 border border-(--color-border) bg-(--color-surface) shadow-[0_30px_60px_-34px_rgba(20,18,15,0.35)] lg:grid-cols-[1.05fr_1fr]">
+      {/* Inputs */}
+      <div className="flex flex-col gap-8 p-[clamp(24px,4vw,40px)]">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-(--color-text-faint)">Your store</span>
 
-      {/* Order count */}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-        <span style={{ fontSize: 'clamp(2.5rem, 6vw, 3.25rem)', fontWeight: 800, letterSpacing: '-0.04em', color: '#fff', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
-          {orders}
-        </span>
-        <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.4)' }}>a day</span>
+        <Field id="rto-orders" label="COD orders per day" unit="a day" value={orders} min={10} max={600} step={10} onChange={setOrders} />
+        <Field id="rto-rate" label="Return rate (RTO)" unit="%" value={rate} min={5} max={50} step={1} onChange={(v) => setRate(Math.min(100, v))} />
+        <Field id="rto-cost" label="Cost per return" prefix="₹" value={cost} min={100} max={600} step={10} onChange={setCost} />
       </div>
 
-      {/* Slider */}
-      <input
-        id="rto-orders"
-        type="range"
-        min={MIN}
-        max={MAX}
-        step={10}
-        value={orders}
-        onChange={e => setOrders(Number(e.target.value))}
-        style={{ '--rto-track': trackGrad, marginTop: '20px', width: '100%', outline: 'none' } as React.CSSProperties}
-        aria-valuetext={`${orders} orders per day`}
-      />
-
-      {/* Stats */}
-      <dl style={{ marginTop: '28px' }}>
-        {[
-          { label: 'Orders per month',  value: inr(monthly * intro) },
-          { label: 'Returned to you',   value: inr(returned * intro) },
-        ].map(({ label, value }) => (
-          <div
-            key={label}
-            style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '12px 0' }}
-          >
-            <dt style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)' }}>{label}</dt>
-            <dd style={{ fontVariantNumeric: 'tabular-nums', fontSize: '17px', fontWeight: 700, color: 'rgba(255,255,255,0.9)' }}>
-              {value}
-            </dd>
+      {/* Results */}
+      <div className="flex flex-col">
+        <div className="bg-(--color-bg-muted) p-[clamp(24px,4vw,40px)]">
+          <div className="inline-flex border border-(--color-text) p-0.5 text-[13px]" role="group" aria-label="Period">
+            {[false, true].map((y) => (
+              <button
+                key={String(y)}
+                type="button"
+                onClick={() => setYearly(y)}
+                aria-pressed={yearly === y}
+                className={`px-3.5 py-1.5 font-medium transition-colors duration-200 ${yearly === y ? 'bg-(--color-text) text-white' : 'text-(--color-text)'}`}
+              >
+                {y ? 'Per year' : 'Per month'}
+              </button>
+            ))}
           </div>
-        ))}
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: '4px 16px', paddingTop: '18px' }}>
-          <dt style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)' }}>Round-trip cost per month</dt>
-          <dd>
-            <span style={{ fontSize: 'clamp(1.7rem, 4vw, 2.4rem)', fontWeight: 800, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.03em', color: '#ff6b5e' }}>
-              ₹{inr(cost * intro)}
-            </span>
-          </dd>
+          <p className="mt-6 text-[15px] font-semibold text-(--color-text-muted)">Lost to returned COD orders</p>
+          <p className="mt-1 text-[clamp(2.4rem,5vw,3.4rem)] font-bold leading-none tracking-tight tabular-nums text-(--color-text)">
+            ₹{inr(lost)}
+          </p>
         </div>
-      </dl>
 
-      <p style={{ marginTop: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '18px', fontSize: '11.5px', lineHeight: 1.75, color: 'rgba(255,255,255,0.35)' }}>
-        Assumes 30% RTO rate and ₹250 per round trip. India COD runs 28 to 35%; fashion and footwear
-        often higher. Adjust the slider to your own volume.
-      </p>
+        <div className="flex flex-1 flex-col bg-(--color-text) p-[clamp(24px,4vw,40px)] text-white">
+          <dl className="grid grid-cols-2 gap-6">
+            <div>
+              <dt className="text-[13px] text-white/55">Parcels returned</dt>
+              <dd className="mt-1 text-xl font-semibold tabular-nums">{inr(returned)} <span className="text-sm font-normal text-white/45">/ {period}</span></dd>
+            </div>
+            <div>
+              <dt className="text-[13px] text-white/55">RTO with confirmation</dt>
+              <dd className="mt-1 text-xl font-semibold tabular-nums">~{Math.round(confirmedRate)}% <span className="text-sm font-normal text-white/45">from {rate}%</span></dd>
+            </div>
+            <div className="col-span-2 border-t border-white/10 pt-5">
+              <dt className="text-[13px] text-white/55">Saved with WhatsApp COD confirmation</dt>
+              <dd className="mt-1 text-[1.75rem] font-bold tabular-nums text-[#25d366]">₹{inr(saved)} <span className="text-sm font-normal text-white/45">/ {period}</span></dd>
+            </div>
+          </dl>
 
-      <a
-        href="#cart-recovery"
-        onClick={e => scrollToHash(e, '#cart-recovery')}
-        style={{
-          marginTop: '20px', display: 'inline-flex', alignItems: 'center', gap: '6px',
-          fontSize: '13px', fontWeight: 600, color: '#fff',
-        }}
-      >
-        See exactly how we stop this
-        <ArrowRight size={14} strokeWidth={2} aria-hidden />
-      </a>
+          <div className="mt-auto flex flex-col gap-4 pt-8 sm:flex-row sm:items-end sm:justify-between">
+            <p className="max-w-[30ch] text-[12px] leading-relaxed text-white/45">
+              An estimate. India COD runs 28 to 35% RTO; confirmation before dispatch typically brings it to 18 to 22%.
+            </p>
+            <Button href="#packages" variant="light" size="sm" showArrow className="shrink-0">
+              See the plans
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaqSection } from '@/components/sections/FaqSection'
 import type { FaqItem } from '@/lib/faq-data'
 import Hero from './sections/Hero'
-import PainSection from './sections/PainSection'
+import PainSection, { RtoSection } from './sections/PainSection'
 import ProductRevealSection from './sections/ProductRevealSection'
 import AbandonedCartSection from './sections/AbandonedCartSection'
 import CartRecoverySection from './sections/CartRecoverySection'
@@ -72,6 +72,7 @@ export default function WhatsAppAutomationClient() {
         <AbandonedCartSection />
         <CartRecoverySection />
         <ConversationalAISection />
+        <RtoSection />
         <PackagesSection />
         <OnboardingSection />
         <ProofSection />
