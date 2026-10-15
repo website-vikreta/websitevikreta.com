@@ -1,18 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
-import { Gauge, Receipt, ShieldAlert, Timer, UserPlus, Wallet } from 'lucide-react'
-import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import { useRef, useState } from 'react'
+import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import AbandonedCartDemo from '../components/AbandonedCartDemo'
-
-const CAUSES = [
-  { cause: 'The final price feels higher than expected', fix: 'Show the full price early and remind them of the exact total', icon: Receipt },
-  { cause: 'Customers have to create an account',        fix: 'Let them check out as guests and send a direct WhatsApp link', icon: UserPlus },
-  { cause: 'Checkout takes too long',                    fix: 'Ask for fewer details and send them straight to checkout', icon: Timer },
-  { cause: 'Their preferred payment option is missing',  fix: 'Put UPI, wallets, and COD first, with a payment link in WhatsApp', icon: Wallet },
-  { cause: 'The checkout page loads too slowly',         fix: 'Speed up the page so customers can finish their order', icon: Gauge },
-  { cause: 'Customers do not feel ready to pay',         fix: 'Show trust signals and confirm COD orders on WhatsApp', icon: ShieldAlert },
-]
+import CheckoutHotspots from '../components/CheckoutHotspots'
 
 type MessageCard = {
   timing: string
@@ -20,7 +11,6 @@ type MessageCard = {
   label: string
   purpose: string
   badge: string
-  badgeColor: string
   preview: string
   hasOffer?: boolean
   offerText?: string
@@ -33,7 +23,6 @@ const MESSAGES: MessageCard[] = [
     label: 'Bring them back',
     purpose: 'A simple reminder while the cart is still fresh.',
     badge: 'Utility',
-    badgeColor: '#1a8a5a',
     preview: 'Hi Priya, you left something in your cart. Your Block Print Kurta (M) is still available. Tap to complete your order.',
   },
   {
@@ -42,7 +31,6 @@ const MESSAGES: MessageCard[] = [
     label: 'Build confidence',
     purpose: 'Show that other customers are buying too.',
     badge: 'Marketing',
-    badgeColor: '#b45309',
     preview: '12 people bought this kurta in the last 24 hours. Sizes are going fast. Your cart is saved. Complete your order now.',
   },
   {
@@ -51,26 +39,32 @@ const MESSAGES: MessageCard[] = [
     label: 'Give one last reason',
     purpose: 'Make one clear offer before the cart expires.',
     badge: 'Marketing',
-    badgeColor: '#b45309',
     preview: 'Final reminder. Use code SAVE10 for 10% off your order. This offer expires tonight at midnight.',
     hasOffer: true,
     offerText: 'SAVE10 · 10% off · Expires tonight',
   },
 ]
 
+const BADGE: Record<string, string> = {
+  Utility: 'bg-[#e7f6ec] text-[#1a7a3a]',
+  Marketing: 'bg-[#fdf1e3] text-[#9a4a07]',
+}
+
 export default function CartRecoverySection() {
   const scope = useRef<HTMLElement>(null)
+  // Follows the phone: the message currently on screen is the one lit up in the timeline
+  const [current, setCurrent] = useState(0)
 
   useGsapSection(scope, () => {
     revealLines('#cart-heading',  { trigger: scope.current })
     revealFadeUp('.cart-intro',   { y: 20, trigger: scope.current })
-    revealFadeUp('.cart-cause',   { y: 16, stagger: STAGGER.tight, trigger: scope.current })
-    revealFadeUp('.cart-msg',     { y: 20, stagger: STAGGER.base,  trigger: scope.current })
+    // One reveal for the whole timeline: per-item reveals would pin an inline opacity that fights the highlight
+    revealFadeUp('.cart-msgs',    { y: 20, trigger: scope.current })
     revealFadeUp('.cart-phone',   { y: 30, trigger: scope.current })
   })
 
   return (
-    <section ref={scope} id="cart-recovery" className="scroll-mt-32 bg-(--color-surface) py-16 md:py-20" aria-labelledby="cart-heading">
+    <section ref={scope} id="cart-recovery" className="scroll-mt-32 py-16 md:py-20" aria-labelledby="cart-heading">
       <div className="container">
 
         {/* Heading */}
@@ -85,28 +79,18 @@ export default function CartRecoverySection() {
           </p>
         </div>
 
-        {/* Cause / fix audit */}
-        <div className="mb-10 grid grid-cols-1 gap-px overflow-hidden border border-(--color-border) bg-(--color-border) md:mb-14 md:grid-cols-2 lg:grid-cols-3">
-          {CAUSES.map(({ cause, fix, icon: Icon }) => (
-            <div key={cause} className="cart-cause bg-(--color-surface) p-6 md:p-7">
-              <Icon size={26} strokeWidth={1.5} aria-hidden className="text-(--color-accent)" />
-              <p className="mt-4 text-base font-bold leading-snug text-(--color-text)">{cause}</p>
-              <div className="mt-4 border-t border-(--color-border) pt-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-(--color-text-faint)">Fix</p>
-                <p className="mt-1.5 text-base leading-relaxed text-(--color-text-muted)">{fix}</p>
-              </div>
-            </div>
-          ))}
+        <div className="mb-14 md:mb-20">
+          <CheckoutHotspots />
         </div>
 
         {/* 3-message sequence */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-16">
 
-          <div className="cart-phone order-2 flex items-center justify-center lg:order-1">
-            <AbandonedCartDemo messages={MESSAGES} storefront={false} />
+          <div className="cart-phone order-2 flex items-center justify-center">
+            <AbandonedCartDemo messages={MESSAGES} storefront={false} onMessage={setCurrent} />
           </div>
 
-          <div className="order-1 flex flex-col justify-center lg:order-2">
+          <div className="order-1 flex flex-col justify-center">
             <h3 className="text-2xl font-bold tracking-tight text-(--color-text) md:text-3xl">
               Three messages. Three reasons to return.
             </h3>
@@ -114,33 +98,25 @@ export default function CartRecoverySection() {
               We start with a reminder, build confidence, and only then make one offer. No discount on message one.
             </p>
             
-            <div className="mt-10 flex flex-col gap-6">
-              {MESSAGES.map((msg) => (
-                <div key={msg.timing} className="cart-msg flex items-start gap-4 border border-(--color-border) bg-(--color-bg-muted) p-5 md:p-6">
-                  <div className="flex-1">
-                    <p className="font-mono text-sm font-semibold tracking-widest text-(--color-text-faint)" style={{ marginBottom: '4px' }}>
-                      {msg.timing}
-                    </p>
-                    <p className="text-lg font-bold tracking-tight text-(--color-text)">{msg.label}</p>
-                    <p className="mt-1 text-base leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
+            <ol className="cart-msgs mt-8">
+              {MESSAGES.map((msg, i) => (
+                <li
+                  key={msg.timing}
+                  className={`py-4 transition-opacity duration-500 ${
+                    current === i ? 'opacity-100' : 'opacity-40'
+                  }`}
+                >
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="font-mono text-sm font-semibold tracking-wider text-(--color-text-faint)">{msg.timing}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${BADGE[msg.badge]}`}>{msg.badge}</span>
                   </div>
-                  <span style={{
-                    flexShrink: 0,
-                    borderRadius: '4px',
-                    padding: '3px 9px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    background: `${msg.badgeColor}15`,
-                    color: msg.badgeColor,
-                    border: `1px solid ${msg.badgeColor}35`,
-                  }}>
-                    {msg.badge}
-                  </span>
-                </div>
+                  <p className="mt-1.5 text-xl font-bold leading-snug tracking-tight text-(--color-text)">{msg.label}</p>
+                  <p className="mt-1 text-base leading-relaxed text-(--color-text-muted)">{msg.purpose}</p>
+                </li>
               ))}
-            </div>
+            </ol>
 
-            <p className="mt-8 text-sm leading-relaxed text-(--color-text-muted)">
+            <p className="mt-6 text-sm leading-relaxed text-(--color-text-muted)">
               Explicit WhatsApp opt-in required before any message is sent.
               Compliant with India&apos;s DPDP Act and Meta&apos;s WhatsApp Business policy.
             </p>
