@@ -2,6 +2,8 @@
 
 import { useRef } from 'react'
 import {
+  ArrowRight,
+  Check,
   BadgeCheck,
   ClipboardList,
   Files,
@@ -188,46 +190,41 @@ export default function OnboardingSection() {
           </div>
         </div>
 
-        {/* Responsibility split */}
+        {/* Responsibility split: a light card for the little you do, a black one for the rest */}
         <div className="onboarding-responsibilities mt-10 md:mt-14">
-          <div className="mb-8 max-w-xl">
-            <p className="mb-3 text-sm text-(--color-text-muted)">
-              Your part is small
-            </p>
-            <p className="text-xl font-bold leading-tight tracking-tight text-(--color-text) md:text-2xl">
-              You give us the access and approvals. We do the heavy lifting.
-            </p>
-          </div>
+          <p className="mb-6 max-w-xl text-xl font-bold leading-tight tracking-tight text-(--color-text) md:text-2xl">
+            You give us the access and approvals. We do the heavy lifting.
+          </p>
 
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="relative">
-              <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-(--color-border) pb-4">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+            <div className="border border-(--color-border) bg-(--color-surface) p-7 md:p-9">
+              <div className="flex items-baseline justify-between gap-4">
                 <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">You provide</h3>
-                <span className="text-(--color-text-muted)">4 things</span>
+                <span className="text-sm text-(--color-text-muted)">4 things</span>
               </div>
-              <ol className="divide-y divide-(--color-border)">
-                {YOUR_PART.map((item, index) => (
-                  <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
-                    <span className="font-mono text-sm font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="text-base leading-relaxed text-(--color-text-muted)">{item}</span>
+              <ul className="mt-6 flex flex-col gap-4">
+                {YOUR_PART.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-base leading-relaxed text-(--color-text)">
+                    <ArrowRight size={16} strokeWidth={2} aria-hidden className="mt-1 shrink-0 text-(--color-text-faint)" />
+                    {item}
                   </li>
                 ))}
-              </ol>
+              </ul>
             </div>
 
-            <div className="relative lg:border-l lg:border-(--color-border) lg:pl-16">
-              <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-(--color-border) pb-4">
-                <h3 className="text-2xl font-bold tracking-tight text-(--color-text)">We handle</h3>
-                <span className="text-(--color-text-muted)">End to end</span>
+            <div className="bg-(--color-text) p-7 text-white md:p-9">
+              <div className="flex items-baseline justify-between gap-4">
+                <h3 className="text-2xl font-bold tracking-tight">We handle</h3>
+                <span className="text-sm text-white/55">End to end</span>
               </div>
-              <ol className="divide-y divide-(--color-border)">
-                {OUR_PART.map((item, index) => (
-                  <li key={item} className="flex gap-5 py-4 first:pt-0 last:pb-0">
-                    <span className="font-mono text-sm font-semibold text-(--color-text-muted)">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="text-base leading-relaxed text-(--color-text-muted)">{item}</span>
+              <ul className="mt-6 flex flex-col gap-4">
+                {OUR_PART.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-base leading-relaxed text-white/90">
+                    <Check size={16} strokeWidth={2.5} aria-hidden className="mt-1 shrink-0 text-[#25d366]" />
+                    {item}
                   </li>
                 ))}
-              </ol>
+              </ul>
             </div>
           </div>
         </div>
