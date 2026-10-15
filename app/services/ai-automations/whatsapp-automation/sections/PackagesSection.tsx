@@ -2,7 +2,8 @@
 
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/Button'
-import { Check } from 'lucide-react'
+import { Check, Code2 } from 'lucide-react'
+import { FOOTER_LINKS } from '@/config/footer-links'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
 const CYCLES = [
@@ -53,6 +54,41 @@ const PACKAGES = [
     },
   },
 ] as const
+
+/* The footer's WhatsApp number, with the custom-plan question already typed */
+const WA_HREF = `${FOOTER_LINKS.social.find((l) => l.label === 'WhatsApp')!.href}?text=${encodeURIComponent('Hi, I want a custom WhatsApp setup for my store.')}`
+
+function WaGlyph({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden>
+      <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.7-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z" />
+    </svg>
+  )
+}
+
+/* What a custom build plugs into, as a small overlapping logo stack */
+const CHANNELS = [
+  { name: 'WhatsApp', bg: '#25d366', icon: <WaGlyph size={18} /> },
+  {
+    name: 'Instagram',
+    bg: 'linear-gradient(45deg,#f9a825,#e1306c 55%,#833ab4)',
+    icon: (
+      <svg viewBox="0 0 24 24" width={17} height={17} fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+        <rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Facebook',
+    bg: '#1877f2',
+    icon: (
+      <svg viewBox="0 0 24 24" width={17} height={17} fill="currentColor" aria-hidden>
+        <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4a20 20 0 0 0-2.2-.1c-2.2 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3Z" />
+      </svg>
+    ),
+  },
+  { name: 'Custom API', bg: '#121212', icon: <Code2 size={17} strokeWidth={2} /> },
+]
 
 export default function PackagesSection() {
   const scope = useRef<HTMLElement>(null)
@@ -168,19 +204,29 @@ export default function PackagesSection() {
           })}
         </div>
 
-        {/* Custom tier row */}
-        <div
-          className="packages-footer mt-4 flex flex-col items-start justify-between gap-4 border border-(--color-border) bg-(--color-bg-muted) p-6 sm:flex-row sm:items-center md:p-7"
-        >
-          <div>
+        {/* Custom tier: a WhatsApp-flavoured call CTA that opens a real chat */}
+        <div className="packages-footer mt-4 flex flex-col gap-5 border border-[#25d366]/30 bg-[#e7f6ec] p-6 sm:flex-row sm:items-center md:p-7">
+          <div className="flex shrink-0 -space-x-2" aria-hidden>
+            {CHANNELS.map(({ name, bg, icon }) => (
+              <span
+                key={name}
+                title={name}
+                className="grid h-10 w-10 place-items-center rounded-full text-white ring-[3px] ring-[#e7f6ec]"
+                style={{ background: bg }}
+              >
+                {icon}
+              </span>
+            ))}
+          </div>
+          <div className="flex-1">
             <p className="font-bold text-(--color-text)">Custom and Enterprise</p>
             <p className="mt-1 text-base leading-relaxed text-(--color-text-muted)">
               AI WhatsApp agents, Instagram and Facebook inbox integration, custom API
               connections, and multi-brand setups. Quoted based on scope.
             </p>
           </div>
-          <Button href="#whatsapp-demo" variant="ghost" size="sm" showArrow className="shrink-0">
-            Talk to us
+          <Button href={WA_HREF} external variant="primary" size="sm" showArrow className="shrink-0 self-start sm:self-auto">
+            Chat with us on WhatsApp
           </Button>
         </div>
 
