@@ -7,6 +7,7 @@ import {
   PhoneStatusBar,
   WhatsAppScreen,
   PHONE_HEADER_H,
+  PHONE_BODY_H as BODY_H,
 } from './WhatsAppPhoneShell'
 
 export type RecoveryMessage = {
@@ -17,7 +18,6 @@ export type RecoveryMessage = {
   offerText?: string
 }
 
-const BODY_H = 452
 const HOLD_MS = 3000
 const ink = 'rgba(18,18,18,'
 
@@ -183,7 +183,7 @@ function StoreScreen({ view }: { view: Scene }) {
 function HomeScreen({ notification }: { notification: boolean }) {
   return (
     <>
-      <PhoneStatusBar time="10:15" background="#12100e" />
+      <PhoneStatusBar time="10:15" background="#12100e" color="#fff" bars="255,255,255" />
 
       <div style={{
         position: 'relative', height: PHONE_HEADER_H + BODY_H, overflow: 'hidden',
@@ -275,10 +275,17 @@ function Bubble({ m }: { m: RecoveryMessage }) {
 export default function AbandonedCartDemo({
   messages,
   storefront = true,
+  onStep,
+  onMessage,
 }: {
   messages: RecoveryMessage[]
   /* false plays the chat half only, for a section that has already shown the store */
   storefront?: boolean
+  /* Which of the section's three steps the phone is showing: 0 shopping until the app closes,
+     1 the quiet home screen while the store reports the cart, 2 the notification and chat */
+  onStep?: (step: number) => void
+  /* Index of the newest recovery message on screen (0 until the first one lands) */
+  onMessage?: (index: number) => void
 }) {
   const flow = useMemo(() => (storefront ? FLOW : []), [storefront])
 
@@ -309,8 +316,15 @@ export default function AbandonedCartDemo({
     return () => window.clearTimeout(id)
   }, [stage, chat, flow, total])
 
-  if (stage < flow.length) {
-    const view = flow[stage].view
+  const scene = stage < flow.length ? flow[stage].view : null
+  const step = scene === null || scene === 'notify' ? 2 : scene === 'home' ? 1 : 0
+  useEffect(() => { onStep?.(step) }, [step, onStep])
+  const shownMessages = scene === null ? chat.slice(0, stage - flow.length + 1).filter((n) => n.t === 'msg').length : 0
+  const messageIndex = Math.max(0, shownMessages - 1)
+  useEffect(() => { onMessage?.(messageIndex) }, [messageIndex, onMessage])
+
+  if (scene !== null) {
+    const view = scene
     const closing = view === 'exit'
 
     if (view === 'home' || view === 'notify') {
