@@ -22,7 +22,7 @@ export function AuditModal({ open, onOpenChange, config }: AuditModalProps) {
         <DialogPrimitive.Overlay className="audit-modal-overlay" />
         <DialogPrimitive.Content
           ref={contentRef}
-          className="audit-modal-content bg-(--color-surface) border border-(--color-border)"
+          className="audit-modal-content max-w-[calc(100%-2rem)] min-w-0 overflow-x-hidden bg-(--color-surface) border border-(--color-border)"
           onOpenAutoFocus={(e) => {
             // Land focus on the first field, not the dialog wrapper.
             e.preventDefault()
@@ -42,7 +42,29 @@ export function AuditModal({ open, onOpenChange, config }: AuditModalProps) {
             <X size={16} strokeWidth={1.75} aria-hidden="true" />
           </DialogPrimitive.Close>
 
-          <div className="p-6 pt-14 sm:p-8 sm:pt-16">
+          <div className="min-w-0 overflow-x-hidden p-6 pt-14 sm:p-8 sm:pt-16">
+            {config.projects && config.projects.length > 0 && (
+              <div className="mb-8 border border-(--color-border) bg-(--color-bg) p-4 sm:p-5">
+                <p className="mb-3 text-sm font-semibold text-(--color-text)">
+                  {config.projectsHeading ?? 'Related work'}
+                </p>
+                <ul className="grid gap-2 sm:grid-cols-2">
+                  {config.projects.map((project) => (
+                    <li key={project.href}>
+                      <a
+                        href={project.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block rounded-sm border border-(--color-border) bg-(--color-surface) px-3 py-2 transition-colors hover:border-(--color-text)"
+                      >
+                        <span className="block text-sm font-semibold text-(--color-text)">{project.title}</span>
+                        <span className="text-xs text-(--color-text-muted)">{project.skills}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <AuditForm
               formName={config.formName}
               heading={config.heading}

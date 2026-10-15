@@ -32,6 +32,7 @@ interface FormState {
   name: string
   email: string
   phone: string
+  notes: string
 }
 
 interface FormErrors {
@@ -42,7 +43,7 @@ interface FormErrors {
 
 export default function CareerDetailClient({ opening }: { opening: Opening }) {
   const [submitted, setSubmitted]     = useState(false)
-  const [formData, setFormData]       = useState<FormState>({ name: '', email: '', phone: '' })
+  const [formData, setFormData]       = useState<FormState>({ name: '', email: '', phone: '', notes: '' })
   const [errors, setErrors]           = useState<FormErrors>({})
   const [resumeFile, setResumeFile]   = useState<File | null>(null)
   const [submitError, setSubmitError] = useState('')
@@ -70,6 +71,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       fd.append('name', formData.name)
       fd.append('email', formData.email)
       fd.append('phone', formData.phone)
+      fd.append('notes', formData.notes)
       fd.append('openingId', opening._id)
       fd.append('openingTitle', opening.title)
       fd.append('openingSlug', opening.slug)
@@ -94,7 +96,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
 
   function resetForm() {
     setSubmitted(false)
-    setFormData({ name: '', email: '', phone: '' })
+    setFormData({ name: '', email: '', phone: '', notes: '' })
     setResumeFile(null)
     setErrors({})
     setSubmitError('')
@@ -277,6 +279,25 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                   placeholder="+91 98765 43210"
                   disabled={submitting}
                   className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint)"
+                  style={{ borderColor: 'var(--color-border)' }}
+                  onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
+                  onBlur={e => { e.target.style.borderColor = 'var(--color-border)' }}
+                />
+              </div>
+
+              {/* Notes / Links */}
+              <div>
+                <label className="block text-sm font-medium text-(--color-text-muted) mb-1.5">
+                  Notes / Links <span className="text-(--color-text-faint)">(optional)</span>
+                </label>
+                <textarea
+                  name="notes"
+                  rows={3}
+                  value={formData.notes}
+                  onChange={e => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                  placeholder="Portfolio, LinkedIn, GitHub, or anything else you'd like to share"
+                  disabled={submitting}
+                  className="w-full border bg-transparent px-3.5 py-2 sm:py-2.5 text-sm sm:text-base text-(--color-text) outline-none transition-colors placeholder:text-(--color-text-faint) resize-none"
                   style={{ borderColor: 'var(--color-border)' }}
                   onFocus={e => { e.target.style.borderColor = 'var(--color-border-strong)' }}
                   onBlur={e => { e.target.style.borderColor = 'var(--color-border)' }}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import AIAutomationsClient from './AIAutomationsClient'
-import { SITE_URL } from '@/config/site'
+import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/services/ai-automations`
 
@@ -14,7 +14,7 @@ const jsonLd = {
       serviceType: 'AI Workflow Automation',
       description: 'AI workflow automation for the repetitive work eating your team\'s week. We audit your process, connect your tools, and hand the system over documented.',
       url: PAGE_URL,
-      provider: { '@id': `${SITE_URL}/#organization` },
+      provider: ORGANIZATION_REF,
       areaServed: { '@type': 'Country', name: 'India' },
     },
     {
@@ -22,15 +22,14 @@ const jsonLd = {
       '@id': `${PAGE_URL}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
-        { '@type': 'ListItem', position: 3, name: 'AI Automations', item: PAGE_URL },
+        { '@type': 'ListItem', position: 2, name: 'AI Automations', item: PAGE_URL },
       ],
     },
   ],
 }
 
 export const metadata: Metadata = {
-  title: 'AI Automation Agency | Website Vikreta',
+  title: 'AI Automation Agency for Business Workflows | Website Vikreta',
   description: 'Automate CRM, reporting, support and repetitive operations with custom AI agents and workflows. Get a free process audit from Website Vikreta.',
   keywords: [
     'AI automation agency',
@@ -45,10 +44,10 @@ export const metadata: Metadata = {
     'automate repetitive business processes with AI',
   ],
   openGraph: {
-    title: 'AI Automation Agency | Website Vikreta',
+    title: 'AI Automation Agency for Business Workflows | Website Vikreta',
     description: 'Automate CRM, reporting, support and repetitive operations with custom AI agents and workflows. Get a free process audit from Website Vikreta.',
     url: `${SITE_URL}/services/ai-automations`,
-   siteName: 'Website Vikreta',
+    siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
     images: [
@@ -56,13 +55,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 675,
-        alt: 'AI Automation Agency | Website Vikreta',
+        alt: 'AI Automation Agency for Business Workflows | Website Vikreta',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Automation Agency | Website Vikreta',
+    title: 'AI Automation Agency for Business Workflows | Website Vikreta',
     description: 'Automate CRM, reporting, support and repetitive operations with custom AI agents and workflows. Get a free process audit from Website Vikreta.',
     images: ['/og-image.png'],
   },

@@ -3,6 +3,7 @@
 import { RevealText, RevealFade } from '@/components/ui/Reveal'
 import { WEB_PROJECTS } from '@/lib/work-data'
 import { ExternalProjectLink } from '@/components/sections/work/CaseStudyCard'
+import { SlopeProjectGrid } from '@/components/sections/work/SlopeProjectGrid'
 
 export function WorkWebsitesSection() {
   return (
@@ -24,26 +25,20 @@ export function WorkWebsitesSection() {
           </RevealFade>
         </div>
 
-        <div className="grid grid-cols-1 border-t border-l border-(--color-border) md:grid-cols-2 lg:grid-cols-3">
-          {WEB_PROJECTS.map((project, index) => (
-            <RevealFade
-              key={project.slug}
-              delay={(index % 3) * 0.08}
-              className="border-r border-b border-(--color-border)"
-            >
+        <SlopeProjectGrid
+          items={WEB_PROJECTS.map((project, index) => (
+            <RevealFade key={project.slug} delay={(index % 3) * 0.08}>
               <ExternalProjectLink
                 title={project.title}
                 description={project.description}
                 href={project.href}
                 logo={project.logo}
-                image={project.image}
-                imageAlt={project.imageAlt}
                 skills={project.skills}
                 className="h-full"
               />
             </RevealFade>
           ))}
-        </div>
+        />
       </div>
     </section>
   )

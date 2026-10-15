@@ -76,12 +76,12 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
                         className="group flex w-full items-start justify-between gap-6 py-6 text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-accent)"
                       >
                         <div className="flex gap-4">
+                          {/* Number and +/− are CSS content so the <h3> text crawlers index is just the question */}
                           <span
-                            className="mt-2 flex-shrink-0 font-mono text-xs text-(--color-text-faint) tracking-[0.06em]"
+                            data-n={String(index + 1).padStart(2, '0')}
+                            className="mt-2 flex-shrink-0 font-mono text-xs text-(--color-text-faint) tracking-[0.06em] before:content-[attr(data-n)]"
                             aria-hidden="true"
-                          >
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
+                          />
                           <span className="text-xl md:text-2xl font-semibold leading-snug tracking-tight text-(--color-text-muted) group-data-[state=open]:text-(--color-text)">
                             {faq.question}
                           </span>
@@ -90,8 +90,8 @@ export function FaqSection({ items, heading = 'Frequently Asked Questions', view
                           className="mt-2 flex-shrink-0 text-xl font-light text-(--color-text-muted) transition-opacity duration-150 select-none"
                           aria-hidden="true"
                         >
-                          <span className="group-data-[state=open]:hidden">+</span>
-                          <span className="group-data-[state=closed]:hidden">&#8722;</span>
+                          <span className="group-data-[state=open]:hidden before:content-['+']" />
+                          <span className="group-data-[state=closed]:hidden before:content-['−']" />
                         </span>
                       </AccordionPrimitive.Trigger>
                     </h3>

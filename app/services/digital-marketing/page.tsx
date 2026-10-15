@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import DigitalMarketingClient from './DigitalMarketingClient'
-import { SITE_URL } from '@/config/site'
+import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/services/digital-marketing`
 
@@ -14,7 +14,7 @@ const jsonLd = {
       serviceType: 'Digital Marketing',
       description: 'SEO, GEO, content, and paid campaigns built on real lead and revenue numbers, not rankings and impressions.',
       url: PAGE_URL,
-      provider: { '@id': `${SITE_URL}/#organization` },
+      provider: ORGANIZATION_REF,
       areaServed: { '@type': 'Country', name: 'India' },
     },
     {
@@ -22,8 +22,7 @@ const jsonLd = {
       '@id': `${PAGE_URL}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
-        { '@type': 'ListItem', position: 3, name: 'Digital Marketing', item: PAGE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Digital Marketing', item: PAGE_URL },
       ],
     },
   ],

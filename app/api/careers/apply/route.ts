@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const name         = formData.get('name')         as string
     const email        = formData.get('email')        as string
     const phone        = formData.get('phone')        as string | null
+    const notes        = formData.get('notes')        as string | null
     const openingId    = formData.get('openingId')    as string
     const openingTitle = formData.get('openingTitle') as string
     const openingSlug  = formData.get('openingSlug')  as string
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
       candidateName: name,
       email,
       phone: phone ?? '',
+      notes: notes ?? '',
       opening: {
         _type: 'reference',
         _ref: openingId,
@@ -81,6 +83,7 @@ export async function POST(req: NextRequest) {
         candidate_name:  name,
         candidate_email: email,
         candidate_phone: phone ?? 'Not provided',
+        notes:           notes ?? 'Not provided',
         job_title:       openingTitle,
         job_url:         jobUrl,
         resume_url:      resumePublicUrl,
