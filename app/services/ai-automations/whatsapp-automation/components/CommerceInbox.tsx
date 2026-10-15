@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import BoardWindow from './BoardWindow'
 import { LazyMotion, domAnimation, m, type Variants } from 'motion/react'
 import { Bell, Bot, MessageCircle, MessageSquare, MessageSquareText, Send } from 'lucide-react'
 
@@ -88,13 +89,8 @@ export default function CommerceInbox({ active = true }: { active?: boolean }) {
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="flex h-full flex-col overflow-hidden rounded-xl border border-(--color-border) bg-white text-[#121212] shadow-[0_30px_60px_-30px_rgba(20,18,15,0.35)]">
-        {/* Title bar */}
-        <div className="flex h-7 items-center gap-1.5 bg-[#2a3441] px-3" aria-hidden>
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-        </div>
+      <BoardWindow title="Kaya Wear · Inbox" dark>
+      <div className="flex flex-1 flex-col bg-white text-[#121212]">
         <div className="flex items-center justify-between bg-[#2f3a48] px-4 py-3">
           <span className="flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.06em] text-white">
             <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-[#25d366]" />
@@ -200,6 +196,7 @@ export default function CommerceInbox({ active = true }: { active?: boolean }) {
           </m.div>
         </div>
       </div>
+      </BoardWindow>
     </LazyMotion>
   )
 }
