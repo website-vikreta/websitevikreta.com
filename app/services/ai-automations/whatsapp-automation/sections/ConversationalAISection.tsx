@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { Check } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, ExternalLink, Footprints, List, Shirt, ShoppingBag } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 import WhatsAppPhoneShell from '../components/WhatsAppPhoneShell'
 
@@ -11,54 +11,65 @@ const BENEFITS = [
   'Captures leads and hands off complex queries to your team',
 ]
 
-function ChatPhone() {
+const MENU = [
+  { name: 'Cotton Kurta', price: '₹1,299', Icon: Shirt },
+  { name: 'Linen Kurta', price: '₹1,599', Icon: Shirt },
+  { name: 'Kolhapuri Chappal', price: '₹899', Icon: Footprints },
+  { name: 'Tote Bag', price: '₹749', Icon: ShoppingBag },
+]
+
+const bubble = 'absolute rounded-xl bg-[#f7f7f7] text-[15px] leading-[1.6] text-[#121212] shadow-[0_18px_40px_-18px_rgba(20,18,15,0.4)]'
+/* WhatsApp-style tail on the bubble's bottom-left corner */
+const tail = 'before:absolute before:-left-2 before:bottom-3 before:border-y-[7px] before:border-r-[10px] before:border-y-transparent before:border-r-[#f7f7f7]'
+
+/* Fixed 560px stage, zoomed down on phones so the overlaps stay exactly as designed */
+function SalesStage() {
   return (
-    <WhatsAppPhoneShell time="14:30" name="Brand Bot" subtitle="Always online" avatarLetter="B">
-      <div style={{
-        alignSelf: 'flex-end',
-        maxWidth: '85%',
-        borderRadius: '12px 12px 3px 12px',
-        background: '#d9fdd3',
-        padding: '10px 12px',
-        fontSize: '12.5px',
-        lineHeight: 1.5,
-        color: '#111b21',
-        boxShadow: '0 1px 1px rgba(0,0,0,0.08)',
-      }}>
-        Do you have the Black Comfort Sneakers in size 9?
-        <span style={{ display: 'block', textAlign: 'right', fontSize: '9px', color: 'rgba(0,0,0,0.45)', marginTop: '4px' }}>14:31</span>
+    <div aria-hidden className="relative h-[580px] w-[560px] max-sm:[zoom:0.62]">
+      <div className="absolute left-1/2 top-0 w-[300px] -translate-x-1/2">
+        <WhatsAppPhoneShell time="14:30" name="Kaya Wear" subtitle="Always online" avatarLetter="K" height={430}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, borderRadius: 999, background: '#fff', padding: '8px 14px', fontSize: 12, color: '#8696a0' }}>
+            <span style={{ fontSize: 18, lineHeight: 1 }}>+</span> Message
+          </div>
+        </WhatsAppPhoneShell>
       </div>
 
-      <div style={{
-        alignSelf: 'flex-start',
-        maxWidth: '90%',
-        borderRadius: '12px 12px 12px 3px',
-        background: '#fff',
-        padding: '10px 12px',
-        fontSize: '12.5px',
-        lineHeight: 1.5,
-        color: '#111b21',
-        boxShadow: '0 1px 1px rgba(0,0,0,0.08)',
-      }}>
-        Hi! Yes, we have exactly 2 pairs left in Size 9. 👟<br/><br/>Would you like me to reserve a pair for you?
-        <span style={{ display: 'block', textAlign: 'right', fontSize: '9px', color: 'rgba(0,0,0,0.45)', marginTop: '4px' }}>14:31</span>
+      <div className={`${bubble} ${tail} left-6 top-[120px] z-10 w-[290px] px-4 pt-3`}>
+        Hi! Here&apos;s our kurta collection. Tap below to browse.
+        <span className="mt-2 flex items-center gap-2 border-t border-[#e2e2e2] py-2.5 font-medium text-[#027eb5]">
+          <List size={16} /> View collection
+        </span>
       </div>
 
-      <div style={{
-        alignSelf: 'flex-end',
-        maxWidth: '85%',
-        borderRadius: '12px 12px 3px 12px',
-        background: '#d9fdd3',
-        padding: '10px 12px',
-        fontSize: '12.5px',
-        lineHeight: 1.5,
-        color: '#111b21',
-        boxShadow: '0 1px 1px rgba(0,0,0,0.08)',
-      }}>
-        Yes please! How long does shipping take to Mumbai?
-        <span style={{ display: 'block', textAlign: 'right', fontSize: '9px', color: 'rgba(0,0,0,0.45)', marginTop: '4px' }}>14:32</span>
+      <div className={`${bubble} ${tail} bottom-[70px] left-0 z-10 w-[300px] px-4 pt-3`}>
+        Dear Ananya,<br />
+        Your order #4127 for 2 kurtas, amounting to ₹2,598, has been shipped!
+        <span className="mt-2 block">You can track your order with the button below.</span>
+        <span className="mt-2 flex items-center justify-center gap-2 border-t border-[#e2e2e2] py-2.5 font-medium text-[#027eb5]">
+          <ExternalLink size={16} /> Track Shipment
+        </span>
       </div>
-    </WhatsAppPhoneShell>
+
+      <div className="absolute right-0 top-[80px] z-20 w-[250px] overflow-hidden rounded-xl bg-white shadow-[0_24px_48px_-20px_rgba(20,18,15,0.45)]">
+        <div className="flex items-center gap-3 bg-[#075e54] px-4 py-3 text-[15px] text-white">
+          <ArrowLeft size={16} /> Menu
+        </div>
+        <ul className="flex flex-col gap-2.5 p-2.5">
+          {MENU.map(({ name, price, Icon }) => (
+            <li key={name} className="flex gap-2.5">
+              <span className="grid h-[68px] w-[68px] shrink-0 place-items-center rounded-lg bg-[#f0f2f5] text-[#54656f]">
+                <Icon size={28} strokeWidth={1.5} />
+              </span>
+              <span className="relative flex-1 rounded-lg bg-[#f0f2f5] px-3 py-2">
+                <span className="block text-[13.5px] font-medium text-[#121212]">{name}</span>
+                <span className="block text-[11px] text-[#54656f]">{price}</span>
+                <ArrowRight size={16} className="absolute bottom-2 right-2 text-[#121212]" />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   )
 }
 
@@ -104,8 +115,8 @@ export default function ConversationalAISection() {
           </div>
 
           {/* Visual */}
-          <div className="ai-phone flex items-center justify-center lg:justify-start">
-            <ChatPhone />
+          <div className="ai-phone flex items-center justify-center">
+            <SalesStage />
           </div>
           
         </div>
