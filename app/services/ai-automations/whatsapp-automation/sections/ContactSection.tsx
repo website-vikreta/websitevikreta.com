@@ -6,8 +6,8 @@ import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/r
 
 const WHAT_HAPPENS = [
   'We look at your store: checkout friction, cart abandonment, and current recovery rate.',
-  'We show you what the platform looks like on your brand, not a generic demo.',
-  'We give you a straight read on what is fixable and what WhatsApp will actually move.',
+  'We show you the platform set up with your brand on it.',
+  'We tell you straight what is fixable and what WhatsApp will change.',
 ]
 
 export default function ContactSection() {

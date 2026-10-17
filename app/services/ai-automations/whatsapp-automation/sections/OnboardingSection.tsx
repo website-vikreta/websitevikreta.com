@@ -60,7 +60,7 @@ const STEPS: JourneyStep[] = [
   {
     step: '06',
     title: 'Branding',
-    detail: 'Your inbox and flows start speaking in your brand colours and voice.',
+    detail: 'Your inbox and flows use your brand colours and voice.',
     icon: Palette,
   },
   {
@@ -193,7 +193,7 @@ export default function OnboardingSection() {
         {/* Responsibility split: a light card for the little you do, a black one for the rest */}
         <div className="onboarding-responsibilities mt-10 md:mt-14">
           <p className="mb-6 max-w-xl text-xl font-bold leading-tight tracking-tight text-(--color-text) md:text-2xl">
-            You give us the access and approvals. We do the heavy lifting.
+            You give us access and two approvals. We do the rest.
           </p>
 
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">

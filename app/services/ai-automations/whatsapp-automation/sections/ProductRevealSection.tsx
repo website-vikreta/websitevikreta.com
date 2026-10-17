@@ -86,7 +86,7 @@ export default function ProductRevealSection() {
       <div className="container">
         <div className="mb-10 max-w-2xl md:mb-14">
           <h2 id="reveal-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-            Not a chatbot. One platform for every customer conversation.
+            One platform for every customer conversation.
           </h2>
           <p className="reveal-copy mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             Leads, support, campaigns, store updates, and bookings run from
