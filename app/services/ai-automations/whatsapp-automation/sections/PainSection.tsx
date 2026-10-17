@@ -90,19 +90,19 @@ const PAINS: { stat: string; title: string; line: string; chart: ReactNode }[] =
   {
     stat: '70%',
     title: 'Carts abandoned before purchase',
-    line: 'Seven in ten checkouts never complete. That revenue is recoverable if you reach buyers where they actually read messages.',
+    line: 'Seven in ten checkouts never complete. You can win some back if you reach buyers where they read messages.',
     chart: <CartsChart />,
   },
   {
     stat: '~8%',
     title: 'Email recovery rate',
-    line: 'Cart recovery emails land in Promotions. WhatsApp open rates run at 98%. The channel difference is the strategy.',
+    line: 'Cart recovery emails land in Promotions. WhatsApp messages get opened 98% of the time.',
     chart: <ChannelBars />,
   },
   {
     stat: '₹250+',
     title: 'Per COD return, minimum',
-    line: 'Shipping out, shipping back, QC. One message before dispatch catches the order nobody wanted to begin with.',
+    line: 'Shipping out, shipping back, QC. One confirmation message before dispatch cuts returns by about a third.',
     chart: <ReturnRoute />,
   },
 ]
@@ -196,8 +196,8 @@ export function RtoSection() {
             </h2>
             <div>
               <p className="math-copy text-body-lg leading-relaxed text-(--color-text-muted)">
-                A returned COD order costs more than the sale ever made. Shipping out, shipping back,
-                packing materials, QC. That number compounds daily across every store shipping blind.
+                A returned COD order costs more than the sale made. Shipping out, shipping back,
+                packing, QC. Most stores never add it up.
               </p>
               <p className="math-copy mt-4 text-body-lg font-medium leading-relaxed text-(--color-text)">
                 One WhatsApp before the parcel moves catches the orders nobody wanted to begin with.
