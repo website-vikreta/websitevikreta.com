@@ -30,6 +30,17 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  // Temporary until the /services hub page ships; remove then, and restore the
+  // /services sitemap entry + "Services" breadcrumb level on app/services/*/page.tsx
+  async redirects() {
+    return [
+      {
+        source: '/services',
+        destination: '/services/ai-automations',
+        permanent: false,
+      },
+    ]
+  },
 };
 
 export default nextConfig;
