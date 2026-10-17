@@ -6,9 +6,9 @@ import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import WhatsAppPhoneShell, { Ticks } from '../components/WhatsAppPhoneShell'
 
 const BENEFITS = [
-  'Answers product questions instantly, 24/7',
-  'Recognizes hot keywords like product names and colours to start the right conversation',
-  'Captures leads and hands off complex queries to your team',
+  'Answers product questions at any hour',
+  'Spots product names and colours and opens the matching collection',
+  'Saves the lead and hands hard questions to your team',
 ]
 
 const MENU = [
@@ -123,10 +123,10 @@ export default function ConversationalAISection() {
           {/* Content */}
           <div className="flex flex-col justify-center">
             <h2 id="ai-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-              A salesperson that never sleeps.
+              Your store answers at 2 AM.
             </h2>
             <p className="ai-intro mt-5 max-w-xl text-body-lg leading-relaxed text-(--color-text-muted)">
-              Stop losing customers because they had a quick question at 2 AM. Our AI handles inquiries, guides them to the right product, and acts as a concierge for your brand on autopilot.
+              A buyer with a size question at night buys from whoever replies first. The AI replies, opens the right product, and passes anything tricky to your team.
             </p>
             
             <ul className="ai-benefits mt-8">
@@ -154,7 +154,7 @@ export default function ConversationalAISection() {
               Someone types{' '}
               <span className="rounded-md bg-[#d9fdd3] px-1.5 py-0.5 text-[15px] text-[#121212]">kurta</span> or{' '}
               <span className="rounded-md bg-[#d9fdd3] px-1.5 py-0.5 text-[15px] text-[#121212]">black t-shirts</span>.
-              The keyword is recognized and the right product conversation starts automatically, no typing a menu number.
+              The matching collection opens. Nobody types a menu number.
             </p>
           </div>
 
