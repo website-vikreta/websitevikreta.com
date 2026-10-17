@@ -74,8 +74,7 @@ export default function CartRecoverySection() {
           </h2>
           <p className="cart-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             Six reasons customers leave their carts, and all of them are fixable. We improve checkout before sending a single
-            message. Then we send three WhatsApp messages to the people who still leave. No discount
-            on the first message. That teaches buyers to wait for one.
+            message. Then we send three WhatsApp messages to the people who still leave.
           </p>
         </div>
 
@@ -87,7 +86,7 @@ export default function CartRecoverySection() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-16">
 
           <div className="cart-phone order-2 flex items-center justify-center">
-            <AbandonedCartDemo messages={MESSAGES} storefront={false} onMessage={setCurrent} />
+            <AbandonedCartDemo messages={MESSAGES} onMessage={setCurrent} />
           </div>
 
           <div className="order-1 flex flex-col justify-center">
@@ -95,7 +94,9 @@ export default function CartRecoverySection() {
               Three messages. Three reasons to return.
             </h3>
             <p className="mt-4 text-base leading-relaxed text-(--color-text-muted)">
-              We start with a reminder, build confidence, and only then make one offer. No discount on message one.
+              They did not say no. They got interrupted. The moment a cart goes quiet, your store tells us, and
+              WhatsApp asks for the order again: a reminder first, then confidence, and only then one offer.
+              A discount in message one teaches buyers to wait for it.
             </p>
             
             <ol className="cart-msgs mt-8">
