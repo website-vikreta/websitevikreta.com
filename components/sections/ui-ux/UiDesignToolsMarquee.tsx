@@ -47,9 +47,13 @@ function ToolLogoSlot({ src, alt, eager }: { src: string; alt: string; eager?: b
 export function UiDesignToolsMarquee({
   className = '',
   gapClass = 'gap-10 md:gap-14',
+  tools = UI_DESIGN_TOOL_LOGOS,
+  ariaLabel = 'UI/UX tools we use',
 }: {
   className?: string
   gapClass?: string
+  tools?: readonly DesignToolLogo[]
+  ariaLabel?: string
 }) {
   const x = useMotionValue(0)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -65,8 +69,6 @@ export function UiDesignToolsMarquee({
     x.set(next % halfW)
   })
 
-  const tools = UI_DESIGN_TOOL_LOGOS
-
   return (
     <div
       className={`relative overflow-hidden ${className}`}
@@ -76,7 +78,7 @@ export function UiDesignToolsMarquee({
       onMouseLeave={() => {
         isHovered.current = false
       }}
-      aria-label="UI/UX tools we use"
+      aria-label={ariaLabel}
     >
       <motion.div ref={trackRef} className={`flex w-max items-center ${gapClass}`} style={{ x }}>
         {[...tools, ...tools].map((tool, i) => (

@@ -30,7 +30,7 @@ const jsonLd = {
 
 export const metadata: Metadata = {
   title: 'Digital Marketing, SEO & GEO Agency | Website Vikreta',
-  description: 'SEO, GEO, content, and paid campaigns built to bring in real leads, not just rankings. Data-driven digital marketing that keeps working. Free growth call.',
+  description: 'SEO, GEO, content, and paid campaigns judged by leads and revenue, not rankings. Book a free marketing audit.',
   keywords: [
     // Primary
     'digital marketing agency',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Digital Marketing, SEO & GEO Agency | Website Vikreta',
-    description: 'SEO, GEO, content, and paid campaigns built to bring in real leads, not just rankings. Data-driven digital marketing that keeps working. Free growth call.',
+    description: 'SEO, GEO, content, and paid campaigns judged by leads and revenue, not rankings. Book a free marketing audit.',
     url: PAGE_URL,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Digital Marketing, SEO & GEO Agency | Website Vikreta',
-    description: 'SEO, GEO, content, and paid campaigns built to bring in real leads, not just rankings. Data-driven digital marketing that keeps working. Free growth call.',
+    description: 'SEO, GEO, content, and paid campaigns judged by leads and revenue, not rankings. Book a free marketing audit.',
     images: ['/og-image.png'],
   },
   alternates: {

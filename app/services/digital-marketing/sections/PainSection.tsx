@@ -1,13 +1,11 @@
 'use client'
 
 import { useRef } from 'react'
-import {
-  revealLines,
-  revealFadeUp,
-  useGsapSection,
-  STAGGER,
-} from '@/lib/gsap/reveals'
-import PainMetricsReveal from './PainMetricsReveal'
+import { ArrowRight } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+import { scrollToHash } from '@/lib/scroll-to-hash'
+import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import PainCollage from './PainCollage'
 
 export default function PainSection() {
   const scope = useRef<HTMLElement>(null)
@@ -15,36 +13,46 @@ export default function PainSection() {
   useGsapSection(scope, () => {
     revealLines('.pain-h2', { trigger: scope.current })
     revealFadeUp('.pain-p', { y: 20, stagger: STAGGER.loose, delay: 0.1, trigger: scope.current })
-    revealFadeUp('.pain-panel', { y: 20, delay: STAGGER.loose * 2, trigger: scope.current })
   })
 
+  // Side-by-side only from xl: at lg the collage needs the full container
+  // width, or its absolutely-placed cards collide.
   return (
-    <section ref={scope} className="py-16 md:py-20" aria-labelledby="pain-heading">
+    <section ref={scope} className="overflow-x-clip py-16 md:py-20" aria-labelledby="pain-heading">
       <div className="container">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-          <PainMetricsReveal />
-
-          <div>
+        <div className="grid grid-cols-1 gap-14 xl:grid-cols-12 xl:items-center xl:gap-10">
+          <div className="xl:col-span-5">
             <h2
               id="pain-heading"
-              className="pain-h2 text-h3 font-bold tracking-tight text-(--color-text)"
+              className="pain-h2 text-h2 font-bold tracking-tight text-(--color-text)"
             >
-              Vanity Metrics Don&rsquo;t Pay Rent
+              Your Marketing <span className="xl:block">Looks Active,</span>{' '}
+              <span className="block text-(--color-accent)">But Nothing Is Happening.</span>
             </h2>
 
-            <p className="pain-p mt-6 text-body-lg text-(--color-text-muted) leading-relaxed mb-5">
-              Your last agency sent a monthly report full of keyword
-              positions and impression counts. None of it explained why the
-              phone stopped ringing.
+            <p className="pain-p mt-6 max-w-lg text-body-lg leading-relaxed text-(--color-text-muted)">
+              Rankings, reports, ad spend, a content calendar. Plenty of
+              activity, and still the phone doesn&rsquo;t ring.
             </p>
 
-            <p className="pain-p text-body-lg text-(--color-text-muted) leading-relaxed">
-              Paid ads work while you&rsquo;re paying for them and stop the
-              day you turn them off. Content sits unpublished because nobody
-              owns it. SEO becomes a line item nobody can explain.
-            </p>
+            <div className="pain-p mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Button href="#marketing-audit" variant="primary" size="lg" showArrow>
+                Book a Free Marketing Audit
+              </Button>
+              <a
+                href="#problems"
+                onClick={(e) => scrollToHash(e, '#problems')}
+                className="group inline-flex items-center gap-2 border-b-2 border-(--color-accent) pb-1 text-base font-medium text-(--color-text)"
+              >
+                See how we fix this
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+            </div>
           </div>
 
+          <div className="xl:col-span-7">
+            <PainCollage />
+          </div>
         </div>
       </div>
     </section>

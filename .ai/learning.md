@@ -1142,3 +1142,10 @@ _None logged yet._
 - **The general lesson**: before reaching for a connected/sequential layout (timeline, arrow-chain, numbered steps), check whether the content actually has inherent order — this is the same "unordered sets stay un-numbered" rule already logged for FixesSection/Pain's flip cards, just missed on the first two passes at this exact section. A plain grid is the correct default for parallel facts; a connector/sequence layout has to be earned by the content, not applied because it looks more designed.
 - Where: `app/services/web-mobile-app-development/sections/ImpactSection.tsx`.
 - Date: 2026-09-26
+
+### [Section] — Vanity Metrics visual rebuilt as an editorial conversion path
+
+- Rule: generic chart collages are too ambiguous for the Digital Marketing pain section — they make “vanity metrics” look like neutral analytics instead of showing why the report is useless. The before-side artwork now names four vanity outputs (`IMPRESSIONS`, `KEYWORD RANK`, `FOLLOWERS`, `CLICKS`) and routes them into one highlighted `BOOKED LEADS` outcome. The yellow block is the only accent moment; the rest stays monochrome and editorial.
+- The comparison slider interaction and matched 16:9 framing stay unchanged. The new artwork is shipped as WebP (`vanity-metrics-editorial.webp`) and its alt text states the complete visual relationship.
+- Where: `app/services/digital-marketing/sections/PainMetricsReveal.tsx`, `public/services/digital-marketing/vanity-metrics-editorial.webp`.
+- Date: 2026-10-08

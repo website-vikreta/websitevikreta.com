@@ -21,11 +21,11 @@ export default function ProofSection() {
   })
 
   return (
-    <section ref={scope} className="py-16 md:py-20 bg-(--color-surface)" aria-labelledby="proof-heading">
+    <section ref={scope} id="proof" className="scroll-mt-32 py-16 md:py-20 bg-(--color-surface)" aria-labelledby="proof-heading">
       <div className="container">
 
         <div className="mb-10 md:mb-14 max-w-2xl">
-          <h2 id="proof-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
+          <h2 id="proof-heading" className="text-h2 font-bold tracking-tight text-(--color-text)">
             Where This Has Worked
           </h2>
         </div>
@@ -36,7 +36,9 @@ export default function ProofSection() {
               title={AP_CLEANCO_PROJECT.title}
               description={AP_CLEANCO_PROJECT.description}
               href={AP_CLEANCO_PROJECT.href}
-              logo={AP_CLEANCO_PROJECT.logo}
+              logo=""
+              image="/services/web-development/proof/ap-cleanco.webp"
+              imageAlt="AP Cleanco website homepage"
               skills={AP_CLEANCO_PROJECT.skills}
             />
           </div>
