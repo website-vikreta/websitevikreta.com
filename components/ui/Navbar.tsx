@@ -95,16 +95,15 @@ export function Navbar() {
     document.documentElement.style.setProperty('--navbar-height', scrolled ? '3.5rem' : '5rem')
   }, [scrolled])
 
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname)
     setMobileOpen(false)
     setMobileExpanded(null)
     setMobileNested(null)
     setActiveDropdown(null)
     setNestedOpen(null)
-    const isScrolled = window.scrollY > 40
-    setScrolled(isScrolled)
-    setLinksRevealed(isScrolled)
-  }, [pathname])
+  }
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : ''
@@ -238,8 +237,10 @@ export function Navbar() {
                               </Link>
                               {dropItem.children ? (
                                 <div
-                                  className={`dropdown-panel nested${
-                                    nestedOpen === dropItem.href ? ' open' : ''
+                                  className={`absolute left-[calc(100%+8px)] top-[-1px] min-w-[200px] rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] z-20 transition-all duration-200 before:absolute before:inset-y-0 before:right-full before:w-2.5 ${
+                                    nestedOpen === dropItem.href
+                                      ? 'pointer-events-auto opacity-100 translate-x-0'
+                                      : 'pointer-events-none opacity-0 -translate-x-1.5'
                                   }`}
                                   role="menu"
                                 >
@@ -250,7 +251,10 @@ export function Navbar() {
                                           href={child.href}
                                           className={`${DROP_LINK} !py-2`}
                                           role="menuitem"
-                                          onClick={() => setActiveDropdown(null)}
+                                          onClick={() => {
+                                            setActiveDropdown(null)
+                                            setNestedOpen(null)
+                                          }}
                                         >
                                           {child.label}
                                         </Link>
