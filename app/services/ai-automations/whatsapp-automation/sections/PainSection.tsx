@@ -1,10 +1,11 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { LazyMotion, domAnimation, m } from 'motion/react'
 import { ArrowRight, Package, ScanSearch, ShoppingCart, Truck } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 import RtoCalculator from '../components/RtoCalculator'
+import CodConfirmDemo from '../components/CodConfirmDemo'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -155,14 +156,34 @@ export default function PainSection() {
   )
 }
 
+const COD_STEPS = [
+  {
+    title: 'A COD order comes in',
+    body: 'The buyer gets a WhatsApp within seconds: the item, the amount, and two buttons.',
+  },
+  {
+    title: 'They tap confirm or cancel',
+    body: 'One tap. Nobody on your team has to call them.',
+  },
+  {
+    title: 'Only real orders ship',
+    body: 'Confirmed orders get packed. Cancelled ones never leave the warehouse, so you never pay to ship them both ways.',
+  },
+]
+
 /* The RTO cost calculator. Sits right before Packages so the owner sees what returns cost them,
    in their own numbers, immediately before the price. */
 export function RtoSection() {
   const mathScope = useRef<HTMLElement>(null)
+  // Follows the phone demo, so the step being acted out on screen is the one lit up here
+  const [step, setStep] = useState(0)
 
   useGsapSection(mathScope, () => {
     revealLines('#math-heading', { trigger: mathScope.current })
     revealFadeUp('.math-copy',  { y: 20, trigger: mathScope.current })
+    // One reveal for the list: per-step reveals would pin an inline opacity that fights the highlight
+    revealFadeUp('.cod-steps',  { y: 20, trigger: mathScope.current })
+    revealFadeUp('.cod-phone',  { y: 30, trigger: mathScope.current })
     revealFadeUp('.math-calc',  { y: 30, delay: STAGGER.base, trigger: mathScope.current })
   })
 
@@ -183,6 +204,23 @@ export function RtoSection() {
               </p>
             </div>
           </div>
+          <div className="mb-14 grid grid-cols-1 gap-12 md:mb-20 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-16">
+            <ol className="cod-steps">
+              {COD_STEPS.map(({ title, body }, i) => (
+                <li
+                  key={title}
+                  className={`py-4 transition-opacity duration-500 ${step === i ? 'opacity-100' : 'opacity-40'}`}
+                >
+                  <h3 className="text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-(--color-text-muted)">{body}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="cod-phone flex justify-center">
+              <CodConfirmDemo onStep={setStep} />
+            </div>
+          </div>
+
           <div className="math-calc">
             <RtoCalculator />
           </div>
