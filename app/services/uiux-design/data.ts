@@ -492,7 +492,7 @@ export const UI_UX_FAQS: FaqItem[] = [
 export const UI_UX_PAGE_META = {
   slug: 'uiux-design',
   serviceName: 'UI/UX Design Services',
-  title: 'UI/UX Design Agency | Website Vikreta',
+  title: 'UI/UX Design Agency for Web & Mobile Apps | Website Vikreta',
   description:
-    'Research-driven UI/UX for web and mobile: fix drop-off, ship design systems, and hand off specs dev teams can build.',
+    'Research-driven UI/UX design for web and mobile apps. We fix drop-off, build design systems, and hand off specs your developers can actually ship.',
 }
