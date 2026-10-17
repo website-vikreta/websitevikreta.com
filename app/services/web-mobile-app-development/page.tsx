@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import AppsCrmClient from './AppsCrmClient'
-import { SITE_URL } from '@/config/site'
+import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/services/web-mobile-app-development`
 
@@ -14,7 +14,7 @@ const jsonLd = {
       serviceType: 'Custom Software Development',
       description: 'Custom web apps, mobile apps, CRMs and customer portals built around how your business actually runs, not how a template assumes it should.',
       url: PAGE_URL,
-      provider: { '@id': `${SITE_URL}/#organization` },
+      provider: ORGANIZATION_REF,
       areaServed: { '@type': 'Country', name: 'India' },
     },
     {
@@ -22,8 +22,7 @@ const jsonLd = {
       '@id': `${PAGE_URL}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
-        { '@type': 'ListItem', position: 3, name: 'Apps & CRM', item: PAGE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Apps & CRM', item: PAGE_URL },
       ],
     },
   ],
