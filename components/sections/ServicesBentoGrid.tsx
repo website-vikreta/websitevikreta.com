@@ -1,19 +1,21 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform, useReducedMotion, MotionValue } from 'motion/react'
+import { motion, useScroll, useTransform, MotionValue } from 'motion/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Globe, BarChart2, Bot, Smartphone } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { RevealText, RevealFade, REVEAL_EASE } from '@/components/ui/Reveal'
+import { ServiceMotion } from './ServiceMotion'
 
 type CardId = 'web-dev' | 'digital-marketing' | 'ai-automation' | 'web-mobile-crm' | 'uiux'
 
 interface ServiceCard {
   id: CardId
-  index: string
   title: string
   description: string
+  tagline: string // short line under the title on the small bento cards
   image: string
   href: string
   FallbackIcon: React.ComponentType<{ size?: number; className?: string }>
@@ -22,51 +24,51 @@ interface ServiceCard {
 const SERVICE_CARDS: ServiceCard[] = [
   {
     id: 'ai-automation',
-    index: '01',
     title: 'AI Automation & Workflow Optimization',
     description:
       'We audit the hours your team spends on CRM, reporting, and support, then build custom AI agents and workflow automation that take that work off their plate.',
     image: '/services/landing/ai-automation.webp',
+    tagline: 'AI agents for CRM, reporting, and support work.',
     href: '/services/ai-automations',
     FallbackIcon: Bot,
   },
   {
     id: 'web-dev',
-    index: '02',
     title: 'Website Development',
     description:
       'Custom, SEO-ready websites for growing businesses. Fast to load, written to rank, and built around how you sell.',
     image: '/services/landing/web-development.webp',
+    tagline: 'Fast, SEO-ready sites built around how you sell.',
     href: '/services/web-development',
     FallbackIcon: Globe,
   },
   {
     id: 'uiux',
-    index: '03',
     title: 'UI/UX Design',
     description:
       'User research, wireframes, and product design for web and mobile. Design systems and prototypes your developers can actually ship.',
     image: '/services/landing/ui-ux.webp',
+    tagline: 'Research, product design, and design systems.',
     href: '/services/uiux-design',
     FallbackIcon: Smartphone,
   },
   {
     id: 'web-mobile-crm',
-    index: '04',
     title: 'Web & Mobile Apps / CRM Systems',
     description:
       'Custom CRMs, customer portals, internal tools, and e-commerce. Web and mobile apps built around how your business runs.',
     image: '/services/landing/web-mobile-apps.webp',
+    tagline: 'CRMs, portals, internal tools, and e-commerce.',
     href: '/services/web-mobile-app-development',
     FallbackIcon: Smartphone,
   },
   {
     id: 'digital-marketing',
-    index: '05',
     title: 'Digital Marketing / SEO & GEO',
     description:
       'SEO, GEO, content, and paid campaigns built to bring in leads. Local SEO and growth marketing you can measure in enquiries.',
     image: '/services/landing/digital-marketing-seo-geo.webp',
+    tagline: 'SEO, GEO, content, and paid campaigns.',
     href: '/services/digital-marketing',
     FallbackIcon: BarChart2,
   },
@@ -76,49 +78,46 @@ const SERVICE_CARDS: ServiceCard[] = [
 const STACK_GAP = 22 // px added per card index
 const STACK_TOP = 96 // px from viewport top where cards stick (clears nav)
 
-// Card content shared by the mobile scroll stack and the desktop hover stack.
-function CardBody({ card, className = '' }: { card: ServiceCard; className?: string }) {
+// Card content for the < lg scroll stack: image on top at its native 16:9, copy below. On tablets
+// the copy and CTA sit side by side so the card stays short enough to stack in one screen.
+function CardBody({ card }: { card: ServiceCard }) {
   const { FallbackIcon } = card
   return (
-    <div className={`grid md:grid-cols-2 ${className}`}>
-      {/* LEFT — copy */}
-      <div className="order-2 md:order-1 flex flex-col justify-between gap-8 p-7 sm:p-10 md:p-12">
-        <div>
-          <h3 className="font-sans font-bold text-2xl sm:text-3xl leading-[1.1] text-(--color-text)">
-            {card.title}
-          </h3>
-          <p
-            className="mt-4 text-[15px] leading-relaxed text-(--color-text-muted)"
-            style={{ maxWidth: '46ch' }}
-          >
-            {card.description}
-          </p>
-        </div>
-
-        <div>
-          <Button href={card.href} variant="ghost" size="md" showArrow>
-            Explore More
-          </Button>
-        </div>
-      </div>
-
-      {/* RIGHT — 16:9 image */}
-      <div className="order-1 md:order-2 relative aspect-video md:aspect-auto md:h-full">
+    <div className="flex flex-col">
+      <div className="relative aspect-video">
         {card.image ? (
           <Image
             src={card.image}
             alt={card.title}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-(--color-bg-muted)">
             <FallbackIcon size={48} className="text-(--color-text-faint)" />
           </div>
         )}
-        {/* subtle left fade so split blends on desktop */}
-        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-(--color-bg) via-transparent to-transparent" />
+      </div>
+
+      <div className="flex flex-col gap-6 p-6 sm:p-8 md:flex-row md:items-end md:justify-between md:gap-10">
+        <div>
+          <h3 className="font-sans font-bold text-2xl sm:text-3xl leading-[1.1] text-(--color-text)">
+            {card.title}
+          </h3>
+          <p
+            className="mt-3 text-[15px] leading-relaxed text-(--color-text-muted)"
+            style={{ maxWidth: '46ch' }}
+          >
+            {card.description}
+          </p>
+        </div>
+
+        <div className="shrink-0">
+          <Button href={card.href} variant="ghost" size="md" showArrow>
+            Explore More
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -142,119 +141,144 @@ function StackCard({
   const scale = useTransform(progress, [i / total, 1], [1, targetScale])
 
   return (
-    <div className="sticky" style={{ top: STACK_TOP + i * STACK_GAP }}>
+    // Short screens (landscape phones) can't fit a pinned card, so its CTA would hide under the next one.
+    // There the stack (and its shrink) is switched off and the cards just scroll.
+    <div className="sticky [@media(max-height:600px)]:static" style={{ top: STACK_TOP + i * STACK_GAP }}>
       <motion.article
         style={{ scale, transformOrigin: 'center top' }}
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.7, ease: REVEAL_EASE }}
-        className="relative w-full overflow-hidden border border-(--color-border) bg-(--color-bg)"
+        className="relative w-full overflow-hidden border border-(--color-border) bg-(--color-bg) [@media(max-height:600px)]:transform-none!"
       >
-        <CardBody card={card} className="md:min-h-[500px]" />
+        <CardBody card={card} />
       </motion.article>
     </div>
   )
 }
 
-// lg+: Stage Manager. Inactive cards sit as small thumbnails in a left rail; hovering (or
-// focusing) one grows it onto the stage on the right while the previous card shrinks back into
-// its own rail slot. Slots are fixed per card, so the rail never reshuffles under the cursor.
-const STAGE_H = 520
-const STAGE_LEFT = 20 // % of the row taken by the rail; the stage card fills the rest
-const THUMB = 0.18 // thumbnail scale: 5 slots × (520 × 0.18 + gap) fit the stage height
-const SLOT = STAGE_H / 5
-const STAGE_SPRING = {
-  type: 'spring',
-  visualDuration: 0.55,
-  bounce: 0,
-} as const // long glide, no overshoot
-const HOVER_INTENT = 90 // ms the pointer must rest on a slot — sweeping across the rail doesn't fire every card
+// lg+: bento grid, three cards over two. Hovering (or focusing) a card grows it and its row while
+// the rest shrink. Only flex-grow animates, so cards never swap places under the cursor.
+const BENTO_ROWS = [[0, 1, 2], [3, 4]]
+const BENTO_H = 720
+const BENTO_EASE = 'duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none'
+const HOVER_INTENT = 90 // ms the pointer must rest on a card, so sweeping across the grid doesn't fire every card
 
-function StageStack({ cards }: { cards: ServiceCard[] }) {
+function BentoCard({
+  card,
+  active,
+  onHover,
+  onFocus,
+}: {
+  card: ServiceCard
+  active: boolean
+  onHover: () => void
+  onFocus: () => void
+}) {
+  return (
+    <article
+      onPointerEnter={onHover}
+      onFocus={onFocus}
+      className={`group relative flex min-w-0 flex-col overflow-hidden border bg-(--color-bg) transition-[flex-grow,border-color] ${BENTO_EASE} ${
+        active ? 'border-(--color-border-strong)' : 'border-(--color-border) hover:border-(--color-border-strong)'
+      }`}
+      style={{ flexGrow: active ? 2.4 : 1, flexBasis: 0 }}
+    >
+      {/* Whole card is the link; the visible CTA below is the keyboard/screen-reader path */}
+      <Link href={card.href} tabIndex={-1} aria-hidden="true" className="absolute inset-0 z-10" />
+
+      {/* Image above the copy, never under it. The whole 16:9 illustration stays in view at any card
+          shape, and the panel around it is the illustration's own paper colour so it reads as one fill.
+          The motion layer shares the 16:9 box, so its coordinates stay pinned to the picture. */}
+      <div
+        className={`relative min-h-0 flex-1 bg-[#FAF5EA] [container-type:size] transition-[filter] ${BENTO_EASE} ${
+          active ? 'grayscale-0' : 'grayscale group-hover:grayscale-0'
+        }`}
+      >
+        <div className="absolute left-1/2 top-1/2 aspect-video w-[min(100cqw,calc(100cqh*16/9))] -translate-x-1/2 -translate-y-1/2">
+          <Image src={card.image} alt="" fill className="object-cover" sizes="(max-width: 1280px) 60vw, 800px" />
+          <ServiceMotion id={card.id} active={active} />
+        </div>
+      </div>
+
+      {/* Kept short (CTA beside the title, copy clamped to two lines) so the active card's image stays the biggest */}
+      <div className="shrink-0 px-6 pb-6 pt-2 xl:px-8">
+        <div className="relative">
+          {/* The hidden CTA is absolutely placed so it never steals width from a small card's title */}
+          <h3
+            className={`font-sans text-xl font-bold leading-[1.15] text-(--color-text) xl:text-2xl ${active ? 'pr-44' : ''}`}
+          >
+            {card.title}
+          </h3>
+          <div
+            className={`absolute bottom-0 right-0 z-20 transition-opacity ${BENTO_EASE} ${active ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+          >
+            {/* Stays focusable while hidden: tabbing onto it is what activates the card */}
+            <Button href={card.href} variant="ghost" size="sm" showArrow>
+              Explore More
+            </Button>
+          </div>
+        </div>
+        {/* Small cards carry a short tagline; the active card swaps it for the full copy */}
+        <div
+          className={`grid transition-[grid-template-rows,opacity] ${BENTO_EASE} ${
+            active ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'
+          }`}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <p className="line-clamp-2 pt-2 text-sm text-(--color-text-muted)">{card.tagline}</p>
+          </div>
+        </div>
+        {/* Fixed text width so the copy doesn't reflow while the card grows */}
+        <div
+          className={`grid transition-[grid-template-rows,opacity] ${BENTO_EASE} ${
+            active ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          }`}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <p className="line-clamp-2 w-[62ch] max-w-full pt-3 text-[15px] leading-relaxed text-(--color-text-muted)">
+              {card.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function BentoStack({ cards }: { cards: ServiceCard[] }) {
   const [active, setActive] = useState(0)
-  const reduced = useReducedMotion()
   const intent = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const hoverSlot = (i: number) => {
+  const hover = (i: number) => {
     clearTimeout(intent.current)
     intent.current = setTimeout(() => setActive(i), HOVER_INTENT)
   }
   useEffect(() => () => clearTimeout(intent.current), [])
-  // Thumbnail x, in % of the card's own width, that puts its left edge at the row's left edge
-  const railX = `${(-STAGE_LEFT / (100 - STAGE_LEFT)) * 100}%`
-  const railPose = (i: number) => ({
-    x: railX,
-    y: i * SLOT,
-    scale: THUMB,
-    rotateY: 0,
-  })
-  // Shared box + 3D origin, so thumbnails and their slot outlines line up exactly
-  const box = {
-    left: `${STAGE_LEFT}%`,
-    width: `${100 - STAGE_LEFT}%`,
-    height: STAGE_H,
-    transformOrigin: 'left top',
-    transformPerspective: 1200,
-  }
 
   return (
-    <div className="relative hidden lg:block" style={{ height: STAGE_H }}>
-      {/* Rail hit areas — stationary, so a card flying out never steals hover from the cursor */}
-      {cards.map((card, i) => (
-        <button
-          key={card.id}
-          type="button"
-          aria-label={`Show ${card.title}`}
-          aria-pressed={active === i}
-          onPointerEnter={() => hoverSlot(i)}
-          onPointerLeave={() => clearTimeout(intent.current)}
-          onFocus={() => setActive(i)}
-          onClick={() => setActive(i)}
-          className="absolute left-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-text)"
-          style={{
-            top: i * SLOT,
-            width: `${(100 - STAGE_LEFT) * THUMB}%`,
-            height: STAGE_H * THUMB,
-          }}
-        />
+    <div
+      className="hidden flex-col gap-4 lg:flex"
+      style={{ height: BENTO_H }}
+      onPointerLeave={() => clearTimeout(intent.current)}
+    >
+      {BENTO_ROWS.map((row) => (
+        <div
+          key={row[0]}
+          className={`flex min-h-0 gap-4 transition-[flex-grow] ${BENTO_EASE}`}
+          style={{ flexGrow: row.includes(active) ? 1.8 : 1, flexBasis: 0 }}
+        >
+          {row.map((i) => (
+            <BentoCard
+              key={cards[i].id}
+              card={cards[i]}
+              active={active === i}
+              onHover={() => hover(i)}
+              onFocus={() => setActive(i)}
+            />
+          ))}
+        </div>
       ))}
-
-      {/* Empty-slot outline for the card on stage — same tilt/scale as a thumbnail, so it sits parallel */}
-      {cards.map((card, i) => (
-        <motion.div
-          key={card.id}
-          aria-hidden="true"
-          className="pointer-events-none absolute top-0 border-dashed border-(--color-border-strong) transition-opacity duration-300"
-          style={{
-            ...box,
-            ...railPose(i),
-            borderWidth: 1 / THUMB, // scaled down to ~1px
-            opacity: active === i ? 1 : 0,
-          }}
-        />
-      ))}
-
-      {cards.map((card, i) => {
-        const isActive = active === i
-        return (
-          <motion.article
-            key={card.id}
-            inert={!isActive}
-            initial={false}
-            animate={isActive ? { x: '0%', y: 0, scale: 1, rotateY: 0 } : railPose(i)}
-            transition={reduced ? { duration: 0 } : STAGE_SPRING}
-            className="absolute top-0 overflow-hidden border border-(--color-border) bg-(--color-bg) shadow-[0_12px_40px_-16px_rgb(0_0_0/0.25)]"
-            style={{
-              ...box,
-              zIndex: isActive ? 2 : 1,
-              willChange: 'transform',
-              pointerEvents: isActive ? 'auto' : 'none',
-            }}
-          >
-            <CardBody card={card} className="h-full" />
-          </motion.article>
-        )
-      })}
     </div>
   )
 }
@@ -291,7 +315,7 @@ export function ServicesBentoGrid() {
           </RevealFade>
         </div>
 
-        <StageStack cards={SERVICE_CARDS} />
+        <BentoStack cards={SERVICE_CARDS} />
 
         {/* < lg: sticky stack track — each card gets a full-height scroll slot */}
         <div ref={trackRef} className="relative flex flex-col gap-8 md:gap-12 lg:hidden">
