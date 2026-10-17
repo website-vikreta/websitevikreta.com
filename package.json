@@ -24,6 +24,7 @@
     "@radix-ui/react-dialog": "^1.1.23",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^6.0.0",
+    "d3-geo": "^3.1.1",
     "geist": "^1.7.2",
     "gsap": "^3.15.0",
     "lenis": "^1.1.15",
@@ -36,7 +37,8 @@
     "react-dom": "19.2.4",
     "react-use-measure": "^2.1.7",
     "sanity": "^6.0.0",
-    "styled-components": "^6.4.2"
+    "styled-components": "^6.4.2",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
@@ -44,9 +46,11 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/d3-geo": "^3.1.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/topojson-client": "^3.1.5",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/coverage-v8": "^4.1.11",
     "babel-plugin-react-compiler": "1.0.0",
