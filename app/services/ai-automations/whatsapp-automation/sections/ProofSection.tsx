@@ -10,7 +10,7 @@ const EASE = [0.16, 1, 0.3, 1] as const
 const CHANNEL_STATS = [
   {
     n: '98%', label: 'average open rate', context: 'vs ~20% for cart recovery email',
-    bars: [{ label: 'WhatsApp', value: '98%', pct: 98, win: true }, { label: 'Email', value: '~20%', pct: 20 }],
+    bars: [{ label: 'WhatsApp opened', value: '98%', pct: 98, win: true }, { label: 'Cart email opened', value: '~20%', pct: 20 }],
   },
   {
     n: '45%', label: 'avg. click-through', context: '5× higher than SMS campaigns',
@@ -49,21 +49,18 @@ const CASES = [
     result: '20 to 40%',
     metric: 'cart recovery rate',
     highlight: '98% message read rate. Notifications sent within 15 to 20 min of cart drop-off.',
-    src: 'Published case study',
   },
   {
     brand: 'The Hatke',
     result: '21×',
     metric: 'ROI on the WhatsApp channel',
     highlight: 'Up to 40% abandoned cart recovery. Open and click rates far above email and SMS.',
-    src: 'Published case study',
   },
   {
     brand: 'Indian Ethnic Co.',
     result: '3× increase',
     metric: 'cart recovery vs. email baseline',
     highlight: 'Recovery jumped from 7% to 20%+ after switching from email-first to WhatsApp.',
-    src: 'Published case study',
   },
 ]
 
@@ -89,7 +86,7 @@ export default function ProofSection() {
             Why WhatsApp works. What stores have done with it.
           </h2>
           <p className="proof-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            The channel difference is real. These are the numbers that make it worth switching.
+            Channel numbers first. Then what three stores got after switching.
           </p>
         </div>
 
@@ -124,7 +121,7 @@ export default function ProofSection() {
             <p className="text-sm text-white/50">Results vary by store</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3">
-            {CASES.map(({ brand, result, metric, highlight, src }) => (
+            {CASES.map(({ brand, result, metric, highlight }) => (
               <article
                 key={brand}
                 className="proof-card flex flex-col border-b border-white/10 p-7 last:border-b-0 md:border-b-0 md:border-r md:p-9 md:last:border-r-0"
@@ -133,10 +130,6 @@ export default function ProofSection() {
                 <p className="mt-6 text-[clamp(2.2rem,4vw,3rem)] font-bold leading-none tracking-tight">{result}</p>
                 <p className="mt-3 text-base font-semibold">{metric}</p>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-white/60">{highlight}</p>
-                <p className="mt-6 flex items-center gap-2 text-[12px] text-white/40">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#25d366]" aria-hidden />
-                  {src}
-                </p>
               </article>
             ))}
           </div>
