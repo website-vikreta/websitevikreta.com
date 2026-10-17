@@ -35,7 +35,7 @@ const PACKAGES = [
   },
   {
     name: 'WA eCommerce',
-    description: 'Full WhatsApp commerce stack with abandoned cart recovery, COD confirmation, and Shopify integration.',
+    description: 'For stores that want cart recovery, COD confirmation, and Shopify or WooCommerce connected.',
     cta: 'Book a platform demo',
     eyebrow: 'Most stores start here',
     features: [
@@ -107,12 +107,12 @@ export default function PackagesSection() {
 
         <div className="mb-10 max-w-2xl md:mb-14">
           <h2 id="packages-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-            Two tiers. Pick what your store actually needs.
+            Two tiers. Pick the one your store needs.
           </h2>
           <p className="packages-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Platform subscription billed quarterly, half-yearly, or yearly. WhatsApp message
-            charges for Utility messages at around 11 paise and Marketing messages are billed
-            separately based on actual usage. Setup and onboarding are quoted once.
+            Platform subscription billed quarterly, half-yearly, or yearly. Meta&apos;s message
+            charges are billed separately at cost: about 11 paise per Utility message, more for
+            Marketing. Setup is a one-time quote.
           </p>
         </div>
 
