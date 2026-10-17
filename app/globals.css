@@ -497,3 +497,44 @@ body[data-scroll-locked] {
 .wf-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* ─── AI Automations workflow graphic — ambient motion ───────────
+   Paused until the graphic is on screen ([data-running], set by its
+   IntersectionObserver). Nothing here runs under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .ag-march   { animation: ag-march 1.4s linear infinite; }
+  .ag-spin    { animation: ag-spin 18s linear infinite; }
+  .ag-orbit   { animation: ag-spin 2.4s linear infinite; }
+  .ag-breathe { animation: ag-breathe 6s ease-in-out infinite alternate; }
+  .ag-flow  { animation: ag-flow 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+  .ag-ping  { animation: ag-ping 1.2s ease-out infinite; }
+
+  [data-graphic]:not([data-running]) :is(.ag-march, .ag-flow, .ag-ping, .ag-spin, .ag-breathe) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes ag-march   { to { stroke-dashoffset: -14; } }
+@keyframes ag-spin    { to { transform: rotate(360deg); } }
+@keyframes ag-breathe { from { opacity: 0.75; transform: scale(1); } to { opacity: 1; transform: scale(1.04); } }
+@keyframes ag-flow  { from { transform: translateY(0); opacity: 0; } 20%, 80% { opacity: 1; } to { transform: translateY(2.25rem); opacity: 0; } }
+@keyframes ag-ping  { from { opacity: 0.7; transform: scale(1); } to { opacity: 0; transform: scale(2.4); } }
+
+/* ─── AI Automations bento visuals (fixes-visuals.tsx) ───────────
+   The few ambient CSS loops; the runs themselves are JS timelines. Paused
+   until the card is on screen ([data-running] on [data-fx]). */
+.fx-travel { opacity: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .fx-travel  { opacity: 1; animation: fx-travel 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite backwards; }
+  .fx-ping    { animation: fx-ping 2.4s ease-out infinite; }
+  .fx-shimmer { animation: fx-shimmer 0.9s ease-in-out infinite; }
+  .fx-twinkle { animation: fx-twinkle 1.6s ease-in-out infinite alternate; }
+
+  [data-fx]:not([data-running]) [class*="fx-"] { animation-play-state: paused; }
+}
+
+@keyframes fx-travel  { from { transform: translateX(-100%); opacity: 0; } 15%, 85% { opacity: 1; } to { transform: translateX(0); opacity: 0; } }
+@keyframes fx-ping    { from { opacity: 0.45; transform: scale(1); } to { opacity: 0; transform: scale(1.5); } }
+@keyframes fx-shimmer { to { transform: translateX(200%); } }
+@keyframes fx-twinkle { from { opacity: 0.3; transform: scale(0.8) rotate(0deg); } to { opacity: 1; transform: scale(1.1) rotate(20deg); } }

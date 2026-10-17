@@ -64,6 +64,7 @@ interface AuditFormProps {
   messagePlaceholder?: string
   /** Fires after a confirmed successful send (e.g. so a modal can auto-close). */
   onSuccess?: () => void
+  initialSubject?: string
 }
 
 /**
@@ -79,8 +80,9 @@ export function AuditForm({
   subjectPlaceholder = 'What do you need automated?',
   messagePlaceholder = 'Describe the repetitive work you want to automate…',
   onSuccess,
+  initialSubject = '',
 }: AuditFormProps) {
-  const [form,       setForm]       = useState<AuditFormData>(FORM_INITIAL)
+  const [form,       setForm]       = useState<AuditFormData>({ ...FORM_INITIAL, subject: initialSubject })
   const [errors,     setErrors]     = useState<AuditFormErrors>({})
   const [submitting, setSubmitting] = useState(false)
   const [submitted,  setSubmitted]  = useState(false)

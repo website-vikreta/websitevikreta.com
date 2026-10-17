@@ -70,6 +70,7 @@ export function AuditModal({ open, onOpenChange, config }: AuditModalProps) {
               heading={config.heading}
               subjectPlaceholder={config.subjectPlaceholder}
               messagePlaceholder={config.messagePlaceholder}
+              initialSubject={config.prefill}
               onSuccess={() => { /* leave open — user sees the confirmation */ }}
             />
           </div>

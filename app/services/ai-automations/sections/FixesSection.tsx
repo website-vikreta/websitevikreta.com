@@ -1,209 +1,205 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import { useEffect, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Button } from '@/components/ui/Button'
-import { useGsapSection, revealLines, revealFadeUp, revealClipImage } from '@/lib/gsap/reveals'
-
-interface ServiceImage {
-  src:    string
-  width:  number
-  height: number
-  alt:    string
-}
+import { AUDIT_MODAL_CONFIGS, useAuditModal } from '@/components/ui/AuditModalProvider'
+import { useGsapSection, revealLines, revealFadeUp } from '@/lib/gsap/reveals'
+import { WorkflowVisual, BulkContentVisual, ProductVisualsVisual, WhatsAppVisual } from './fixes-visuals'
 
 interface Service {
   id:          string
   title:       string
-  /** Short label for the sticky index — the full title is too long to scan there. */
-  indexLabel:  string
   description: string
   cta:         string
-  image?:      ServiceImage
+  Visual:      () => ReactNode
+  /** Grid span — lg is a 3-col bento: wide/narrow, then narrow/wide. */
+  span:        string
 }
 
 const SERVICES: Service[] = [
   {
     id:          'workflow-automation',
     title:       'Workflow & business process automation',
-    indexLabel:  'Workflow automation',
     description:
       'Your CRM, lead capture, order data and spreadsheets, wired together with n8n and Make.com so information moves without anyone copy-pasting it.',
-    cta:         'See a workflow we built',
-    image: {
-      src:    '/services/ai-automation-flow.webp',
-      width:  1672,
-      height: 941,
-      alt:    'Workflow automation diagram: webhooks, schedules, form submissions, database updates and incoming email feed a central automation tool that applies conditions, data transforms and AI logic, then pushes actions out to Slack, Microsoft Teams, WhatsApp, Gmail, Google Sheets, Shopify, Airtable, Mailchimp and GitHub.',
-    },
-  },
-  {
-    id:          'bulk-content',
-    title:       'Bulk content automation',
-    indexLabel:  'Bulk content',
-    description:
-      'The repetitive production work your team does by hand, turned into a system anyone can run from a spreadsheet and a template.',
-    cta:         'See how we cut 20 hours to 1',
-    image: {
-      src:    '/services/bulk-content-automation.webp',
-      width:  1672,
-      height: 941,
-      alt:    'Bulk content automation diagram: a spreadsheet of content, assets and details feeds an automation engine that outputs images, copy, social posts, PDFs, video and sheets, then delivers them to Slack, Teams, Google Workspace, WhatsApp, email, Mailchimp, a database, Shopify, GitHub and Jira.',
-    },
-  },
-  {
-    id:          'ai-ugc',
-    title:       'AI UGC & product visuals',
-    indexLabel:  'AI product visuals',
-    description:
-      'Product content without the studio, the models, or the two-week wait. Your real product, any setting, production quality.',
-    cta:         'See what a shoot costs now',
-    image: {
-      src:    '/services/ai-ugc-product-visuals.webp',
-      width:  1672,
-      height: 941,
-      alt:    'AI product visual pipeline: upload your product images and details, AI generates realistic UGC-style visuals in any setting, producing production-quality images ready for social media, e-commerce, website, email marketing and ads.',
-    },
+    cta:         'Automate my workflows',
+    Visual:      WorkflowVisual,
+    span:        'md:col-span-2',
   },
   {
     id:          'whatsapp-agents',
     title:       'WhatsApp AI agents',
-    indexLabel:  'WhatsApp agents',
     description:
       'A customer assistant that sounds like your team and actually does things: payment links, live order tracking, returns and promotions, all inside the chat.',
-    cta:         'See how it works',
-    image: {
-      src:    '/services/whatsapp-ai-agent.webp',
-      width:  1536,
-      height: 1024,
-      alt:    'WhatsApp AI agent handling a customer conversation about order status and returns, surrounded by its capabilities: dead cart recovery, personalised customer support, orders and returns, marketing broadcasts, payment links, smart promotions, AI-powered replies and analytics, connecting to Shopify, WooCommerce, Google Sheets and delivery partners.',
-    },
+    cta:         'Get a WhatsApp agent',
+    Visual:      WhatsAppVisual,
+    span:        '',
   },
   {
-    id:          'anything-ai',
-    title:       '+ Anything AI',
-    indexLabel:  'Anything else',
+    id:          'bulk-content',
+    title:       'Bulk content automation',
     description:
-      'If it\'s repetitive, rule-based, or eating hours from someone who\'s worth more than that, it\'s fair game. Tell us what it is.',
-    cta:         'Book a Free Process Audit',
+      'The repetitive production work your team does by hand, turned into a system anyone can run from a spreadsheet and a template. One client’s image pipeline went from 20 hours to 1.',
+    cta:         'Automate my content',
+    Visual:      BulkContentVisual,
+    span:        '',
+  },
+  {
+    id:          'ai-ugc',
+    title:       'AI UGC & product visuals',
+    description:
+      'Product content without the studio, the models, or the two-week wait. Your real product, any setting, production quality.',
+    cta:         'Get product visuals',
+    Visual:      ProductVisualsVisual,
+    span:        'md:col-span-2',
   },
 ]
 
+const PROMPTS = ['Invoice entry…', 'Lead follow-ups…', 'Weekly reports…', 'Order updates…', 'Product photos…']
+const AUDIT = AUDIT_MODAL_CONFIGS['#book-audit']
+
+/** "+ Anything AI" as a prompt: whatever they type rides into the audit form's subject. */
+function AnythingPrompt() {
+  const { openAuditModal } = useAuditModal()
+  const reduced = useReducedMotion()
+  const [value, setValue] = useState('')
+  const [focused, setFocused] = useState(false)
+  const [hint, setHint] = useState(0)
+
+  useEffect(() => {
+    if (reduced || focused || value) return
+    const id = setInterval(() => setHint((h) => (h + 1) % PROMPTS.length), 2400)
+    return () => clearInterval(id)
+  }, [reduced, focused, value])
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault()
+    openAuditModal({ ...AUDIT, prefill: value.trim() || undefined })
+  }
+
+  return (
+    <form onSubmit={submit} className="w-full lg:max-w-xl">
+      <label htmlFor="anything-ai-input" className="mb-2 block text-sm font-medium text-(--color-text)">
+        What’s eating your team’s week?
+      </label>
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="relative flex-1">
+          <input
+            id="anything-ai-input"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            className="h-12 w-full border border-(--color-border-strong) bg-(--color-bg) px-4 text-[15px] text-(--color-text) outline-none transition-colors duration-300 focus:border-(--color-text)"
+          />
+          {!value && (
+            <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-4 flex items-center overflow-hidden text-[15px] text-(--color-text-faint)">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={hint}
+                  initial={{ y: '100%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: '-100%', opacity: 0 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {PROMPTS[hint]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+          )}
+        </div>
+        <Button type="submit" variant="primary" size="md" showArrow className="shrink-0">
+          Book a Free Process Audit
+        </Button>
+      </div>
+    </form>
+  )
+}
+
 export default function FixesSection() {
   const scope = useRef<HTMLElement>(null)
-  const [activeId, setActiveId] = useState(SERVICES[0].id)
+  const { openAuditModal } = useAuditModal()
 
   useGsapSection(scope, () => {
     revealLines('#fix-heading', { trigger: scope.current })
-    scope.current?.querySelectorAll<HTMLElement>('.service-panel').forEach((panel) => {
-      const img = panel.querySelector<HTMLElement>('.service-image')
-      if (img) revealClipImage(img, { scale: false, trigger: panel })
-      revealFadeUp(panel.querySelectorAll('.service-copy'), { y: 20, trigger: panel })
-    })
+    revealFadeUp(scope.current?.querySelectorAll('.fix-intro, .bento-card') ?? [], { y: 24, trigger: scope.current })
   })
 
-  // Scroll-spy for the sticky index. Panels are tall blocks (not zero-height
-  // headings), so a single thin band near the top of the viewport reliably has
-  // exactly one panel crossing it — no need for the nearest-entry/exit-direction
-  // arbitration the blog ToC needs.
+  // Ambient CSS motion only runs while its card is on screen (see .fx-* in globals.css).
   useEffect(() => {
-    const panels = scope.current?.querySelectorAll<HTMLElement>('.service-panel')
-    if (!panels?.length) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.find((entry) => entry.isIntersecting)
-        if (hit?.target.id) setActiveId(hit.target.id)
-      },
-      { rootMargin: '-25% 0px -65% 0px' },
-    )
-
-    panels.forEach((panel) => observer.observe(panel))
+    const els = scope.current?.querySelectorAll<HTMLElement>('[data-fx]')
+    if (!els?.length) return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => e.target.toggleAttribute('data-running', e.isIntersecting))
+    })
+    els.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [])
+
+  // Whole card is a pointer target; the Button stays the keyboard/AT target, so no nested interactives.
+  const cardClick = (e: MouseEvent) => {
+    if ((e.target as HTMLElement).closest('a, button')) return
+    openAuditModal(AUDIT)
+  }
 
   return (
     <section ref={scope} className="py-16 md:py-20" aria-labelledby="fix-heading">
       <div className="container">
-        <div className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12">
+        <div className="mb-10 grid gap-5 md:mb-14 lg:grid-cols-12 lg:items-end">
+          <h2
+            id="fix-heading"
+            className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text) lg:col-span-6"
+          >
+            Where we focus
+          </h2>
+          <p className="fix-intro max-w-md text-body-lg leading-relaxed text-(--color-text-muted) lg:col-span-5 lg:col-start-8">
+            The four systems we get asked for most. Once they’re live, they run without anyone watching them.
+          </p>
+        </div>
 
-          {/* ── Sticky chapter index ────────────────────────────────
-              Desktop-only wayfinding: it holds no content of its own, so
-              hiding it on mobile duplicates nothing (the panels carry
-              everything). Anchors are plain hrefs — the browser does the
-              scrolling, no JS handler needed. */}
-          <div className="lg:col-span-4 lg:sticky lg:top-32">
-            <h2
-              id="fix-heading"
-              className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {SERVICES.map(({ id, title, description, cta, Visual, span }) => (
+            <article
+              key={id}
+              id={id}
+              onClick={cardClick}
+              className={`bento-card group relative flex scroll-mt-32 cursor-pointer flex-col overflow-hidden border border-(--color-border) bg-(--color-surface) transition-[border-color,box-shadow] duration-500 hover:border-(--color-border-strong) hover:shadow-[0_24px_48px_-32px_rgb(0_0_0/0.25)] ${span}`}
             >
-              Where we focus
-            </h2>
+              <div data-fx className="relative h-60 overflow-hidden bg-(--color-bg) md:h-72">
+                <Visual />
+              </div>
 
-            <nav aria-label="Services" className="mt-8 hidden lg:block">
-              <ul className="flex flex-col">
-                {SERVICES.map((service) => {
-                  const isActive = service.id === activeId
-                  return (
-                    <li key={service.id}>
-                      <a
-                        href={`#${service.id}`}
-                        aria-current={isActive ? 'true' : undefined}
-                        className={`block border-l-2 py-2 pl-4 text-[15px] transition-colors duration-300 ease-out focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--color-text) ${
-                          isActive
-                            ? 'border-(--color-text) text-(--color-text) [text-shadow:0_0_0.5px_currentColor]'
-                            : 'border-(--color-border) text-(--color-text-muted) hover:text-(--color-text)'
-                        }`}
-                      >
-                        {service.indexLabel}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-            </nav>
-          </div>
-
-          {/* ── Diagram panels ──────────────────────────────────────
-              One per row at the full width of the 8-col track (~830px at
-              1440). These are dense explainers, not thumbnails — at 3-up
-              card size their labels are unreadable, which is the whole
-              reason this section isn't a card grid. */}
-          <div className="mt-10 flex flex-col gap-20 lg:col-span-8 lg:mt-0 md:gap-24">
-            {SERVICES.map((service) => (
-              <article
-                key={service.id}
-                id={service.id}
-                className="service-panel scroll-mt-32"
-              >
-                {service.image && (
-                  <div className="service-image relative mb-6 overflow-hidden border border-(--color-border) bg-(--color-surface)">
-                    <Image
-                      src={service.image.src}
-                      alt={service.image.alt}
-                      width={service.image.width}
-                      height={service.image.height}
-                      sizes="(min-width: 1024px) 830px, 100vw"
-                      className="h-auto w-full"
-                    />
-                  </div>
-                )}
-
-                <h3 className="service-copy font-sans text-2xl font-bold leading-[1.1] text-(--color-text) sm:text-3xl">
-                  {service.title}
+              <div className="mt-auto p-6 md:p-8">
+                <h3 className="font-sans text-xl font-bold leading-[1.15] text-(--color-text) sm:text-2xl">
+                  {title}
                 </h3>
-                <p className="service-copy mt-3 max-w-2xl text-body-lg leading-relaxed text-(--color-text-muted)">
-                  {service.description}
+                <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-(--color-text-muted)">
+                  {description}
                 </p>
-                <div className="service-copy mt-6">
+                <div className="mt-5">
                   <Button href="#book-audit" variant="ghost" size="sm" showArrow>
-                    {service.cta}
+                    {cta}
                   </Button>
                 </div>
-              </article>
-            ))}
-          </div>
+              </div>
+            </article>
+          ))}
 
+          <article
+            id="anything-ai"
+            className="bento-card flex scroll-mt-32 flex-col gap-6 border border-(--color-border) bg-(--color-surface) p-6 md:col-span-2 md:p-8 lg:col-span-3 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div>
+              <h3 className="font-sans text-xl font-bold leading-[1.15] text-(--color-text) sm:text-2xl">
+                + Anything AI
+              </h3>
+              <p className="mt-3 max-w-md text-[15px] leading-relaxed text-(--color-text-muted)">
+                If it&apos;s repetitive, rule-based, or eating hours from someone who&apos;s worth more than that, it&apos;s fair game. Tell us what it is.
+              </p>
+            </div>
+            <AnythingPrompt />
+          </article>
         </div>
       </div>
     </section>

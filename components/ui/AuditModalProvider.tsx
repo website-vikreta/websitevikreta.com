@@ -24,6 +24,8 @@ export interface AuditModalConfig {
   dialogDescription: string
   projectsHeading?: string
   projects?: AuditModalProjectLink[]
+  /** Pre-fills the subject field, e.g. with what the visitor typed into an inline prompt. */
+  prefill?: string
 }
 
 const AUDIT_CONFIG: AuditModalConfig = {
