@@ -70,10 +70,10 @@ export default function WhatsAppAutomationClient() {
         <ProductRevealSection />
         <CartRecoverySection />
         <ConversationalAISection />
+        <ProofSection />
         <RtoSection />
         <PackagesSection />
         <OnboardingSection />
-        <ProofSection />
         <FaqSection
           items={WHATSAPP_FAQS}
           ariaLabel="WhatsApp automation frequently asked questions"
