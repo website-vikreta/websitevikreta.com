@@ -25,11 +25,7 @@ export async function expectSectionOrder(page: Page, headings: (string | RegExp)
  * one of these paths does not fail the health check, but is recorded as a `known-bug` annotation so it
  * stays visible in the reports. Delete the entry once the bug is fixed.
  */
-const KNOWN_BROKEN_PATHS: Record<string, string> = {
-  '/logo/websitevikreta.svg':
-    'components/ui/Logo.tsx:37 points at /logo/websitevikreta.svg but the file is public/logo/WebsiteVikreta.svg — ' +
-    '404 on case-sensitive servers (production build, Linux/Vercel); hidden in `npm run dev` on macOS. Navbar + footer, every page.',
-};
+const KNOWN_BROKEN_PATHS: Record<string, string> = {};
 
 /**
  * Opens `path` and scrolls to the footer in viewport-sized steps (so every lazy image and

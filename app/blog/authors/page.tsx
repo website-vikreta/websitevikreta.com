@@ -63,7 +63,7 @@ export default async function AuthorsIndexPage() {
                       <div className="relative h-16 w-16 shrink-0 overflow-hidden bg-(--color-bg-muted)">
                         {author.image && (
                           <Image
-                            src={urlFor(author.image).width(128).height(128).url()}
+                            src={urlFor(author.image).width(128).height(128).auto('format').url()}
                             alt={author.name}
                             fill
                             className="object-cover"

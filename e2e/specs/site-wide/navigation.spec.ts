@@ -95,9 +95,6 @@ test.describe('Global Navigation, Scroll States & Mobile Drawer', () => {
   });
 
   test('Home page: invisible desktop nav links are not reachable by keyboard Tab', async ({ page, basePage, nav }) => {
-    // Known site bug: hidden links still take keyboard focus (Navbar.tsx needs `invisible`).
-    // test.fail() keeps the suite green while the bug is open, and starts failing once it's fixed.
-    test.fail();
     await page.setViewportSize({ width: 1440, height: 900 });
     await basePage.navigate('/');
 

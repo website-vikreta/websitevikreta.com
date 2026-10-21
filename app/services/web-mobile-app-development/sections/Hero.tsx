@@ -71,9 +71,16 @@ export default function Hero() {
         </p>
 
         <div ref={ctaRef} className="flex justify-center">
-          <Button href={CALENDLY_URL} external variant="primary" size="lg" showArrow>
-            Book a Free Project Call
-          </Button>
+          {/* No Calendly URL configured → open the on-page project form popup instead of a dead button. */}
+          {CALENDLY_URL ? (
+            <Button href={CALENDLY_URL} external variant="primary" size="lg" showArrow>
+              Book a Free Project Call
+            </Button>
+          ) : (
+            <Button href="#start-project" variant="primary" size="lg" showArrow>
+              Book a Free Project Call
+            </Button>
+          )}
         </div>
 
         <ul

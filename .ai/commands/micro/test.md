@@ -4,7 +4,7 @@
 
 ## Trigger
 
-`/test-e2e [flags]` — whole app. `/test-page <name> [flags]` — one page or area.
+`/test-e2e [flags]` — whole app, headless (background). `/test-e2e-headed [flags]` — whole app in visible Chrome (same as `/test-e2e headed`). `/test-page <name> [flags]` — one page or area.
 
 ## Load
 
