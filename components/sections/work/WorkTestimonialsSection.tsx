@@ -8,8 +8,9 @@ import { RevealText, REVEAL_EASE } from '@/components/ui/Reveal'
 import { WORK_TESTIMONIALS, type WorkTestimonial } from '@/lib/work-data'
 
 const GAP = 24
-const SPEED = 40 // px / s
+const SPEED = 40 // px / s on desktop
 const RESUME_DELAY = 4000
+const MOBILE_EASE = [0.16, 1, 0.3, 1] as const
 
 export function WorkTestimonialsSection({
   testimonials = WORK_TESTIMONIALS,
@@ -26,17 +27,59 @@ export function WorkTestimonialsSection({
   const isPaused = useRef(false)
   const isTweening = useRef(false)
   const resumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastInteraction = useRef(Date.now())
   const [step, setStep] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const reduced = useReducedMotion()
 
-  // Cards are viewport-relative on phones, so the arrow step has to be measured
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const update = () => {
+      const mobile = mq.matches
+      setIsMobile(mobile)
+      if (mobile && cardRef.current) {
+        const currentStep = cardRef.current.offsetWidth + GAP
+        if (currentStep > 0) {
+          const currentIdx = Math.round(-x.get() / currentStep)
+          const loop = testimonials.length * currentStep
+          let target = -currentIdx * currentStep
+          if (loop > 0) {
+            while (target <= -loop) target += loop
+            while (target > 0) target -= loop
+          }
+          x.set(target)
+        }
+      }
+    }
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [testimonials.length])
+
+  // Cards are viewport-relative on phones, so the arrow/snap step has to be measured
   // off the rendered card rather than assumed from a constant.
   useEffect(() => {
-    const measure = () => setStep((cardRef.current?.offsetWidth ?? 0) + GAP)
+    const measure = () => {
+      if (!cardRef.current) return
+      const newStep = cardRef.current.offsetWidth + GAP
+      setStep(newStep)
+
+      // When on mobile, snap to the nearest full card so resizing never leaves a half-card
+      if (window.innerWidth < 768 && newStep > 0) {
+        const currentIdx = Math.round(-x.get() / (step || newStep))
+        const loop = testimonials.length * newStep
+        let target = -currentIdx * newStep
+        if (loop > 0) {
+          while (target <= -loop) target += loop
+          while (target > 0) target -= loop
+        }
+        x.set(target)
+      }
+    }
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
-  }, [])
+  }, [step, testimonials.length])
 
   useEffect(
     () => () => {
@@ -45,25 +88,26 @@ export function WorkTestimonialsSection({
     [],
   )
 
-  /** The track holds two identical copies, so shifting by exactly one copy is invisible. */
+  const loopWidth = testimonials.length * step
+
+  /** The track holds two identical copies, so shifting by exactly one loop is invisible. */
   const wrap = (v: number) => {
-    const half = (trackRef.current?.offsetWidth ?? 0) / 2
-    if (!half) return v
-    if (v <= -half) return v + half
-    if (v > 0) return v - half
+    if (!loopWidth) return v
+    if (v <= -loopWidth) return v + loopWidth
+    if (v > 0) return v - loopWidth
     return v
   }
 
   useAnimationFrame((_, delta) => {
-    // A running arrow tween owns `x` outright — wrapping mid-tween would yank it
-    // back toward a stale target. It re-wraps itself on completion instead.
-    if (isTweening.current) return
+    // On mobile: keep cards stationary until auto-step or swipe (no continuous drift).
+    if (isMobile || isTweening.current) return
     const travelled = reduced || isPaused.current ? 0 : (SPEED * delta) / 1000
     x.set(wrap(x.get() - travelled))
   })
 
   const pause = () => {
     isPaused.current = true
+    lastInteraction.current = Date.now()
     if (resumeTimeout.current) clearTimeout(resumeTimeout.current)
   }
 
@@ -75,6 +119,7 @@ export function WorkTestimonialsSection({
     }
     resumeTimeout.current = setTimeout(() => {
       isPaused.current = false
+      lastInteraction.current = Date.now()
     }, delay)
   }
 
@@ -82,16 +127,89 @@ export function WorkTestimonialsSection({
     if (!step) return
     pause()
     isTweening.current = true
-    animate(x, x.get() - dir * step, {
-      duration: reduced ? 0 : 0.6,
-      ease: REVEAL_EASE,
+
+    let startX = x.get()
+    // If moving backwards and close to start, shift seamlessly to the second copy
+    if (dir === -1 && startX > -step / 2 && loopWidth > 0) {
+      startX -= loopWidth
+      x.set(startX)
+    } else if (dir === 1 && startX < -loopWidth + step / 2 && loopWidth > 0) {
+      startX += loopWidth
+      x.set(startX)
+    }
+
+    const duration = isMobile ? 0.35 : (reduced ? 0 : 0.6)
+    const ease = isMobile ? MOBILE_EASE : REVEAL_EASE
+
+    animate(x, startX - dir * step, {
+      duration: reduced ? 0 : duration,
+      ease,
       onComplete: () => {
         isTweening.current = false
         x.set(wrap(x.get()))
       },
     })
-    resume(RESUME_DELAY)
+    resume(isMobile ? 0 : RESUME_DELAY)
   }
+
+  const holdTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isHolding = useRef(false)
+
+  const handlePointerDown = () => {
+    if (!isMobile) return
+    if (holdTimeout.current) clearTimeout(holdTimeout.current)
+    // Only pause if user actually presses and holds down for >200ms ("dabake rok ke rakha")
+    holdTimeout.current = setTimeout(() => {
+      isHolding.current = true
+      pause()
+    }, 200)
+  }
+
+  const handlePointerUpOrCancel = () => {
+    if (!isMobile) return
+    if (holdTimeout.current) {
+      clearTimeout(holdTimeout.current)
+      holdTimeout.current = null
+    }
+    if (isHolding.current) {
+      isHolding.current = false
+      resume(0)
+    }
+  }
+
+  // If page scrolls ("screen hili"), immediately cancel any hold so scrolling never pauses sliding
+  useEffect(() => {
+    const handleScroll = () => {
+      if (holdTimeout.current) {
+        clearTimeout(holdTimeout.current)
+        holdTimeout.current = null
+      }
+      if (isHolding.current) {
+        isHolding.current = false
+        resume(0)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Auto-flip every 3s on mobile when stationary and not held down
+  useEffect(() => {
+    if (!isMobile || !step) return
+    const interval = setInterval(() => {
+      if (
+        !isHolding.current &&
+        !isPaused.current &&
+        !isTweening.current &&
+        !reduced &&
+        Date.now() - lastInteraction.current >= 3000
+      ) {
+        lastInteraction.current = Date.now()
+        nudge(1)
+      }
+    }, 500)
+    return () => clearInterval(interval)
+  }, [isMobile, step, reduced, loopWidth])
 
   const cards = [...testimonials, ...testimonials]
 
@@ -116,21 +234,62 @@ export function WorkTestimonialsSection({
         className="relative overflow-x-clip"
         role="group"
         aria-roledescription="carousel"
-        onMouseEnter={pause}
-        onMouseLeave={() => resume()}
+        onMouseEnter={() => { if (!isMobile) pause() }}
+        onMouseLeave={() => { if (!isMobile) resume() }}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUpOrCancel}
+        onPointerCancel={handlePointerUpOrCancel}
       >
-        {/* drag makes this work by thumb — a touch visitor never gets the hover pause. */}
+        {/* drag makes this work by thumb — on mobile releases snap cleanly ("taqq se") to the card */}
         <motion.div
           ref={trackRef}
-          className="flex items-stretch w-max cursor-grab active:cursor-grabbing"
-          style={{ x, gap: GAP }}
+          className="flex items-stretch w-max cursor-grab active:cursor-grabbing pl-6 md:pl-0"
+          style={{ x, gap: GAP, touchAction: 'pan-y' }}
           drag="x"
           dragMomentum={false}
           dragElastic={0}
           onDragStart={pause}
-          onDragEnd={() => {
-            x.set(wrap(x.get()))
-            resume(RESUME_DELAY)
+          onDragEnd={(_, info) => {
+            if (isMobile && step > 0) {
+              const currentX = x.get()
+              const offset = info.offset.x
+              const velocity = info.velocity.x
+
+              // Compute which card index we started from
+              const startX = currentX - offset
+              const startIndex = Math.round(-startX / step)
+
+              let targetIndex = startIndex
+              if (offset < -40 || velocity < -300) {
+                targetIndex = startIndex + 1
+              } else if (offset > 40 || velocity > 300) {
+                targetIndex = startIndex - 1
+              }
+
+              let targetX = -targetIndex * step
+              if (targetX > 0 && loopWidth > 0) {
+                x.set(currentX - loopWidth)
+                targetX -= loopWidth
+              } else if (targetX < -loopWidth && loopWidth > 0) {
+                x.set(currentX + loopWidth)
+                targetX += loopWidth
+              }
+
+              isTweening.current = true
+              animate(x, targetX, {
+                duration: reduced ? 0 : 0.35,
+                ease: MOBILE_EASE,
+                onComplete: () => {
+                  isTweening.current = false
+                  x.set(wrap(x.get()))
+                },
+              })
+              lastInteraction.current = Date.now()
+              resume(0)
+            } else {
+              x.set(wrap(x.get()))
+              resume(RESUME_DELAY)
+            }
           }}
         >
           {cards.map((testimonial, i) => {
@@ -150,8 +309,9 @@ export function WorkTestimonialsSection({
           })}
         </motion.div>
 
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-(--color-bg) to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-(--color-bg) to-transparent z-10" />
+        {/* Gradient masks on desktop; hidden on mobile so the full card is crisp without faded edges */}
+        <div className="hidden md:block pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-(--color-bg) to-transparent z-10" />
+        <div className="hidden md:block pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-(--color-bg) to-transparent z-10" />
       </div>
     </section>
   )
@@ -189,8 +349,9 @@ function TestimonialCard({
   return (
     <div
       ref={ref}
-      // Was a fixed 380px, which overflowed the viewport on a 375px-wide phone.
-      className="flex w-[80vw] max-w-[380px] flex-shrink-0 flex-col bg-(--color-surface) border border-(--color-border) transition-colors hover:border-(--color-border-strong) p-6 sm:w-[380px] md:p-8"
+      // On mobile: exact full card width with zero side-peek (calc(100vw - 3rem) + pl-6 aligns with container).
+      // On desktop: fixed 380px card.
+      className="flex w-[calc(100vw-3rem)] max-w-[calc(100vw-3rem)] md:w-[380px] md:max-w-[380px] flex-shrink-0 flex-col bg-(--color-surface) border border-(--color-border) transition-colors hover:border-(--color-border-strong) p-6 md:p-8"
       {...rest}
     >
       <p className="text-base md:text-lg font-medium leading-relaxed text-(--color-text) mb-8">
@@ -218,3 +379,4 @@ function TestimonialCard({
     </div>
   )
 }
+
