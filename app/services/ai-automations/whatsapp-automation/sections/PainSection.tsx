@@ -192,15 +192,15 @@ export function RtoSection() {
         <div className="container">
           <div className="mb-10 grid grid-cols-1 gap-6 md:mb-14 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
             <h2 id="math-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-              Nobody puts this number on a slide.
+              The real cost of returned COD orders.
             </h2>
             <div>
               <p className="math-copy text-body-lg leading-relaxed text-(--color-text-muted)">
-                A returned COD order costs more than the sale made. Shipping out, shipping back,
-                packing, QC. Most stores never add it up.
+                A returned parcel costs forward freight, reverse freight, packaging waste,
+                and restocking delays. Most stores absorb it as overhead without calculating the total leakage.
               </p>
               <p className="math-copy mt-4 text-body-lg font-medium leading-relaxed text-(--color-text)">
-                One WhatsApp before the parcel moves catches the orders nobody wanted to begin with.
+                One automated WhatsApp verification before dispatch filters uncommitted buyers before shipping labels are created.
               </p>
             </div>
           </div>

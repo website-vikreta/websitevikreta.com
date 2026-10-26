@@ -2,65 +2,71 @@
 
 import { useRef } from 'react'
 import { LazyMotion, domAnimation, m } from 'motion/react'
+import { Button } from '@/components/ui/Button'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
-/* Each chart compares only figures already on its card (marketing rate: Meta India, research brief) */
 const CHANNEL_STATS = [
   {
-    n: '98%', label: 'average open rate', context: 'vs ~20% for cart recovery email',
-    bars: [{ label: 'WhatsApp opened', value: '98%', pct: 98, win: true }, { label: 'Cart email opened', value: '~20%', pct: 20 }],
+    n: '98%',
+    label: 'Average open rate',
+    context: 'Cart recovery emails sit around 20% and frequently get buried in promotional filters or spam.',
+    comparison: {
+      primaryLabel: 'WhatsApp opened',
+      primaryVal: '98%',
+      pct: 98,
+      secondaryLabel: 'Cart recovery email',
+      secondaryVal: '~20%',
+    },
   },
   {
-    n: '45%', label: 'avg. click-through', context: '5× higher than SMS campaigns',
-    bars: [{ label: 'WhatsApp', value: '45%', pct: 45, win: true }, { label: 'SMS', value: '~9%', pct: 9 }],
+    n: '45%',
+    label: 'Average click-through',
+    context: 'Interactive CTA buttons inside WhatsApp make completing dropped checkouts frictionless.',
+    comparison: {
+      primaryLabel: 'WhatsApp clicked',
+      primaryVal: '45%',
+      pct: 45,
+      secondaryLabel: 'Standard SMS',
+      secondaryVal: '~9%',
+    },
   },
   {
-    n: '~11p', label: 'per utility message', context: 'WhatsApp Business API, billed at cost',
-    bars: [{ label: 'Utility (order updates)', value: '~11p', pct: 10, win: true }, { label: 'Marketing', value: '₹1.09', pct: 100 }],
+    n: '~11p',
+    label: 'Per utility alert',
+    context: 'Automated order confirmations, updates, and cart alerts are billed at Meta’s base utility rate.',
+    comparison: {
+      primaryLabel: 'WhatsApp Utility',
+      primaryVal: '~11p',
+      pct: 10,
+      secondaryLabel: 'Marketing Broadcast',
+      secondaryVal: '₹1.09',
+    },
   },
 ]
-
-function StatBars({ bars }: { bars: { label: string; value: string; pct: number; win?: boolean }[] }) {
-  return (
-    <div className="flex flex-col gap-3">
-      {bars.map(({ label, value, pct, win }, i) => (
-        <div key={label}>
-          <span className="flex justify-between text-[13px] text-(--color-text-muted)">
-            {label}<span className="font-semibold tabular-nums text-(--color-text)">{value}</span>
-          </span>
-          <span className="mt-1.5 block h-2.5 overflow-hidden bg-(--color-bg-muted)">
-            <m.span
-              className="block h-full"
-              style={{ background: win ? '#25d366' : '#a1a1aa' }}
-              variants={{ hide: { width: '0%' }, show: { width: `${pct}%`, transition: { delay: 0.3 + i * 0.25, duration: 1, ease: EASE } } }}
-            />
-          </span>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 const CASES = [
   {
     brand: 'Keeros SuperFoods',
-    result: '20 to 40%',
-    metric: 'cart recovery rate',
-    highlight: '98% message read rate. Notifications sent within 15 to 20 min of cart drop-off.',
+    result: '20% to 40%',
+    metric: 'Recovered cart rate',
+    highlight:
+      'Reminders go out within 15 minutes of cart drop-off. Customers see the alert on their phone and finish the purchase before buying elsewhere.',
   },
   {
     brand: 'The Hatke',
     result: '21×',
-    metric: 'ROI on the WhatsApp channel',
-    highlight: 'Up to 40% abandoned cart recovery. Open and click rates far above email and SMS.',
+    metric: 'Return on messaging spend',
+    highlight:
+      'At roughly 11 paise per utility message, recovered checkouts returned 21 rupees for every rupee spent on WhatsApp alerts.',
   },
   {
-    brand: 'Indian Ethnic Co.',
-    result: '3× increase',
-    metric: 'cart recovery vs. email baseline',
-    highlight: 'Recovery jumped from 7% to 20%+ after switching from email-first to WhatsApp.',
+    brand: 'The Indian Ethnic Co.',
+    result: '3×',
+    metric: 'Recovery compared to email',
+    highlight:
+      'Checkout recovery rose from 7% on reminder emails to over 20% on WhatsApp within the first month.',
   },
 ]
 
@@ -70,7 +76,6 @@ export default function ProofSection() {
   useGsapSection(scope, () => {
     revealLines('#proof-heading',  { trigger: scope.current })
     revealFadeUp('.proof-intro',   { y: 20, trigger: scope.current })
-    revealFadeUp('.proof-card',    { y: 20, stagger: STAGGER.base,  trigger: scope.current })
   })
 
   return (
@@ -83,61 +88,98 @@ export default function ProofSection() {
             id="proof-heading"
             className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
           >
-            Why WhatsApp works. What stores have done with it.
+            Why WhatsApp outperforms email and SMS.
           </h2>
-          <p className="proof-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
-            Channel numbers first. Then what three stores got after switching.
+          <p className="proof-intro mt-4 text-body-lg leading-relaxed text-(--color-text-muted)">
+            Customer attention moved to WhatsApp years ago. Here is how direct messaging compares to traditional channels.
           </p>
         </div>
 
-        {/* Channel benchmarks: same card + chart pattern as the pain stats up top */}
-        <LazyMotion features={domAnimation}>
-          <div className="mb-10 grid grid-cols-1 gap-5 md:mb-14 md:grid-cols-3 lg:gap-6">
-            {CHANNEL_STATS.map(({ n, label, context, bars }) => (
-              <m.article
-                key={n}
-                initial="hide"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.4 }}
-                className="flex flex-col overflow-hidden border border-(--color-border) bg-(--color-surface) shadow-[0_24px_48px_-30px_rgba(20,18,15,0.3)] transition-transform duration-300 hover:-translate-y-1"
-              >
-                <div aria-hidden className="flex h-36 items-center border-b border-(--color-border) bg-[#fafaf8] px-7 md:px-9">
-                  <div className="w-full"><StatBars bars={bars} /></div>
-                </div>
-                <div className="p-7 md:p-9">
-                  <p className="text-h2 font-bold leading-none tracking-tight text-(--color-text)">{n}</p>
-                  <h3 className="mt-4 text-base font-bold leading-snug text-(--color-text)">{label}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-(--color-text-muted)">{context}</p>
-                </div>
-              </m.article>
-            ))}
-          </div>
-        </LazyMotion>
+        {/* Channel benchmarks: clean, sharp cards with sleek comparison rail */}
+        <div className="mb-14 grid grid-cols-1 gap-6 md:mb-18 md:grid-cols-3 lg:gap-8">
+          {CHANNEL_STATS.map(({ n, label, context, comparison }) => (
+            <article
+              key={n}
+              className="flex flex-col justify-between border border-(--color-border) bg-(--color-surface) p-7 sm:p-8 md:p-9 shadow-xs transition-all duration-300 hover:border-(--color-border-strong) hover:-translate-y-0.5"
+            >
+              <div>
+                <p className="font-sans text-5xl sm:text-6xl font-bold tracking-tight text-(--color-text) leading-none">
+                  {n}
+                </p>
+                <h3 className="mt-4 text-lg font-bold text-(--color-text)">
+                  {label}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-(--color-text-muted)">
+                  {context}
+                </p>
+              </div>
 
-        {/* Case study results: one black panel so it reads as the payoff, not a fourth row of cards */}
-        <div className="bg-(--color-text) text-white">
-          <div className="flex flex-col gap-2 border-b border-white/10 px-7 py-6 sm:flex-row sm:items-end sm:justify-between md:px-9 md:py-7">
-            <h3 className="text-2xl font-bold tracking-tight">What stores have seen after switching</h3>
-            <p className="text-sm text-white/50">Results vary by store</p>
+              {/* Minimalist monochrome comparison bar */}
+              <div className="mt-8 pt-6 border-t border-(--color-border)">
+                <div className="flex justify-between text-xs text-(--color-text) font-medium mb-2">
+                  <span>{comparison.primaryLabel}</span>
+                  <span className="font-bold tabular-nums">{comparison.primaryVal}</span>
+                </div>
+                <div className="h-1.5 w-full bg-(--color-bg-muted) overflow-hidden">
+                  <div
+                    className="h-full bg-(--color-text) transition-all duration-700"
+                    style={{ width: `${comparison.pct}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-[11px] text-(--color-text-faint) mt-2">
+                  <span>{comparison.secondaryLabel}</span>
+                  <span className="tabular-nums">{comparison.secondaryVal}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Case study results: 2-column layout with left headline + CTA and right stacked cards (no eyebrow, sharp edges) */}
+        <div className="mt-14 md:mt-20 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 items-start">
+          {/* Left Column: Heading, Context, and CTA */}
+          <div className="lg:col-span-5 lg:sticky lg:top-28">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-(--color-text) leading-[1.08]">
+              What stores see after switching
+            </h3>
+            <p className="mt-4 text-base sm:text-lg text-(--color-text-muted) leading-relaxed max-w-md">
+              Most stores send recovery emails that sit unopened in promotions. When reminders go to WhatsApp, customers read them in minutes and finish their order.
+            </p>
+            <div className="mt-6 sm:mt-8">
+              <Button href="#contact" variant="ghost" size="md" showArrow>
+                Book a platform demo
+              </Button>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3">
+
+          {/* Right Column: 3 stacked horizontal stat cards */}
+          <div className="lg:col-span-7 flex flex-col gap-5 sm:gap-6">
             {CASES.map(({ brand, result, metric, highlight }) => (
               <article
                 key={brand}
-                className="proof-card flex flex-col border-b border-white/10 p-7 last:border-b-0 md:border-b-0 md:border-r md:p-9 md:last:border-r-0"
+                className="proof-card border border-(--color-border) bg-(--color-surface) p-6 sm:p-7 md:p-8 transition-all duration-300 hover:border-(--color-border-strong) hover:-translate-y-0.5 shadow-xs"
               >
-                <h4 className="text-[15px] font-semibold text-white/70">{brand}</h4>
-                <p className="mt-6 text-[clamp(2.2rem,4vw,3rem)] font-bold leading-none tracking-tight">{result}</p>
-                <p className="mt-3 text-base font-semibold">{metric}</p>
-                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-white/60">{highlight}</p>
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="text-4xl sm:text-5xl font-bold tracking-tight text-(--color-accent)">
+                    {result}
+                  </p>
+                  <span className="text-xs sm:text-sm font-medium text-(--color-text-muted)">
+                    {brand}
+                  </span>
+                </div>
+                <h4 className="mt-2.5 text-base sm:text-lg font-bold text-(--color-text)">
+                  {metric}
+                </h4>
+                <p className="mt-1.5 text-sm sm:text-[15px] leading-relaxed text-(--color-text-muted)">
+                  {highlight}
+                </p>
               </article>
             ))}
           </div>
         </div>
 
-        <p className="mt-6 text-sm leading-relaxed text-(--color-text-muted)">
-          Figures from published brand case studies. Results vary by store volume, checkout
-          health, and opt-in rates. WhatsApp channel stats are Meta and industry benchmarks.
+        <p className="mt-10 text-xs leading-relaxed text-(--color-text-faint)">
+          Figures from published Indian D2C brand case studies. Actual recovery depends on catalog price, checkout friction, and opt-in rates.
         </p>
       </div>
     </section>
