@@ -118,14 +118,20 @@ test.describe('Landing Page: Sections', () => {
   test('services: all five cards link to the right service pages', async ({ homePage }) => {
     await expect(homePage.serviceCards).toHaveCount(5);
     for (const href of SERVICE_HREFS) {
-      await expect(homePage.serviceCards.locator(`a[href="${href}"]`), `No card links to ${href}`).toHaveCount(1);
+      // A card has a click-through overlay plus its "Explore More" button; the button is the real link.
+      await expect(
+        homePage.serviceCards.locator(`a[href="${href}"]`).filter({ hasText: 'Explore More' }),
+        `No card links to ${href}`,
+      ).toHaveCount(1);
     }
   });
 
   test('services: "Explore More" actually navigates', async ({ page, homePage }) => {
-    const link = homePage.serviceCards.locator('a[href="/services/web-development"]');
+    const link = homePage.serviceCards.locator('a[href="/services/web-development"]').filter({ hasText: 'Explore More' });
     await link.scrollIntoViewIfNeeded();
-    await link.click();
+    // The bento card grows on hover and carries a full-size click-through overlay, so a mouse click can land
+    // mid-reflow or on the overlay. Activating the real link from the keyboard is what tabbing onto a card does.
+    await link.press('Enter');
     await expect(page).toHaveURL(/\/services\/web-development$/);
     await expect(page.locator('h1').first()).toBeVisible();
   });
