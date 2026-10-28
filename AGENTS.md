@@ -90,7 +90,7 @@ Claude Code only discovers slash commands in `.claude/commands/`, so each recipe
 | `audit-component` | `.ai/commands/micro/audit-component.md` | Design + perf audit on one component |
 | `fix-performance` | `.ai/commands/micro/fix-performance.md` | Diagnose LCP / CLS / INP / bundle issues |
 | `push` | `.ai/commands/micro/push.md` | Commit, push, and open/update PR |
-| `test` | `.ai/commands/micro/test.md` | Run E2E tests: whole app (`/test-e2e`) or one page (`/test-page <name>`) |
+| `test` | `.ai/commands/micro/test.md` | Run E2E tests: whole app (`/test-e2e`, or `/test-e2e-headed` to watch in Chrome) or one page (`/test-page <name>`) |
 
 ## Learning Log — Consistency Memory
 

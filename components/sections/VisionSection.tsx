@@ -46,12 +46,10 @@ export function VisionSection() {
             the right half. The gap column IS the breathing room — no extra padding. */}
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
           <div ref={textRef} className="flex flex-col gap-6 lg:col-span-6">
-            <RevealText>
-              <h2 className="text-h2 font-bold text-(--color-text)">
-                We start with your{' '}
-                <span className="text-(--color-accent)">bottleneck</span>, not our
-                services list
-              </h2>
+            <RevealText as="h2" className="text-h2 font-bold text-(--color-text)">
+              We start with your{' '}
+              <span className="text-(--color-accent)">bottleneck</span>, not our
+              services list
             </RevealText>
             <RevealFade delay={0.15}>
               <p className="text-body-lg text-(--color-text-muted) leading-(--leading-body)">

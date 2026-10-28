@@ -64,7 +64,7 @@ export const ptComponents: any = {
       value?.asset ? (
         <figure className="my-8">
           <Image
-            src={urlFor(value).width(720).url()}
+            src={urlFor(value).width(720).auto('format').url()}
             alt={value.alt ?? ''}
             width={720}
             height={405}

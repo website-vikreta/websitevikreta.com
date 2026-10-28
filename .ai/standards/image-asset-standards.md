@@ -224,18 +224,12 @@ and files over the hard cap. Until it exists, the checklist above is enforced in
 
 ## 10. Current Known Violations (audit: 2026-10-14)
 
-Tracked, not yet fixed. Remove a row when it's resolved.
+Tracked, not yet fixed. Remove a row when it's resolved. Fixed on 2026-10-15: case-mismatched logo,
+~10.5 MB of orphaned assets, docs inside `public/`, missing `.auto('format')`, OG image ratio.
 
 | Issue | Where | Impact |
 |---|---|---|
-| Case mismatch: code says `/logo/websitevikreta.svg`, file is `WebsiteVikreta.svg` | `components/ui/Logo.tsx:37` | **Logo wordmark 404s** in navbar + footer on every page in production/Linux. Tracked as a known bug in the e2e health checks (`e2e/helpers/page-checks.ts`). |
-| Orphaned assets (component unused) | `public/our-process/*.jpeg` (5, ~3.3 MB), `public/preloader/*` (21, ~5 MB) — only used by unused `rolling-list.tsx` / `scroll-morph-hero.tsx` | ~8 MB of dead weight in the repo |
-| Orphaned asset | `public/images/careers-banner.png` (2.3 MB, 1672×931, PNG) | Unreferenced; also violates format + budget |
-| Filenames with spaces + uppercase | `public/preloader/*` (e.g. `01-Discovery Call.jpeg`) | Break on case-sensitive hosts if ever used |
-| Uppercase filenames (work today, fragile) | `public/tools-logos/*` (38, e.g. `01-OpenAI.svg`), `public/our-work/testimonials/*` (10, e.g. `Fiona_Li.webp`) | Code currently matches the exact case, so they load; any lowercase reference 404s in production. Rename to kebab-case together with their references when next touched. |
-| Internal docs inside `public/` | `public/services/uiux-design/ASSETS.md`, `public/services/uiux-design/hero/IMAGE-BRIEFS.md` | Everything in `public/` is publicly downloadable at its URL. Move working notes out of `public/`. |
-| OG image ratio | `public/og-image.png` is 1200×675 (metadata matches) | Standard is 1200×630; some platforms crop. The `TODO: add public/og-image.png` comment in `app/page.tsx` is stale — the file exists. |
-| No `.auto('format')` on Sanity URLs | `app/blog/**` `urlFor(...)` calls | CMS images served in original format, no AVIF/WebP |
+| Uppercase filenames (work today, fragile) | `public/tools-logos/*` (38, e.g. `01-OpenAI.svg`), `public/our-work/testimonials/*` (10, e.g. `Fiona_Li.webp`) | Code currently matches the exact case, so they load; any lowercase reference 404s in production. Rename to kebab-case together with their references in a follow-up PR. |
 
-For scale: converting the orphaned `careers-banner.png` with the §4 command (1600 px, q80) takes it from
-**2.3 MB to 115 KB** (−95%). That is the size of the win this standard is protecting.
+For scale: converting a 2.3 MB PNG banner with the §4 command (1600 px, q80) took it to **115 KB** (−95%).
+That is the size of the win this standard is protecting.
