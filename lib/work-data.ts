@@ -34,7 +34,7 @@ export interface WebProject {
   description: string
   href: string
   logo: string
-  // image, imageAlt — screenshot previews, not rendered on /work (logo-only), see ExternalProjectLink
+  // image, imageAlt — screenshot previews from /services/web-development/proof/
   image?: string
   imageAlt?: string
   skills: string
@@ -131,7 +131,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A sleek product site for DbyT Dynamics with a clean, modern presentation.',
     href: 'https://tocal.in/',
     logo: '/client-logos/tocal.svg',
-    image: '/our-services/webdevelopment.webp',
+    image: '/services/web-development/proof/tocal.webp',
     imageAlt: 'Tocal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
@@ -142,7 +142,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'The public site for a protocol that needed to read as credible to institutional users.',
     href: 'https://www.sustainablebtc.org/',
     logo: '/client-logos/sustainable-bitcoin-protocol.svg',
-    image: '/our-services/ui-ux-design.webp',
+    image: '/services/web-development/proof/sustainable-bitcoin-protocol.webp',
     imageAlt: 'Sustainable Bitcoin Protocol website preview',
     skills: 'UI/UX DESIGN / DESIGN SYSTEM',
   },
@@ -153,7 +153,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A local service business taken from no web presence at all to a site built to convert.',
     href: 'https://apcleanco.com/',
     logo: '/client-logos/ap-cleanco.svg',
-    image: '/our-services/digital-marketing-seo-geo.webp',
+    image: '/services/web-development/proof/ap-cleanco.webp',
     imageAlt: 'AP Cleanco website preview',
     skills: 'WEB DEVELOPMENT / LOCAL SEO',
   },
@@ -164,7 +164,7 @@ export const WEB_PROJECTS: WebProject[] = [
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
     logo: '/client-logos/archmodal.svg',
-    image: '/our-services/ai-automation.webp',
+    image: '/services/web-development/proof/archmodal.webp',
     imageAlt: 'Archmodal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
   },
@@ -175,20 +175,20 @@ export const WEB_PROJECTS: WebProject[] = [
       "A sustainable e-commerce storefront for a women's clothing brand.",
     href: 'https://blancoraclothing.com/shop',
     logo: '/client-logos/blancora.svg',
-    image: '/our-services/web-mobile-crm.webp',
+    image: '/services/web-development/proof/earth-by-blancora.webp',
     imageAlt: 'Earth by Blancora website preview',
     skills: 'UI/UX DESIGN / E-COMMERCE DEVELOPMENT',
   },
   {
-    slug: 'katalyst-consulting',
-    title: 'Katalyst Consulting',
+    slug: 'simpli-home-site',
+    title: 'Simpli Home',
     description:
-      'A professional consulting firm site focused on credibility and growth.',
-    href: 'https://www.katalystcs.co.in/',
-    logo: '/client-logos/katalyst.png',
-    image: '/our-services/webdevelopment.webp',
-    imageAlt: 'Katalyst Consulting website preview',
-    skills: 'UI/UX DESIGN / WEB DEVELOPMENT',
+      'A media team doing bulk content generation by hand. We automated the whole pipeline inside Figma Buzz.',
+    href: 'https://www.simpli-home.com/',
+    logo: '/client-logos/simpli-home.svg',
+    image: '/services/web-development/proof/simpli-home.webp',
+    imageAlt: 'Simpli Home website preview',
+    skills: 'AI AUTOMATION / MEDIA OPS',
   },
 ]
 
