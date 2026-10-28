@@ -140,8 +140,8 @@ export function Navbar() {
           <ul
             className={`hidden lg:flex items-center gap-10 list-none transition-all duration-300 ${
               isHome && !linksRevealed
-                ? 'opacity-0 pointer-events-none -translate-y-1'
-                : 'opacity-100 pointer-events-auto translate-y-0'
+                ? 'opacity-0 invisible pointer-events-none -translate-y-1'
+                : 'opacity-100 visible pointer-events-auto translate-y-0'
             }`}
             role="list"
           >

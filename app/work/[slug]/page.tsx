@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           : {
               url: '/og-image.png',
               width: 1200,
-              height: 675,
+              height: 630,
               alt: `${study.company} case study`,
             },
       ],

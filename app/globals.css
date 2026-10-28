@@ -339,6 +339,52 @@ body[data-scroll-locked] {
   }
 }
 
+/* ─── Service bento motion (ServiceMotion.tsx) ─────────────────── */
+/* Only the active card's layer shows and runs; the rest sit hidden and paused. */
+.svc-motion { opacity: 0; transition: opacity 0.5s ease; }
+.svc-motion[data-active='true'] { opacity: 1; }
+.svc-motion * { transform-box: fill-box; transform-origin: center; animation-play-state: paused; }
+.svc-motion[data-active='true'] * { animation-play-state: running; }
+
+.svc-travel {
+  fill: none; stroke: #E8B53A; stroke-width: 7; stroke-linecap: round;
+  stroke-dasharray: 0 200; /* one dot per 100-unit path, the next one parked off the end */
+  animation: svc-travel 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite both;
+}
+.svc-ring    { fill: none; stroke-width: 2.5; animation: svc-ring 2.4s ease-out infinite both; }
+.svc-blink   { animation: svc-blink 4s infinite both; }
+.svc-ants    { fill: none; stroke-width: 1.5; stroke-dasharray: 6 4; animation: svc-ants 1s linear infinite; }
+.svc-grow    { transform-origin: left center; animation: svc-grow 3s cubic-bezier(0.16, 1, 0.3, 1) infinite both; }
+.svc-draw    { fill: none; stroke-dasharray: 100 100; animation: svc-draw 3s cubic-bezier(0.16, 1, 0.3, 1) infinite both; }
+.svc-shimmer { animation: svc-shimmer 2.6s ease-in-out infinite both; }
+
+@keyframes svc-travel {
+  0%   { stroke-dashoffset: 0; opacity: 0; }
+  10%, 85% { opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+@keyframes svc-ring {
+  0%        { transform: scale(1); opacity: 0.9; }
+  70%, 100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes svc-blink   { 0%, 90%, 100% { opacity: 0; } 93%, 96% { opacity: 1; } }
+@keyframes svc-ants    { to { stroke-dashoffset: -20; } }
+@keyframes svc-grow {
+  0%        { transform: scaleX(0); opacity: 1; }
+  55%       { transform: scaleX(1); opacity: 1; }
+  80%, 100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes svc-draw {
+  0%       { stroke-dashoffset: 100; opacity: 1; }
+  60%, 85% { stroke-dashoffset: 2; opacity: 1; }
+  100%     { stroke-dashoffset: 2; opacity: 0; }
+}
+@keyframes svc-shimmer { 0% { transform: translateX(-120%); } 60%, 100% { transform: translateX(320%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-motion { display: none; }
+}
+
 /* ─── Buttons ─────────────────────────────────────────────────── */
 @layer components {
 
