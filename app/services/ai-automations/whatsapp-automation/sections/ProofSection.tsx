@@ -1,22 +1,19 @@
 'use client'
 
 import { useRef } from 'react'
-import { LazyMotion, domAnimation, m } from 'motion/react'
 import { Button } from '@/components/ui/Button'
-import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
-
-const EASE = [0.16, 1, 0.3, 1] as const
+import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 
 const CHANNEL_STATS = [
   {
     n: '98%',
     label: 'Average open rate',
-    context: 'Cart recovery emails sit around 20% and frequently get buried in promotional filters or spam.',
+    context: 'Cart emails get opened far less often, and many land in Promotions or spam.',
     comparison: {
       primaryLabel: 'WhatsApp opened',
       primaryVal: '98%',
       pct: 98,
-      secondaryLabel: 'Cart recovery email',
+      secondaryLabel: 'Typical cart email open rate',
       secondaryVal: '~20%',
     },
   },
@@ -33,12 +30,12 @@ const CHANNEL_STATS = [
     },
   },
   {
-    n: '~11p',
+    n: '~11 paise',
     label: 'Per utility alert',
     context: 'Automated order confirmations, updates, and cart alerts are billed at Meta’s base utility rate.',
     comparison: {
       primaryLabel: 'WhatsApp Utility',
-      primaryVal: '~11p',
+      primaryVal: '~11 paise',
       pct: 10,
       secondaryLabel: 'Marketing Broadcast',
       secondaryVal: '₹1.09',
@@ -90,13 +87,13 @@ export default function ProofSection() {
           >
             Why WhatsApp outperforms email and SMS.
           </h2>
-          <p className="proof-intro mt-4 text-body-lg leading-relaxed text-(--color-text-muted)">
+          <p className="proof-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             Customer attention moved to WhatsApp years ago. Here is how direct messaging compares to traditional channels.
           </p>
         </div>
 
         {/* Channel benchmarks: clean, sharp cards with sleek comparison rail */}
-        <div className="mb-14 grid grid-cols-1 gap-6 md:mb-18 md:grid-cols-3 lg:gap-8">
+        <div className="mb-14 grid grid-cols-1 gap-6 md:mb-20 md:grid-cols-3 lg:gap-8">
           {CHANNEL_STATS.map(({ n, label, context, comparison }) => (
             <article
               key={n}
@@ -136,17 +133,17 @@ export default function ProofSection() {
         </div>
 
         {/* Case study results: 2-column layout with left headline + CTA and right stacked cards (no eyebrow, sharp edges) */}
-        <div className="mt-14 md:mt-20 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 items-start">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 items-start">
           {/* Left Column: Heading, Context, and CTA */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-(--color-text) leading-[1.08]">
+            <h3 className="text-h3 font-bold tracking-tight text-(--color-text)">
               What stores see after switching
             </h3>
-            <p className="mt-4 text-base sm:text-lg text-(--color-text-muted) leading-relaxed max-w-md">
+            <p className="mt-5 text-base sm:text-lg text-(--color-text-muted) leading-relaxed max-w-md">
               Most stores send recovery emails that sit unopened in promotions. When reminders go to WhatsApp, customers read them in minutes and finish their order.
             </p>
             <div className="mt-6 sm:mt-8">
-              <Button href="#contact" variant="ghost" size="md" showArrow>
+              <Button href="#whatsapp-demo" variant="ghost" size="md" showArrow>
                 Book a platform demo
               </Button>
             </div>

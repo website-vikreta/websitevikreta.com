@@ -47,6 +47,9 @@ export const metadata: Metadata = {
     'cod confirmation whatsapp',
     'shopify whatsapp automation',
     'whatsapp commerce platform',
+    'reduce rto cod orders india',
+    'whatsapp cart recovery shopify',
+    'whatsapp crm for d2c brands',
   ],
   openGraph: {
     title: 'WhatsApp Commerce Platform for E-commerce | Website Vikreta',

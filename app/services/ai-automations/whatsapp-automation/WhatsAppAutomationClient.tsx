@@ -77,7 +77,6 @@ export default function WhatsAppAutomationClient() {
         <FaqSection
           items={WHATSAPP_FAQS}
           ariaLabel="WhatsApp automation frequently asked questions"
-          emitSchema={false}
         />
         <ContactSection />
       </main>

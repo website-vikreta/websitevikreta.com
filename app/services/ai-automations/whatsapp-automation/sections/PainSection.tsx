@@ -117,7 +117,7 @@ export default function PainSection() {
 
 
   return (
-      <section ref={painScope} id="pain" className="py-16 md:py-20" aria-labelledby="pain-heading">
+      <section ref={painScope} id="pain" className="scroll-mt-32 py-16 md:py-20" aria-labelledby="pain-heading">
         <div className="container">
           <div className="mb-10 max-w-2xl md:mb-14">
             <h2
