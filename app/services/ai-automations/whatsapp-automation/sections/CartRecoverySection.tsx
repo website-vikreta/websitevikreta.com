@@ -74,7 +74,7 @@ export default function CartRecoverySection() {
           </h2>
           <p className="cart-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             Six reasons customers leave their carts, and all of them are fixable. We improve checkout before sending a single
-            message. Then we send three WhatsApp messages to the people who still leave.
+            message. Then WhatsApp abandoned cart recovery picks up the people who still leave, with three messages.
           </p>
         </div>
 

@@ -126,7 +126,7 @@ export default function ConversationalAISection() {
               Your store answers at 2 AM.
             </h2>
             <p className="ai-intro mt-5 max-w-xl text-body-lg leading-relaxed text-(--color-text-muted)">
-              A buyer with a size question at night buys from whoever replies first. The AI replies, opens the right product, and passes anything tricky to your team.
+              A buyer with a size question at night buys from whoever replies first. Our AI WhatsApp chatbot replies, opens the right product, and passes anything tricky to your team.
             </p>
             
             <ul className="ai-benefits mt-8">

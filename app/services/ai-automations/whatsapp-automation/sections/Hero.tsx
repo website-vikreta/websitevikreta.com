@@ -8,26 +8,6 @@ import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 import HeroJourneyPhone from '../components/HeroJourneyPhone'
 import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
-/* Singleton — avoids re-injecting on every render */
-const HERO_STYLE_ID = 'wa-hero-styles'
-if (typeof document !== 'undefined' && !document.getElementById(HERO_STYLE_ID)) {
-  const s = document.createElement('style')
-  s.id = HERO_STYLE_ID
-  s.textContent = `
-    .wa-phone-reveal {
-      animation: waPhoneEnter 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
-    }
-    @keyframes waPhoneEnter {
-      from { opacity:0; transform:translateY(28px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    @media (prefers-reduced-motion:reduce) {
-      .wa-phone-reveal { animation:none; }
-    }
-  `
-  document.head.appendChild(s)
-}
-
 export default function Hero() {
   const scope = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -67,11 +47,10 @@ export default function Hero() {
             <h1
               ref={headingRef}
               className="text-h1 font-bold"
-              style={{ marginBottom: '1.5rem', maxWidth: '13ch', lineHeight: 1.0 }}
+              style={{ marginBottom: '1.5rem', maxWidth: '15ch', lineHeight: 1.0 }}
             >
-              Your store on{' '}
-              <span style={{ color: 'var(--color-accent)' }}>WhatsApp.</span>{' '}
-              Every step of the sale.
+              <span style={{ color: 'var(--color-accent)' }}>WhatsApp automation</span>{' '}
+              for your store. Every step of the sale.
             </h1>
 
             <p
@@ -79,9 +58,9 @@ export default function Hero() {
               className="text-body-lg"
               style={{ color: 'var(--color-text-muted)', lineHeight: 1.65, maxWidth: '46ch', marginBottom: '2.5rem' }}
             >
-              Abandoned cart recovery, COD order confirmation, order status updates,
-              and AI customer support. One platform deployed on your brand and
-              connected to your Shopify or WooCommerce store.
+              WhatsApp abandoned cart recovery, COD order confirmation, order status updates,
+              and AI customer support. One platform on your brand, connected to your
+              Shopify or WooCommerce store and built for Indian D2C brands.
             </p>
 
             <div ref={ctaRef} className="flex flex-wrap items-center gap-5">
@@ -95,6 +74,10 @@ export default function Hero() {
               )}
             </div>
 
+            <p className="mt-6 text-sm text-(--color-text-muted)">
+              <span className="font-semibold text-(--color-text)">Live in 7 to 14 days</span>
+              {' · '}98% WhatsApp open rate{' · '}We handle Meta verification
+            </p>
           </div>
 
           {/* ── Right: phone demo ── */}

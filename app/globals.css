@@ -520,3 +520,11 @@ body[data-scroll-locked] {
 .wf-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* WhatsApp page hero phone entrance */
+.wa-phone-reveal { animation: waPhoneEnter 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both; }
+@keyframes waPhoneEnter {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .wa-phone-reveal { animation: none; } }

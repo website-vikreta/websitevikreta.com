@@ -10,13 +10,26 @@ const jsonLd = {
     {
       '@type': 'Service',
       '@id': `${PAGE_URL}#service`,
-      name: 'WhatsApp Commerce Platform',
+      name: 'WhatsApp Automation for E-commerce',
       serviceType: 'WhatsApp E-commerce Automation',
       description:
-        'CRM, cart recovery, COD confirmation, order updates, and AI support on WhatsApp. One platform deployed for your store.',
+        'WhatsApp cart recovery, COD confirmation, order updates, CRM and AI support for Shopify and WooCommerce stores, set up on the WhatsApp Business API in 7 to 14 days.',
       url: PAGE_URL,
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
+      offers: [
+        { '@type': 'Offer', name: 'WA Starter', price: '11250', priceCurrency: 'INR', description: 'Per quarter, excluding GST' },
+        { '@type': 'Offer', name: 'WA eCommerce', price: '15750', priceCurrency: 'INR', description: 'Per quarter, excluding GST' },
+      ],
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${PAGE_URL}#webpage`,
+      url: PAGE_URL,
+      name: 'WhatsApp Automation for Shopify & D2C Stores',
+      inLanguage: 'en-IN',
+      about: { '@id': `${PAGE_URL}#service` },
+      breadcrumb: { '@id': `${PAGE_URL}#breadcrumb` },
     },
     {
       '@type': 'BreadcrumbList',
@@ -37,43 +50,23 @@ const jsonLd = {
 }
 
 export const metadata: Metadata = {
-  title: 'WhatsApp Commerce Platform for E-commerce | Website Vikreta',
+  title: 'WhatsApp Automation for Shopify & D2C Stores | Website Vikreta',
   description:
-    'Recover abandoned carts, confirm COD orders, and automate customer updates on WhatsApp. CRM, automation, and AI support in one platform. Book a demo.',
-  keywords: [
-    'whatsapp automation for ecommerce',
-    'abandoned cart recovery whatsapp',
-    'whatsapp business api india',
-    'cod confirmation whatsapp',
-    'shopify whatsapp automation',
-    'whatsapp commerce platform',
-    'reduce rto cod orders india',
-    'whatsapp cart recovery shopify',
-    'whatsapp crm for d2c brands',
-  ],
+    'Recover abandoned carts, confirm COD orders and cut RTO on WhatsApp. We set up the Business API, templates and your Shopify or WooCommerce store in 7 to 14 days.',
   openGraph: {
-    title: 'WhatsApp Commerce Platform for E-commerce | Website Vikreta',
+    title: 'WhatsApp Automation for Shopify & D2C Stores | Website Vikreta',
     description:
-      'Recover abandoned carts, confirm COD orders, and automate customer updates on WhatsApp. Book a platform demo.',
+      'Recover abandoned carts, confirm COD orders and cut RTO on WhatsApp. We set up the Business API, templates and your Shopify or WooCommerce store in 7 to 14 days.',
     url: PAGE_URL,
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 675,
-        alt: 'WhatsApp Commerce Platform | Website Vikreta',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WhatsApp Commerce Platform for E-commerce | Website Vikreta',
+    title: 'WhatsApp Automation for Shopify & D2C Stores | Website Vikreta',
     description:
-      'Recover abandoned carts, confirm COD orders, and automate customer updates on WhatsApp.',
-    images: ['/og-image.png'],
+      'Recover abandoned carts, confirm COD orders and cut RTO on WhatsApp. We set up the Business API, templates and your Shopify or WooCommerce store in 7 to 14 days.',
   },
   alternates: {
     canonical: PAGE_URL,
