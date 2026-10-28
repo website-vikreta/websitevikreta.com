@@ -107,12 +107,12 @@ export default function PackagesSection() {
 
         <div className="mb-10 max-w-2xl md:mb-14">
           <h2 id="packages-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-            Two tiers. Pick the one your store needs.
+            WhatsApp automation pricing: two tiers, pick the one your store needs.
           </h2>
           <p className="packages-intro mt-5 text-body-lg leading-relaxed text-(--color-text-muted)">
             Platform subscription billed quarterly, half-yearly, or yearly. Meta&apos;s message
             charges are billed separately at cost: about 11 paise per Utility message, more for
-            Marketing. Setup is a one-time quote.
+            Marketing. Setup is a one-time quote. Prices exclude GST.
           </p>
         </div>
 
@@ -140,72 +140,66 @@ export default function PackagesSection() {
           ))}
         </div>
 
-        {/* Tier cards */}
-        <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
-          {PACKAGES.map(({ name, pricing, description, features, cta, highlighted, ...rest }) => {
-            const eyebrow = 'eyebrow' in rest ? rest.eyebrow : undefined
+        {/* Plain tier on the left; the dark recommended card is taller and slides over its edge */}
+        <div className="grid grid-cols-1 gap-4 lg:my-6 lg:grid-cols-[5fr_6fr] lg:gap-0">
+          {PACKAGES.map(({ name, pricing, description, features, cta, highlighted }) => {
             const { price, period, save } = { save: undefined as string | undefined, ...pricing[cycle] }
+            const dark = highlighted
+            const muted = 'text-(--color-text-muted)'
             return (
               <article
                 key={name}
-                className={`package-card relative flex h-full flex-col p-7 md:p-9 ${
-                  highlighted ? 'border-2 border-(--color-text) bg-(--color-surface)' : 'border border-(--color-border) bg-(--color-surface)'
-                }`}
+                className={`package-card flex flex-col p-6 md:p-9 ${dark ? 'relative z-10 border border-(--color-border) bg-(--color-surface) text-(--color-text) lg:-my-6 lg:-ml-12 lg:shadow-2xl' : 'bg-(--color-bg-muted) text-(--color-text) lg:pr-14'}`}
               >
-                {highlighted && (
-                  <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-(--color-accent)" />
-                )}
-
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-2xl font-bold text-(--color-text)">{name}</h3>
-                  {eyebrow && (
-                    <span className="shrink-0 whitespace-nowrap border border-(--color-border) px-2 py-1 text-xs font-semibold text-(--color-text-muted)">
-                      {eyebrow}
-                    </span>
-                  )}
+                  <h3 className="text-xl font-bold md:text-2xl">{name}</h3>
                 </div>
 
-                <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <span className="text-3xl font-bold tracking-tight text-(--color-text)">{price}</span>
-                  <span className="text-sm text-(--color-text-muted)">{period}</span>
+                <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+                  <span className={`text-5xl font-bold leading-none tracking-tight md:text-6xl ${dark ? 'text-(--color-accent)' : ''}`}>{price}</span>
+                  <span className={`self-end pb-1.5 text-base ${muted}`}>{period}</span>
                   {save && (
                     <span
                       key={`${cycle}-${save}`}
-                      className="fade-in-on-mount px-2 py-1 text-xs font-bold"
-                      style={{
-                        background: 'rgba(26,138,90,0.1)',
-                        border: '1px solid rgba(26,138,90,0.3)',
-                        color: '#1a8a5a',
-                      }}
+                      className="fade-in-on-mount border border-[#1a8a5a]/30 bg-[#1a8a5a]/10 px-3 py-1.5 text-base font-bold text-[#1a8a5a]"
                     >
                       {save}
                     </span>
                   )}
                 </div>
 
-                <p className="mt-3 text-base leading-relaxed text-(--color-text-muted)">{description}</p>
+                <p className={`mt-4 text-base leading-relaxed ${muted}`}>{description}</p>
 
-                <ul className="mt-6 flex flex-1 flex-col gap-3">
-                  {features.map(f => (
-                    <li key={f} className="flex items-start gap-3 text-base leading-relaxed text-(--color-text-muted)">
-                      <Check size={16} strokeWidth={2.5} aria-hidden className="mt-0.5 shrink-0 text-(--color-text)" />
-                      {f}
-                    </li>
-                  ))}
+                <ul className={`mt-7 grid flex-1 content-start gap-x-8 gap-y-4 ${dark ? 'md:grid-cols-2' : ''}`}>
+                  {features.map((f) => {
+                    const heading = f.startsWith('Everything in')
+                    return (
+                      <li
+                        key={f}
+                        className={`flex items-start gap-3 text-base leading-relaxed ${heading ? 'font-semibold md:col-span-2' : muted}`}
+                      >
+                        {!heading && (
+                          <Check size={16} strokeWidth={2.5} aria-hidden className="mt-1 shrink-0 text-[#25d366]" />
+                        )}
+                        {f}
+                      </li>
+                    )
+                  })}
                 </ul>
 
-                <div className="mt-7">
-                  <Button href="#whatsapp-demo" variant={highlighted ? 'primary' : 'ghost'} size="md" showArrow>
+                <div className="mt-8">
+                  <Button href="#whatsapp-demo" variant="ghost" size="md" showArrow className="w-full justify-center">
                     {cta}
                   </Button>
                 </div>
+
               </article>
             )
           })}
         </div>
 
         {/* Custom tier: a WhatsApp-flavoured call CTA that opens a real chat */}
-        <div className="packages-footer mt-4 flex flex-col gap-5 border border-[#25d366]/30 bg-[#e7f6ec] p-6 sm:flex-row sm:items-center md:p-7">
+        <div className="packages-footer mt-4 flex lg:mt-12 flex-col gap-5 border border-[#25d366]/30 bg-[#e7f6ec] p-6 sm:flex-row sm:items-center md:p-7">
           <div className="flex shrink-0 -space-x-2" aria-hidden>
             {CHANNELS.map(({ name, bg, icon }) => (
               <span

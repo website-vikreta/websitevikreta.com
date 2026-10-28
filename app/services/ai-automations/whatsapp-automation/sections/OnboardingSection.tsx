@@ -1,13 +1,8 @@
 'use client'
 
 import { useRef } from 'react'
-import {
-  FlaskConical,
-  Handshake,
-  Link2,
-  Workflow,
-  Store,
-} from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { AUDIT_MODAL_CONFIGS, useAuditModal } from '@/components/ui/AuditModalProvider'
 import { revealFadeUp, revealLines, STAGGER, useGsapSection } from '@/lib/gsap/reveals'
 
 const STEPS = [
@@ -17,7 +12,6 @@ const STEPS = [
     title: 'Connect & Verify',
     detail: 'Get your business connected and verification underway.',
     note: 'We guide you through registration, required documents, and verification.',
-    icon: Link2,
   },
   {
     step: '02',
@@ -25,7 +19,6 @@ const STEPS = [
     title: 'Configure Your Store',
     detail: 'Make WhatsApp feel like a natural extension of your store.',
     note: 'We connect your setup, configure your store, and apply your brand.',
-    icon: Store,
   },
   {
     step: '03',
@@ -33,7 +26,6 @@ const STEPS = [
     title: 'Build & Approve',
     detail: 'Your essential workflows, ready for review.',
     note: 'We build your automations and prepare the required message templates.',
-    icon: Workflow,
   },
   {
     step: '04',
@@ -41,7 +33,6 @@ const STEPS = [
     title: 'Test & Launch',
     detail: 'Everything tested before your first message goes out.',
     note: 'We test the flows, get your sign-off, and launch when everything is ready.',
-    icon: FlaskConical,
   },
   {
     step: '05',
@@ -49,17 +40,17 @@ const STEPS = [
     title: 'Handover & Support',
     detail: "You're live, and we're still here to help.",
     note: 'We walk you through the system and support you after launch.',
-    icon: Handshake,
   },
 ]
 
 export default function OnboardingSection() {
+  const { openAuditModal } = useAuditModal()
   const scope = useRef<HTMLElement>(null)
 
   useGsapSection(scope, () => {
     revealLines('#onboarding-heading', { trigger: scope.current })
     revealFadeUp('.onboarding-copy',   { y: 20,   trigger: scope.current })
-    revealFadeUp('.journey-step', { y: 20, stagger: STAGGER.base, trigger: scope.current })
+    revealFadeUp('.journey-step', { y: 20, stagger: STAGGER.tight, trigger: scope.current })
   })
 
   return (
@@ -82,47 +73,47 @@ export default function OnboardingSection() {
           </p>
         </div>
 
-        <div className="onboarding-map">
-          <p className="mb-8 text-sm text-(--color-text-muted)">The journey</p>
-          {/* Mobile: dashed spine on the left. md+: cards zigzag and each links to the next with a dashed elbow arrow */}
-          <ol className="relative pl-10 md:pl-0">
-            <span aria-hidden className="absolute bottom-0 left-3 top-0 border-l border-dashed border-(--color-border-strong) md:hidden" />
-            {STEPS.map(({ step, title, time, detail, note, icon: Icon }, i) => {
-              const right = i % 2 === 1
-              return (
-                <li key={step} className="journey-step group relative mb-6 last:mb-0 md:mb-12">
-                  <span aria-hidden className="absolute top-8 -left-[34px] h-3 w-3 border border-(--color-text) bg-(--color-accent) md:hidden" />
-                  <div className={`flex border border-(--color-border) bg-(--color-surface) p-4 transition-colors duration-300 group-hover:border-(--color-border-strong) md:w-3/5 md:p-5 ${right ? 'md:ml-auto' : ''}`}>
-                    <span className={`flex w-9 shrink-0 items-center justify-center text-xs font-semibold uppercase tracking-wider [writing-mode:vertical-rl] rotate-180 ${i % 2 ? 'bg-(--color-text) text-(--color-bg)' : 'bg-(--color-accent) text-(--color-bg)'}`}>
-                      {time}
-                    </span>
-                    <div className="flex-1 pl-5">
-                      <div className="flex items-start justify-between gap-4">
-                        <span className="flex h-9 w-9 items-center justify-center border border-(--color-border-strong) text-(--color-text-muted) transition-colors group-hover:text-(--color-text)">
-                          <Icon size={18} strokeWidth={1.5} aria-hidden />
-                        </span>
-                        <span className="text-4xl font-bold leading-none tracking-tight text-(--color-accent)">{step}</span>
-                      </div>
-                      <h3 className="mt-4 text-xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
-                      <p className="mt-2 text-base font-medium leading-relaxed text-(--color-text)">{detail}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-(--color-text-muted)">{note}</p>
-                    </div>
-                  </div>
-                  {i < STEPS.length - 1 && (
-                    <span
-                      aria-hidden
-                      className={`absolute top-12 hidden h-[calc(100%-3rem+3rem)] w-[10%] border-t border-dashed border-(--color-border-strong) md:block ${
-                        right
-                          ? 'right-[60%] rounded-tl-3xl border-l'
-                          : 'left-[60%] rounded-tr-3xl border-r'
-                      }`}
-                    >
-                      <span className={`absolute -bottom-px h-2 w-2 rotate-45 border-b border-(--color-border-strong) ${right ? '-left-[5px] border-l' : '-right-[5px] border-r'}`} />
-                    </span>
-                  )}
-                </li>
-              )
-            })}
+        {/* Label column on the left, a 3-up grid of ruled cells on the right. The sixth cell is the dark one and closes the path. */}
+        <div className="onboarding-map grid grid-cols-1 gap-10 lg:grid-cols-[12rem_1fr] lg:gap-14">
+          <div>
+            <p className="text-base font-bold text-(--color-text)">The journey</p>
+            <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-(--color-text-muted)">You bring</p>
+            <ul className="mt-2 space-y-1.5 text-base text-(--color-text-muted)">
+              {['Store access', 'Brand assets', 'Two sign-offs'].map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </div>
+
+          <ol className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-14">
+            {STEPS.map(({ step, time, title, detail, note }) => (
+              <li key={step} className="journey-step flex lg:min-h-[17rem] flex-col border-t border-(--color-text) px-1 pb-2 pt-6 sm:px-0 lg:px-6">
+                <h3 className="text-2xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
+                <p className="mt-3 text-base font-medium leading-relaxed text-(--color-text)">{detail}</p>
+                <p className="mt-2 text-base leading-relaxed text-(--color-text-muted)">{note}</p>
+                <span className="mt-auto self-start bg-(--color-accent) px-3 py-1.5 text-sm font-semibold uppercase tracking-wider text-(--color-text)">
+                  {time}
+                </span>
+              </li>
+            ))}
+
+            <li className="journey-step flex lg:min-h-[17rem] flex-col bg-(--color-text) p-6 text-(--color-bg) lg:p-7">
+              <h3 className="text-2xl font-bold leading-snug tracking-tight">You&apos;re live.</h3>
+              <p className="mt-3 text-base leading-relaxed text-(--color-bg)/75">
+                Cart recovery, COD confirmation and order updates are running on your store.
+              </p>
+              <a
+                href="#whatsapp-demo"
+                onClick={(e) => {
+                  e.preventDefault()
+                  openAuditModal(AUDIT_MODAL_CONFIGS['#whatsapp-demo'])
+                }}
+                aria-label="Book a platform demo"
+                className="mt-auto grid h-10 w-10 place-items-center self-start bg-[#25d366] text-white transition-transform duration-300 hover:translate-x-1"
+              >
+                <ArrowRight size={18} strokeWidth={2.25} aria-hidden />
+              </a>
+            </li>
           </ol>
         </div>
       </div>

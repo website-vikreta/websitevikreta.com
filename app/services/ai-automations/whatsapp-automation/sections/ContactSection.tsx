@@ -1,8 +1,11 @@
 'use client'
 
 import { useRef } from 'react'
+import { FOOTER_LINKS } from '@/config/footer-links'
 import { AuditForm } from '@/components/ui/AuditForm'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+
+const WA_HREF = `${FOOTER_LINKS.social.find((l) => l.label === 'WhatsApp')!.href}?text=${encodeURIComponent('Hi, I want a demo of the WhatsApp platform for my store.')}`
 
 const WHAT_HAPPENS = [
   'We look at your store: checkout friction, cart abandonment, and current recovery rate.',
@@ -62,6 +65,14 @@ export default function ContactSection() {
             <p className="mt-8 text-sm text-(--color-text-muted)">
               Takes 20 minutes. Goes to a real person, not a sales queue.
             </p>
+            <a
+              href={WA_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block text-sm font-semibold text-(--color-text) underline underline-offset-4"
+            >
+              Or message us on WhatsApp
+            </a>
           </div>
 
           {/* Right — form */}
