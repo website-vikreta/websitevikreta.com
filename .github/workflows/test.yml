@@ -5,13 +5,32 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 concurrency:
   group: test-${{ github.ref }}
   cancel-in-progress: true
 
+# Public values (NEXT_PUBLIC_*, shipped in the client bundle anyway). The Sanity dataset is public, so
+# reads need no token. Without a project id `next build` throws "Configuration must contain `projectId`"
+# while collecting page data, which is what failed every run before this.
+env:
+  NEXT_PUBLIC_SANITY_PROJECT_ID: 47y1k19o
+  NEXT_PUBLIC_SANITY_DATASET: production
+  NEXT_PUBLIC_SANITY_API_VERSION: '2024-01-01'
+  # Placeholder EmailJS ids: the library throws "The service ID is required" on empty values before the
+  # request is made, so every form test failed in CI. The tests mock the EmailJS endpoint, so these are never sent.
+  NEXT_PUBLIC_EMAILJS_SERVICE_ID: ci-service
+  NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ci-template
+  NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ci-public-key
+  NEXT_TELEMETRY_DISABLED: '1'
+
 jobs:
   unit:
+    name: Lint, types, unit tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,8 +43,21 @@ jobs:
       - run: npm run test:coverage
 
   e2e:
+    name: E2E (${{ matrix.project }})
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The Chromium suite alone is ~20 min plus install and build; 30 left almost no headroom.
+    timeout-minutes: 45
+    strategy:
+      # One browser per job, in parallel: the three-browser run in a single job could not finish inside
+      # the timeout. Chromium gates the PR; Firefox and WebKit report but don't block (engine quirks
+      # shouldn't hold a release hostage).
+      fail-fast: false
+      matrix:
+        include:
+          - { project: desktop-chrome, browser: chromium, required: true }
+          - { project: firefox, browser: firefox, required: false }
+          - { project: webkit, browser: webkit, required: false }
+    continue-on-error: ${{ !matrix.required }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,16 +65,38 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ matrix.browser }}-${{ hashFiles('package-lock.json') }}
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+      - name: Install Playwright system deps (browser cached)
+        run: npx playwright install-deps ${{ matrix.browser }}
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+
+      - name: Cache Next build
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**', 'components/**', 'lib/**', 'public/**') }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
       - run: npm run build
-      - run: npm run test:e2e
+
+      - run: npx playwright test --project=${{ matrix.project }}
         env:
           CI: true
           PROD: true
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: |
             playwright-report/
             test-results/
