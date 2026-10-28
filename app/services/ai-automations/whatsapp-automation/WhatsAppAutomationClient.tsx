@@ -4,15 +4,17 @@ import { DotGrid } from '@/components/ui/DotGrid'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaqSection } from '@/components/sections/FaqSection'
 import type { FaqItem } from '@/lib/faq-data'
+import dynamic from 'next/dynamic'
 import Hero from './sections/Hero'
 import PainSection, { RtoSection } from './sections/PainSection'
 import ProductRevealSection from './sections/ProductRevealSection'
-import CartRecoverySection from './sections/CartRecoverySection'
-import ConversationalAISection from './sections/ConversationalAISection'
-import PackagesSection from './sections/PackagesSection'
-import OnboardingSection from './sections/OnboardingSection'
-import ProofSection from './sections/ProofSection'
-import ContactSection from './sections/ContactSection'
+const CartRecoverySection = dynamic(() => import('./sections/CartRecoverySection'))
+const ConversationalAISection = dynamic(() => import('./sections/ConversationalAISection'))
+const PackagesSection = dynamic(() => import('./sections/PackagesSection'))
+const OnboardingSection = dynamic(() => import('./sections/OnboardingSection'))
+const ProofSection = dynamic(() => import('./sections/ProofSection'))
+const ResultsSection = dynamic(() => import('./sections/ResultsSection'))
+const ContactSection = dynamic(() => import('./sections/ContactSection'))
 import StickyMobileCta from './components/StickyMobileCta'
 
 const WHATSAPP_FAQS: FaqItem[] = [
@@ -70,12 +72,14 @@ export default function WhatsAppAutomationClient() {
         <ProductRevealSection />
         <CartRecoverySection />
         <ConversationalAISection />
-        <ProofSection />
         <RtoSection />
+        <ProofSection />
         <PackagesSection />
         <OnboardingSection />
+        <ResultsSection />
         <FaqSection
           items={WHATSAPP_FAQS}
+          heading="WhatsApp automation FAQs"
           ariaLabel="WhatsApp automation frequently asked questions"
         />
         <ContactSection />

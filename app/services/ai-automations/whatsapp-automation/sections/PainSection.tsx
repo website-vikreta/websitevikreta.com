@@ -22,7 +22,7 @@ function CartsChart() {
               hide: { opacity: 0, y: 6 },
               show: { opacity: lost ? 0.28 : 1, y: 0, transition: { delay: 0.05 * i + (lost ? 0.5 : 0), duration: 0.4, ease: EASE } },
             }}
-            className="relative grid h-9 w-9 place-items-center rounded-lg border border-(--color-border) bg-(--color-surface) text-(--color-text)"
+            className="relative grid h-9 w-9 place-items-center border border-(--color-border) bg-(--color-surface) text-(--color-text)"
           >
             <ShoppingCart size={16} strokeWidth={1.75} />
             {lost && <span aria-hidden className="absolute h-px w-6 rotate-45 bg-(--color-text)" />}
@@ -36,7 +36,7 @@ function CartsChart() {
 /* ~8% vs 98%: what email recovers against how often WhatsApp is opened */
 function ChannelBars() {
   const rows = [
-    { label: 'Email recovers', value: '~8%', pct: 8, color: '#a1a1aa' },
+    { label: 'Email recovers', value: '~8%', pct: 8, color: 'var(--color-text-faint)' },
     { label: 'WhatsApp is opened', value: '98%', pct: 98, color: '#25d366' },
   ]
   return (
@@ -77,8 +77,8 @@ function ReturnRoute() {
         >
           {i > 0 && <ArrowRight size={12} aria-hidden className="text-(--color-text-faint)" />}
           <span className="flex flex-col items-center gap-1">
-            <span className="grid h-9 w-9 place-items-center rounded-lg border border-(--color-border) bg-(--color-surface) text-(--color-text)">{icon}</span>
-            <span className="text-[11px] text-(--color-text-muted)">{label}</span>
+            <span className="grid h-9 w-9 place-items-center border border-(--color-border) bg-(--color-surface) text-(--color-text)">{icon}</span>
+            <span className="text-xs text-(--color-text-muted)">{label}</span>
           </span>
         </m.span>
       ))}
@@ -129,7 +129,7 @@ export default function PainSection() {
           </div>
 
           <LazyMotion features={domAnimation}>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:gap-6">
               {PAINS.map(({ stat, title, line, chart }) => (
                 <m.article
                   key={title}
@@ -200,7 +200,7 @@ export function RtoSection() {
                 and restocking delays. Most stores absorb it as overhead without calculating the total leakage.
               </p>
               <p className="math-copy mt-4 text-body-lg font-medium leading-relaxed text-(--color-text)">
-                One automated WhatsApp verification before dispatch filters uncommitted buyers before shipping labels are created.
+                One automated WhatsApp COD confirmation before dispatch filters uncommitted buyers before shipping labels are created.
               </p>
             </div>
           </div>

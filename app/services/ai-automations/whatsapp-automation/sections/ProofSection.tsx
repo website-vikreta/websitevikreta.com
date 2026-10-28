@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { Button } from '@/components/ui/Button'
+import { Check } from 'lucide-react'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
 
 const CHANNEL_STATS = [
@@ -43,29 +43,15 @@ const CHANNEL_STATS = [
   },
 ]
 
-const CASES = [
-  {
-    brand: 'Keeros SuperFoods',
-    result: '20% to 40%',
-    metric: 'Recovered cart rate',
-    highlight:
-      'Reminders go out within 15 minutes of cart drop-off. Customers see the alert on their phone and finish the purchase before buying elsewhere.',
-  },
-  {
-    brand: 'The Hatke',
-    result: '21×',
-    metric: 'Return on messaging spend',
-    highlight:
-      'At roughly 11 paise per utility message, recovered checkouts returned 21 rupees for every rupee spent on WhatsApp alerts.',
-  },
-  {
-    brand: 'The Indian Ethnic Co.',
-    result: '3×',
-    metric: 'Recovery compared to email',
-    highlight:
-      'Checkout recovery rose from 7% on reminder emails to over 20% on WhatsApp within the first month.',
-  },
-]
+const COMPARE = {
+  cols: ['This platform', 'Email-only recovery', 'Generic broadcast tool'],
+  rows: [
+    { label: 'Cart recovery', sub: 'After a checkout drops', cells: [['Automated', 'Sequence starts within minutes'], ['~20% opened', 'Often lands in Promotions'], ['Manual', 'You build the flow']] },
+    { label: 'COD confirmation', sub: 'Before you ship', cells: [['Auto-cancel', 'Unconfirmed orders are cancelled'], ['None', 'Email cannot confirm COD'], ['Rarely', 'Custom work or add-on']] },
+    { label: 'Setup and Meta verification', sub: 'Templates and approvals', cells: [['Done for you', 'We submit and resubmit'], ['n/a', 'No WhatsApp involved'], ['You do it', 'Verification is on you']] },
+    { label: 'Store integration', sub: 'Orders and carts sync', cells: [['Shopify + WooCommerce', 'Webhooks wired for you'], ['Partial', 'Depends on the plugin'], ['Varies', 'Check per tool']] },
+  ],
+}
 
 export default function ProofSection() {
   const scope = useRef<HTMLElement>(null)
@@ -93,91 +79,115 @@ export default function ProofSection() {
         </div>
 
         {/* Channel benchmarks: clean, sharp cards with sleek comparison rail */}
-        <div className="mb-14 grid grid-cols-1 gap-6 md:mb-20 md:grid-cols-3 lg:gap-8">
-          {CHANNEL_STATS.map(({ n, label, context, comparison }) => (
-            <article
-              key={n}
-              className="flex flex-col justify-between border border-(--color-border) bg-(--color-surface) p-7 sm:p-8 md:p-9 shadow-xs transition-all duration-300 hover:border-(--color-border-strong) hover:-translate-y-0.5"
-            >
-              <div>
-                <p className="font-sans text-5xl sm:text-6xl font-bold tracking-tight text-(--color-text) leading-none">
-                  {n}
-                </p>
-                <h3 className="mt-4 text-lg font-bold text-(--color-text)">
-                  {label}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-(--color-text-muted)">
-                  {context}
-                </p>
-              </div>
+        <div className="mb-14 grid grid-cols-1 gap-6 md:mb-20 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          {CHANNEL_STATS.map(({ n, label, context, comparison }, i) => (
+            <article key={n} className={`${i === CHANNEL_STATS.length - 1 ? 'md:col-span-2 lg:col-span-1' : ''} flex border border-(--color-border) bg-(--color-surface) shadow-xs transition-all duration-300 hover:border-(--color-border-strong) hover:-translate-y-0.5`}>
+              <div className="flex w-full flex-col justify-between p-7 sm:p-8">
+                <div>
+                  <p className="font-sans text-5xl sm:text-6xl lg:text-4xl xl:text-6xl font-bold tracking-tight text-(--color-text) leading-none">{n}</p>
+                  <h3 className="mt-4 text-lg font-bold text-(--color-text)">{label}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-(--color-text-muted)">{context}</p>
+                </div>
 
-              {/* Minimalist monochrome comparison bar */}
-              <div className="mt-8 pt-6 border-t border-(--color-border)">
-                <div className="flex justify-between text-xs text-(--color-text) font-medium mb-2">
-                  <span>{comparison.primaryLabel}</span>
-                  <span className="font-bold tabular-nums">{comparison.primaryVal}</span>
+                <div className="mt-6 border-t border-(--color-border) pt-5">
+                  <div className="mb-2 flex justify-between gap-3 text-xs font-medium text-(--color-text)">
+                    <span>{comparison.primaryLabel}</span>
+                    <span className="font-bold tabular-nums">{comparison.primaryVal}</span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-(--color-bg-muted)">
+                    <div className="h-full rounded-full bg-[#25d366] transition-all duration-700" style={{ width: `${comparison.pct}%` }} />
+                  </div>
+                  <div className="mt-2 flex justify-between gap-3 text-xs text-(--color-text-muted)">
+                    <span>{comparison.secondaryLabel}</span>
+                    <span className="tabular-nums">{comparison.secondaryVal}</span>
+                  </div>
                 </div>
-                <div className="h-1.5 w-full bg-(--color-bg-muted) overflow-hidden">
-                  <div
-                    className="h-full bg-(--color-text) transition-all duration-700"
-                    style={{ width: `${comparison.pct}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-[11px] text-(--color-text-faint) mt-2">
-                  <span>{comparison.secondaryLabel}</span>
-                  <span className="tabular-nums">{comparison.secondaryVal}</span>
-                </div>
+
               </div>
             </article>
           ))}
         </div>
 
-        {/* Case study results: 2-column layout with left headline + CTA and right stacked cards (no eyebrow, sharp edges) */}
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 items-start">
-          {/* Left Column: Heading, Context, and CTA */}
-          <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <h3 className="text-h3 font-bold tracking-tight text-(--color-text)">
-              What stores see after switching
-            </h3>
-            <p className="mt-5 text-base sm:text-lg text-(--color-text-muted) leading-relaxed max-w-md">
-              Most stores send recovery emails that sit unopened in promotions. When reminders go to WhatsApp, customers read them in minutes and finish their order.
-            </p>
-            <div className="mt-6 sm:mt-8">
-              <Button href="#whatsapp-demo" variant="ghost" size="md" showArrow>
-                Book a platform demo
-              </Button>
-            </div>
+        <div className="mt-0">
+          <h3 className="mb-6 text-center text-h3 font-bold tracking-tight text-(--color-text)">Let&apos;s compare</h3>
+
+          {/* Phones: one card per row, this platform first, so nothing scrolls sideways */}
+          <div className="space-y-4 md:hidden">
+            {COMPARE.rows.map(({ label, sub, cells }) => (
+              <div key={label} className="border border-(--color-border) bg-(--color-surface)">
+                <div className="border-b border-(--color-border) px-4 py-3">
+                  <p className="text-base font-semibold text-(--color-text)">{label}</p>
+                  <p className="text-xs text-(--color-text-muted)">{sub}</p>
+                </div>
+                {cells.map(([value, caption], i) => (
+                  <div
+                    key={COMPARE.cols[i]}
+                    className={`px-4 py-3 ${i === 0 ? 'bg-(--color-text) text-(--color-bg)' : 'border-t border-(--color-border)'}`}
+                  >
+                    <p className={`text-[11px] font-bold uppercase tracking-widest ${i === 0 ? 'text-(--color-bg)/70' : 'text-(--color-text-muted)'}`}>
+                      {COMPARE.cols[i]}
+                    </p>
+                    <p className={`mt-1 flex items-center gap-1.5 text-base font-bold ${i === 0 ? '' : 'text-(--color-text-muted)'}`}>
+                      {i === 0 && <Check size={16} className="shrink-0 text-[#25d366]" aria-hidden />}
+                      {value}
+                    </p>
+                    <p className={`text-xs ${i === 0 ? 'text-(--color-bg)/70' : 'text-(--color-text-muted)'}`}>{caption}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
 
-          {/* Right Column: 3 stacked horizontal stat cards */}
-          <div className="lg:col-span-7 flex flex-col gap-5 sm:gap-6">
-            {CASES.map(({ brand, result, metric, highlight }) => (
-              <article
-                key={brand}
-                className="proof-card border border-(--color-border) bg-(--color-surface) p-6 sm:p-7 md:p-8 transition-all duration-300 hover:border-(--color-border-strong) hover:-translate-y-0.5 shadow-xs"
-              >
-                <div className="flex items-baseline justify-between gap-4">
-                  <p className="text-4xl sm:text-5xl font-bold tracking-tight text-(--color-accent)">
-                    {result}
-                  </p>
-                  <span className="text-xs sm:text-sm font-medium text-(--color-text-muted)">
-                    {brand}
-                  </span>
-                </div>
-                <h4 className="mt-2.5 text-base sm:text-lg font-bold text-(--color-text)">
-                  {metric}
-                </h4>
-                <p className="mt-1.5 text-sm sm:text-[15px] leading-relaxed text-(--color-text-muted)">
-                  {highlight}
-                </p>
-              </article>
-            ))}
+          <div className="hidden overflow-x-auto pb-2 md:block">
+            <table className="w-full min-w-[640px] border-separate border-spacing-0 text-center">
+              <thead>
+                <tr>
+                  <th scope="col" className="w-[22%]"><span className="sr-only">Feature</span></th>
+                  {COMPARE.cols.map((c, i) => (
+                    <th
+                      key={c}
+                      scope="col"
+                      className={`p-4 text-xs font-bold uppercase tracking-widest ${
+                        i === 0
+                          ? 'border border-(--color-text) bg-(--color-text) text-(--color-bg)'
+                          : 'bg-(--color-bg-muted) text-(--color-text-muted)'
+                      }`}
+                    >
+                      {c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE.rows.map(({ label, sub, cells }, r) => {
+                  const last = r === COMPARE.rows.length - 1
+                  return (
+                    <tr key={label}>
+                      <th scope="row" className="border-b border-(--color-border) bg-(--color-bg-muted) p-4 text-left">
+                        <span className="block text-sm font-semibold text-(--color-text)">{label}</span>
+                        <span className="block text-xs text-(--color-text-muted)">{sub}</span>
+                      </th>
+                      {cells.map(([value, caption], i) => (
+                        <td
+                          key={i}
+                          className={`p-4 ${
+                            i === 0
+                              ? `border-x border-(--color-text) bg-(--color-surface) shadow-sm ${last ? 'border-b' : ''}`
+                              : 'border-b border-(--color-border)'
+                          } ${i === 0 && !last ? 'border-b border-b-(--color-border)' : ''}`}
+                        >
+                          <span className={`block text-base font-bold ${i === 0 ? 'text-(--color-text)' : 'text-(--color-text-muted)'}`}>{i === 0 && <Check size={16} className="mr-1 inline" aria-hidden />}{value}</span>
+                          <span className="block text-xs text-(--color-text-muted)">{caption}</span>
+                        </td>
+                      ))}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <p className="mt-10 text-xs leading-relaxed text-(--color-text-faint)">
-          Figures from published Indian D2C brand case studies. Actual recovery depends on catalog price, checkout friction, and opt-in rates.
-        </p>
       </div>
     </section>
   )
