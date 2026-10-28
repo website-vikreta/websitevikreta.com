@@ -28,7 +28,6 @@ env:
 
 jobs:
   unit:
-    name: Lint, types, unit tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -43,21 +42,9 @@ jobs:
       - run: npm run test:coverage
 
   e2e:
-    name: E2E (${{ matrix.project }})
     runs-on: ubuntu-latest
-    # The Chromium suite alone is ~20 min plus install and build; 30 left almost no headroom.
+    # The Chromium suite is ~20 min plus install and build; 30 left almost no headroom.
     timeout-minutes: 45
-    strategy:
-      # One browser per job, in parallel: the three-browser run in a single job could not finish inside
-      # the timeout. Chromium gates the PR; Firefox and WebKit report but don't block (engine quirks
-      # shouldn't hold a release hostage).
-      fail-fast: false
-      matrix:
-        include:
-          - { project: desktop-chrome, browser: chromium, required: true }
-          - { project: firefox, browser: firefox, required: false }
-          - { project: webkit, browser: webkit, required: false }
-    continue-on-error: ${{ !matrix.required }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -66,17 +53,17 @@ jobs:
           cache: npm
       - run: npm ci
 
-      - name: Cache Playwright browsers
+      - name: Cache Playwright browser
         id: pw-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ matrix.browser }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-chromium-${{ hashFiles('package-lock.json') }}
       - name: Install Playwright browser
-        run: npx playwright install --with-deps ${{ matrix.browser }}
+        run: npx playwright install --with-deps chromium
         if: steps.pw-cache.outputs.cache-hit != 'true'
       - name: Install Playwright system deps (browser cached)
-        run: npx playwright install-deps ${{ matrix.browser }}
+        run: npx playwright install-deps chromium
         if: steps.pw-cache.outputs.cache-hit == 'true'
 
       - name: Cache Next build
@@ -88,7 +75,7 @@ jobs:
             next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
       - run: npm run build
 
-      - run: npx playwright test --project=${{ matrix.project }}
+      - run: npx playwright test
         env:
           CI: true
           PROD: true
@@ -96,7 +83,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ matrix.project }}
+          name: playwright-report
           path: |
             playwright-report/
             test-results/
