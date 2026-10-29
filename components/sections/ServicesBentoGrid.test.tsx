@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { ServicesBentoGrid } from './ServicesBentoGrid';
+
+// The grid renders two layouts (a hover-grow bento on lg+, a sticky stack below), each with all five cards.
+const LAYOUTS = ['bento-desktop', 'bento-stack'] as const;
 
 const SERVICES = [
   ['AI Automation & Workflow Optimization', '/services/ai-automations'],
@@ -20,16 +23,22 @@ describe('ServicesBentoGrid', () => {
     ]);
   });
 
-  it('renders all five service cards in order', () => {
+  it.each(LAYOUTS)('%s renders all five service cards in order', (layout) => {
     render(<ServicesBentoGrid />);
-    const titles = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent);
+    const titles = within(screen.getByTestId(layout))
+      .getAllByRole('heading', { level: 3 })
+      .map((h) => h.textContent);
     expect(titles).toEqual(SERVICES.map(([title]) => title));
   });
 
-  it.each(SERVICES)('"%s" card links to %s', (title, href) => {
-    render(<ServicesBentoGrid />);
-    const card = screen.getByRole('heading', { level: 3, name: title }).closest('article')!;
-    expect(card.querySelector(`a[href="${href}"]`)).toBeInTheDocument();
+  describe.each(LAYOUTS)('%s', (layout) => {
+    it.each(SERVICES)('"%s" card links to %s', (title, href) => {
+      render(<ServicesBentoGrid />);
+      const card = within(screen.getByTestId(layout))
+        .getByRole('heading', { level: 3, name: title })
+        .closest('article')!;
+      expect(card.querySelector(`a[href="${href}"]`)).toBeInTheDocument();
+    });
   });
 
   it('gives each card image alt text equal to its title', () => {
