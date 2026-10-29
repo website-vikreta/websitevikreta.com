@@ -1,10 +1,13 @@
 name: Test
 
+# CI only guards the release branches (releases/**). stage and main take code straight from a release
+# without re-running it, so they are deliberately not listed here.
 on:
   pull_request:
+    branches: ['releases/**']
   # Merged code gets the full suite, since PRs only run the critical subset
   push:
-    branches: [main, 'releases/**']
+    branches: ['releases/**']
 
 permissions:
   contents: read
