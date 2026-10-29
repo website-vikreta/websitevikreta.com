@@ -41,6 +41,26 @@ jobs:
       - run: npm run typecheck
       - run: npm run test:coverage
 
+  # A standalone check so a broken build shows up as "build", not as an e2e failure.
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Cache Next build
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**', 'components/**', 'lib/**', 'public/**') }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+      - run: npm run build
+
   e2e:
     runs-on: ubuntu-latest
     # The Chromium suite is ~20 min plus install and build; 30 left almost no headroom.
