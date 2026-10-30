@@ -3,6 +3,7 @@
 import { DotGrid } from '@/components/ui/DotGrid'
 import { motion } from 'motion/react'
 import { Instagram, Linkedin, Whatsapp } from 'react-bootstrap-icons'
+import { FooterSection } from '@/components/sections/FooterSection'
 import { Button } from '@/components/ui/Button'
 import { TextLink } from '@/components/ui/TextLink'
 import { trackLinkClick } from '@/lib/analytics'
@@ -27,9 +28,10 @@ const SOCIAL = [
 
 interface ComingSoonPageProps {
    pageName?: string
+   showFooter?: boolean
 }
 
-export function ComingSoonPage({ pageName }: ComingSoonPageProps) {
+export function ComingSoonPage({ pageName, showFooter = false }: ComingSoonPageProps) {
    const containerVariants = {
       hidden: { opacity: 0 },
       visible: {
@@ -128,6 +130,7 @@ export function ComingSoonPage({ pageName }: ComingSoonPageProps) {
             </motion.div>
          </section>
 
+         {showFooter && <FooterSection />}
       </>
    )
 }
