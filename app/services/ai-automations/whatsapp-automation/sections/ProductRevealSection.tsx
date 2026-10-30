@@ -1,88 +1,102 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
+import { useRef, type ReactNode } from 'react'
+import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
+import { useInView } from '../components/useInView'
 import CommerceInbox from '../components/CommerceInbox'
-import CampaignBoard from '../components/CampaignBoard'
 import CrmBoard from '../components/CrmBoard'
 import FlowBoard from '../components/FlowBoard'
 import StoreBoard from '../components/StoreBoard'
+import OptInPhone from '../components/OptInPhone'
 
-const FEATURES: { label: string; detail: string[]; board: (active: boolean) => ReactNode }[] = [
+/* Bento grid on a 6-column track: two wide cards on top, three narrow ones below.
+   `wide` cards show most of their board; narrow cards show its left part, cropped by the card edge. */
+const FEATURES: {
+  label: string
+  detail: string
+  tint: 'accent' | 'muted'
+  wide?: boolean
+  /** Shows a half phone, centred and cropped at the bottom, instead of a board bleeding off the right */
+  phone?: boolean
+  board: (active: boolean) => ReactNode
+}[] = [
   {
     label: 'One inbox for every channel',
-    detail: [
-      'WhatsApp, Instagram, Facebook, and RCS chats land in one shared inbox, along with every lead from the chat widget on your website.',
-      'Your team sees the full conversation, who is handling each chat, and which ones the AI already answered. Nobody replies twice and nobody gets missed.',
-    ],
+    detail: 'WhatsApp, Instagram, Facebook, RCS, and website chats land in one shared inbox. Nobody replies twice and nobody gets missed.',
+    tint: 'accent',
+    wide: true,
     board: (active) => <CommerceInbox active={active} />,
   },
   {
     label: 'A CRM that fills itself',
-    detail: [
-      'Leads from Meta Ads, IndiaMART, Justdial, and your website go straight onto a board, tagged with where they came from.',
-      'Assign each lead to someone on your team, set a follow-up reminder, and move it from new enquiry to paid order. You always know what is pending and with whom.',
-    ],
+    detail: 'Leads from Meta Ads, IndiaMART, Justdial, and your website land on one board. Assign, remind, and move them to a paid order.',
+    tint: 'muted',
+    wide: true,
     board: (active) => <CrmBoard active={active} />,
   },
   {
     label: 'Chat flows without code',
-    detail: [
-      'A customer says "hi" and your menu opens. They type a product word like "kurta" or "black t-shirts" and the matching collection opens instead.',
-      'The same flows collect an address, take a payment, fill a WhatsApp form, or book an appointment with an automatic reminder. You build them by dragging blocks, not by writing code.',
-    ],
+    detail: 'Open a menu on "hi", collect an address, take a payment, or book a slot. Drag blocks, no code.',
+    tint: 'muted',
     board: (active) => <FlowBoard active={active} />,
   },
   {
     label: 'Broadcasts that follow Meta rules',
-    detail: [
-      'Send new collections, offers, and restock alerts to customers who opted in, using templates Meta has already approved.',
-      'You see how many messages were delivered, read, and replied to. Order updates go out as utility messages, which cost a fraction of marketing ones.',
-    ],
-    board: (active) => <CampaignBoard active={active} />,
+    detail: 'Send offers and restock alerts to opted-in customers, with delivery and read counts.',
+    tint: 'accent',
+    phone: true,
+    board: (active) => <OptInPhone active={active} />,
   },
   {
     label: 'Your store messages for you',
-    detail: [
-      'Connect Shopify or WooCommerce once. Every order event then sends its own WhatsApp message: order placed, payment received, shipped, out for delivery, delivered.',
-      'Each message carries the order number, the amount, and a tracking link, so customers stop messaging you to ask where their parcel is.',
-    ],
+    detail: 'Connect Shopify or WooCommerce once. Every order event sends its own update with the tracking link.',
+    tint: 'muted',
     board: (active) => <StoreBoard active={active} />,
   },
 ]
 
-export default function ProductRevealSection() {
-  const platformScope = useRef<HTMLElement>(null)
-  const [active, setActive] = useState(0)
-  // Boards build the first time they're reached and then stay built, so scrolling back up
-  // swaps to a finished board instead of an empty frame that rebuilds piece by piece
-  const [seen, setSeen] = useState<boolean[]>(() => FEATURES.map((_, i) => i === 0))
+function FeatureCard({ label, detail, tint, wide, phone, board }: (typeof FEATURES)[number]) {
+  // Boards play only while their card is on screen, so five demos never run at once
+  const [ref, inView] = useInView<HTMLElement>()
+  return (
+    <article
+      ref={ref}
+      className={`feature-card group relative top-0 flex flex-col overflow-hidden border border-(--color-border) bg-(--color-surface) motion-safe:transition-[top,box-shadow,border-color] motion-safe:duration-300 motion-safe:ease-out hover:border-(--color-border-strong) hover:shadow-[0_24px_48px_-24px_rgba(18,18,18,0.3)] motion-safe:hover:-top-1 ${wide ? 'lg:col-span-3' : 'lg:col-span-2'}`}
+    >
+      <div className="p-6 pb-5 md:p-8 md:pb-6">
+        <h3 className="text-2xl font-bold leading-tight md:text-[1.75rem] tracking-tight text-(--color-text)">{label}</h3>
+        <p className="mt-3 max-w-lg text-base leading-relaxed text-(--color-text-muted)">{detail}</p>
+      </div>
+      <div
+        aria-hidden
+        className={`relative mt-auto h-72 overflow-hidden ${wide ? 'md:h-96' : 'md:h-80'} ${tint === 'accent' ? 'bg-(--color-accent)' : 'bg-(--color-bg-muted)'}`}
+      >
+        {/* The board starts inside the panel and runs off its right and bottom edges */}
+        <div
+          className={`origin-top motion-safe:transition-[scale] motion-safe:duration-500 motion-safe:ease-out motion-safe:group-hover:scale-[1.04] ${
+            phone
+              ? 'absolute left-1/2 top-8 h-[34rem] w-[18.5rem] -translate-x-1/2'
+              : `absolute left-6 top-6 md:left-8 md:top-8 ${wide ? 'h-[30rem] w-full' : 'h-[26rem] w-[170%]'}`
+          }`}
+        >
+          {board(inView)}
+        </div>
+      </div>
+    </article>
+  )
+}
 
-  useGsapSection(platformScope, () => {
-    revealLines('#reveal-heading', { trigger: platformScope.current })
-    revealFadeUp('.reveal-copy',   { y: 20, trigger: platformScope.current })
+export default function ProductRevealSection() {
+  const scope = useRef<HTMLElement>(null)
+
+  useGsapSection(scope, () => {
+    revealLines('#reveal-heading', { trigger: scope.current })
+    revealFadeUp('.reveal-copy',   { y: 20, trigger: scope.current })
+    revealFadeUp('.feature-card',  { y: 24, stagger: STAGGER.base, trigger: scope.current })
   })
 
-  // Scroll-spy: whichever text block crosses the middle band of the viewport owns the sticky board
-  useEffect(() => {
-    const items = platformScope.current?.querySelectorAll<HTMLElement>('[data-feature]')
-    if (!items?.length) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.find((entry) => entry.isIntersecting)
-        if (!hit) return
-        const i = Number((hit.target as HTMLElement).dataset.feature)
-        setActive(i)
-        setSeen((prev) => (prev[i] ? prev : prev.map((v, j) => v || j === i)))
-      },
-      { rootMargin: '-45% 0px -45% 0px' },
-    )
-    items.forEach((item) => observer.observe(item))
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <section ref={platformScope} id="product" className="scroll-mt-32 py-16 md:py-20" aria-labelledby="reveal-heading">
+    <section ref={scope} id="product" className="scroll-mt-32 py-16 md:py-20" aria-labelledby="reveal-heading">
       <div className="container">
         <div className="mb-10 max-w-2xl md:mb-14">
           <h2 id="reveal-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
@@ -95,44 +109,10 @@ export default function ProductRevealSection() {
           </p>
         </div>
 
-        {/* Zoho-style: text blocks scroll on the left, the board sticks on the right and swaps with them.
-            Below lg there's no sticky column — each board sits under its own text instead. */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-14">
-          <div>
-            {FEATURES.map(({ label, detail, board }, i) => (
-              <div
-                key={label}
-                data-feature={i}
-                className={`py-10 transition-opacity duration-500 lg:flex lg:min-h-[70vh] lg:flex-col lg:justify-center lg:py-0 ${
-                  active === i ? 'lg:opacity-100' : 'lg:opacity-30'
-                }`}
-              >
-                <h3 className="text-h3 font-bold leading-tight tracking-tight text-(--color-text)">{label}</h3>
-                {detail.map((para) => (
-                  <p key={para} className="mt-4 max-w-md text-body-lg leading-relaxed text-(--color-text-muted)">{para}</p>
-                ))}
-                <div className="mt-8 min-h-[26rem] lg:hidden [&>*]:h-full">{board(seen[i])}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="hidden lg:block">
-            <div className="sticky top-[calc(50vh-17rem)] grid min-h-[34rem]">
-              {FEATURES.map(({ label, board }, i) => (
-                <div
-                  key={label}
-                  aria-hidden={active !== i}
-                  /* Boards above the active one wait just above, boards below wait just below, so the
-                     swap always moves with the scroll: down brings the next board up, up brings it down */
-                  className={`[grid-area:1/1] transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    active === i ? 'translate-y-0 opacity-100' : `pointer-events-none opacity-0 ${i < active ? '-translate-y-4' : 'translate-y-4'}`
-                  }`}
-                >
-                  {board(seen[i])}
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-6 md:gap-5">
+          {FEATURES.map((f) => (
+            <FeatureCard key={f.label} {...f} />
+          ))}
         </div>
       </div>
     </section>
