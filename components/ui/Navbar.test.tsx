@@ -6,6 +6,7 @@ import { Navbar } from './Navbar';
 
 const SERVICE_HREFS = [
   '/services/ai-automations',
+  '/services/ai-automations/whatsapp-automation',
   '/services/web-development',
   '/services/web-mobile-app-development',
   '/services/uiux-design',
@@ -24,7 +25,7 @@ describe('Navbar', () => {
     expect(screen.getAllByRole('link', { name: 'Contact Us' })[0]).toHaveAttribute('href', '/contact');
   });
 
-  it('lists every service in the dropdown', () => {
+  it('lists every service in the dropdown, with WhatsApp Automation nested under AI Automations', () => {
     render(<Navbar />);
     const panel = document.querySelector('.dropdown-panel') as HTMLElement;
     const hrefs = within(panel)

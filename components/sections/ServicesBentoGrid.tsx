@@ -203,8 +203,11 @@ function BentoCard({
       </div>
 
       {/* Kept short (CTA beside the title, copy clamped to two lines) so the active card's image stays the biggest */}
-      <div className="shrink-0 px-6 pb-6 pt-2 xl:px-8">
-        <div className="relative">
+      {/* Fixed height, so the image above (flex-1) is sized by the card alone: a title that wraps to two lines no
+          longer makes its image shorter than its neighbours' */}
+      <div className="h-40 shrink-0 overflow-hidden px-6 pb-6 pt-2 xl:px-8">
+        {/* min-h matches the CTA button, so a one-line title no longer lets the button poke up into the image */}
+        <div className="relative flex min-h-11 items-center">
           {/* The hidden CTA is absolutely placed so it never steals width from a small card's title */}
           <h3
             className={`font-sans text-xl font-bold leading-[1.15] text-(--color-text) xl:text-2xl ${active ? 'pr-44' : ''}`}
@@ -212,7 +215,7 @@ function BentoCard({
             {card.title}
           </h3>
           <div
-            className={`absolute bottom-0 right-0 z-20 transition-opacity ${BENTO_EASE} ${active ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+            className={`absolute right-0 top-1/2 z-20 -translate-y-1/2 transition-opacity ${BENTO_EASE} ${active ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
           >
             {/* Stays focusable while hidden: tabbing onto it is what activates the card */}
             <Button href={card.href} variant="ghost" size="sm" showArrow>
@@ -258,6 +261,7 @@ function BentoStack({ cards }: { cards: ServiceCard[] }) {
 
   return (
     <div
+      data-testid="bento-desktop"
       className="hidden flex-col gap-4 lg:flex"
       style={{ height: BENTO_H }}
       onPointerLeave={() => clearTimeout(intent.current)}
@@ -318,7 +322,7 @@ export function ServicesBentoGrid() {
         <BentoStack cards={SERVICE_CARDS} />
 
         {/* < lg: sticky stack track — each card gets a full-height scroll slot */}
-        <div ref={trackRef} className="relative flex flex-col gap-8 md:gap-12 lg:hidden">
+        <div ref={trackRef} data-testid="bento-stack" className="relative flex flex-col gap-8 md:gap-12 lg:hidden">
           {SERVICE_CARDS.map((card, i) => (
             <StackCard
               key={card.id}

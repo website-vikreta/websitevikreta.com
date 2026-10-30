@@ -58,6 +58,15 @@ const MARKETING_AUDIT_CONFIG: AuditModalConfig = {
   dialogDescription: "Tell us what you want to grow — we'll reply within 24 hours.",
 }
 
+const WHATSAPP_DEMO_CONFIG: AuditModalConfig = {
+  formName: 'book_whatsapp_demo_modal',
+  heading: 'Book a Platform Demo',
+  subjectPlaceholder: 'Your store URL or platform (Shopify, WooCommerce, custom)',
+  messagePlaceholder: 'Monthly order volume, cart abandonment challenges…',
+  dialogDescription:
+    "Tell us about your store. We'll show you what the platform looks like on your brand.",
+}
+
 /**
  * One entry per popup variant sitewide, keyed by the `#hash` that opens it.
  * `Button`/`TextLink` look a clicked href up here; a miss falls through to
@@ -71,6 +80,7 @@ export const AUDIT_MODAL_CONFIGS: Record<string, AuditModalConfig> = {
   '#marketing-audit':   MARKETING_AUDIT_CONFIG,
   '#book-uiux-call':      UI_UX_BOOK_MODAL_CONFIG,
   '#get-uiux-quote':      UI_UX_QUOTE_MODAL_CONFIG,
+  '#whatsapp-demo':       WHATSAPP_DEMO_CONFIG,
 }
 
 /** Back-compat default for any caller that opens the modal with no config. */

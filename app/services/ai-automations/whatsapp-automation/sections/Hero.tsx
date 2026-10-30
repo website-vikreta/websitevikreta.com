@@ -1,0 +1,96 @@
+'use client'
+
+import { useRef } from 'react'
+import { Button } from '@/components/ui/Button'
+import { TextLink } from '@/components/ui/TextLink'
+import { CALENDLY_URL } from '@/config/site'
+import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
+import BroadcastMotionGraphic from '../components/BroadcastMotionGraphic'
+import IntegrationLogoRail from '../components/IntegrationLogoRail'
+
+export default function Hero() {
+  const scope = useRef<HTMLElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  const subRef = useRef<HTMLParagraphElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const proofRef = useRef<HTMLDivElement>(null)
+
+  useGsapSection(scope, () => {
+    const heading = headingRef.current
+    const sub = subRef.current
+    const cta = ctaRef.current
+    const proof = proofRef.current
+    if (!heading || !sub || !cta || !proof) return
+    revealLines(heading, { trigger: null })
+    revealFadeUp(sub, { y: 20, delay: 0.35, trigger: null })
+    revealFadeUp(cta, { y: 16, delay: 0.5, trigger: null })
+    revealFadeUp(proof, { y: 16, delay: 0.65, trigger: null })
+  })
+
+  return (
+    <section
+      ref={scope}
+      id="hero"
+      className="relative overflow-x-clip"
+      style={{
+        // Fixed 5rem, not var(--navbar-height): that var shrinks on scroll and would jerk the page up 24px.
+        paddingTop: 'calc(5rem + clamp(2.25rem, 4.5vw, 3.75rem))',
+        paddingBottom: 'clamp(3rem, 6vw, 5rem)',
+      }}
+      aria-label="WhatsApp Commerce Platform for Indian D2C Stores"
+    >
+      <div className="container">
+        <div className="grid grid-cols-1 items-center gap-[clamp(2.5rem,5vw,4rem)] lg:grid-cols-[1.1fr_0.9fr]">
+
+          {/* ── Left: copy ── */}
+          <div>
+            <h1
+              ref={headingRef}
+              className="text-h1 font-bold"
+              style={{ marginBottom: '1.5rem', maxWidth: '15ch', lineHeight: 1.0 }}
+            >
+              <span style={{ color: '#25D366' }}>WhatsApp</span>{' '}
+              <span style={{ color: 'var(--color-accent)' }}>automation</span>{' '}
+              for your store. Every step of the sale.
+            </h1>
+
+            <p
+              ref={subRef}
+              className="text-body-lg"
+              style={{ color: 'var(--color-text-muted)', lineHeight: 1.65, maxWidth: '46ch', marginBottom: '2.5rem' }}
+            >
+              WhatsApp abandoned cart recovery, COD order confirmation, order status updates,
+              and AI customer support. One platform on your brand, connected to your
+              Shopify or WooCommerce store and built for Indian D2C brands.
+            </p>
+
+            <div ref={ctaRef} className="flex flex-wrap items-center gap-5">
+              <Button href="#whatsapp-demo" variant="primary" size="md" showArrow>
+                Book a Platform Demo
+              </Button>
+              {CALENDLY_URL && (
+                <TextLink href={CALENDLY_URL} external arrow="diagonal">
+                  Prefer a call? Schedule one
+                </TextLink>
+              )}
+            </div>
+
+            <p className="mt-6 text-sm text-(--color-text-muted)">
+              <span className="font-semibold text-(--color-text)">Your store. Your brand.</span>{' '}Automated customer conversations.
+            </p>
+          </div>
+
+          {/* ── Right: Broadcast Motion Graphic ── */}
+          <div className="wa-phone-reveal mx-auto w-full max-w-[580px] lg:mx-0 lg:max-w-none">
+            <BroadcastMotionGraphic />
+          </div>
+
+        </div>
+
+        <div ref={proofRef} className="mt-14 pt-2 md:mt-16">
+          <IntegrationLogoRail />
+        </div>
+      </div>
+    </section>
+  )
+}
