@@ -22,7 +22,7 @@ export class NavbarComponent {
     this.nav = page.locator('nav[aria-label="Main navigation"]').first();
     this.logo = this.header.locator('a[href="/"]').first();
     this.servicesTrigger = this.header.locator('button.nav-link:has-text("Services")').first();
-    this.servicesDropdown = this.header.locator('.dropdown-panel');
+    this.servicesDropdown = this.header.locator('.mega-panel');
     this.contactCta = this.header.locator('a[href="/contact"]').first();
     this.hamburgerButton = page.locator('button[aria-label="Open navigation"], button[aria-controls="mobile-drawer"]').first();
     this.mobileDrawer = page.locator('#mobile-drawer');
