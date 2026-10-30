@@ -5,25 +5,9 @@ import Image from 'next/image'
 import { motion, useAnimationFrame, useMotionValue } from 'motion/react'
 import { RevealText } from '@/components/ui/Reveal'
 
-export const CLIENT_LOGO_MARQUEE_ITEMS = [
-  { src: '/client-logos/sustainable-bitcoin-protocol.svg', alt: 'Sustainable Bitcoin Protocol' },
-  { src: '/client-logos/simpli-home.svg', alt: 'Simpli Home' },
-  { src: '/client-logos/blancora.svg', alt: 'Blancora' },
-  { src: '/client-logos/boompanda.png', alt: 'Boompanda' },
-  { src: '/client-logos/ap-cleanco.svg', alt: 'AP Cleanco' },
-  { src: '/client-logos/tocal.svg', alt: 'Tocal' },
-  { src: '/client-logos/strandzboost.svg', alt: 'Strandzboost' },
-  { src: '/client-logos/raicoon.svg', alt: 'Raicoon' },
-  { src: '/client-logos/sr-design-hub.svg', alt: 'SR Design Hub' },
-  { src: '/client-logos/ambrosia.svg', alt: 'Ambrosia Life Sciences' },
-  { src: '/client-logos/budget-renovations.svg', alt: 'Budget Renovations' },
-  { src: '/client-logos/champion-lenders.svg', alt: 'Champion Lenders' },
-  { src: '/client-logos/cozmo-realty.svg', alt: 'Cozmo Realty' },
-  { src: '/client-logos/archmodal.svg', alt: 'Archmodal' },
-  { src: '/client-logos/limra-events.png', alt: 'Limra Events' },
-  { src: '/client-logos/workik.svg', alt: 'Workik' },
-  { src: '/client-logos/katalyst.png', alt: 'Katalyst' },
-] as const
+import { CLIENT_LOGO_MARQUEE_ITEMS } from '@/content/client-logos'
+
+export { CLIENT_LOGO_MARQUEE_ITEMS }
 
 const FAST = 90
 const SLOW = 28
