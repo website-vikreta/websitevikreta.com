@@ -41,7 +41,7 @@ export class AuditModalComponent {
   }
 
   async openViaTrigger(trigger?: Locator): Promise<void> {
-    const btn = trigger ?? this.page.locator('button:has-text("Audit"), a[href*="audit"], button:has-text("Process Audit")').first();
+    const btn = trigger ?? this.page.locator('button:has-text("Audit"), a[href*="audit"], button:has-text("Process Audit")').locator('visible=true').first();
     await btn.click();
     await expect(this.modalContent).toBeVisible({ timeout: 10000 });
   }
