@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { FOOTER_LINKS } from '@/config/footer-links'
+import { Button } from '@/components/ui/Button'
 import { AuditForm } from '@/components/ui/AuditForm'
 import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
@@ -38,49 +39,38 @@ export default function ContactSection() {
             <h2
               id="cta-form-heading"
               className="cta-heading text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)"
-              style={{ marginBottom: '1.5rem' }}
             >
-              See the platform on your store
+              See the platform <span className="text-(--color-accent)">on your store.</span>
             </h2>
+            <p className="cta-list mt-5 max-w-md text-body-lg leading-relaxed text-(--color-text-muted)">
+              A 20-minute call with a real person, not a sales queue. Here is what you get:
+            </p>
 
-            <ul className="space-y-4">
+            <ol className="mt-8 space-y-5">
               {WHAT_HAPPENS.map((item, i) => (
                 <li key={i} className="cta-list flex items-start gap-4">
-                  <span
-                    style={{
-                      display: 'grid', placeItems: 'center',
-                      height: '24px', width: '24px', flexShrink: 0,
-                      borderRadius: '50%', border: '1.5px solid var(--color-border)',
-                      fontSize: '11px', fontWeight: 700, color: 'var(--color-text-faint)',
-                      marginTop: '1px',
-                    }}
-                  >
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-(--color-accent) text-sm font-bold text-(--color-text)">
                     {i + 1}
                   </span>
-                  <p className="text-[15px] leading-relaxed text-(--color-text-muted)">{item}</p>
+                  <p className="pt-1 text-base leading-relaxed text-(--color-text-muted)">{item}</p>
                 </li>
               ))}
-            </ul>
+            </ol>
 
-            <p className="mt-8 text-sm text-(--color-text-muted)">
-              Takes 20 minutes. Goes to a real person, not a sales queue.
-            </p>
-            <a
-              href={WA_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-block text-sm font-semibold text-(--color-text) underline underline-offset-4"
-            >
-              Or message us on WhatsApp
-            </a>
+            <div className="cta-list mt-9">
+              <Button href={WA_HREF} variant="ghost" size="md">
+                Or message us on WhatsApp
+              </Button>
+            </div>
           </div>
 
           {/* Right — form */}
           <div>
-            <div className="cta-form-card border border-(--color-border) bg-(--color-surface) p-6 md:p-8">
+            <div className="cta-form-card border border-(--color-border) bg-(--color-surface) p-6 md:p-10">
+              <p className="mb-6 text-2xl font-bold leading-tight text-(--color-text)">Book a platform demo</p>
               <AuditForm
                 formName="book_whatsapp_demo_inline"
-                heading="Book a Platform Demo"
+                heading=""
                 subjectPlaceholder="Your store URL or platform (Shopify, WooCommerce, custom)"
                 messagePlaceholder="Monthly order volume, cart abandonment rate if you know it…"
               />
