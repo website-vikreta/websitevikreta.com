@@ -20,8 +20,9 @@ type IntegrationLogoRailProps = {
 export default function IntegrationLogoRail({ className = '' }: IntegrationLogoRailProps) {
   return (
     <div className={className}>
+      {/* Desktop and tablet: the logos wrap in a row */}
       <ul
-        className="flex flex-wrap items-center gap-x-9 gap-y-6"
+        className="hidden flex-wrap items-center gap-x-9 gap-y-6 md:flex"
         aria-label="Supported commerce and marketing integrations"
       >
         {INTEGRATIONS.map(({ name, src }) => (
@@ -36,6 +37,33 @@ export default function IntegrationLogoRail({ className = '' }: IntegrationLogoR
           </li>
         ))}
       </ul>
+
+      {/* Phones: one line that slides sideways. The list is repeated once so the loop has no gap; the copy is hidden from
+          screen readers. With reduced motion it stops and can be swiped instead. */}
+      <div className="wa-marquee-wrap overflow-hidden md:hidden [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)] motion-reduce:overflow-x-auto">
+        <div className="wa-marquee flex w-max items-center">
+          {[0, 1].map((copy) => (
+            <ul
+              key={copy}
+              className="flex shrink-0 items-center gap-x-9 pr-9"
+              aria-hidden={copy === 1 ? true : undefined}
+              aria-label={copy === 0 ? 'Supported commerce and marketing integrations' : undefined}
+            >
+              {INTEGRATIONS.map(({ name, src }) => (
+                <li key={name}>
+                  <Image
+                    src={src}
+                    alt={copy === 0 ? name : ''}
+                    width={120}
+                    height={32}
+                    className="h-6 w-auto max-w-28 object-contain opacity-60 grayscale"
+                  />
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

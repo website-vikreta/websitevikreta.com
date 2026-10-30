@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { TextLink } from '@/components/ui/TextLink'
 import { CALENDLY_URL } from '@/config/site'
 import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
-import HeroJourneyPhone from '../components/HeroJourneyPhone'
+import BroadcastMotionGraphic from '../components/BroadcastMotionGraphic'
 import IntegrationLogoRail from '../components/IntegrationLogoRail'
 
 export default function Hero() {
@@ -49,7 +49,8 @@ export default function Hero() {
               className="text-h1 font-bold"
               style={{ marginBottom: '1.5rem', maxWidth: '15ch', lineHeight: 1.0 }}
             >
-              <span style={{ color: 'var(--color-accent)' }}>WhatsApp automation</span>{' '}
+              <span style={{ color: '#25D366' }}>WhatsApp</span>{' '}
+              <span style={{ color: 'var(--color-accent)' }}>automation</span>{' '}
               for your store. Every step of the sale.
             </h1>
 
@@ -64,7 +65,7 @@ export default function Hero() {
             </p>
 
             <div ref={ctaRef} className="flex flex-wrap items-center gap-5">
-              <Button href="#whatsapp-demo" variant="primary" size="lg" showArrow>
+              <Button href="#whatsapp-demo" variant="primary" size="md" showArrow>
                 Book a Platform Demo
               </Button>
               {CALENDLY_URL && (
@@ -75,14 +76,13 @@ export default function Hero() {
             </div>
 
             <p className="mt-6 text-sm text-(--color-text-muted)">
-              <span className="font-semibold text-(--color-text)">Live in 7 to 14 days</span>
-              {' · '}98% WhatsApp open rate{' · '}We handle Meta verification
+              <span className="font-semibold text-(--color-text)">Your store. Your brand.</span>{' '}Automated customer conversations.
             </p>
           </div>
 
-          {/* ── Right: phone demo ── */}
-          <div className="wa-phone-reveal mx-auto w-full max-w-[380px] lg:mx-0 lg:max-w-none">
-            <HeroJourneyPhone />
+          {/* ── Right: Broadcast Motion Graphic ── */}
+          <div className="wa-phone-reveal mx-auto w-full max-w-[580px] lg:mx-0 lg:max-w-none">
+            <BroadcastMotionGraphic />
           </div>
 
         </div>
