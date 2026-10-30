@@ -90,9 +90,9 @@ export default function StoreBoard({ active = true }: { active?: boolean }) {
 
               {/* Header: connected stores + the order this timeline follows */}
               <m.div {...show(0.05)} className="absolute left-[92px] top-[24px] flex h-[40px] items-center gap-2 rounded-lg border border-[#e4e4e7] bg-white px-3 text-[12px] text-[#1a8a5a] shadow-sm">
-                <Image src="/tools-logos/20-Shopify.svg" alt="" width={20} height={20} className="h-5 w-auto" />
+                <Image src="/tools-logos/20-Shopify.svg" alt="" width={18} height={20} className="h-5 w-auto" />
                 <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#22a861]" />Connected</span>
-                <Image src="/services/whatsapp-automation/integrations/woocommerce.svg" alt="" width={60} height={11} className="ml-1 h-[11px] w-auto" />
+                <Image src="/services/whatsapp-automation/integrations/woocommerce.svg" alt="" width={53} height={11} className="ml-1 h-[11px] w-auto" />
                 <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#22a861]" />Connected</span>
               </m.div>
               <m.h3 {...show(0.1)} className="absolute left-[92px] top-[76px] text-[24px] font-bold tracking-tight">
