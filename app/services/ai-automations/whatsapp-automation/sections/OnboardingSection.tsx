@@ -1,13 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
-import { ArrowRight } from 'lucide-react'
-import { AUDIT_MODAL_CONFIGS, useAuditModal } from '@/components/ui/AuditModalProvider'
+import { CheckCircle2, FileCheck, FlaskConical, LifeBuoy, MessageSquare, Rocket, ShieldCheck, ShoppingCart, Store, Users, Workflow, type LucideIcon } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 import { revealFadeUp, revealLines, STAGGER, useGsapSection } from '@/lib/gsap/reveals'
 
 const STEPS = [
   {
     step: '01',
+    icons: [ShieldCheck, FileCheck] as [LucideIcon, LucideIcon],
     time: '2–4 Days',
     title: 'Connect & Verify',
     detail: 'Get your business connected and verification underway.',
@@ -15,6 +16,7 @@ const STEPS = [
   },
   {
     step: '02',
+    icons: [Store, ShoppingCart] as [LucideIcon, LucideIcon],
     time: '1–2 Days',
     title: 'Configure Your Store',
     detail: 'Make WhatsApp feel like a natural extension of your store.',
@@ -22,6 +24,7 @@ const STEPS = [
   },
   {
     step: '03',
+    icons: [Workflow, MessageSquare] as [LucideIcon, LucideIcon],
     time: '2–4 Days',
     title: 'Build & Approve',
     detail: 'Your essential workflows, ready for review.',
@@ -29,6 +32,7 @@ const STEPS = [
   },
   {
     step: '04',
+    icons: [FlaskConical, CheckCircle2] as [LucideIcon, LucideIcon],
     time: '1–2 Days',
     title: 'Test & Launch',
     detail: 'Everything tested before your first message goes out.',
@@ -36,6 +40,7 @@ const STEPS = [
   },
   {
     step: '05',
+    icons: [LifeBuoy, Users] as [LucideIcon, LucideIcon],
     time: '1–2 Days',
     title: 'Handover & Support',
     detail: "You're live, and we're still here to help.",
@@ -43,13 +48,23 @@ const STEPS = [
   },
 ]
 
+/* Timeline geometry (rem): height of one row, and where the line sits inside it */
+const ROW_REM = 19
+const LINE_REM = 4.5
+
+/* The five stages plus the finish, as one list of stops (first icon of each pair only) */
+const STOPS: { step: string; Icon: LucideIcon; time: string; title: string; detail: string; note: string; cta?: boolean }[] = [
+  ...STEPS.map(({ icons: [Icon], ...rest }) => ({ ...rest, Icon })),
+  { step: '06', Icon: Rocket, time: '', title: "You're live.", detail: 'Cart recovery, COD confirmation and order updates are running on your store.', note: '', cta: true },
+]
+
 export default function OnboardingSection() {
-  const { openAuditModal } = useAuditModal()
   const scope = useRef<HTMLElement>(null)
 
   useGsapSection(scope, () => {
     revealLines('#onboarding-heading', { trigger: scope.current })
     revealFadeUp('.onboarding-copy',   { y: 20,   trigger: scope.current })
+    revealFadeUp('.onb-deco', { y: 0, trigger: scope.current })
     revealFadeUp('.journey-step', { y: 20, stagger: STAGGER.tight, trigger: scope.current })
   })
 
@@ -73,47 +88,51 @@ export default function OnboardingSection() {
           </p>
         </div>
 
-        {/* Label column on the left, a 3-up grid of ruled cells on the right. The sixth cell is the dark one and closes the path. */}
-        <div className="onboarding-map grid grid-cols-1 gap-10 lg:grid-cols-[12rem_1fr] lg:gap-14">
-          <div>
-            <p className="text-base font-bold text-(--color-text)">The journey</p>
-            <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-(--color-text-muted)">You bring</p>
-            <ul className="mt-2 space-y-1.5 text-base text-(--color-text-muted)">
-              {['Store access', 'Brand assets', 'Two sign-offs'].map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
+        {/* Serpentine timeline. One list for every screen size (so the stages are in the page once, in order).
+            Desktop: three rows, the line runs along a row and turns back at the right, then the left, with a
+            yellow disc on each turn; two stops per row, icon above the line, node on it, text below.
+            Phones: a plain vertical line. The line, turns and discs are decoration only. */}
+        <div className="onboarding-map relative mx-auto max-w-4xl md:h-[57rem]" style={{ '--ly': `${LINE_REM}rem` } as React.CSSProperties}>
+          <div aria-hidden className="onb-deco hidden md:block">
+            <span className="absolute left-0 right-10 border-t-2 border-(--color-text)" style={{ top: `${LINE_REM}rem` }} />
+            <span className="absolute left-10 right-10 border-t-2 border-(--color-text)" style={{ top: `${ROW_REM + LINE_REM}rem` }} />
+            <span className="absolute left-10 border-t-2 border-(--color-text)" style={{ top: `${2 * ROW_REM + LINE_REM}rem`, right: 'calc(2.5rem + (100% - 5rem) * 0.25)' }} />
+            <span className="absolute right-0 w-10 rounded-r-[40px] border-y-2 border-r-2 border-(--color-text)" style={{ top: `${LINE_REM}rem`, height: `${ROW_REM}rem` }} />
+            <span className="absolute left-0 w-10 rounded-l-[40px] border-y-2 border-l-2 border-(--color-text)" style={{ top: `${ROW_REM + LINE_REM}rem`, height: `${ROW_REM}rem` }} />
+            <span className="absolute right-0 grid h-20 w-20 translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-(--color-accent)" style={{ top: `${ROW_REM / 2 + LINE_REM}rem` }}>
+              <ShieldCheck size={34} strokeWidth={1.75} />
+            </span>
+            <span className="absolute left-0 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-(--color-accent)" style={{ top: `${ROW_REM * 1.5 + LINE_REM}rem` }}>
+              <CheckCircle2 size={34} strokeWidth={1.75} />
+            </span>
+            <span className="absolute -left-1.5 h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-(--color-text) bg-(--color-bg)" style={{ top: `${LINE_REM}rem` }} />
           </div>
 
-          <ol className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-14">
-            {STEPS.map(({ step, time, title, detail, note }) => (
-              <li key={step} className="journey-step flex lg:min-h-[17rem] flex-col border-t border-(--color-text) px-1 pb-2 pt-6 sm:px-0 lg:px-6">
-                <h3 className="text-2xl font-bold leading-snug tracking-tight text-(--color-text)">{title}</h3>
-                <p className="mt-3 text-base font-medium leading-relaxed text-(--color-text)">{detail}</p>
-                <p className="mt-2 text-base leading-relaxed text-(--color-text-muted)">{note}</p>
-                <span className="mt-auto self-start bg-(--color-accent) px-3 py-1.5 text-sm font-semibold uppercase tracking-wider text-(--color-text)">
-                  {time}
+          <ol
+            className="relative border-l-2 border-(--color-text) pl-7 md:absolute md:inset-0 md:grid md:grid-cols-2 md:border-l-0 md:px-10 md:pl-10"
+            style={{ gridTemplateRows: `repeat(3, ${ROW_REM}rem)` }}
+          >
+            {STOPS.map(({ step, Icon, time, title, detail, note, cta }) => (
+              <li key={step} className="journey-step relative pb-9 last:pb-0 md:pb-0 md:last:pb-0">
+                {/* icon: beside the line on phones, above the line on desktop */}
+                <span aria-hidden className="absolute -left-[2.45rem] top-0 grid h-9 w-9 place-items-center rounded-full bg-(--color-accent) md:left-1/2 md:top-[calc(var(--ly)-3.75rem)] md:h-11 md:w-11 md:-translate-x-1/2">
+                  <Icon size={20} strokeWidth={1.75} />
                 </span>
+                {/* node on the line (desktop) */}
+                <span aria-hidden className={`absolute left-1/2 top-(--ly) hidden -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-(--color-text) bg-(--color-bg) md:block ${cta ? 'h-5 w-5 ring-4 ring-(--color-accent)' : 'h-3.5 w-3.5'}`} />
+                <div className="md:mx-auto md:max-w-[16rem] md:pt-[calc(var(--ly)+1.25rem)] md:text-center">
+                  <p className="text-base font-bold text-(--color-text-muted) md:text-xl md:leading-none md:text-(--color-text)">{Number(step)}.</p>
+                  <h3 className="text-xl font-bold leading-snug tracking-tight text-(--color-text) md:mt-2 md:text-lg">{title}</h3>
+                  <p className="mt-1.5 text-base font-medium leading-snug text-(--color-text) md:text-[15px]">{detail}</p>
+                  {note && <p className="mt-1 text-base leading-snug text-(--color-text-muted) md:text-sm">{note}</p>}
+                  {cta ? (
+                    <Button href="#whatsapp-demo" variant="primary" size="sm" showArrow className="mt-3">Book a platform demo</Button>
+                  ) : (
+                    <span className="mt-3 inline-block bg-(--color-accent) px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-(--color-text)">{time}</span>
+                  )}
+                </div>
               </li>
             ))}
-
-            <li className="journey-step flex lg:min-h-[17rem] flex-col bg-(--color-text) p-6 text-(--color-bg) lg:p-7">
-              <h3 className="text-2xl font-bold leading-snug tracking-tight">You&apos;re live.</h3>
-              <p className="mt-3 text-base leading-relaxed text-(--color-bg)/75">
-                Cart recovery, COD confirmation and order updates are running on your store.
-              </p>
-              <a
-                href="#whatsapp-demo"
-                onClick={(e) => {
-                  e.preventDefault()
-                  openAuditModal(AUDIT_MODAL_CONFIGS['#whatsapp-demo'])
-                }}
-                aria-label="Book a platform demo"
-                className="mt-auto grid h-10 w-10 place-items-center self-start bg-[#25d366] text-white transition-transform duration-300 hover:translate-x-1"
-              >
-                <ArrowRight size={18} strokeWidth={2.25} aria-hidden />
-              </a>
-            </li>
           </ol>
         </div>
       </div>

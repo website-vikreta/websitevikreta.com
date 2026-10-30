@@ -2,29 +2,30 @@
 
 import { useRef } from 'react'
 import { Button } from '@/components/ui/Button'
-import { revealLines, revealFadeUp, useGsapSection } from '@/lib/gsap/reveals'
+import { revealLines, revealFadeUp, useGsapSection, STAGGER } from '@/lib/gsap/reveals'
 
+/* Figures are self-reported by the brands and their WhatsApp platforms. No platform names or source links are shown. */
 const CASES = [
   {
     brand: 'Keeros SuperFoods',
-    value: '20-40', unit: '%',
-    metric: 'Recovered cart rate',
+    value: '40', unit: '%',
+    metric: 'Of abandoned carts recovered, at best',
     highlight:
-      'Reminders go out within 15 minutes of cart drop-off. Customers see the alert on their phone and finish the purchase before buying elsewhere.',
+      'Automatic WhatsApp reminders go out 15 to 20 minutes after a product is added to the cart without checkout. Keeros reports recovering up to 40% of abandoned carts.',
   },
   {
     brand: 'The Hatke',
     value: '21', unit: '×',
-    metric: 'Return on messaging spend',
+    metric: 'Return reported on WhatsApp',
     highlight:
-      'At roughly 11 paise per utility message, recovered checkouts returned 21 rupees for every rupee spent on WhatsApp alerts.',
+      'The Hatke’s earlier email and SMS campaigns saw about 20% opens and 2 to 5% clicks. After moving to WhatsApp, the brand reports a 21× return.',
   },
   {
     brand: 'The Indian Ethnic Co.',
-    value: '3', unit: '×',
-    metric: 'Recovery compared to email',
+    value: '15-20', unit: '%',
+    metric: 'Cart recovery rate, up from 7%',
     highlight:
-      'Checkout recovery rose from 7% on reminder emails to over 20% on WhatsApp within the first month.',
+      'After adding WhatsApp, Indian Ethnic Co. reports recovering abandoned carts at about double its earlier rate, from roughly 7% to 15 to 20%.',
   },
 ]
 
@@ -34,6 +35,7 @@ export default function ResultsSection() {
   useGsapSection(scope, () => {
     revealLines('#results-heading', { trigger: scope.current })
     revealFadeUp('.results-intro', { y: 20, trigger: scope.current })
+    revealFadeUp('.result-col', { y: 20, stagger: STAGGER.base, trigger: scope.current })
   })
 
   return (
@@ -43,10 +45,10 @@ export default function ResultsSection() {
         <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <h2 id="results-heading" className="text-h2 font-bold leading-[1.05] tracking-tight text-(--color-text)">
-              What stores see after switching to WhatsApp
+              What D2C brands report from WhatsApp cart recovery
             </h2>
-            <p className="results-intro mt-4 text-base sm:text-lg text-(--color-text-muted) leading-relaxed">
-              Most stores send recovery emails that sit unopened in promotions. When reminders go to WhatsApp, customers read them in minutes and finish their order.
+            <p className="results-intro mt-5 text-body-lg text-(--color-text-muted) leading-relaxed">
+              Three Indian D2C brands published what they saw after moving cart recovery to WhatsApp. These are the results they report.
             </p>
           </div>
           <Button href="#whatsapp-demo" variant="ghost" size="md" showArrow>
@@ -54,32 +56,23 @@ export default function ResultsSection() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {CASES.map(({ brand, value, unit, metric, highlight }, i) => {
-            const hot = i === CASES.length - 1
-            return (
-              <article
-                key={brand}
-                className={`proof-card flex flex-col p-7 ${i === CASES.length - 1 ? 'sm:col-span-2 lg:col-span-1' : ''} [clip-path:polygon(0_0,calc(100%-40px)_0,100%_40px,100%_100%,40px_100%,0_calc(100%-40px))] sm:p-8 ${
-                  hot
-                    ? 'bg-(--color-accent) text-(--color-text)'
-                    : 'bg-(--color-bg-muted) text-(--color-text)'
-                }`}
-              >
-                <p className="flex items-start font-bold leading-none tracking-tight">
-                  <span className="whitespace-nowrap text-6xl sm:text-7xl xl:text-8xl">{value}</span>
-                  <span className="ml-1 mt-1 text-3xl sm:text-4xl xl:text-5xl">{unit}</span>
-                </p>
-                <h4 className="mt-3 text-xl font-bold">{metric}</h4>
-                <p className={`mt-auto pt-6 text-sm leading-relaxed ${hot ? 'text-(--color-text)/80' : 'text-(--color-text-muted)'}`}>{highlight}</p>
-                <p className="mt-4 text-sm font-semibold">{brand}</p>
-              </article>
-            )
-          })}
+        {/* Plain columns: just text, no card and no rules */}
+        <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12">
+          {CASES.map(({ brand, value, unit, metric, highlight }) => (
+            <article key={brand} className="result-col flex flex-col">
+              <p className="whitespace-nowrap text-6xl font-bold leading-none tracking-tight text-(--color-accent) md:text-7xl lg:text-6xl xl:text-8xl">
+                {value}
+                {unit}
+              </p>
+              <h3 className="mt-4 text-xl font-bold text-(--color-text)">{metric}</h3>
+              <p className="mt-3 flex-1 text-base leading-relaxed text-(--color-text-muted)">{highlight}</p>
+              <p className="mt-5 text-sm font-semibold text-(--color-text)">{brand}</p>
+            </article>
+          ))}
         </div>
 
         <p className="mt-8 text-xs leading-relaxed text-(--color-text-faint)">
-          Figures from published Indian D2C brand case studies. Actual recovery depends on catalog price, checkout friction, and opt-in rates.
+          Figures are self-reported by each brand. Actual recovery depends on catalog price, checkout friction, and opt-in rates.
         </p>
       </div>
     </section>
