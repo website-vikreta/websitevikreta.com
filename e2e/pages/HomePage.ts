@@ -22,7 +22,13 @@ export class HomePage extends BasePage {
     this.primaryCta = this.hero.getByRole('link', { name: /Talk to Us/ });
     this.secondaryCta = this.hero.getByRole('link', { name: 'See our work' });
     this.stats = page.getByRole('region', { name: 'Impact Statistics' });
-    this.serviceCards = main.locator('article').filter({ has: page.locator('h3') }).filter({ hasText: 'Explore More' });
+    // The grid renders a hover-grow bento on lg+ and a sticky stack below it, each with all five cards;
+    // only the layout for the current viewport is visible, so count that one.
+    this.serviceCards = main
+      .locator('article')
+      .filter({ has: page.locator('h3') })
+      .filter({ hasText: 'Explore More' })
+      .filter({ visible: true });
     this.featuredWork = page.getByRole('region', { name: 'Featured Work' });
     this.testimonials = page.locator('section', { has: page.getByRole('heading', { name: 'Work that moved numbers.' }) });
     this.blogPreviewCards = page.locator('section', { hasText: 'behind the work.' }).locator('article');
