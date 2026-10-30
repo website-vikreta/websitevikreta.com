@@ -1,11 +1,12 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import WhatsAppPhoneShell, { Ticks } from './WhatsAppPhoneShell'
+import { useInView } from './useInView'
 
-/* -1 resets, 0 the confirmation lands, 1 the buyer taps a button, 2 the store replies.
-   Loops alternate a confirmed order with a cancelled one, so both outcomes get shown. */
-const PHASE_MS: Record<number, number> = { [-1]: 450, 0: 2400, 1: 1600, 2: 3200 }
+/* Plays once when the phone scrolls into view, then stays put: -1 waits, 0 the confirmation lands,
+   1 the buyer taps a button, 2 the store replies (final, nothing leaves the screen). */
+const PHASE_MS: Record<number, number> = { [-1]: 120, 0: 1100, 1: 800 }
 
 const OUTCOME = {
   confirm: {
@@ -22,9 +23,9 @@ const OUTCOME = {
   },
 }
 
-export default function CodConfirmDemo({ onStep }: { onStep?: (step: number) => void }) {
+function CodConfirmDemo({ onStep }: { onStep?: (step: number) => void }) {
+  const [wrapRef, inView] = useInView<HTMLDivElement>()
   const [phase, setPhase] = useState(-1)
-  const [cancelled, setCancelled] = useState(false)
   const reduced = useRef(false)
 
   useEffect(() => {
@@ -36,21 +37,18 @@ export default function CodConfirmDemo({ onStep }: { onStep?: (step: number) => 
   }, [])
 
   useEffect(() => {
-    if (reduced.current) return
-    const id = window.setTimeout(() => {
-      if (phase >= 2) setCancelled((c) => !c)
-      setPhase((p) => (p >= 2 ? -1 : p + 1))
-    }, PHASE_MS[phase])
+    if (reduced.current || !inView || phase >= 2) return
+    const id = window.setTimeout(() => setPhase((p) => p + 1), PHASE_MS[phase])
     return () => window.clearTimeout(id)
-  }, [phase])
+  }, [phase, inView])
 
   useEffect(() => { onStep?.(Math.max(0, phase)) }, [phase, onStep])
 
-  const out = cancelled ? OUTCOME.cancel : OUTCOME.confirm
+  const out = OUTCOME.confirm
 
   return (
     // Fixed width: as a flex item it would otherwise shrink to fit the bubbles and jump each phase
-    <div aria-hidden className="w-full max-w-[330px]">
+    <div ref={wrapRef} aria-hidden className="w-full max-w-[330px]">
       <WhatsAppPhoneShell time="11:42" name="Kaya Wear" subtitle="Business account" avatarLetter="K">
         {phase >= 0 && (
           <div className="wa-pop max-w-[86%] self-start overflow-hidden rounded-lg rounded-tl-sm bg-white text-[13px] leading-snug text-[#111b21] shadow-[0_1px_0.5px_rgba(0,0,0,0.13)]">
@@ -61,7 +59,7 @@ export default function CodConfirmDemo({ onStep }: { onStep?: (step: number) => 
             </p>
             <span className="block px-2.5 pb-1.5 text-right text-[10px] text-[#667781]">11:42</span>
             {(['confirm', 'cancel'] as const).map((k) => {
-              const tapped = phase >= 1 && (k === 'cancel') === cancelled
+              const tapped = phase >= 1 && k === 'confirm'
               return (
                 <span
                   key={k}
@@ -96,3 +94,5 @@ export default function CodConfirmDemo({ onStep }: { onStep?: (step: number) => 
     </div>
   )
 }
+
+export default memo(CodConfirmDemo)

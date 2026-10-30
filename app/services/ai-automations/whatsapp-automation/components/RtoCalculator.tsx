@@ -95,17 +95,17 @@ export default function RtoCalculator() {
       <div className="flex flex-col justify-between p-6 sm:p-8 md:p-10">
         <div className="flex flex-col gap-8">
           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-(--color-text-faint)">
-            Your store numbers
+            Drag to your numbers
           </span>
 
           <Field id="rto-orders" label="COD orders per day" unit="a day" value={orders} min={10} max={600} step={10} onChange={setOrders} />
-          <Field id="rto-rate" label="Return rate (RTO)" unit="%" value={rate} min={5} max={50} step={1} onChange={(v) => setRate(Math.min(100, v))} />
-          <Field id="rto-cost" label="Cost per return" prefix="₹" value={cost} min={100} max={600} step={10} onChange={setCost} />
+          <Field id="rto-rate" label="Parcels that come back (RTO)" unit="%" value={rate} min={5} max={50} step={1} onChange={(v) => setRate(Math.min(100, v))} />
+          <Field id="rto-cost" label="Cost per returned parcel" prefix="₹" value={cost} min={100} max={600} step={10} onChange={setCost} />
         </div>
 
         <div className="mt-8 border-t border-(--color-border) pt-6">
           <p className="text-xs text-(--color-text-muted) leading-relaxed">
-            <span className="font-semibold text-(--color-text)">Why courier loss averages ₹250+:</span> A failed COD delivery incurs forward shipping (~₹100–140), return logistics (~₹100–140), packaging waste, and blocked inventory.
+            <span className="font-semibold text-(--color-text)">Why the average is ₹250:</span> a failed COD delivery costs about ₹100–140 to ship out and ₹100–140 to bring back, plus the packaging and the stock stuck on the road.
           </p>
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function RtoCalculator() {
           {/* Period Toggle */}
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs font-semibold uppercase tracking-wider text-white/50">
-              Loss calculation
+              What returns cost you
             </span>
             <div className="inline-flex border border-white/20 p-0.5 text-xs" role="group" aria-label="Period">
               {[false, true].map((y) => (
@@ -138,27 +138,27 @@ export default function RtoCalculator() {
           {/* Main Stat: User asked for ₹2,70,000 to be yellow, larger font, humanized */}
           <div className="mt-8">
             <p className="text-sm font-medium text-white/70">
-              Lost to returned COD orders
+              You lose, in returned COD orders
             </p>
             <p className="mt-2 text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-(--color-accent) leading-none tabular-nums">
               ₹{inr(lost)}
             </p>
             <p className="mt-2 text-xs sm:text-sm text-white/50">
-              paid to couriers for packages that never turned into revenue
+              spent on couriers for parcels that never became sales
             </p>
           </div>
 
           {/* Breakdown Grid */}
           <div className="mt-8 grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
             <div>
-              <p className="text-xs text-white/60">Parcels returned</p>
+              <p className="text-xs text-white/60">Parcels coming back</p>
               <p className="mt-1 text-2xl sm:text-3xl font-bold tabular-nums text-white">
                 {inr(returned)}
                 <span className="ml-1 text-xs font-normal text-white/50">/ {period}</span>
               </p>
             </div>
             <div>
-              <p className="text-xs text-white/60">RTO with confirmation</p>
+              <p className="text-xs text-white/60">Returns with confirmation</p>
               <p className="mt-1 text-2xl sm:text-3xl font-bold tabular-nums text-white">
                 ~{Math.round(confirmedRate)}%
                 <span className="ml-1 text-xs font-normal text-white/50">from {rate}%</span>
@@ -170,10 +170,10 @@ export default function RtoCalculator() {
           <div className="mt-8 border-t border-white/10 pt-6">
             <div className="flex items-center justify-between">
               <span className="text-xs sm:text-sm text-white/70">
-                Saved with WhatsApp COD confirmation
+                You save with WhatsApp confirmation
               </span>
               <span className="border border-(--color-accent)/40 bg-(--color-accent)/10 px-2 py-0.5 text-[11px] font-semibold text-(--color-accent)">
-                ~35% fewer returns
+                About 35% fewer returns
               </span>
             </div>
             <p className="mt-2 text-3xl sm:text-4xl font-bold tabular-nums text-white">
@@ -186,7 +186,7 @@ export default function RtoCalculator() {
         {/* Footer Notes & CTA */}
         <div className="mt-10 flex flex-col gap-5 border-t border-white/10 pt-6 sm:flex-row sm:items-end sm:justify-between">
           <p className="max-w-[34ch] text-xs leading-relaxed text-white/50">
-            Estimate based on Indian D2C delivery averages. Automated WhatsApp checks verify buyer intent and address accuracy before courier pickup.
+            This is an estimate from typical Indian D2C courier rates. We confirm each order on WhatsApp before pickup, so fewer parcels come back.
           </p>
           <Button href="#packages" variant="light" size="sm" showArrow className="shrink-0">
             See the plans

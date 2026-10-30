@@ -1,18 +1,23 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { Check, ChevronLeft, CreditCard, Lock } from 'lucide-react'
+import { memo, useEffect, useRef, useState, type ReactNode } from 'react'
+import { ChevronLeft, CreditCard, IndianRupee, ListChecks, Lock, ShieldCheck, User, Zap, type LucideIcon } from 'lucide-react'
+import { useInView } from './useInView'
+import SolutionStep from './SolutionStep'
 import { PHONE_BODY_H, PHONE_HEADER_H, PhoneFrame, PhoneStatusBar } from './WhatsAppPhoneShell'
 
-/* The six reasons carts leave, each pinned to the exact spot on a leaky checkout where it happens.
-   Auto-cycles; hovering or tapping a pin or a list item jumps to it and pauses the cycle. */
-const LEAKS = [
-  { title: 'The final price feels higher than expected', fix: 'Show the full price early and remind them of the exact total.' },
-  { title: 'Customers have to create an account', fix: 'Let them check out as guests and send a direct WhatsApp link.' },
-  { title: 'Checkout takes too long', fix: 'Ask for fewer details and send them straight to checkout.' },
-  { title: 'Their preferred payment option is missing', fix: 'Put UPI, wallets, and COD first, with a payment link in WhatsApp.' },
-  { title: 'The checkout page loads too slowly', fix: 'Speed up the page so customers can finish their order.' },
-  { title: 'Customers do not feel ready to pay', fix: 'Show trust signals and confirm COD orders on WhatsApp.' },
+/* The six reasons carts leave. Each one is a card on the right, a callout chip around the phone and a
+   pin on the exact spot of the leaky checkout where it happens. They all light up together: the cycle
+   runs on its own, and hovering or tapping a card, chip or pin jumps to it and pauses it. */
+type Leak = { title: string; fix: string; Icon: LucideIcon; chip: string }
+
+const LEAKS: Leak[] = [
+  { title: 'Unexpected costs', fix: 'Show the full price early and remind them of the exact total.', Icon: IndianRupee, chip: 'Extra charges at the end?' },
+  { title: 'Forced account creation', fix: 'Let them check out as guests and send a direct WhatsApp link.', Icon: User, chip: 'Create an account first?' },
+  { title: 'Too many checkout steps', fix: 'Ask for fewer details and send them straight to checkout.', Icon: ListChecks, chip: 'Too many steps?' },
+  { title: 'Missing payment options', fix: 'Put UPI, wallets and COD first, with a payment link in WhatsApp.', Icon: CreditCard, chip: 'Preferred payment option not available?' },
+  { title: 'Slow checkout page', fix: 'Speed up the page so customers can finish their order.', Icon: Zap, chip: 'Page taking forever?' },
+  { title: 'Low trust at payment', fix: 'Show trust signals and confirm COD orders on WhatsApp.', Icon: ShieldCheck, chip: 'Does this look safe?' },
 ]
 
 const CYCLE_MS = 2400
@@ -43,10 +48,9 @@ function Spot({ n, active, onSelect, onHold, className = '', children }: { n: nu
   const on = active === n
   return (
     <div
-      className={`relative rounded-lg transition-[box-shadow,opacity] duration-200 ${className} ${
-        on ? 'opacity-100 shadow-[0_0_0_2px_#121212]' : 'opacity-75 shadow-[0_0_0_1px_transparent]'
-      }`}
+      className={`relative rounded-lg transition-opacity duration-200 ${className} ${on ? 'opacity-100' : 'opacity-75'}`}
     >
+      <span aria-hidden className={`pointer-events-none absolute inset-0 rounded-lg shadow-[0_0_0_2px_#121212] transition-opacity duration-200 ${on ? 'opacity-100' : 'opacity-0'}`} />
       <Pin n={n} active={on} onSelect={() => onSelect(n)} onHold={onHold} />
       {children}
     </div>
@@ -123,7 +127,43 @@ function CheckoutScreen({ active, onSelect, onHold }: { active: number; onSelect
   )
 }
 
-export default function CheckoutHotspots() {
+/* Warning callouts beside the phone. They flag problems, so they are plain flat cards (not chat bubbles):
+   white, thin border, square yellow icon tile; the active one gets a black border. Never over the phone.
+   [leak index, side, top]. Each sits level with the spot on the checkout it is about. */
+const CHIPS: [number, 'left' | 'right', number][] = [
+  [1, 'left', 132],
+  [0, 'left', 316],
+  [3, 'left', 400],
+  [4, 'right', 90],
+  [2, 'right', 224],
+  [5, 'right', 442],
+]
+
+function Chip({ i, side, top, active, onSelect, onHold }: { i: number; side: 'left' | 'right'; top: number; active: boolean; onSelect: (i: number) => void; onHold: (on: boolean) => void }) {
+  const { chip, Icon } = LEAKS[i]
+  return (
+    <button
+      type="button"
+      onMouseEnter={() => { onSelect(i); onHold(true) }}
+      onMouseLeave={() => onHold(false)}
+      onFocus={() => onSelect(i)}
+      onClick={() => onSelect(i)}
+      aria-label={LEAKS[i].title}
+      style={{ top }}
+      className={`absolute z-20 flex w-[158px] items-center gap-2.5 rounded-[3px] border bg-(--color-surface) px-3 py-2.5 text-left text-[13px] font-medium leading-tight text-(--color-text) shadow-[0_1px_3px_rgba(20,18,15,0.06)] transition-colors duration-300 ${
+        side === 'left' ? 'right-[calc(50%+170px)]' : 'left-[calc(50%+170px)]'
+      } ${active ? 'border-(--color-text)' : 'border-(--color-border)'}`}
+    >
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[2px] bg-(--color-accent) text-(--color-text)">
+        <Icon size={16} strokeWidth={2} aria-hidden />
+      </span>
+      {chip}
+    </button>
+  )
+}
+
+function CheckoutHotspots() {
+  const [wrapRef, inView] = useInView<HTMLDivElement>()
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const reduced = useRef(false)
@@ -133,46 +173,64 @@ export default function CheckoutHotspots() {
   }, [])
 
   useEffect(() => {
-    if (paused || reduced.current) return
+    if (paused || reduced.current || !inView) return
     const id = window.setTimeout(() => setActive((a) => (a + 1) % LEAKS.length), CYCLE_MS)
     return () => window.clearTimeout(id)
-  }, [active, paused])
+  }, [active, paused, inView])
 
   return (
-    <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16">
-      <ol className="lg:order-2">
-        {LEAKS.map(({ title, fix }, i) => {
-          const on = active === i
-          return (
-            <li key={title}>
-              <button
-                type="button"
-                onMouseEnter={() => { setActive(i); setPaused(true) }}
-                onMouseLeave={() => setPaused(false)}
-                onFocus={() => setActive(i)}
-                onClick={() => setActive(i)}
-                aria-pressed={on}
-                className={`block w-full py-2.5 text-left transition-opacity duration-300 ${
-                  on ? 'opacity-100' : 'opacity-40 hover:opacity-70'
-                }`}
-              >
-                <span className="block text-lg font-bold leading-snug tracking-tight text-(--color-text)">{title}</span>
-                {/* Fix is always shown (dimmed with its leak) so switching never changes the list's height */}
-                <span className="flex items-start gap-2 pt-1 text-[15px] leading-relaxed text-(--color-text-muted)">
-                  <Check size={15} strokeWidth={2.5} aria-hidden className="mt-1 shrink-0 text-[#1a8a5a]" />
-                  {fix}
-                </span>
-              </button>
-            </li>
-          )
-        })}
-      </ol>
+    <div ref={wrapRef} className="grid grid-cols-1 gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-12">
+      {/* Phone, callout chips and the product it is about to lose */}
+      <div className="checkout-visual order-2 flex justify-center lg:order-1">
+        <div className="relative h-[620px] w-[640px] lg:max-xl:[zoom:0.82] max-sm:[zoom:0.55]">
+          <div className="absolute left-1/2 top-4 h-[540px] w-[540px] -translate-x-1/2 rounded-full bg-(--color-accent)/[0.08]" />
+          <div className="absolute left-1/2 top-0 w-[300px] -translate-x-1/2">
+            <PhoneFrame>
+              <CheckoutScreen active={active} onSelect={setActive} onHold={setPaused} />
+            </PhoneFrame>
+          </div>
 
-      <div className="flex justify-center lg:order-1">
-        <PhoneFrame>
-          <CheckoutScreen active={active} onSelect={setActive} onHold={setPaused} />
-        </PhoneFrame>
+          {CHIPS.map(([i, side, top]) => (
+            <Chip key={i} i={i} side={side} top={top} active={active === i} onSelect={setActive} onHold={setPaused} />
+          ))}
+
+        </div>
+      </div>
+
+      <div className="order-1 lg:order-2">
+        <SolutionStep
+          id="step-checkout"
+          introClassName="checkout-intro"
+          title={<>Fix the <span className="text-(--color-accent)">checkout.</span></>}
+          intro="Most buyers leave for one of six reasons. Each one can be fixed before you send a single message."
+        />
+
+        <ol className="checkout-list mt-6">
+          {LEAKS.map(({ title, fix }, i) => {
+            const on = active === i
+            return (
+              <li key={title}>
+                <button
+                  type="button"
+                  onMouseEnter={() => { setActive(i); setPaused(true) }}
+                  onMouseLeave={() => setPaused(false)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                  aria-pressed={on}
+                  className={`block w-full py-2.5 text-left text-base leading-relaxed transition-opacity duration-300 ${
+                    on ? 'opacity-100' : 'opacity-40 hover:opacity-70'
+                  }`}
+                >
+                  <span className="font-bold text-(--color-text)">{title}.</span>{' '}
+                  <span className="text-(--color-text-muted)">{fix}</span>
+                </button>
+              </li>
+            )
+          })}
+        </ol>
       </div>
     </div>
   )
 }
+
+export default memo(CheckoutHotspots)

@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { useInView } from './useInView'
 import { ChevronLeft, Home, MessageCircle, Search, Shirt, ShoppingBag, User } from 'lucide-react'
 import {
   PhoneFrame,
@@ -18,7 +19,6 @@ export type RecoveryMessage = {
   offerText?: string
 }
 
-const HOLD_MS = 3000
 const ink = 'rgba(18,18,18,'
 
 const CATALOG = [
@@ -31,14 +31,14 @@ const CATALOG = [
 type Scene = 'list' | 'detail' | 'tap' | 'added' | 'back' | 'exit' | 'home' | 'notify'
 
 const FLOW: { view: Scene; ms: number }[] = [
-  { view: 'list',   ms: 1500 },
-  { view: 'detail', ms: 1500 },
-  { view: 'tap',    ms: 500 },
-  { view: 'added',  ms: 1300 },
-  { view: 'back',   ms: 1100 },
-  { view: 'exit',   ms: 700 },
-  { view: 'home',   ms: 1300 },
-  { view: 'notify', ms: 1900 },
+  { view: 'list',   ms: 900 },
+  { view: 'detail', ms: 900 },
+  { view: 'tap',    ms: 350 },
+  { view: 'added',  ms: 800 },
+  { view: 'back',   ms: 700 },
+  { view: 'exit',   ms: 450 },
+  { view: 'home',   ms: 800 },
+  { view: 'notify', ms: 1100 },
 ]
 
 type ChatNode =
@@ -272,12 +272,16 @@ function Bubble({ m }: { m: RecoveryMessage }) {
 
 /* One loop of the story the section describes: a shopper adds to cart, closes
    the app, sees the notification land on their home screen, and opens WhatsApp. */
-export default function AbandonedCartDemo({
+function AbandonedCartStage({
   messages,
   storefront = true,
   onStep,
   onMessage,
+  onProgress,
+  active,
 }: {
+  /* false while scrolled out of view: the loop pauses instead of re-rendering offscreen */
+  active: boolean,
   messages: RecoveryMessage[]
   /* false plays the chat half only, for a section that has already shown the store */
   storefront?: boolean
@@ -286,17 +290,19 @@ export default function AbandonedCartDemo({
   onStep?: (step: number) => void
   /* Index of the newest recovery message on screen (0 until the first one lands) */
   onMessage?: (index: number) => void
+  /* How many recovery messages have landed, and whether the whole story has finished */
+  onProgress?: (messages: number, done: boolean) => void
 }) {
   const flow = useMemo(() => (storefront ? FLOW : []), [storefront])
 
   const chat = useMemo<ChatNode[]>(() => {
     const nodes: ChatNode[] = []
     messages.forEach((m, i) => {
-      if (i > 0) nodes.push({ t: 'divider', ms: 800, text: `${m.timing} later` })
-      nodes.push({ t: 'typing', ms: 650 })
-      nodes.push({ t: 'msg', ms: 1500, m })
+      if (i > 0) nodes.push({ t: 'divider', ms: 500, text: `${m.timing} later` })
+      nodes.push({ t: 'typing', ms: 400 })
+      nodes.push({ t: 'msg', ms: 1000, m })
     })
-    nodes.push({ t: 'cta', ms: 900 })
+    nodes.push({ t: 'cta', ms: 600 })
     return nodes
   }, [messages])
 
@@ -310,11 +316,12 @@ export default function AbandonedCartDemo({
   }, [total])
 
   useEffect(() => {
-    if (reduced.current) return
+    // Plays through once and stops on the finished chat: messages never leave the screen
+    if (reduced.current || !active || stage >= total) return
     const step = stage < flow.length ? flow[stage] : chat[stage - flow.length]
-    const id = window.setTimeout(() => setStage(s => (s >= total ? 0 : s + 1)), step ? step.ms : HOLD_MS)
+    const id = window.setTimeout(() => setStage(s => s + 1), step.ms)
     return () => window.clearTimeout(id)
-  }, [stage, chat, flow, total])
+  }, [stage, chat, flow, total, active])
 
   const scene = stage < flow.length ? flow[stage].view : null
   const step = scene === null || scene === 'notify' ? 2 : scene === 'home' ? 1 : 0
@@ -322,6 +329,8 @@ export default function AbandonedCartDemo({
   const shownMessages = scene === null ? chat.slice(0, stage - flow.length + 1).filter((n) => n.t === 'msg').length : 0
   const messageIndex = Math.max(0, shownMessages - 1)
   useEffect(() => { onMessage?.(messageIndex) }, [messageIndex, onMessage])
+  const done = stage >= total
+  useEffect(() => { onProgress?.(shownMessages, done) }, [shownMessages, done, onProgress])
 
   if (scene !== null) {
     const view = scene
@@ -356,7 +365,7 @@ export default function AbandonedCartDemo({
   return (
     <PhoneFrame>
       <div className="wa-fade" key="chat">
-        <WhatsAppScreen time={messages[0]?.clockTime ?? '10:15'} name="Kaya Wear" subtitle="Business account" avatarLetter="K" height={BODY_H} topFade>
+        <WhatsAppScreen time={messages[0]?.clockTime ?? '10:15'} name="Kaya Wear" subtitle="Business account" avatarLetter="K" height={BODY_H} topFade smoothScroll>
           {visible.map((node, i) => {
             const isLast = i === visible.length - 1
 
@@ -391,7 +400,7 @@ export default function AbandonedCartDemo({
 
             return (
               <div key={i} className="wa-pop" style={{
-                borderRadius: 8, background: '#fff', textAlign: 'center', padding: '9px 12px',
+                width: '92%', borderRadius: 8, background: '#fff', textAlign: 'center', padding: '9px 12px',
                 fontSize: 12.5, fontWeight: 500, color: '#027eb5', boxShadow: '0 1px 2px rgba(0,0,0,0.07)',
               }}>
                 Complete my order →
@@ -403,3 +412,14 @@ export default function AbandonedCartDemo({
     </PhoneFrame>
   )
 }
+
+function AbandonedCartDemo(props: Omit<Parameters<typeof AbandonedCartStage>[0], 'active'>) {
+  const [wrapRef, inView] = useInView<HTMLDivElement>()
+  return (
+    <div ref={wrapRef} className="w-full">
+      <AbandonedCartStage {...props} active={inView} />
+    </div>
+  )
+}
+
+export default memo(AbandonedCartDemo)

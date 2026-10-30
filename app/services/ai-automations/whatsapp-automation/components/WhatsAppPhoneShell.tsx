@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { BadgeCheck, Camera, ChevronLeft, EllipsisVertical, Mic, Paperclip, Smile, Wifi } from 'lucide-react'
 
 /* Blue double-check ticks, shared by any outbound bubble across the phone mockups */
@@ -157,6 +157,8 @@ type WhatsAppScreenProps = {
   /* Height below the chat header (chat + message bar), so screens swapped in the same frame line up */
   height?: number
   topFade?: boolean
+  /* Older messages glide up as new ones arrive, instead of jumping (the chat always stays pinned to the newest) */
+  smoothScroll?: boolean
   children: ReactNode
 }
 
@@ -170,20 +172,35 @@ export function WhatsAppScreen({
   avatarColor,
   height = PHONE_BODY_H,
   topFade = false,
+  smoothScroll = false,
   children,
 }: WhatsAppScreenProps) {
+  const boxRef = useRef<HTMLDivElement>(null)
+  const innerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const box = boxRef.current
+    const inner = innerRef.current
+    if (!box || !inner) return
+    const glide = smoothScroll && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const ro = new ResizeObserver(() => box.scrollTo({ top: box.scrollHeight, behavior: glide ? 'smooth' : 'auto' }))
+    ro.observe(inner)
+    return () => ro.disconnect()
+  }, [smoothScroll])
+
   return (
     <>
       <PhoneStatusBar time={time} />
       <ChatHeader name={name} subtitle={subtitle} avatarLetter={avatarLetter} avatarColor={avatarColor} />
-      <div
-        className="relative flex flex-col justify-end gap-2 overflow-hidden px-2.5 pb-3.5 pt-3"
-        style={{ height: height - PHONE_INPUT_H, background: CHAT_BG }}
-      >
+      <div className="relative" style={{ height: height - PHONE_INPUT_H, background: CHAT_BG }}>
+        <div ref={boxRef} className="h-full overflow-hidden">
+          <div ref={innerRef} className="flex min-h-full flex-col justify-end gap-2 px-2.5 pb-3.5 pt-3">
+            {children}
+          </div>
+        </div>
         {topFade && (
           <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-10 h-9 bg-gradient-to-b from-[#efe7de] to-transparent" />
         )}
-        {children}
       </div>
       <MessageBar />
     </>
