@@ -62,6 +62,7 @@ Do not bulk-load the entire `.ai/` folder. Preserve context for implementation w
 | Visual design | `.ai/standards/design-system.md` |
 | Animation | `.ai/standards/motion-system.md` |
 | SEO/GEO | `.ai/standards/seo-geo.md` |
+| Images + assets (format, size, naming, alt, Sanity, OG) | `.ai/standards/image-asset-standards.md` |
 | Code rules | `.ai/standards/code-standards.md` |
 | Copy that sounds human | `.ai/commands/macro/humanize.md` |
 | Design/code conventions log | `.ai/learning.md` |
@@ -69,6 +70,8 @@ Do not bulk-load the entire `.ai/` folder. Preserve context for implementation w
 ## Task Recipes (Commands)
 
 Recipes in `.ai/commands/` are **tool-agnostic execution workflows**. Invoke by name or by slash command if your tool supports it (`/humanize`, `/design-page`, etc.).
+
+Claude Code only discovers slash commands in `.claude/commands/`, so each recipe has a thin wrapper there (frontmatter `description` + "follow `.ai/commands/<kind>/<name>.md`"). **Adding a recipe? Add its wrapper too**, or it won't appear in the `/` menu. Never put recipe logic in the wrapper.
 
 ### Macro (full workflows)
 
@@ -87,6 +90,7 @@ Recipes in `.ai/commands/` are **tool-agnostic execution workflows**. Invoke by 
 | `audit-component` | `.ai/commands/micro/audit-component.md` | Design + perf audit on one component |
 | `fix-performance` | `.ai/commands/micro/fix-performance.md` | Diagnose LCP / CLS / INP / bundle issues |
 | `push` | `.ai/commands/micro/push.md` | Commit, push, and open/update PR |
+| `test` | `.ai/commands/micro/test.md` | Run E2E tests: whole app (`/test-e2e`, or `/test-e2e-headed` to watch in Chrome) or one page (`/test-page <name>`) |
 
 ## Learning Log — Consistency Memory
 

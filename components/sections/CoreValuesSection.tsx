@@ -44,10 +44,8 @@ export function CoreValuesSection() {
     <section className="relative bg-(--color-surface) py-24 md:py-32" aria-label="Core Values">
       <div className="container">
         <div className="mb-14 max-w-3xl md:mb-20">
-          <RevealText>
-            <h2 className="text-h2 font-bold text-(--color-text)">
-              How we decide what to build
-            </h2>
+          <RevealText as="h2" className="text-h2 font-bold text-(--color-text)">
+            How we decide what to build
           </RevealText>
           <RevealFade delay={0.15}>
             <p className="mt-4 text-body-lg text-(--color-text-muted) leading-(--leading-body)">

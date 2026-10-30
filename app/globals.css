@@ -266,6 +266,29 @@ body[data-scroll-locked] {
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
 }
 
+/* Anchored to the parent panel (its <li> is static), so the flyout sits
+   flush with the panel's top edge as a separate card beside it. */
+.dropdown-panel.nested {
+  top: -1px;
+  left: calc(100% + 8px);
+  padding: 4px;
+  transform: translateX(-6px);
+}
+
+/* Invisible bridge over the 8px gap so crossing it doesn't fire mouseleave. */
+.dropdown-panel.nested::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 100%;
+  width: 10px;
+}
+
+.dropdown-panel.nested.open {
+  transform: translateX(0);
+}
+
 /* ─── Audit Modal (sitewide "book a free audit" popup) ──────────
    Radix Dialog drives [data-state] — no JS-timed animation needed. Centered
    card that shrinks to the viewport on small screens instead of a separate
@@ -314,6 +337,52 @@ body[data-scroll-locked] {
   .audit-modal-content {
     animation: none !important;
   }
+}
+
+/* ─── Service bento motion (ServiceMotion.tsx) ─────────────────── */
+/* Only the active card's layer shows and runs; the rest sit hidden and paused. */
+.svc-motion { opacity: 0; transition: opacity 0.5s ease; }
+.svc-motion[data-active='true'] { opacity: 1; }
+.svc-motion * { transform-box: fill-box; transform-origin: center; animation-play-state: paused; }
+.svc-motion[data-active='true'] * { animation-play-state: running; }
+
+.svc-travel {
+  fill: none; stroke: #E8B53A; stroke-width: 7; stroke-linecap: round;
+  stroke-dasharray: 0 200; /* one dot per 100-unit path, the next one parked off the end */
+  animation: svc-travel 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite both;
+}
+.svc-ring    { fill: none; stroke-width: 2.5; animation: svc-ring 2.4s ease-out infinite both; }
+.svc-blink   { animation: svc-blink 4s infinite both; }
+.svc-ants    { fill: none; stroke-width: 1.5; stroke-dasharray: 6 4; animation: svc-ants 1s linear infinite; }
+.svc-grow    { transform-origin: left center; animation: svc-grow 3s cubic-bezier(0.16, 1, 0.3, 1) infinite both; }
+.svc-draw    { fill: none; stroke-dasharray: 100 100; animation: svc-draw 3s cubic-bezier(0.16, 1, 0.3, 1) infinite both; }
+.svc-shimmer { animation: svc-shimmer 2.6s ease-in-out infinite both; }
+
+@keyframes svc-travel {
+  0%   { stroke-dashoffset: 0; opacity: 0; }
+  10%, 85% { opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+@keyframes svc-ring {
+  0%        { transform: scale(1); opacity: 0.9; }
+  70%, 100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes svc-blink   { 0%, 90%, 100% { opacity: 0; } 93%, 96% { opacity: 1; } }
+@keyframes svc-ants    { to { stroke-dashoffset: -20; } }
+@keyframes svc-grow {
+  0%        { transform: scaleX(0); opacity: 1; }
+  55%       { transform: scaleX(1); opacity: 1; }
+  80%, 100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes svc-draw {
+  0%       { stroke-dashoffset: 100; opacity: 1; }
+  60%, 85% { stroke-dashoffset: 2; opacity: 1; }
+  100%     { stroke-dashoffset: 2; opacity: 0; }
+}
+@keyframes svc-shimmer { 0% { transform: translateX(-120%); } 60%, 100% { transform: translateX(320%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-motion { display: none; }
 }
 
 /* ─── Buttons ─────────────────────────────────────────────────── */
@@ -497,3 +566,32 @@ body[data-scroll-locked] {
 .wf-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* WhatsApp page hero phone entrance */
+.wa-phone-reveal { animation: waPhoneEnter 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both; }
+@keyframes waPhoneEnter {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .wa-phone-reveal { animation: none; } }
+
+/* WhatsApp page demos: compositor-only motion (transform/opacity), cheaper than animating through JS */
+@keyframes wa-sway  { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(-4deg); } }
+@keyframes wa-float { 0%, 100% { transform: translateY(-4px); } 50% { transform: translateY(4px); } }
+@keyframes wa-pulse { from { transform: scale(0.48); opacity: 0.6; } to { transform: scale(1); opacity: 0; } }
+.wa-sway  { transform-origin: 50% 0; animation: wa-sway 4.2s ease-in-out infinite; }
+.wa-float { animation: wa-float 3.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .wa-sway, .wa-float, .wa-pulse { animation: none; }
+}
+@keyframes wa-bob { 0%, 100% { transform: translateY(calc(var(--a, 5px) * -1)); } 50% { transform: translateY(var(--a, 5px)); } }
+.wa-bob   { animation: wa-bob var(--d, 4s) ease-in-out var(--dl, 0s) infinite; }
+.wa-pulse { animation: wa-pulse 3.2s ease-out infinite; }
+[data-offscreen] .wa-bob, [data-offscreen] .wa-pulse, [data-offscreen] .wa-sway, [data-offscreen] .wa-float { animation-play-state: paused; }
+
+
+/* Phone logo rail: slides one set-width to the left and loops; stops with reduced motion */
+@keyframes wa-marquee { to { transform: translateX(-50%); } }
+.wa-marquee { animation: wa-marquee 26s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .wa-marquee { animation: none; } }
+

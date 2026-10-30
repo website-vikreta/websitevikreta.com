@@ -174,7 +174,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         }}
       />
       <h3 className="text-base sm:text-xl font-medium text-white">
-        "{testimonial.testimonial}"
+        &quot;{testimonial.testimonial}&quot;
       </h3>
       <p className="absolute bottom-8 left-8 right-8 mt-2 text-sm italic text-white/70">
         - {testimonial.by}
