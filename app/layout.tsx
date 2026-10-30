@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import localFont from 'next/font/local'
-import { HideOnHome, HideOnStudio } from '@/components/ui/ConditionalShell'
-import { SiteFooter, SiteHeader } from '@/components/wv/SiteChrome'
+import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
+import { ConditionalShell } from '@/components/ui/ConditionalShell'
 import { ScrollManager } from '@/components/ui/ScrollManager'
 import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { AuditModalProvider } from '@/components/ui/AuditModalProvider'
 import { CTASection } from '@/components/sections/CTASection'
+import { FooterSection } from '@/components/sections/FooterSection'
 import './globals.css'
 import Script from 'next/script'
 import { SITE_URL } from '@/config/site'
@@ -60,9 +61,7 @@ export default function RootLayout({
         </Suspense>
         <ScrollManager />
         <AuditModalProvider>
-          <HideOnStudio>
-            <SiteHeader />
-          </HideOnStudio>
+          <ConditionalNavbar />
           {children}
         </AuditModalProvider>
         {/* <GoToTop /> */}
@@ -120,8 +119,7 @@ export default function RootLayout({
           />
         )}
 
-      <HideOnStudio>
-        <HideOnHome>
+      <ConditionalShell>
         <CTASection
           title="Ready when you are."
           description="Free call. No commitment. Tell us what you're building, or what isn't working, and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
@@ -132,9 +130,8 @@ export default function RootLayout({
           }}
           withGlow={true}
         />
-        </HideOnHome>
-        <SiteFooter />
-      </HideOnStudio>
+        <FooterSection />
+      </ConditionalShell>
       </body>
     </html>
   )
