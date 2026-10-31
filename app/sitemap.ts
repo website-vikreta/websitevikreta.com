@@ -83,6 +83,12 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.8,
   },
   {
+    url: `${BASE}/ai-lab`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  },
+  {
     url: `${BASE}/careers`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
