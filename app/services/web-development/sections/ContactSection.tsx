@@ -52,6 +52,7 @@ export default function ContactSection() {
             <div className="cta-form-card border border-(--color-border) bg-(--color-surface) p-5 sm:p-6 md:p-8">
               <AuditForm
                 formName="web_development_quote"
+                defaultSubject="Website quote request"
                 heading={WEB_DEV_CONTACT.formHeading}
                 subjectPlaceholder="What do you need built?"
                 messagePlaceholder="Tell us about your business and what you're trying to build…"

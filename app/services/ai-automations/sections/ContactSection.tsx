@@ -54,7 +54,7 @@ export default function ContactSection() {
           {/* Right — 60% */}
           <div>
             <div className="cta-form-card bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
-              <AuditForm formName="book_audit_inline" />
+              <AuditForm formName="book_audit_inline" defaultSubject="Free process audit" />
             </div>
           </div>
 

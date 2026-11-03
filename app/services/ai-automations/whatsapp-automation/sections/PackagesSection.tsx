@@ -152,7 +152,7 @@ export default function PackagesSection() {
                 </ul>
 
                 <div className="mt-8">
-                  <Button href="#whatsapp-demo" variant="ghost" size="md" showArrow className="w-full justify-center">
+                  <Button href="#whatsapp-demo" modalSubject={`${name}: quote request`} variant="ghost" size="md" showArrow className="w-full justify-center">
                     {cta}
                   </Button>
                 </div>
@@ -170,7 +170,7 @@ export default function PackagesSection() {
               Multi-brand stores, AI WhatsApp agents or custom API connections. Tell us what you need and we will quote it.
             </p>
           </div>
-          <Button href="#whatsapp-demo" variant="primary" size="md" showArrow className="shrink-0 self-start sm:self-auto">
+          <Button href="#whatsapp-demo" modalSubject="Custom WhatsApp automation" variant="primary" size="md" showArrow className="shrink-0 self-start sm:self-auto">
             Talk to us
           </Button>
         </div>
