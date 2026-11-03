@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const opening = await writeClient.fetch<{ isActive: boolean } | null>(
-      `*[_type == "opening" && _id == $openingId][0]{ isActive }`,
+    const opening = await writeClient.fetch<{ isActive: boolean; type?: string } | null>(
+      `*[_type == "opening" && _id == $openingId][0]{ isActive, type }`,
       { openingId }
     )
     if (!opening || !opening.isActive) {
@@ -85,6 +85,7 @@ export async function POST(req: NextRequest) {
         candidate_phone: phone ?? 'Not provided',
         notes:           notes ?? 'Not provided',
         job_title:       openingTitle,
+        job_type:        opening.type ?? 'Not specified',
         job_url:         jobUrl,
         resume_url:      resumePublicUrl,
       },
