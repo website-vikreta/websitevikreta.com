@@ -237,8 +237,27 @@ body[data-scroll-locked] {
   transform: translateY(130%);
 }
 
-[data-hero-anim] {
-  opacity: 0;
+/* Home hero entrance: CSS-only so it plays on first paint (no hydration/GSAP wait) and LCP is not
+   held back. Words rise through the .word-wrapper mask; sub-copy and CTAs fade up. */
+.hero-word {
+  animation: hero-rise 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 65ms);
+}
+.hero-fade {
+  animation: hero-fade-up 0.65s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hero-rise {
+  from { transform: translateY(130%); }
+  to   { transform: translateY(0); }
+}
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-word, .hero-fade { animation: none; }
+  .hero-word { transform: none; }
 }
 
 /* ─── Dropdown Panel ──────────────────────────────────────────── */
