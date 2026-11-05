@@ -200,6 +200,7 @@ export default function FixesSection() {
                 <div className="service-copy mt-6">
                   <Button
                     href={service.href ?? '#book-audit'}
+                    modalSubject={`${service.title}: process audit`}
                     variant="ghost"
                     size="sm"
                     showArrow

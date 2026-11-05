@@ -20,6 +20,8 @@ export interface AuditModalConfig {
   heading: string
   subjectPlaceholder: string
   messagePlaceholder: string
+  /** Prefilled Subject value; set per click via `Button`'s `modalSubject`. */
+  defaultSubject?: string
   /** Screen-reader-only dialog description (Radix requires one). */
   dialogDescription: string
   projectsHeading?: string
@@ -28,6 +30,7 @@ export interface AuditModalConfig {
 
 const AUDIT_CONFIG: AuditModalConfig = {
   formName: 'book_audit_modal',
+  defaultSubject: 'Free process audit',
   heading: 'Book a Free Process Audit',
   subjectPlaceholder: 'What do you need automated?',
   messagePlaceholder: 'Describe the repetitive work you want to automate…',
@@ -36,6 +39,7 @@ const AUDIT_CONFIG: AuditModalConfig = {
 
 const PROJECT_CALL_CONFIG: AuditModalConfig = {
   formName: 'book_project_call_modal',
+  defaultSubject: 'Free project call',
   heading: 'Book a Free Project Call',
   subjectPlaceholder: 'What do you need built?',
   messagePlaceholder: 'Describe the CRM, portal, or app you need…',
@@ -44,6 +48,7 @@ const PROJECT_CALL_CONFIG: AuditModalConfig = {
 
 const FREE_QUOTE_CONFIG: AuditModalConfig = {
   formName: 'get_quote_modal',
+  defaultSubject: 'Website quote request',
   heading: 'Get a Free Quote',
   subjectPlaceholder: 'What kind of website do you need?',
   messagePlaceholder: 'Describe your project, timeline, and budget…',
@@ -52,6 +57,7 @@ const FREE_QUOTE_CONFIG: AuditModalConfig = {
 
 const MARKETING_AUDIT_CONFIG: AuditModalConfig = {
   formName: 'book_marketing_audit_modal',
+  defaultSubject: 'Free marketing audit',
   heading: 'Book a Free Marketing Audit',
   subjectPlaceholder: 'What are you trying to grow?',
   messagePlaceholder: 'Tell us about your traffic, leads, or rankings goal…',
@@ -60,6 +66,7 @@ const MARKETING_AUDIT_CONFIG: AuditModalConfig = {
 
 const WHATSAPP_DEMO_CONFIG: AuditModalConfig = {
   formName: 'book_whatsapp_demo_modal',
+  defaultSubject: 'WhatsApp automation: platform demo',
   heading: 'Book a Platform Demo',
   subjectPlaceholder: 'Your store URL or platform (Shopify, WooCommerce, custom)',
   messagePlaceholder: 'Monthly order volume, cart abandonment challenges…',
