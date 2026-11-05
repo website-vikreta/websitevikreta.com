@@ -28,18 +28,6 @@ const CHANNEL_STATS = [
       secondaryVal: '~9%',
     },
   },
-  {
-    n: '~₹0.11',
-    label: 'Per order update',
-    context: 'Order confirmations, shipping updates and cart reminders are the cheapest kind of WhatsApp message Meta charges for.',
-    comparison: {
-      primaryLabel: 'Order update',
-      primaryVal: '~₹0.11',
-      pct: 10,
-      secondaryLabel: 'Marketing message',
-      secondaryVal: '₹1.09',
-    },
-  },
 ]
 
 export default function ProofSection() {
@@ -69,7 +57,7 @@ export default function ProofSection() {
         </div>
 
         {/* Channel benchmarks: clean, sharp cards with sleek comparison rail */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
           {CHANNEL_STATS.map(({ n, label, context, comparison }, i) => (
             <article key={n} className={`stat-card ${i === CHANNEL_STATS.length - 1 ? 'md:col-span-2 lg:col-span-1' : ''} flex border border-(--color-border) bg-(--color-surface) shadow-xs transition-colors duration-300 hover:border-(--color-border-strong)`}>
               <div className="flex w-full flex-col justify-between p-7 sm:p-8">

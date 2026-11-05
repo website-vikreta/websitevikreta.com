@@ -70,6 +70,7 @@ export default function ContactSection() {
               <p className="mb-6 text-2xl font-bold leading-tight text-(--color-text)">Book a platform demo</p>
               <AuditForm
                 formName="book_whatsapp_demo_inline"
+                defaultSubject="WhatsApp automation: platform demo"
                 heading=""
                 subjectPlaceholder="Your store URL or platform (Shopify, WooCommerce, custom)"
                 messagePlaceholder="Monthly order volume, cart abandonment rate if you know it…"

@@ -28,9 +28,9 @@ export const WHATSAPP_FAQS: FaqItem[] = [
   },
   {
     id: 'wa-5',
-    question: 'What is included in setup vs monthly cost?',
+    question: 'What does setup include, and how is pricing worked out?',
     answer:
-      'Setup covers platform configuration, Meta verification, template approval, and store wiring. Monthly covers the platform subscription; Meta per-message charges (Utility and Marketing) are billed separately based on usage.',
+      'Setup covers platform configuration, Meta verification, template approval, and store wiring. Pricing depends on your order volume and the features you need, so our team prepares a quote for your store. Meta bills its own per-message charges separately, based on usage.',
   },
   {
     id: 'wa-6',

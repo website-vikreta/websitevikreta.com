@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
@@ -35,22 +35,41 @@ export function CTASection({
   action,
   withMap = true,
 }: CTAProps) {
+  const sectionRef = useRef<HTMLElement>(null)
+  // The map (d3 + a 107 KB JSON + SVG animations) sits far below the fold, so don't load or run it
+  // until the section is near the viewport. Only the variant for the current width is mounted.
+  const [mapVariant, setMapVariant] = useState<'desktop' | 'mobile' | null>(null)
+
+  useEffect(() => {
+    if (!withMap || !sectionRef.current) return
+    const mq = window.matchMedia('(min-width: 768px)')
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        const pick = () => setMapVariant(mq.matches ? 'desktop' : 'mobile')
+        pick()
+        mq.addEventListener('change', pick)
+        io.disconnect()
+        cleanup = () => mq.removeEventListener('change', pick)
+      },
+      { rootMargin: '600px 0px' },
+    )
+    let cleanup = () => {}
+    io.observe(sectionRef.current)
+    return () => {
+      io.disconnect()
+      cleanup()
+    }
+  }, [withMap])
+
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="cta-heading"
       className="relative w-full overflow-hidden border-y border-[var(--color-border,#E8E8E8)] bg-[var(--color-bg,#FAFAF7)] flex flex-col items-center pt-8 sm:pt-10 md:pt-20 lg:pt-24 pb-6 sm:pb-7 md:pb-10 lg:pb-12 min-h-0 md:min-h-[420px] lg:min-h-[460px]"
     >
       {/* Background Curved Natural Earth Map: Desktop full strip + Mobile dual-region switcher */}
-      {withMap && (
-        <>
-          <div className="hidden md:block">
-            <CTAMapBackground variant="desktop" />
-          </div>
-          <div className="block md:hidden">
-            <CTAMapBackground variant="mobile" />
-          </div>
-        </>
-      )}
+      {withMap && mapVariant && <CTAMapBackground variant={mapVariant} />}
 
       {/* Optional Badge if explicitly passed */}
       {badge && (

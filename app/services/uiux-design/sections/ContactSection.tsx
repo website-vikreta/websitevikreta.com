@@ -45,6 +45,7 @@ export default function ContactSection() {
             <div className="cta-form-card border border-(--color-border) bg-(--color-surface) p-5 sm:p-6 md:p-8">
               <AuditForm
                 formName="book_uiux_call_inline"
+                defaultSubject="UX review call"
                 heading={UI_UX_CONTACT.formHeading}
                 subjectPlaceholder="What flow or product needs UX work?"
                 messagePlaceholder="Share a URL, analytics snippet, or where users drop off…"
