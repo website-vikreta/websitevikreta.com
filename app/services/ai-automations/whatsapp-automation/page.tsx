@@ -27,10 +27,6 @@ const jsonLd = {
       mainEntityOfPage: { '@id': `${PAGE_URL}#webpage` },
       provider: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'India' },
-      offers: [
-        { '@type': 'Offer', name: 'WA Starter', url: `${PAGE_URL}#packages`, price: '11250', priceCurrency: 'INR', availability: 'https://schema.org/InStock', description: 'Per quarter, excluding GST' },
-        { '@type': 'Offer', name: 'WA eCommerce', url: `${PAGE_URL}#packages`, price: '15750', priceCurrency: 'INR', availability: 'https://schema.org/InStock', description: 'Per quarter, excluding GST' },
-      ],
     },
     {
       '@type': 'HowTo',
