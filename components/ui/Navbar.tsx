@@ -41,6 +41,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: 'Work', href: '/work' },
+  { label: 'AI Lab', href: '/ai-lab' },
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
   { label: 'Careers', href: '/careers' },
