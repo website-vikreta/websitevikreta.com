@@ -118,7 +118,7 @@ export function BlogCard({ post, className, clampDescription = false }: BlogCard
           </span>
         </div>
         <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
-          Read more
+          Read more<span className="sr-only"> about {post.title}</span>
         </TextLink>
       </div>
     </article>

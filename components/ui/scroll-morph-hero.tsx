@@ -114,13 +114,18 @@ export default function IntroAnimation() {
 
     // Stable scatter start positions (opacity 0 → fade in during fly-to-line)
     const scatterPositions = useMemo<Target[]>(
-        () => Array.from({ length: TOTAL_IMAGES }, () => ({
-            x:        (Math.random() - 0.5) * 1500,
-            y:        (Math.random() - 0.5) * 1000,
-            rotation: (Math.random() - 0.5) * 180,
-            scale:    0.6,
-            opacity:  0,
-        })),
+        () => Array.from({ length: TOTAL_IMAGES }, (_, n) => {
+            const rx = ((n * 137.5) % 1) - 0.5;
+            const ry = ((n * 222.3) % 1) - 0.5;
+            const rr = ((n * 359.1) % 1) - 0.5;
+            return {
+                x:        rx * 1500,
+                y:        ry * 1000,
+                rotation: rr * 180,
+                scale:    0.6,
+                opacity:  0,
+            };
+        }),
         []
     );
 

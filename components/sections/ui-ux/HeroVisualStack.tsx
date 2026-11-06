@@ -88,8 +88,8 @@ export function WorkflowGallery() {
     <section ref={scope} className="py-8 sm:py-10 md:py-12 2xl:py-20" aria-labelledby="uiux-workflow-heading">
       <div className="container">
         <header className="mb-4 max-w-2xl md:mb-5 2xl:mb-8">
-          <RevealText as="h2" className="text-xl font-bold text-(--color-text) sm:text-2xl md:text-3xl 2xl:text-h3">
-            <span id="uiux-workflow-heading">{UI_UX_WORKFLOW.heading}</span>
+          <RevealText id="uiux-workflow-heading" as="h2" className="text-xl font-bold text-(--color-text) sm:text-2xl md:text-3xl 2xl:text-h3">
+            {UI_UX_WORKFLOW.heading}
           </RevealText>
           <RevealText as="p" className="mt-1.5 text-xs text-(--color-text-muted) sm:text-sm md:text-base 2xl:text-body-lg" delay={0.08}>
             {UI_UX_WORKFLOW.subhead}

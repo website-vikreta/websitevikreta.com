@@ -21,13 +21,12 @@ export const metadata: Metadata = {
     siteName: 'Website Vikreta',
     type: 'website',
     locale: 'en_IN',
-    // TODO: add public/og-image.png (1200x630px)
     // Brand: cream/off-white background, black text, #FFBF00 yellow accent
     images: [
       {
         url: '/og-image.png',
         width: 1200,
-        height: 675,
+        height: 630,
         alt: 'Contact Website Vikreta | AI-First Web Agency',
       },
     ],

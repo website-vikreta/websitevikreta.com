@@ -123,6 +123,7 @@ export default function RootLayout({
         <CTASection
           title="Ready when you are."
           description="Free call. No commitment. Tell us what you're building, or what isn't working, and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
+          mobileDescription="Free call. No pitch. Tell us what's broken, and we'll tell you what we'd do."
           action={{
             text: "Book a call",
             href: "/contact"

@@ -59,10 +59,8 @@ export function PhotoGallerySection() {
     <section className="relative py-16 md:py-20" aria-label="Photo Gallery">
       <div className="container">
         <div className="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
-          <RevealText className="max-w-2xl">
-            <h2 className="text-h2 font-bold text-(--color-text)">
-              The people and process behind the systems
-            </h2>
+          <RevealText as="h2" className="text-h2 font-bold text-(--color-text) max-w-2xl">
+            The people and process behind the systems
           </RevealText>
           <RevealFade delay={0.1}>
             <p className="text-sm text-(--color-text-muted) md:text-right">

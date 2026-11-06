@@ -73,7 +73,7 @@ export default async function AuthorLandingPage({ params }: AuthorPageParams) {
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden bg-(--color-bg-muted) md:h-28 md:w-28">
                   {author.image && (
                     <Image
-                      src={urlFor(author.image).width(224).height(224).url()}
+                      src={urlFor(author.image).width(224).height(224).auto('format').url()}
                       alt={author.name}
                       fill
                       className="object-cover"

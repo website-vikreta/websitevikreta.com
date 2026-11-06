@@ -100,8 +100,8 @@ export function JourneyFrictionGrid() {
     <section className="overflow-visible py-8 sm:py-10 md:py-12 2xl:py-20" aria-labelledby="uiux-pain-heading">
       <div className="container overflow-visible">
         <header className="mb-4 max-w-3xl md:mb-5 2xl:mb-8">
-          <RevealText as="h2" className="text-xl font-bold text-balance text-(--color-text) sm:text-2xl md:text-3xl lg:text-3xl 2xl:text-h2">
-            <span id="uiux-pain-heading">{UI_UX_PAIN.heading}</span>
+          <RevealText id="uiux-pain-heading" as="h2" className="text-xl font-bold text-balance text-(--color-text) sm:text-2xl md:text-3xl lg:text-3xl 2xl:text-h2">
+            {UI_UX_PAIN.heading}
           </RevealText>
           <p className="mt-1.5 2xl:mt-3 max-w-2xl text-pretty text-xs leading-relaxed text-(--color-text-muted) sm:text-sm md:text-base 2xl:text-body-lg">
             {UI_UX_PAIN.subhead}

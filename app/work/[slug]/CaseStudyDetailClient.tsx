@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import type { CaseStudy } from '@/lib/work-data'
 import { CaseStudyVisual } from '@/components/sections/work/CaseStudyCard'
 import { WorkCTASection } from '@/components/sections/work/WorkCTASection'
+import { DotGrid } from '@/components/ui/DotGrid'
 
 interface Props {
   study: CaseStudy
@@ -18,6 +19,7 @@ const SUBHEAD = 'text-h3 font-bold tracking-tight text-(--color-text) mb-6'
 export function CaseStudyDetailClient({ study }: Props) {
   return (
     <main>
+      <DotGrid global />
       <section className="relative overflow-hidden" aria-label="Case Study Hero">
         <div className="container pt-32 pb-8 md:pb-16 md:pt-40">
           <RevealFade delay={0}>
@@ -77,7 +79,7 @@ export function CaseStudyDetailClient({ study }: Props) {
         </div>
       </section>
 
-      <section className="py-16 md:py-20 bg-(--color-surface)" aria-label="Case Study Details">
+      <section className="py-16 md:py-20" aria-label="Case Study Details">
         <div className="container">
           <div className="grid gap-12">
             <RevealFade delay={0.1}>

@@ -150,8 +150,8 @@ export function ComponentSystemToggle() {
     <section className="py-8 sm:py-10 md:py-12 2xl:py-20" aria-labelledby="uiux-solution-heading">
       <div className="container">
         <header className="mb-4 max-w-3xl md:mb-5 2xl:mb-8">
-          <RevealText as="h2" className="text-xl font-bold text-(--color-text) sm:text-2xl md:text-3xl 2xl:text-h2">
-            <span id="uiux-solution-heading">{UI_UX_SOLUTION.heading}</span>
+          <RevealText id="uiux-solution-heading" as="h2" className="text-xl font-bold text-(--color-text) sm:text-2xl md:text-3xl 2xl:text-h2">
+            {UI_UX_SOLUTION.heading}
           </RevealText>
           <RevealText as="p" className="mt-1.5 text-xs text-(--color-text-muted) sm:text-sm md:text-base 2xl:text-body-lg" delay={0.1}>
             {UI_UX_SOLUTION.subhead}

@@ -306,6 +306,7 @@ export const UI_UX_TESTIMONIAL_SLUGS = [
 
 export const UI_UX_BOOK_MODAL_CONFIG: AuditModalConfig = {
   formName: 'book_uiux_call_modal',
+  defaultSubject: 'UX review call',
   heading: 'Book a UX review call',
   subjectPlaceholder: 'What product or flow needs UX work?',
   messagePlaceholder: 'Where do users drop off? Share a URL, recording, or analytics…',
@@ -314,6 +315,7 @@ export const UI_UX_BOOK_MODAL_CONFIG: AuditModalConfig = {
 
 export const UI_UX_QUOTE_MODAL_CONFIG: AuditModalConfig = {
   formName: 'get_uiux_quote_modal',
+  defaultSubject: 'UX project quote',
   heading: 'Get a UX project quote',
   subjectPlaceholder: 'What are you designing or redesigning?',
   messagePlaceholder: 'Flows, platforms, timelines, and what success looks like…',

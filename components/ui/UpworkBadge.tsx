@@ -101,11 +101,11 @@ export function UpworkBadge() {
   return (
     <a
       ref={badgeRef}
-      href="http://upwork.com/ag/websitevikreta"
+      href="https://www.upwork.com/agencies/websitevikreta/"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Top rated on Upwork with 100% Job Success Score — view agency profile"
-      onClick={() => trackLinkClick('http://upwork.com/ag/websitevikreta', 'upwork_badge')}
+      onClick={() => trackLinkClick('https://www.upwork.com/agencies/websitevikreta/', 'upwork_badge')}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="group relative flex items-center justify-center w-[120px] h-[120px] md:w-[150px] md:h-[150px] lg:w-[180px] lg:h-[180px] cursor-pointer select-none"
