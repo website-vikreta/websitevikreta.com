@@ -1,50 +1,17 @@
 # Command Recipe: fix-performance
 
-> Diagnose and fix a performance issue on a page or component.
+> Diagnose and fix one LCP / CLS / INP / bundle problem.
 
-## Trigger
+**Load:** `agents/builder.md` (performance floor), `session.md`.
+**Input:** route or component, failing metric, Lighthouse numbers if known.
 
-Run the **fix-performance** command recipe, or invoke `/fix-performance` if your tool supports slash commands.
+## Diagnose
 
-## Load
+- **LCP > 2.5s** — LCP element hidden until JS/motion runs? Hero `Photo` missing `priority` or `sizes`? Fonts via `next/font`? Render-blocking script?
+- **CLS > 0.1** — media without fixed box (`aspect-ratio` / sized parent)? Content injected above existing content? Font swap shifting Anton lines?
+- **INP > 200ms** — unthrottled pointer/scroll handlers? Too many per-letter motion spans on one screen? Work on interaction that could be CSS?
+- **Bundle** — `next build`. Legacy GSAP or heavy libs pulled into a `wv` page? `'use client'` higher in the tree than needed?
 
-- `.ai/agents/builder.md` (performance section only)
-- `.ai/context/session.md`
+## Output
 
-## Input Required
-
-- Page route or component
-- Lighthouse score (if known)
-- Metric failing: LCP / CLS / INP / TTFB / bundle size
-
-## Diagnosis Path
-
-### If LCP > 2.5s
-- Is the hero image using `priority` prop on `next/image`?
-- Is the hero font preloaded?
-- Is there a large render-blocking script above fold?
-- Is LCP element above the fold at all?
-
-### If CLS > 0.1
-- Do all images have explicit `width` and `height`?
-- Do fonts use `display: swap` and `next/font`?
-- Is any dynamic content injected above existing content?
-- Is there any late-loading banner or cookie notice pushing layout?
-
-### If INP > 200ms
-- Is there a heavy event handler on scroll or resize without debounce?
-- Is any GSAP animation triggering layout recalculation?
-- Is any synchronous work happening on user interaction?
-
-### If bundle > 150kb
-- Run `next build` and check bundle analyzer
-- Is GSAP fully imported instead of specific modules?
-- Are Three.js / R3F loaded on every page instead of dynamically?
-- Are there unused imports?
-
-## Output Validation
-
-- Root cause identified
-- Code fix applied
-- Expected Lighthouse delta stated
-- Perf-related reusable decision logged to `.ai/learning.md` if applicable
+Root cause · fix applied · expected delta · rule logged in `learning.md` if reusable.

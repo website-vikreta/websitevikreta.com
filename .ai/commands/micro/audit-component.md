@@ -1,37 +1,23 @@
 # Command Recipe: audit-component
 
-> Quick design + performance audit on a single component.
+> Design + a11y + perf audit of one component against `wv`.
 
-## Trigger
+**Load:** `standards/design-system.md`, `agents/critic.md` (automatic fails only).
+**Input:** file path.
 
-Run the **audit-component** command recipe, or invoke `/audit-component` if your tool supports slash commands.
+## Checks
 
-## Load
+- [ ] Only `wv.css` classes and `var(--token)` colors. No hex, Tailwind, legacy tokens/components
+- [ ] Anton display / Inter Tight text, sizes from the type table
+- [ ] Radius, border, shadow per the shape rules
+- [ ] Yellow: fill only on light, gold for yellow text, one yellow ground per viewport
+- [ ] Hover from the allowed set, `Arrow` rotates, `(hover: hover)` safe
+- [ ] Motion from `ui.tsx`, one effect per element, reduced motion respected
+- [ ] `.wv-sr` copy on split text, keyboard + focus ring, roles on custom widgets
+- [ ] `Photo` with `sizes`, `priority` only above fold
+- [ ] Copy lives in data constants, passes `humanize.md`
+- [ ] Works at 360px
 
-- `.ai/agents/critic.md` (scoring rubric only)
-- `.ai/standards/design-system.md` (token compliance)
+## Output
 
-## Input Required
-
-- Component file path or pasted code
-
-## Audit Checks
-
-- [ ] Uses CSS custom property tokens (no hardcoded hex)
-- [ ] Accent color `#FFD600` used max once
-- [ ] No border-radius > 4px on containers
-- [ ] No box shadows
-- [ ] Typography uses scale variables
-- [ ] Hover state follows standards
-- [ ] Keyboard accessible (interactive elements)
-- [ ] `next/image` if images present
-- [ ] Font uses `font-sans` Tailwind class or `var(--font-epilogue)` — no hardcoded font families
-- [ ] GSAP has cleanup if animations present
-- [ ] `prefers-reduced-motion` respected
-- [ ] Visible strings pass `.ai/commands/macro/humanize.md` (no puff, no `-ing` tails, no curly quotes)
-
-## Output Validation
-
-- Pass / Fail per check
-- Specific lines to fix
-- Fixed version of component (if failures found)
+Pass/fail per check · `file:line` for each fail · the fix applied (minimal diff).

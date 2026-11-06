@@ -1,6 +1,6 @@
 # UI/UX page — image assets
 
-Monochrome UI screenshots/diagrams only. Max one `#FFD600` accent per image. WebP preferred.
+Monochrome UI screenshots/diagrams only. Max one `#fac800` accent per image. WebP preferred.
 
 ## Pain section (`pain/`)
 
