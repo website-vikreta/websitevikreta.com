@@ -10,6 +10,7 @@ import { DemoSlot } from './DemoSlot'
 import { PrefillLink } from './LeadForm'
 import { RichText } from './RichText'
 import { Sec } from './Sections'
+import { ReadCards } from './closing'
 
 export function CaseStudy({ cs, productName }: { cs?: CaseT; productName: string }) {
   if (!cs) {
@@ -75,18 +76,7 @@ export function PairsWith({ branch }: { branch: Branch }) {
 }
 
 export function Reading({ hrefs, seed, title }: { hrefs?: string[]; seed: number; title?: string[] }) {
-  const posts = readingFor(hrefs, seed).slice(0, 3)
-  return (
-    <Sec title={title ?? ['Keep', 'reading']} accent={1}>
-      <ul className="wv-ax-read">
-        {posts.map((p) => (
-          <li key={p.href}>
-            <Link href={p.href} className="wv-ax-rel"><strong>{p.title}</strong><Arrow size={16} /></Link>
-          </li>
-        ))}
-      </ul>
-    </Sec>
-  )
+  return <ReadCards posts={readingFor(hrefs, seed)} title={title} />
 }
 
 /** 2 siblings + 1 cross-branch product; uses `page.related` first, tops up automatically. */

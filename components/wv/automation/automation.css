@@ -15,16 +15,6 @@
 .wv-ax-h2.is-light{color:#fff}
 @media (min-width:960px){.wv-ax-sec{padding:88px 0}.wv-ax-h2{margin-bottom:32px}}
 
-/* proof bar */
-.wv-ax-proof{border-block:1px solid var(--line);background:var(--surface);padding:22px 0}
-.wv-ax-proof-in{display:grid;gap:18px;align-items:center}
-.wv-ax-proof-n{display:grid;line-height:1.1}
-.wv-ax-proof-n strong{font-family:var(--display);font-weight:400;font-size:clamp(34px,4.4vw,52px);text-transform:uppercase;background:var(--y);padding:0 .25em;width:max-content;border-radius:8px}
-.wv-ax-proof-n span{font-size:13px;font-weight:600;color:var(--muted);margin-top:6px}
-.wv-ax-proof-logos{display:flex;flex-wrap:wrap;gap:18px 34px;align-items:center}
-.wv-ax-proof-logos img{width:auto;max-width:150px;min-height:32px;object-fit:contain}
-@media (min-width:960px){.wv-ax-proof-in{grid-template-columns:auto 1fr;gap:56px}.wv-ax-proof-logos{justify-content:space-between}}
-
 /* answer + product rows */
 .wv-ax-answer{font-size:clamp(18px,1.9vw,22px);line-height:1.45;max-width:64ch;margin-bottom:28px}
 .wv-ax-rows{border-top:1px solid var(--line)}
@@ -93,27 +83,6 @@
 .wv-ax-crumbs{display:flex;flex-wrap:wrap;gap:6px;list-style:none;font-size:13px;color:var(--muted)}
 .wv-ax-crumbs li{display:inline-flex;gap:6px}
 .wv-ax-crumbs a:hover{color:var(--ink)}
-
-/* faq (native details) */
-.wv-ax-faqsec{background:var(--surface)}
-.wv-ax-acc summary{list-style:none;cursor:pointer;gap:16px}
-.wv-ax-acc summary::-webkit-details-marker{display:none}
-.wv-ax-acc .wv-acc-btn{font-size:clamp(18px,2vw,26px);line-height:1.1;font-family:var(--display);text-transform:uppercase}
-.wv-ax-acc[open] .wv-plus:after{transform:rotate(0)}
-.wv-ax-acc .wv-acc-pad p{max-width:64ch;font-size:17px;line-height:1.55}
-.wv-ax-faq-list{max-width:980px}
-
-/* cta band: dark ink */
-.wv-ax-cta{background:var(--ink);color:#fff;padding:56px 0}
-.wv-ax-cta-in{display:grid;gap:28px;align-items:center}
-.wv-ax-cta-l{display:grid;gap:20px;justify-items:start}
-.wv-ax-faces{display:flex}
-.wv-ax-faces .wv-ax-av{margin-left:-12px;border-color:var(--ink)}
-.wv-ax-faces .wv-ax-av:first-child{margin-left:0}
-.wv-ax-cta-form{background:var(--surface);color:var(--text);border-radius:28px;padding:22px}
-.wv-ax-cta .wv-ax-form{max-width:none}
-.wv-ax-cta .wv-btn-ghost{color:#fff;border-color:#ffffff40}
-@media (min-width:960px){.wv-ax-cta{padding:88px 0}.wv-ax-cta-in{grid-template-columns:1fr 1fr;gap:64px}.wv-ax-cta-form{padding:32px}}
 
 /* persona cutout */
 .wv-ax-cut{--w:200px;position:relative;width:var(--w);max-width:100%;margin:0}
@@ -187,9 +156,8 @@
 .wv-ax-how .wv-ax-demo{max-width:720px}
 
 /* pairs / reading / related */
-.wv-ax-pairs,.wv-ax-read{display:grid;gap:12px;list-style:none;padding:0}
-.wv-ax-read li{display:grid}
-@media (min-width:720px){.wv-ax-pairs{grid-template-columns:repeat(2,minmax(0,1fr))}.wv-ax-read{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.wv-ax-pairs{display:grid;gap:12px;list-style:none;padding:0}
+@media (min-width:720px){.wv-ax-pairs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .wv-ax-rel-s{font-size:16px;line-height:1.45}
 .wv-ax-more{margin-top:20px;font-size:17px}
 .wv-ax-row-logo{width:40px;height:40px;object-fit:contain}

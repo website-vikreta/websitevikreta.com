@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import type { Branch, Faq as FaqT, Persona, Product, Scenario, Shift } from '@/content/ai-automations/types'
-import { TOOL_LOGOS, clientLogos, toolLogos } from '@/content/ai-automations/logos'
+import type { Branch, Persona, Product, Scenario, Shift } from '@/content/ai-automations/types'
+import { TOOL_LOGOS, toolLogos } from '@/content/ai-automations/logos'
 import { PrefillLink } from './LeadForm'
 import { RichText } from './RichText'
 import { Arrow, KineticTitle, Reveal, VelocityMarquee } from '../ui'
+import { ClientLogos, SplitFaq } from './closing'
 
 export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }} />
@@ -22,29 +23,7 @@ function Sec({ id, title, accent, children, className = '' }: { id?: string; tit
   )
 }
 
-export function ProofBar({ clients, number = true }: { clients: string[]; number?: boolean }) {
-  const logos = clientLogos(clients.length ? clients : ['simpli-home', 'blancora', 'sbp'])
-  return (
-    <section className="wv-ax-proof">
-      <div className="wv-wrap wv-ax-proof-in">
-        {number && (
-          <p className="wv-ax-proof-n">
-            <strong>20 hrs → 1 hr</strong>
-            <span>a week of manual work, Simpli Home</span>
-          </p>
-        )}
-        <ul className="wv-ax-proof-logos" aria-label="Clients">
-          {logos.map((l) => (
-            <li key={l.src}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- svg/png client marks */}
-              <img src={l.src} alt={l.alt} style={{ height: Math.max(32, Math.min(l.h ?? 32, 40)) }} loading="lazy" />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )
-}
+export const ProofBar = ClientLogos
 
 const CHANNEL_KEY: Record<string, string> = { Email: 'gmail', WhatsApp: 'whatsapp', Slack: 'slack', SMS: 'twilio', 'Web chat': 'intercom' }
 
@@ -188,25 +167,6 @@ export function Crumbs({ items }: { items: { label: string; href: string }[] }) 
   )
 }
 
-/** Native <details>: every answer is in the server HTML. */
-export function Faq({ faqs }: { faqs: FaqT[] }) {
-  return (
-    <Sec id="faq" title={['Questions', 'people ask']} className="wv-ax-faqsec">
-      <div className="wv-ax-faq-list">
-        {faqs.map((f, i) => (
-          <details key={i} className="wv-acc wv-ax-acc">
-            <summary className="wv-acc-btn">
-              <span>{f.q}</span>
-              <span className="wv-plus" aria-hidden />
-            </summary>
-            <div className="wv-acc-pad">
-              <p><RichText text={f.a} /></p>
-            </div>
-          </details>
-        ))}
-      </div>
-    </Sec>
-  )
-}
+export const Faq = SplitFaq
 
 export { Sec }
