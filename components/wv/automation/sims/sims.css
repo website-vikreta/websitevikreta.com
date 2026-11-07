@@ -1,0 +1,106 @@
+/* Simulations. wv tokens only. Motion: transform/opacity/clip-path, one ease. */
+.wv-sim{--e:cubic-bezier(.16,1,.3,1);position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px;overflow:hidden;width:100%;max-width:520px}
+.wv-sim-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:600;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.wv-sim-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wv-sim-tag{flex:none;font-size:12px;font-weight:600;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:4px 10px}
+.wv-sim-replay,.wv-sim-btn{align-self:flex-start;font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:background .25s var(--e),border-color .25s var(--e)}
+.wv-sim-replay:hover,.wv-sim-btn:hover{background:var(--surface-2)}
+.wv-sim-btn{background:var(--y);border-color:transparent}
+.wv-sim-btn:hover{background:var(--y-2)}
+.wv-sim button:focus-visible,.wv-sim input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* shared reveal: SSR final = visible; .is-on is the end state */
+.wv-sim-msg,.wv-sim-line,.wv-sim-field,.wv-sim-status li,.wv-sim-events li,.wv-sim-nodes li,.wv-sim-out,.wv-sim-outcome{transition:opacity .6s var(--e),transform .6s var(--e)}
+.wv-sim-msg:not(.is-on),.wv-sim-line:not(.is-on),.wv-sim-field:not(.is-on),.wv-sim-status li:not(.is-on),.wv-sim-events li:not(.is-on),.wv-sim-nodes li:not(.is-on),.wv-sim-out:not(.is-on),.wv-sim-outcome:not(.is-on){opacity:0;transform:translateY(12px)}
+/* before hydration/JS everything is .is-on only if state says so; SSR renders step=n so all are on */
+
+/* chat */
+.wv-sim-thread{display:flex;flex-direction:column;gap:10px;background:var(--canvas);border-radius:calc(var(--r) - 8px);padding:14px}
+.wv-sim-msg{position:relative;display:flex;gap:8px;align-items:flex-end;max-width:88%}
+.wv-sim-msg.is-out{align-self:flex-end;flex-direction:row-reverse}
+.wv-sim-col{display:flex;flex-direction:column;gap:4px;min-width:0}
+.wv-sim-who{font-size:11.5px;font-weight:600;color:var(--muted);padding-left:2px}
+.wv-sim-bub{margin:0;font-size:14.5px;line-height:1.4;background:var(--surface);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:9px 13px}
+.wv-sim-msg.is-out .wv-sim-bub{background:var(--y);border-color:transparent;color:var(--ink);border-radius:16px 16px 4px 16px}
+.wv-sim-av{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:top;background:var(--surface-2)}
+.wv-sim-av-i{display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--ink);color:var(--surface)}
+.wv-sim-typing{position:absolute;left:0;bottom:0;display:flex;gap:4px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:11px 14px;opacity:1}
+.wv-sim-msg.is-out .wv-sim-typing{left:auto;right:0;background:var(--y)}
+.wv-sim-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:wv-sim-dot 1s var(--e) infinite}
+.wv-sim-typing span:nth-child(2){animation-delay:.12s}.wv-sim-typing span:nth-child(3){animation-delay:.24s}
+@keyframes wv-sim-dot{0%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-4px);opacity:1}}
+.wv-sim-att{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 12px;max-width:300px}
+.wv-sim-att-ic{flex:none;width:36px;height:42px;border-radius:6px;display:grid;place-items:center;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:var(--ink);color:var(--surface)}
+.wv-sim-att.is-card .wv-sim-att-ic{height:36px;border-radius:50%;background:var(--y);color:var(--ink);font-size:18px}
+.wv-sim-att.is-image .wv-sim-att-ic{background:var(--surface-2);color:var(--ink)}
+.wv-sim-att-t{display:flex;flex-direction:column;min-width:0;font-size:13.5px;line-height:1.3}
+.wv-sim-att-t i{font-style:normal;color:var(--muted);font-size:12px}
+/* fixed-height viewport: newest messages stay at the bottom, older ones clip off the top (page never scrolls). */
+.wv-sim-chat .wv-sim-thread{--chat-h:460px;position:relative;justify-content:flex-end;overflow:hidden;height:min(var(--chat-h),calc(var(--n)*104px + 28px));mask-image:linear-gradient(to bottom,transparent,#000 40px)}
+@media (min-width:720px){.wv-sim-chat .wv-sim-thread{--chat-h:560px}}
+.wv-sim-chat .wv-sim-msg:not(.is-on){position:absolute;bottom:14px;pointer-events:none}
+.wv-sim-chat.is-team .wv-sim-msg{max-width:94%}
+
+/* call */
+.wv-sim-wave{display:flex;align-items:center;justify-content:center;gap:3px;height:48px}
+.wv-sim-wave span{width:3px;height:100%;border-radius:2px;background:var(--ink);transform:scaleY(var(--h));opacity:.85}
+.wv-sim-wave.is-live span{animation:wv-sim-wave .9s ease-in-out infinite alternate;animation-delay:calc(var(--i)*-70ms)}
+@keyframes wv-sim-wave{from{transform:scaleY(.2)}to{transform:scaleY(var(--h))}}
+.wv-sim-lines{display:flex;flex-direction:column;gap:8px}
+.wv-sim-line{margin:0;font-size:14.5px;line-height:1.45}
+.wv-sim-line b{display:block;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.wv-sim-line.is-caller{padding-left:18px;border-left:2px solid var(--line)}
+.wv-sim-outcome{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:600;background:var(--y);border-radius:12px;padding:10px 14px}
+.wv-sim-foot{display:flex;gap:10px;flex-wrap:wrap;min-height:34px}
+
+/* doc */
+.wv-sim-paper{background:var(--canvas);border:1px solid var(--line);border-radius:12px;padding:18px}
+.wv-sim-doct{margin:0 0 12px;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:26px;line-height:1}
+.wv-sim-paper dl{margin:0;display:flex;flex-direction:column}
+.wv-sim-field{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px}
+.wv-sim-field dt{color:var(--muted)}.wv-sim-field dd{margin:0;font-weight:600;text-align:right}
+.wv-sim-status{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.wv-sim-status li{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:500}
+.wv-sim-status li span{flex:none;width:20px;height:20px;border-radius:50%;background:var(--y);display:grid;place-items:center;font-size:12px}
+
+/* timeline */
+.wv-sim-events{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;position:relative}
+.wv-sim-events::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.wv-sim-events li{position:relative;display:grid;grid-template-columns:16px 76px 1fr;gap:12px;align-items:center;padding:9px 0;font-size:14.5px}
+.wv-sim-dot{width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--ink);z-index:1}
+.is-done .wv-sim-dot{background:var(--ink)}.is-paid .wv-sim-dot{background:var(--y);border-color:var(--ink)}
+.wv-sim-at{font-size:12.5px;font-weight:600;color:var(--muted)}
+.is-paid .wv-sim-lbl{font-weight:700}
+.is-pending .wv-sim-lbl{color:var(--muted)}
+
+/* flow */
+.wv-sim-nodes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:stretch}
+.wv-sim-nodes li{display:flex;flex-direction:column;align-items:center}
+.wv-sim-node{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--canvas);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:14.5px;transition:background .5s var(--e),border-color .5s var(--e)}
+.wv-sim-node i{font-style:normal;font-size:12px;color:var(--muted)}
+.wv-sim-nodes li.is-on .wv-sim-node{background:var(--y);border-color:transparent}
+.wv-sim-nodes li.is-on .wv-sim-node i{color:var(--ink)}
+.wv-sim-edge{width:2px;height:16px;background:var(--ink);opacity:.25}
+
+/* fanout */
+.wv-sim-src{background:var(--ink);color:var(--surface);border-radius:12px;padding:14px 16px}
+.wv-sim-src span{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+.wv-sim-src p{margin:4px 0 0;font-size:15.5px;font-weight:500}
+.wv-sim-outs{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.wv-sim-out{background:var(--canvas);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.wv-sim-ch{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.wv-sim-out p{margin:4px 0 0;font-size:13.5px;line-height:1.45}
+@media (max-width:520px){.wv-sim-outs{grid-template-columns:1fr}}
+
+/* before / after */
+.wv-sim-ba{margin:0}
+.wv-sim-ba-stage{position:relative;aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:var(--surface-2);--p:50%}
+.wv-sim-ba-stage img,.wv-sim-ba-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wv-sim-ba-after{position:absolute;inset:0;clip-path:inset(0 0 0 var(--p));transition:clip-path .9s var(--e)}
+.wv-sim-ba-h{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:var(--surface);box-shadow:0 0 0 1px var(--line);pointer-events:none;transition:left .9s var(--e)}
+.wv-sim-ba-l{position:absolute;top:10px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--surface);border-radius:999px;padding:4px 10px;pointer-events:none}
+.wv-sim-ba-l.is-b{left:10px}.wv-sim-ba-l.is-a{right:10px;background:var(--y)}
+.wv-sim-ba-stage input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.wv-sim-ba-stage:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:3px}
+.wv-sim-ba-stage:has(input:focus-visible) .wv-sim-ba-h{box-shadow:0 0 0 3px var(--ink)}
+.wv-sim-ba figcaption{font-size:14px;color:var(--muted)}

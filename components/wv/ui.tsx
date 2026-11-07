@@ -84,12 +84,12 @@ export function Reveal({ children, className = '', delay = 0, y = 24 }: { childr
   )
 }
 
-export function KineticTitle({ lines, className = '', delay = 0, as = 'h2', accent }: { lines: string[]; className?: string; delay?: number; as?: 'h2' | 'p'; accent?: number }) {
+export function KineticTitle({ lines, className = '', delay = 0, as = 'h2', accent }: { lines: string[]; className?: string; delay?: number; as?: 'h2' | 'p' | 'span'; accent?: number }) {
   const reduce = useReducedMotion()
   const Tag = as
   let n = 0
   return (
-    <Tag className={`wv-kt ${className}`}>
+    <Tag className={`wv-kt ${className}`} style={as === 'span' ? { display: 'block' } : undefined}>
       <span className="wv-sr">{lines.join(' ')}</span>
       {lines.map((line, i) => (
         <motion.span
