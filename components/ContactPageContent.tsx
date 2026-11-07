@@ -163,6 +163,14 @@ export function ContactPageContent() {
   const [submitted, setSubmitted] = useState(false)
   const [sendError, setSendError] = useState(false)
 
+  // Prefill from ?service= / ?interest= (links from AI Automations pages).
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search)
+    const v = (q.get('service') || q.get('interest') || '').slice(0, 70)
+    // Field sits after "and I have a ...", so phrase it as a noun.
+    if (v) setForm((f) => (f.jobOrWebsite ? f : { ...f, jobOrWebsite: `${v} project` }))
+  }, [])
+
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const h1Els   = wordInnerRefs.current.filter((el): el is HTMLSpanElement => el !== null)
