@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { PERSONAS } from '@/content/ai-automations/personas'
 import { TOOL_LOGOS } from '@/content/ai-automations/logos'
-import type { Hub, PersonaId } from '@/content/ai-automations/types'
+import type { PersonaId } from '@/content/ai-automations/types'
 import { Arrow, KineticTitle } from '../../ui'
 import './sig-a.css'
 
@@ -41,8 +41,7 @@ const SERVICES: Svc[] = [
   ] },
 ]
 
-export default function HubDesk({ hub }: { hub: Hub }) {
-  void hub
+export default function HubDesk() {
   const [id, setId] = useState(SERVICES[0].id)
   const tabs = useRef<(HTMLButtonElement | null)[]>([])
   const svc = SERVICES.find((s) => s.id === id)!
@@ -55,9 +54,12 @@ export default function HubDesk({ hub }: { hub: Hub }) {
     tabs.current[j]?.focus()
   }
   return (
-    <section className="wv-ax-sec sg-sec" id="desk">
+    <section className="wv-sec sg-hub" id="desk">
       <div className="wv-wrap">
-        <KineticTitle lines={['Work that', 'ran today.']} className="wv-h2 wv-ax-h2" accent={1} />
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Work that', 'ran today.']} className="wv-h2" accent={1} />
+          <p className="wv-sec-aside">A sample day from the three AI teammates. Pick a service to see what moved without anyone touching it.</p>
+        </div>
         <div className="sg-dk">
           <div className="sg-dk-tabs" role="tablist" aria-label="Automated work by service">
             {SERVICES.map((s, i) => (
@@ -98,7 +100,7 @@ export default function HubDesk({ hub }: { hub: Hub }) {
               })}
             </ul>
             <Link href={`/services/ai-automations/${svc.branch}`} className="sg-more">
-              See {svc.label.toLowerCase()} automation <Arrow size={14} />
+              See how it works <Arrow size={14} />
             </Link>
           </div>
         </div>

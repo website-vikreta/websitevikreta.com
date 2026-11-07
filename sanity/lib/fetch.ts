@@ -513,3 +513,21 @@ export async function fetchAllSlugsWithCategory(): Promise<{ categorySlug: strin
     .filter((r): r is { slug: string; categorySlug: string } => Boolean(r.categorySlug))
     .map((r) => ({ categorySlug: r.categorySlug, slug: r.slug.trim() }))
 }
+
+/** Card data (title, excerpt, thumbnail) for a fixed set of post slugs. Empty on any failure. */
+export async function fetchPostCards(slugs: string[]): Promise<{ slug: string; title: string; excerpt?: string; imageUrl?: string }[]> {
+  if (!isSanityConfigured() || !slugs.length) return []
+  try {
+    const rows = await client.fetch<{ slug: string; title: string; excerpt?: string; featuredImage?: SanityImage }[]>(
+      `*[_type == "post" && slug.current in $slugs]{ "slug": slug.current, title, excerpt, featuredImage }`,
+      { slugs },
+      { next: { revalidate: REVALIDATE_SECONDS } },
+    )
+    return rows.map(({ featuredImage, ...r }) => ({
+      ...r,
+      imageUrl: featuredImage?.asset ? urlFor(featuredImage).width(720).height(450).fit('crop').auto('format').url() : undefined,
+    }))
+  } catch {
+    return []
+  }
+}

@@ -129,24 +129,4 @@ export function RelatedProducts({ branch, product, related }: { branch: Branch; 
   )
 }
 
-/** Compact index of every branch + flagship product, for the hub. */
-export function AllServices() {
-  return (
-    <Sec title={['All AI', 'services']} accent={1}>
-      <div className="wv-ax-all">
-        {BRANCHES.map((b) => (
-          <div key={b.slug}>
-            <Link href={`${BASE}/${b.slug}`} className="wv-ax-all-h">{b.name}</Link>
-            <ul>
-              {b.products.filter((p) => p.page).map((p) => (
-                <li key={p.slug}><Link href={`${BASE}/${b.slug}/${p.slug}`} className="wv-ax-inl">{p.name}</Link></li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </Sec>
-  )
-}
-
 export { blogList }

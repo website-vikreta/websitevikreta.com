@@ -31,7 +31,7 @@ If something is not in this file or `wv.css`, it does not exist. Compose from wh
 
 Dark ground (footer only): `#161616`, re-scoped `--text #f5f4ef`, `--muted #9b9a96`, `--line #ffffff1a`. On dark, `--y` may be text.
 
-Sole off-palette exception: the AI Solutions nav item (`.wv-nav-ai`, magenta `#c026d3` bolt + snake border). Nowhere else.
+Off-palette exceptions: the AI Solutions nav item (`.wv-nav-ai`, magenta bolt + snake border), and the AI hub accent pair (violet `#7c3aed` → pink `#ff2d95`, ~20% glow + closing CTA ground, never on buttons; see learning.md). Nowhere else.
 
 Rules:
 - Yellow is never text on canvas/surface. Use `--gold`.

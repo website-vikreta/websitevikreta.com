@@ -7,7 +7,8 @@ export function HideOnStudio({ children }: { children: React.ReactNode }) {
   return usePathname().startsWith('/studio') ? null : <>{children}</>
 }
 
-/** Hides children on the homepage only (it has its own book-a-call + contact sections). */
+/** Hides children on pages with their own closing CTA: the homepage and the AI automations hub. */
 export function HideOnHome({ children }: { children: React.ReactNode }) {
-  return usePathname() === '/' ? null : <>{children}</>
+  const path = usePathname()
+  return path === '/' || path === '/services/ai-automations' ? null : <>{children}</>
 }

@@ -186,14 +186,10 @@
 .wv-ax-how{max-height:360px;overflow:hidden;border-radius:24px;container-type:inline-size}
 .wv-ax-how .wv-ax-demo{max-width:720px}
 
-/* pairs / reading / related / all-services */
+/* pairs / reading / related */
 .wv-ax-pairs,.wv-ax-read{display:grid;gap:12px;list-style:none;padding:0}
 .wv-ax-read li{display:grid}
 @media (min-width:720px){.wv-ax-pairs{grid-template-columns:repeat(2,minmax(0,1fr))}.wv-ax-read{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .wv-ax-rel-s{font-size:16px;line-height:1.45}
 .wv-ax-more{margin-top:20px;font-size:17px}
-.wv-ax-all{display:grid;gap:24px 32px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
-.wv-ax-all-h{font-family:var(--display);text-transform:uppercase;font-size:24px;line-height:1.1;display:block;margin-bottom:8px}
-.wv-ax-all-h:hover{background:var(--y)}
-.wv-ax-all ul{display:grid;gap:6px;list-style:none;padding:0;font-size:16px}
 .wv-ax-row-logo{width:40px;height:40px;object-fit:contain}

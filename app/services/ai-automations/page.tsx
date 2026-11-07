@@ -1,72 +1,153 @@
 import Link from 'next/link'
-import { AllServices, AutomationShell, Avatar, Reading, Crumbs, CtaBlock, Faq, HubHero, JsonLd, ProofBar, ScenarioCards, Sec } from '@/components/wv/automation'
-import { Arrow } from '@/components/wv/ui'
-import { BASE, BLOG, BRANCHES, HUB, PERSONAS, toolLogos } from '@/content/ai-automations'
+import Image from 'next/image'
+import { AutomationShell, Avatar, HubHero, JsonLd, LeadForm, RichText, WaButton } from '@/components/wv/automation'
 import { HubDesk } from '@/components/wv/automation/signatures'
+import { clientLogos } from '@/content/ai-automations/logos'
+import { Arrow, KineticTitle, Reveal } from '@/components/wv/ui'
+import { BASE, BLOG, BRANCHES, HUB, PERSONAS, toolLogos } from '@/content/ai-automations'
 import { hubMetadata, hubSchema } from '@/lib/ai-automations-seo'
-import { ProblemPicker } from './ProblemPicker'
-import './pages.css'
+import { fetchPostCards } from '@/sanity/lib/fetch'
+import { Week } from './Week'
+import './hub.css'
 
 export const metadata = hubMetadata()
 
-const people = Object.values(PERSONAS)
-const ROLE3: Record<string, string> = { meher: 'HR and workflows', ira: 'Content and ads', arjun: 'Calls, sales, money' }
+const CLIENTS = clientLogos(['simpli-home', 'blancora', 'sbp', 'raicoon', 'tocal', 'carelift'])
+const READ = BLOG.slice(0, 3)
+const slugOf = (href: string) => href.split('/').pop()!
 
-export default function Page() {
+function Head({ title, children }: { title: string[]; children?: React.ReactNode }) {
+  return (
+    <div className="wv-sec-head">
+      <KineticTitle lines={title} className="wv-h2" accent={title.length - 1} />
+      {children && <div className="wv-sec-aside">{children}</div>}
+    </div>
+  )
+}
+
+export default async function Page() {
+  const cards = await fetchPostCards(READ.map((b) => slugOf(b.href)))
+  const card = (href: string) => cards.find((c) => c.slug === slugOf(href))
+
   return (
     <AutomationShell>
       <JsonLd data={hubSchema()} />
-      <main className="wv-axp-main">
+      <main className="axh">
         <HubHero hub={HUB} />
-        <ProofBar clients={['simpli-home', 'blancora', 'sbp', 'raicoon', 'tocal', 'carelift']} />
-        <HubDesk hub={HUB} />
 
-        <Sec id="picker" title={["What's eating", 'your week?']}>
-          <ProblemPicker problems={HUB.problems} personas={PERSONAS} base={BASE} />
-        </Sec>
-
-        <Sec id="branches" title={['Eight things', 'we automate']}>
-          <div className="wv-axp-idx">
-            {BRANCHES.map((b) => (
-              <Link key={b.slug} href={`${BASE}/${b.slug}`} className="wv-axp-idx-row">
-                <span className="wv-axp-idx-t">
-                  <strong>{b.name}</strong>
-                  <span>{b.usp}</span>
-                </span>
-                <span className="wv-axp-logos">
-                  {toolLogos(b.tools.slice(0, 4)).map((l) => (
-                    // eslint-disable-next-line @next/next/no-img-element -- svg logo
-                    <img key={l.src} src={l.src} alt={l.alt} />
-                  ))}
-                </span>
-                <Arrow size={18} />
-              </Link>
-            ))}
-          </div>
-        </Sec>
-
-        <ScenarioCards scenarios={HUB.scenarios} />
-
-        <section className="wv-ax-sec wv-axp-band" id="agents">
-          <div className="wv-wrap wv-axp-band-in">
-            <h2>The AI agents behind the work</h2>
+        <section className="axh-logos" aria-label="Clients">
+          <div className="wv-wrap axh-logos-in">
+            <p className="wv-eyebrow">( Running for )</p>
             <ul>
-              {people.map((p) => (
-                <li key={p.id}>
-                  <Avatar persona={p} px={40} />
-                  <span><strong>{p.name}</strong> {ROLE3[p.id]}</span>
+              {CLIENTS.map((l) => (
+                <li key={l.src}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- svg/png client marks */}
+                  <img src={l.src} alt={l.alt} loading="lazy" />
                 </li>
               ))}
             </ul>
-            <p>We run our own company on these automations too. <Link className="wv-ax-inl" href="#branches">See the eight services</Link>.</p>
           </div>
         </section>
 
-        <AllServices />
-        <Reading seed={0} hrefs={BLOG.slice(0, 3).map((x) => x.href)} />
-        <Faq faqs={HUB.faqs} />
-        <Crumbs items={[{ label: 'Home', href: '/' }, { label: 'AI Automations', href: BASE }]} />
-        <CtaBlock title={['Get my', 'automation plan']} interest="AI automation plan" source="ai-automations-hub" waText="Hi, I'd like an AI automation plan" />
+        <Week problems={HUB.problems} base={BASE} />
+
+        <HubDesk />
+
+        <section className="wv-sec" id="services">
+          <div className="wv-wrap">
+            <Head title={['Eight things', 'we automate']}>
+              <p>{HUB.lead}</p>
+            </Head>
+            <ol className="axh-idx">
+              {BRANCHES.map((b, i) => (
+                <li key={b.slug} className="axh-idx-row">
+                  <span className="axh-idx-n">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="axh-idx-main">
+                    <h3><Link href={`${BASE}/${b.slug}`}>{b.name}</Link></h3>
+                    <p>{b.usp}</p>
+                  </div>
+                  <ul className="axh-idx-sub" aria-label={`${b.name} services`}>
+                    {b.products.filter((p) => p.page).map((p) => (
+                      <li key={p.slug}><Link href={`${BASE}/${b.slug}/${p.slug}`}>{p.name}</Link></li>
+                    ))}
+                  </ul>
+                  <span className="axh-idx-logos" aria-hidden>
+                    {toolLogos(b.tools.slice(0, 4)).map((l) => (
+                      // eslint-disable-next-line @next/next/no-img-element -- svg logo
+                      <img key={l.src} src={l.src} alt="" loading="lazy" />
+                    ))}
+                  </span>
+                  <span className="axh-idx-go" aria-hidden><Arrow size={18} /></span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section className="wv-sec axh-read">
+          <div className="wv-wrap">
+            <Head title={['Keep', 'reading']}>
+              <Link href="/blog" className="wv-link">All articles <Arrow size={14} /></Link>
+            </Head>
+            <ul className="axh-posts">
+              {READ.map((b, i) => {
+                const c = card(b.href)
+                return (
+                  <li key={b.href}>
+                    <Reveal delay={i * 0.06}>
+                    <Link href={b.href}>
+                      <span className="axh-post-img">
+                        {c?.imageUrl && <Image src={c.imageUrl} alt="" fill sizes="(min-width:960px) 400px, 100vw" />}
+                      </span>
+                      <strong>{c?.title ?? b.title}</strong>
+                      {c?.excerpt && <span className="axh-post-x">{c.excerpt}</span>}
+                      <span className="axh-post-go">Read <Arrow size={14} /></span>
+                    </Link>
+                    </Reveal>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </section>
+
+        <section className="wv-sec axh-faq" id="faq">
+          <div className="wv-wrap axh-faq-in">
+            <div className="axh-faq-head">
+              <KineticTitle lines={['Questions', 'people ask']} className="wv-h2" accent={1} />
+              <p>Not on the list? <a href="#lead" className="wv-link">Ask us directly <Arrow size={14} /></a></p>
+            </div>
+            <div className="axh-faq-list">
+              {HUB.faqs.map((f) => (
+                <details key={f.q}>
+                  <summary>
+                    <span>{f.q}</span>
+                    <span className="axh-plus" aria-hidden />
+                  </summary>
+                  <p><RichText text={f.a} /></p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="axh-cta">
+          <div className="wv-wrap axh-cta-in">
+            <div className="axh-cta-l">
+              <p className="wv-eyebrow">( Free 20-minute call )</p>
+              <KineticTitle lines={['Get my', 'automation plan']} className="wv-h2" />
+              <p className="axh-cta-p">Tell us what eats your week. We come back with what we would automate first, and what it takes.</p>
+              <div className="axh-cta-faces">
+                {Object.values(PERSONAS).map((p) => <Avatar key={p.id} persona={p} px={56} />)}
+                <span>Meher, Ira and Arjun are on it.</span>
+              </div>
+              <WaButton text="Hi, I'd like an AI automation plan" />
+            </div>
+            <div className="axh-cta-form">
+              <LeadForm interest="AI automation plan" source="ai-automations-hub" />
+            </div>
+          </div>
+        </section>
       </main>
     </AutomationShell>
   )
