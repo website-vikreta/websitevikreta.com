@@ -6,7 +6,7 @@ type D = Extract<Demo, { kind: 'fanout' }>
 
 export function FanoutSim({ demo }: { demo: D }) {
   const O = demo.outputs
-  const { ref, step, done, reduce, replay } = useSim(O.length + 1, 800)
+  const { ref, step, done, replay } = useSim(O.length + 1, 800)
   return (
     <div ref={ref} className="wv-sim wv-sim-fan">
       <div className="wv-sim-bar"><span className="wv-sim-title">{demo.title}</span></div>
@@ -19,7 +19,7 @@ export function FanoutSim({ demo }: { demo: D }) {
           </article>
         ))}
       </div>
-      {done && !reduce && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
+      {done && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
     </div>
   )
 }

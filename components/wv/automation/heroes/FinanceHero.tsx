@@ -41,7 +41,7 @@ export default function FinanceHero({ branch, product }: HeroProps) {
               <span className="hb-total">Total <b>{usd(4600)}</b></span>
               <div className="hb-pillbox">
                 <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.span key={Math.max(step, 0)} className={`hb-pill ${step === 3 ? 'is-paid' : ''}`} initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4, ease }}>
+                  <motion.span key={Math.max(step, 0)} className={`hb-pill ${step === 3 ? 'is-paid' : ''}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={reduce ? { duration: 0 } : { duration: 0.4, ease }}>
                     {pill[Math.max(step, 0)]}
                   </motion.span>
                 </AnimatePresence>

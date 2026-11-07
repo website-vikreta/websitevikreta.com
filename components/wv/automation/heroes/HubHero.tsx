@@ -104,25 +104,21 @@ export function ChatStage({ items, faces, channel, logo, t, live, solo }: { item
   const lg = logo ? toolLogo(logo) : undefined
   return (
     <div className={`hx-chat${solo ? ' is-solo' : ''}`}>
-      <div className="hx-faces">
-        {faces.map((id, i) => {
-          const p = PERSONAS[id]
-          return (
-            <div key={id} className={`hx-face${live ? (active === id ? ' is-on' : ' is-dim') : ''}`}>
-              <div className="hx-face-img">
-                <Image src={p.img.front} alt="" fill sizes="150px" preload={i < 3} />
-              </div>
-              <b>{p.name}</b>
-            </div>
-          )
-        })}
-      </div>
       <div className="hx-stage-in">
         <div className="hx-win">
           <div className="hx-win-bar">
             {lg && <img src={lg.src} alt="" />}
             <span>{channel}</span>
-            <i><span className="hx-live" /> {faces.length} teammate{faces.length > 1 ? 's' : ''} online</i>
+            <i>
+              <span className="hx-stack" aria-hidden>
+                {faces.map((id) => (
+                  <span key={id} className={`hx-sf${live ? (active === id ? ' is-on' : ' is-dim') : ''}`}>
+                    <Image src={PERSONAS[id].img.front} alt="" fill sizes="30px" />
+                  </span>
+                ))}
+              </span>
+              {faces.length} teammate{faces.length > 1 ? 's' : ''} online
+            </i>
           </div>
           <div className="hx-thread">
             {shown.map((m) => {

@@ -108,7 +108,7 @@ export default function VoiceHero({ branch, product }: HeroProps) {
                 {L.slice(Math.max(0, shown - 3), shown).map((l, k) => {
                   const idx = Math.max(0, shown - 3) + k
                   return (
-                    <motion.p key={idx} className={`hb-line is-${l.who}`} initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 0.45 + 0.275 * k, y: 0 }} transition={{ duration: 0.5, ease }}>
+                    <motion.p key={idx} className={`hb-line is-${l.who}`} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 0.45 + 0.275 * k, y: 0 }} transition={reduce ? { duration: 0 } : { duration: 0.5, ease }}>
                       <b>{l.who === 'agent' ? 'AI' : outbound ? who.split(' ')[0] : 'Caller'}</b> {l.text}
                     </motion.p>
                   )

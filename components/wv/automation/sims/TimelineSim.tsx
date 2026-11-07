@@ -6,7 +6,7 @@ type D = Extract<Demo, { kind: 'timeline' }>
 
 export function TimelineSim({ demo }: { demo: D }) {
   const E = demo.events
-  const { ref, step, done, reduce, replay } = useSim(E.length, 1000)
+  const { ref, step, done, replay } = useSim(E.length, 1000)
   return (
     <div ref={ref} className="wv-sim wv-sim-tl">
       <div className="wv-sim-bar"><span className="wv-sim-title">{demo.title}</span></div>
@@ -19,7 +19,7 @@ export function TimelineSim({ demo }: { demo: D }) {
           </li>
         ))}
       </ol>
-      {done && !reduce && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
+      {done && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
     </div>
   )
 }

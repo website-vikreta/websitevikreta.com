@@ -7,7 +7,7 @@ type D = Extract<Demo, { kind: 'flow' }>
 // ponytail: nodes render in listed order as a chain; edges only decide order of lighting. Branching layouts need real graph layout.
 export function FlowSim({ demo }: { demo: D }) {
   const N = demo.nodes
-  const { ref, step, done, reduce, replay } = useSim(N.length, 900)
+  const { ref, step, done, replay } = useSim(N.length, 900)
   return (
     <div ref={ref} className="wv-sim wv-sim-flow">
       <div className="wv-sim-bar"><span className="wv-sim-title">{demo.title}</span></div>
@@ -19,7 +19,7 @@ export function FlowSim({ demo }: { demo: D }) {
           </li>
         ))}
       </ol>
-      {done && !reduce && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
+      {done && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
     </div>
   )
 }

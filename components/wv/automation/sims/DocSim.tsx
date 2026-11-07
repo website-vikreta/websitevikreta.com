@@ -6,7 +6,7 @@ type D = Extract<Demo, { kind: 'doc' }>
 
 export function DocSim({ demo }: { demo: D }) {
   const f = demo.fields, s = demo.status
-  const { ref, step, done, reduce, replay } = useSim(f.length + s.length, 700)
+  const { ref, step, done, replay } = useSim(f.length + s.length, 700)
   return (
     <div ref={ref} className="wv-sim wv-sim-doc">
       <div className="wv-sim-bar"><span className="wv-sim-title">{demo.title}</span></div>
@@ -25,7 +25,7 @@ export function DocSim({ demo }: { demo: D }) {
           <li key={i} className={f.length + i < step ? 'is-on' : ''}><span aria-hidden>✓</span>{x}</li>
         ))}
       </ul>
-      {done && !reduce && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
+      {done && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
     </div>
   )
 }
