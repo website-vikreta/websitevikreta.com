@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import './branch.css'
 import Image from 'next/image'
 import type { Branch, Persona, Product, Scenario, Shift } from '@/content/ai-automations/types'
 import { TOOL_LOGOS, toolLogos } from '@/content/ai-automations/logos'
@@ -14,9 +15,13 @@ export function JsonLd({ data }: { data: object }) {
 /** Section wrapper: statement head + content, tight. */
 function Sec({ id, title, accent, children, className = '' }: { id?: string; title?: string[]; accent?: number; children: React.ReactNode; className?: string }) {
   return (
-    <section className={`wv-ax-sec ${className}`} id={id}>
+    <section className={`wv-sec wv-ax-sec ${className}`} id={id}>
       <div className="wv-wrap">
-        {title && <KineticTitle lines={title} className="wv-h2 wv-ax-h2" accent={accent ?? title.length - 1} />}
+        {title && (
+          <div className="wv-sec-head">
+            <KineticTitle lines={title} className="wv-h2" accent={accent ?? title.length - 1} />
+          </div>
+        )}
         {children}
       </div>
     </section>
@@ -109,9 +114,7 @@ export function Shifts({ shifts, title }: { shifts: Shift[]; title?: string[] })
         {shifts.map((s, i) => (
           <Reveal key={i} delay={i * 0.06} className="wv-ax-shift">
             <del><RichText text={s.before} /></del>
-            <span aria-hidden className="wv-ax-shift-ar">
-              <Arrow size={22} />
-            </span>
+            <span aria-hidden className="wv-ax-shift-ar" />
             <strong><RichText text={s.after} /></strong>
           </Reveal>
         ))}
@@ -124,9 +127,11 @@ export function LogoRail({ keys, title }: { keys: string[]; title?: string[] }) 
   const items = toolLogos(keys)
   if (!items.length) return null
   return (
-    <section className="wv-ax-sec wv-ax-rail">
+    <section className="wv-sec wv-ax-sec wv-ax-rail">
       <div className="wv-wrap">
-        <KineticTitle lines={title ?? ['Works with', 'your tools']} className="wv-h2 wv-ax-h2" accent={1} />
+        <div className="wv-sec-head">
+          <KineticTitle lines={title ?? ['Works with', 'your tools']} className="wv-h2" accent={1} />
+        </div>
       </div>
       <VelocityMarquee items={items} baseVelocity={-2} className="wv-ax-rail-mq" />
     </section>

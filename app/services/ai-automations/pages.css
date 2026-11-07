@@ -2,6 +2,3 @@
 .wv-axp-main{padding-bottom:0}
 @media (max-width:719px){.wv-axp-main{padding-bottom:64px}}
 
-/* related products */
-.wv-axp-related{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
-@media (min-width:720px){.wv-axp-related{grid-template-columns:repeat(3,minmax(0,1fr))}}

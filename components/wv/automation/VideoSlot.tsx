@@ -7,7 +7,7 @@ import { VideoPlayer } from './VideoPlayer'
 export function VideoSlot({ video }: { video: Video }) {
   if (!video.youtubeId && !showPlaceholders()) return null
   return (
-    <section className="wv-ax-sec wv-ax-video">
+    <section className="wv-sec wv-ax-sec wv-ax-video">
       <div className="wv-wrap">
         {video.youtubeId && (
           <JsonLd

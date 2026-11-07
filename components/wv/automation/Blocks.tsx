@@ -11,6 +11,7 @@ import { PrefillLink } from './LeadForm'
 import { RichText } from './RichText'
 import { Sec } from './Sections'
 import { ReadCards } from './closing'
+import './product.css'
 
 export function CaseStudy({ cs, productName }: { cs?: CaseT; productName: string }) {
   if (!cs) {

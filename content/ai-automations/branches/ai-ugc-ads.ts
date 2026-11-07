@@ -20,7 +20,7 @@ export const branch: Branch = {
   name: 'AI UGC Ads',
   navLabel: 'AI UGC Ads',
   persona: 'ira',
-  title: 'AI UGC Ads for Ecommerce Brands | Website Vikreta',
+  title: 'AI UGC Ads for Ecommerce and D2C Brands | Website Vikreta',
   description:
     'AI UGC video ads for D2C and ecommerce. Get 10 ad variants in days, with a disclosed AI presenter. Test more hooks without booking creators. Done for you.',
   h1: ['Ad creatives by the dozen.', 'Not by the week.'],
@@ -143,7 +143,7 @@ export const branch: Branch = {
         'Claims we cannot verify',
       ],
       page: {
-        title: 'AI UGC Video Ads for Ecommerce | Website Vikreta',
+        title: 'AI UGC Video Ads for Shopify and D2C | Website Vikreta',
         description:
           'AI UGC video ads for Shopify and D2C brands. A disclosed AI presenter, scripts, and 10 variants ready for Meta and TikTok. Done for you by Website Vikreta.',
         h1: ['AI UGC video ads.', 'Made in days.'],

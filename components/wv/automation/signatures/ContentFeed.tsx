@@ -4,6 +4,7 @@ import Image from 'next/image'
 import type { Branch } from '@/content/ai-automations/types'
 import { PERSONAS } from '@/content/ai-automations/personas'
 import { TOOL_LOGOS } from '@/content/ai-automations/logos'
+import { KineticTitle } from '../../ui'
 import './sig-c.css'
 
 const A = '/our-services/ai-automation/'
@@ -70,8 +71,12 @@ export default function ContentFeed({ branch }: { branch: Branch }) {
     if (el && card) el.scrollTo({ left: card.offsetLeft - 16, behavior: 'smooth' })
   }
   return (
-    <section className="wv-sg wv-sg-feed" aria-label={`${branch.name} feed`}>
+    <section className="wv-sec wv-sg wv-sg-feed" aria-label={`${branch.name} feed`}>
       <div className="wv-wrap">
+        <div className="wv-sec-head">
+          <KineticTitle lines={['A week of posts,', 'already written.']} className="wv-h2" accent={1} />
+          <p className="wv-sec-aside">Six channels, one brand voice. Pick a day to jump to that post, or let the rail drift.</p>
+        </div>
         <div className="wv-sg-week" role="group" aria-label="This week">
           {DAYS.map((d, i) => {
             const p = POSTS.find((x) => x.day === i)

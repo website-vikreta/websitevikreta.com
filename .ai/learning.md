@@ -55,3 +55,13 @@ The pre-`wv` log (legacy pages, GSAP, Epilogue/Utile) is in git: `git show 3d6f3
 - Rule: It is `null` on the server, so `initial={reduce ? … : …}` causes a hydration mismatch. Keep `initial` constant; zero the `transition` when reduced.
 - Where: `Reveal`, `KineticTitle` in `components/wv/ui.tsx`.
 - Date: 2026-11-07
+
+### [Motion] — also applies to `render` branches, not just `initial`
+- Rule: Never `{cond && !reduce && <X/>}` or `initial={reduce ? …}` in a component that SSRs. `useReducedMotion()` is `null` on the server, so the server and the first client render disagree. Hide with CSS `@media (prefers-reduced-motion: reduce)` or zero the `transition`.
+- Where: sims replay button (`sims.css`), `WhatsAppHero`, `FinanceHero`, `VoiceHero`.
+- Date: 2026-11-07
+
+### [Layout] — AI pages share closing blocks
+- Rule: Every `/services/ai-automations/**` page ends with `ProofBar`, `Reading`, `Faq`, `CtaBlock`, which now alias `components/wv/automation/closing.tsx`. Put `wv-ax-glow` on `<main>` for the 20% violet/pink page glow. The global map CTA is hidden on these routes (`HideOnHome`).
+- Where: `components/wv/automation/closing.tsx`, `closing.css`, `components/ui/ConditionalShell.tsx`.
+- Date: 2026-11-07

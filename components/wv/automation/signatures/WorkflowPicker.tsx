@@ -35,9 +35,13 @@ export default function WorkflowPicker({ branch }: { branch: Branch }) {
     return <>{x}<mark>{n}</mark>{y}</>
   }
   return (
-    <section className="wv-ax-sec sg-sec" id="picker">
+    <section className="wv-sec" id="picker">
       <div className="wv-wrap">
-        <KineticTitle lines={['Pick your apps.', 'See what gets built.']} className="wv-h2 wv-ax-h2" accent={1} />
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Pick your apps.', 'See what gets built.']} className="wv-h2" accent={1} />
+          <div className="wv-sec-aside"><p>Choose two or three of the tools you already use and see the workflow we would build between them.</p></div>
+        </div>
+
         <div className="sg-wf">
           <div className="sg-apps" role="group" aria-label="Choose two or three apps">
             {KEYS.map((k) => {

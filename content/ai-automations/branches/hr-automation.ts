@@ -154,7 +154,7 @@ export const branch: Branch = {
       page: {
         title: 'Offer Letter Automation for Small Business | Website Vikreta',
         description:
-          'Automate offer letters: fill, approve and send in minutes. We automate the typing. You approve every offer. Built in your own accounts.',
+          'Automate offer letters: fill, approve and send in minutes. We automate the typing. You approve every offer. Built in your own accounts. Done for you.',
         h1: ['Offer letter', 'automation'],
         heroSub: 'Give the name, role and start date. The letter is ready to sign.',
         demo: {
@@ -236,7 +236,7 @@ export const branch: Branch = {
       },
       reading: ['/blog/ai-and-automation/ai-strategy-real-world-outcomes'],
       page: {
-        title: 'Employee Onboarding Automation | Website Vikreta',
+        title: 'Employee Onboarding Automation for Teams | Website Vikreta',
         description:
           'Employee onboarding automation for small teams. Welcome, paperwork, tasks and check-ins run on time, handled by our AI HR agent. Built in your tools.',
         h1: ['Employee onboarding', 'automation'],

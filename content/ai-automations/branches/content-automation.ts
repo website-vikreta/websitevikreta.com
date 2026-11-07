@@ -20,7 +20,7 @@ export const branch: Branch = {
   persona: 'ira',
   title: 'AI Content Automation for Business | Website Vikreta',
   description:
-    'AI content automation for blogs, social and email. Your automation drafts, schedules and repurposes content. A human checks every claim. We run our own site this way.',
+    'AI content automation for blogs, social and email. Your automation drafts, schedules and repurposes content. A human checks every claim before it ships.',
   h1: ['One brief.', 'A month of posts.'],
   usp: 'One brief becomes a month of posts you approve.',
   heroSub: 'Blog, LinkedIn, Instagram, X and email, drafted and scheduled. You approve each one.',
@@ -148,9 +148,9 @@ export const branch: Branch = {
       ],
       excludes: ['Guaranteed rankings', 'Link building', 'Posts with no human review'],
       page: {
-        title: 'AI SEO Blog Content Service | Website Vikreta',
+        title: 'AI SEO Blog Content Service for Business | Website Vikreta',
         description:
-          'AI SEO blog content for small business. Your automation researches, drafts and schedules posts that answer real searches. A person checks every fact before it ships.',
+          'AI SEO blog content for business. Your automation researches, drafts and schedules posts that answer real searches. A person checks every fact before it ships.',
         h1: ['AI SEO blog content.', 'Facts checked.'],
         heroSub: 'Researched posts that answer real searches. A person checks every fact.',
         demo: {
@@ -226,7 +226,7 @@ export const branch: Branch = {
       page: {
         title: 'AI Social Media Content Automation | Website Vikreta',
         description:
-          'AI social media content for LinkedIn, X and Instagram. Message your automation to draft and schedule posts. You approve each one. Live in days, run in your accounts.',
+          'AI social media content for LinkedIn, X and Instagram. Message your automation to draft and schedule posts. You approve each one. Run in your own accounts.',
         h1: ['AI social media content.', 'Schedule by message.'],
         heroSub: 'Draft in chat, approve, and it posts to LinkedIn, X and Instagram.',
         demo: {

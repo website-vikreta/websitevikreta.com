@@ -4,12 +4,12 @@
 ## AI Automations
 
 - [Workflow Automation](https://www.websitevikreta.com/services/ai-automations/workflow-automation): Connect CRMs, documents and inboxes so routine work runs without hand-offs.
-  - [CRM automation](https://www.websitevikreta.com/services/ai-automations/workflow-automation/crm-automation)
-  - [Document data extraction](https://www.websitevikreta.com/services/ai-automations/workflow-automation/document-data-extraction)
-  - [AI teammates](https://www.websitevikreta.com/services/ai-automations/workflow-automation/ai-teammates)
+  - [CRM automation](https://www.websitevikreta.com/services/ai-automations/workflow-automation/crm-automation): Leads, notes and next steps land in your CRM on their own.
+  - [Document data extraction](https://www.websitevikreta.com/services/ai-automations/workflow-automation/document-data-extraction): Reads invoices, forms and PDFs and sends clean data where it belongs.
+  - [AI teammates](https://www.websitevikreta.com/services/ai-automations/workflow-automation/ai-teammates): Your own AI assistants living in your team chat.
 - [AI Voice Agents](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents): AI phone agents that answer calls, qualify leads and book appointments.
-  - [AI receptionist](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents/ai-receptionist)
-  - [Outbound lead qualification](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents/outbound-lead-qualification)
+  - [AI receptionist](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents/ai-receptionist): Answers every call, handles questions and books the job.
+  - [Outbound lead qualification](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents/outbound-lead-qualification): Calls new leads within minutes and books the good ones.
 - [WhatsApp Automation](https://www.websitevikreta.com/services/ai-automations/whatsapp-automation): Lead follow-up, reminders and support on WhatsApp.
   - [WhatsApp lead follow-up](https://www.websitevikreta.com/services/ai-automations/whatsapp-automation/whatsapp-lead-follow-up)
   - [Appointment reminders](https://www.websitevikreta.com/services/ai-automations/whatsapp-automation/appointment-reminders)
@@ -17,17 +17,21 @@
   - [Offer letter automation](https://www.websitevikreta.com/services/ai-automations/hr-automation/offer-letter-automation)
   - [Employee onboarding automation](https://www.websitevikreta.com/services/ai-automations/hr-automation/employee-onboarding-automation)
 - [AI UGC Ads](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads): UGC-style video ads and spokesperson videos from product images.
-  - [AI UGC video ads](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads)
-  - [AI spokesperson videos](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads/ai-spokesperson-videos)
+  - [AI UGC video ads](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads): Creator-style video ads, made fast and labeled as AI.
+  - [AI spokesperson videos](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads/ai-spokesperson-videos): One AI face for your explainers, launches and updates.
 - [Content Automation](https://www.websitevikreta.com/services/ai-automations/content-automation): SEO blog posts, social content and repurposing.
-  - [SEO blog content](https://www.websitevikreta.com/services/ai-automations/content-automation/seo-blog-content)
-  - [Social media content](https://www.websitevikreta.com/services/ai-automations/content-automation/social-media-content)
+  - [SEO blog content](https://www.websitevikreta.com/services/ai-automations/content-automation/seo-blog-content): Researched blog posts that answer real search questions.
+  - [Social media content](https://www.websitevikreta.com/services/ai-automations/content-automation/social-media-content): Social posts drafted and scheduled by message.
 - [Proposal Automation](https://www.websitevikreta.com/services/ai-automations/proposal-automation): Proposals, RFP responses and scopes of work.
   - [Proposal generation](https://www.websitevikreta.com/services/ai-automations/proposal-automation/proposal-generation)
   - [RFP response automation](https://www.websitevikreta.com/services/ai-automations/proposal-automation/rfp-response-automation)
 - [Finance Automation](https://www.websitevikreta.com/services/ai-automations/finance-automation): Invoices, payment reminders, expense extraction and reports.
-  - [Invoice automation](https://www.websitevikreta.com/services/ai-automations/finance-automation/invoice-automation)
-  - [Payment reminder automation](https://www.websitevikreta.com/services/ai-automations/finance-automation/payment-reminder-automation)
+  - [Invoice automation](https://www.websitevikreta.com/services/ai-automations/finance-automation/invoice-automation): Job done, invoice sent, with no retyping.
+  - [Payment reminder automation](https://www.websitevikreta.com/services/ai-automations/finance-automation/payment-reminder-automation): Polite nudges for late invoices until they are paid.
+
+## AI automation FAQ topics
+
+Answered on https://www.websitevikreta.com/services/ai-automations: cost, build time, supported tools, whether you need a tech team, data safety, AI talking to customers, what happens if an automation breaks, and who owns the automations.
 
 ## About
 

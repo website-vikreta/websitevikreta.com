@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import type { Branch } from '@/content/ai-automations/types'
+import { KineticTitle } from '../../ui'
 import { Logo } from './kit-b'
 
 type Call = { biz: string; icon: string; time: string; dur: number; lines: { who: 'A' | 'C'; text: string; hot?: boolean }[]; outcome: string; logo: string }
@@ -71,10 +72,12 @@ export default function VoiceCallLog({ branch }: { branch: Branch }) {
   const [rate, setRate] = useState(30)
   const lost = Math.round(missed * (rate / 100) * 4.3)
   return (
-    <section className="sb-sec" aria-labelledby="sb-call-h">
+    <section className="wv-sec">
       <div className="wv-wrap">
-        <h2 id="sb-call-h" className="wv-h2 wv-ax-h2">Today&apos;s call log</h2>
-        <p className="sb-lede">Three calls the AI voice agent took after hours. Press play to hear how each one went.</p>
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Today’s', 'call log.']} className="wv-h2" accent={1} />
+          <p className="wv-sec-aside">Three calls the AI voice agent took after hours. Press play to hear how each one went.</p>
+        </div>
         <div className="sb-calls">{CALLS.map((c, i) => <CallCard key={c.biz} c={c} audio={i === 0 ? audio : undefined} />)}</div>
         <div className="sb-slide">
           <div className="sb-slide-in">

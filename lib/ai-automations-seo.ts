@@ -88,6 +88,12 @@ export function branchSchema(b: Branch) {
   const url = `${hub}/${b.slug}`
   return wrap(
     serviceNode(url, b.name, b.description, b.products, b.slug),
+    {
+      '@type': 'ItemList',
+      '@id': `${url}#products`,
+      name: `${b.name} services`,
+      itemListElement: b.products.filter((p) => p.page).map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: `${url}/${p.slug}` })),
+    },
     ...faqNode(url, b.faqs),
     crumbNode(url, [['Home', SITE_URL], ['AI Automations', hub], [b.name, url]]),
   )

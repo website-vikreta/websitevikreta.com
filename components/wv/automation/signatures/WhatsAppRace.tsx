@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'motion/react'
 import type { Branch } from '@/content/ai-automations/types'
+import { KineticTitle } from '../../ui'
 import { Logo, useClock } from './kit-b'
 
 const END = 9000
@@ -45,14 +46,14 @@ export default function WhatsAppRace({ branch }: { branch: Branch }) {
   void branch
   const { ref, t, running, play } = useClock(END)
   return (
-    <section ref={ref} className="sb-sec" aria-labelledby="sb-race-h">
+    <section ref={ref} className="wv-sec">
       <div className="wv-wrap">
-        <div className="sb-row">
-          <div>
-            <h2 id="sb-race-h" className="wv-h2 wv-ax-h2">Same lead. Two replies.</h2>
-            <p className="sb-lede">A quote request lands at 6:52 pm. See who answers first.</p>
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Same lead.', 'Two replies.']} className="wv-h2" accent={1} />
+          <div className="wv-sec-aside">
+            <p>A quote request lands at 6:52 pm. See who answers first.</p>
+            <button type="button" className="sb-replay" onClick={play} disabled={running}>{running ? 'Racing…' : '↻ Replay'}</button>
           </div>
-          <button type="button" className="sb-replay" onClick={play} disabled={running}>{running ? 'Racing…' : '↻ Replay'}</button>
         </div>
         <div className="sb-race">
           <div className="sb-lead">

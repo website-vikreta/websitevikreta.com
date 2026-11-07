@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import type { Branch } from '@/content/ai-automations/types'
 import { TOOL_LOGOS, CLIENTS } from '@/content/ai-automations/logos'
+import { KineticTitle } from '../../ui'
 import './sig-c.css'
 
 type Reel = { src: string; hook: string; p: string; views: string; video?: string }
@@ -38,8 +39,12 @@ function Player({ r }: { r: Reel }) {
 export default function UgcGallery({ branch }: { branch: Branch }) {
   const c = CLIENTS['simpli-home']
   return (
-    <section className="wv-sg wv-sg-ugc" aria-label={`${branch.name} examples`}>
+    <section className="wv-sec wv-sg wv-sg-ugc" aria-label={`${branch.name} examples`}>
       <div className="wv-wrap">
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Ads people', 'actually watch.']} className="wv-h2" accent={1} />
+          <p className="wv-sec-aside">AI presenters, real hooks, tested in batches. Here is what a first round of reels looks like.</p>
+        </div>
         <div className="wv-sg-case">
           {/* eslint-disable-next-line @next/next/no-img-element -- client svg */}
           <img className="wv-sg-case-logo" src={c.src} alt={c.alt} />

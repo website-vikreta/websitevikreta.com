@@ -1,0 +1,32 @@
+/* Product page blocks: case study, how it runs, pairs/related. wv tokens + --ai-a/--ai-b from the hub. */
+.wv-ax-demo{min-width:0;display:flex;justify-content:center}
+.wv-ax-how .wv-sim{max-width:640px}
+
+/* case study */
+.wv-ax-cs{display:grid;gap:32px}
+.wv-ax-cs header{display:grid;gap:12px;justify-items:start}
+.wv-ax-cs-logo{height:56px;width:auto;max-width:240px;object-fit:contain}
+.wv-ax-cs h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(28px,3.4vw,44px);line-height:1.05}
+.wv-ax-cs dl{display:grid;gap:16px}
+.wv-ax-cs dl>div{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px;min-width:0}
+.wv-ax-cs dl>.is-result::before{content:"";position:absolute;left:28px;right:28px;top:0;height:3px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,var(--ai-a),var(--ai-b))}
+.wv-ax-cs dt{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;color:var(--muted)}
+.wv-ax-cs dd{font-size:18px;line-height:1.55;max-width:64ch}
+.wv-ax-cs dl>.is-result dd{font-weight:600;color:var(--ink)}
+.wv-ax-cs.is-next{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px 40px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:36px}
+.wv-ax-cs.is-next p{font-size:19px;line-height:1.5;max-width:56ch}
+@media (min-width:960px){.wv-ax-cs dl{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* pairs + related */
+.wv-ax-pairs,.wv-axp-related{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:720px){.wv-ax-pairs{grid-template-columns:repeat(2,minmax(0,1fr))}.wv-axp-related{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.wv-ax-rel{display:grid;grid-template-rows:auto 1fr auto;gap:14px;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:24px;transition:border-color .3s}
+.wv-ax-rel:hover{border-color:var(--ink)}
+.wv-ax-rel-top{display:flex;align-items:center;gap:14px}
+.wv-ax-rel-top img{border-radius:50%}
+.wv-ax-rel strong{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:26px;line-height:1.05}
+.wv-ax-rel-s{font-size:16px;line-height:1.5;color:var(--muted)}
+.wv-ax-rel .wv-arrow{justify-self:end;transition:transform .3s}
+.wv-ax-rel:hover .wv-arrow{transform:rotate(45deg)}
+@media (prefers-reduced-motion:reduce){.wv-ax-rel .wv-arrow{transition:none}}
+.wv-ax-more{margin-top:32px;font-size:17px;line-height:1.5}
