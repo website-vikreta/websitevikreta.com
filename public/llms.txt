@@ -1,71 +1,58 @@
 # Website Vikreta
-> Website Vikreta is an AI-first web agency based in Pune, India. We design and build fast, modern websites and intelligent AI automation systems for businesses ready to grow. Our work sits at the intersection of design, engineering, and artificial intelligence.
+> Website Vikreta is an AI-first web and automation studio. The team is based in Pune, India and works with clients worldwide, with coverage during US hours. We build websites, apps, and AI automation systems for businesses in the US, UK and other Western markets.
+
+## AI Automations
+
+- [Workflow Automation](https://www.websitevikreta.com/services/ai-automations/workflow-automation): Connect CRMs, documents and inboxes so routine work runs without hand-offs.
+  - [CRM automation](https://www.websitevikreta.com/services/ai-automations/workflow-automation/crm-automation)
+  - [Document data extraction](https://www.websitevikreta.com/services/ai-automations/workflow-automation/document-data-extraction)
+  - [AI teammates](https://www.websitevikreta.com/services/ai-automations/workflow-automation/ai-teammates)
+- [AI Voice Agents](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents): AI phone agents that answer calls, qualify leads and book appointments.
+  - [AI receptionist](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents/ai-receptionist)
+  - [Outbound lead qualification](https://www.websitevikreta.com/services/ai-automations/ai-voice-agents/outbound-lead-qualification)
+- [WhatsApp Automation](https://www.websitevikreta.com/services/ai-automations/whatsapp-automation): Lead follow-up, reminders and support on WhatsApp.
+  - [WhatsApp lead follow-up](https://www.websitevikreta.com/services/ai-automations/whatsapp-automation/whatsapp-lead-follow-up)
+  - [Appointment reminders](https://www.websitevikreta.com/services/ai-automations/whatsapp-automation/appointment-reminders)
+- [HR Automation](https://www.websitevikreta.com/services/ai-automations/hr-automation): Offer letters, onboarding, screening and contracts.
+  - [Offer letter automation](https://www.websitevikreta.com/services/ai-automations/hr-automation/offer-letter-automation)
+  - [Employee onboarding automation](https://www.websitevikreta.com/services/ai-automations/hr-automation/employee-onboarding-automation)
+- [AI UGC Ads](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads): UGC-style video ads and spokesperson videos from product images.
+  - [AI UGC video ads](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads)
+  - [AI spokesperson videos](https://www.websitevikreta.com/services/ai-automations/ai-ugc-ads/ai-spokesperson-videos)
+- [Content Automation](https://www.websitevikreta.com/services/ai-automations/content-automation): SEO blog posts, social content and repurposing.
+  - [SEO blog content](https://www.websitevikreta.com/services/ai-automations/content-automation/seo-blog-content)
+  - [Social media content](https://www.websitevikreta.com/services/ai-automations/content-automation/social-media-content)
+- [Proposal Automation](https://www.websitevikreta.com/services/ai-automations/proposal-automation): Proposals, RFP responses and scopes of work.
+  - [Proposal generation](https://www.websitevikreta.com/services/ai-automations/proposal-automation/proposal-generation)
+  - [RFP response automation](https://www.websitevikreta.com/services/ai-automations/proposal-automation/rfp-response-automation)
+- [Finance Automation](https://www.websitevikreta.com/services/ai-automations/finance-automation): Invoices, payment reminders, expense extraction and reports.
+  - [Invoice automation](https://www.websitevikreta.com/services/ai-automations/finance-automation/invoice-automation)
+  - [Payment reminder automation](https://www.websitevikreta.com/services/ai-automations/finance-automation/payment-reminder-automation)
 
 ## About
 
-Website Vikreta is a Pune-based digital agency focused on bringing AI-first thinking to web design and business automation. We work with startups, small businesses, and growing companies across India who want a web presence that does more than look good — one that works intelligently.
+Website Vikreta designs and builds fast websites and AI automation for small and mid-sized businesses. The team is in Pune, India. Clients are in the US, UK and elsewhere, and the team covers US working hours.
 
-We believe every business deserves a website that is fast, accessible, and built for the future. We also believe that repetitive business processes should be automated so teams can focus on work that actually matters.
+We run our own company on these automations. Our AI agents are named Meher (HR), Ira (content and UGC) and Arjun (sales and finance).
+
+## Clients and results
+
+- Simpli Home: AI UGC ads. About 20 hours a week of ad production work cut to 1.
+- SBP
+- Blancora
 
 ## Services
 
-### Web Development
-We build modern, performant websites using Next.js, TypeScript, and Tailwind CSS. Every site is optimised for speed, SEO, and mobile — designed to convert visitors into clients.
+- AI Automations: https://www.websitevikreta.com/services/ai-automations
+- Web Development: https://www.websitevikreta.com/services/web-development
+- UI/UX Design: https://www.websitevikreta.com/services/uiux-design
+- Web and Mobile Apps: https://www.websitevikreta.com/services/web-mobile-app-development
+- Digital Marketing: https://www.websitevikreta.com/services/digital-marketing
 
-### AI Automations
-We design and build custom AI automation systems that connect your tools, eliminate repetitive work, and let your team focus on high-value tasks. From lead capture to client delivery — fully automated workflows built around your business.
+## Contact
 
-### UI/UX Design
-We design intuitive, conversion-focused user interfaces and experiences for web and mobile products. Clean, modern design that puts the user first.
-
-### Web and Mobile Apps
-Custom web and mobile application development built with modern frameworks. Fast, scalable apps for startups and growing businesses across India.
-
-### Digital Marketing
-Strategic digital marketing services — SEO, content, and growth campaigns built for businesses ready to expand their online presence across India.
-
-## Location and Contact
-
-- Location: Pune, Maharashtra, India
+- Location: Pune, Maharashtra, India (serving clients worldwide)
 - Website: https://www.websitevikreta.com
 - Contact page: https://www.websitevikreta.com/contact
 - Email: contact@websitevikreta.com
-- Phone: +919970445198
-
-## Technology
-
-We build with modern, production-grade tools:
-- Framework: Next.js (App Router) with TypeScript
-- Styling: Tailwind CSS v4
-- Animation: Framer Motion
-- CMS: Sanity (for content-managed sites)
-- Deployment: Vercel
-- AI integrations: custom-built using leading AI APIs
-
-## Audience
-
-Website Vikreta works with:
-- Startups and early-stage companies needing their first professional website
-- Small and medium businesses looking to modernise their web presence
-- Founders and teams who want to automate repetitive business workflows
-- Companies across India seeking an AI-aware digital agency partner
-
-## Key Pages
-
-- [Homepage](https://www.websitevikreta.com): Brand overview, services summary, featured work, and contact entry point
-- [Web Development](https://www.websitevikreta.com/services/web-development): Next.js websites built for speed, SEO, and mobile
-- [AI Automations](https://www.websitevikreta.com/services/ai-automations): Custom AI automation systems for business workflows
-- [UI/UX Design](https://www.websitevikreta.com/services/uiux-design): User interface and experience design for web and mobile
-- [Web and Mobile Apps](https://www.websitevikreta.com/services/web-mobile-app-development): Custom application development for startups and businesses
-- [Digital Marketing](https://www.websitevikreta.com/services/digital-marketing): SEO, content, and digital growth services
-- [Our Work](https://www.websitevikreta.com/work): Projects and case studies
-- [Blog](https://www.websitevikreta.com/blog): Articles on web design, AI automation, and digital growth
-- [FAQ](https://www.websitevikreta.com/faq): Common questions about our services, process, and pricing
-- [Contact](https://www.websitevikreta.com/contact): Get in touch and start a project
-
-## What We Are Not
-
-- We are not a freelancer marketplace
-- We are not a template-based website builder
-- We are not a large agency with hundreds of staff
-- We are a focused, specialist team that builds custom digital products with AI at the core
+- WhatsApp: +91 99704 45198

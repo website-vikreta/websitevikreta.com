@@ -1,69 +1,36 @@
-# Brand — Website Vikreta
+# Brand
 
-## Palette
-| Role | Token | Value | Usage |
-|------|-------|-------|-------|
-| Background | `--color-bg` | `#FAFAF7` | Page background — warm off-white |
-| Surface | `--color-surface` | `#FFFFFF` | Cards, elevated containers |
-| Text primary | `--color-text` | `#121212` | Headlines, body copy |
-| Text secondary | `--color-text-muted` | `#525252` | Subheads, descriptions |
-| Text faint | `--color-text-faint` | `#A0A0A0` | Metadata, placeholders |
-| Accent | `--color-accent` | `#FFD600` | Highlights, hover states, key moments |
-| Accent hover | `--color-accent-dark` | `#F3CB00` | Accent on hover / pressed |
-| Border | `--color-border` | `#E8E8E8` | Default borders, dividers |
-| Border strong | `--color-border-strong` | `#D4D4D4` | Focused, elevated borders |
+Full tokens and rules: `.ai/standards/design-system.md`. This is the one-screen summary.
 
-**Rule:** Accent `#FFD600` is used sparingly across the **entire website — maximum 10% of total visual surface**. Yellow should feel like a surprise, not a pattern. When in doubt, don't use it.
-**Rule:** No gradients unless they are black-to-transparent. No color gradients.
-**Rule:** White space is aggressive. Let it breathe.
-**Rule:** Background is warm `#FAFAF7`, not pure white. Pure white (`#FFFFFF`) is reserved for elevated surfaces only.
+## Look
 
----
+- Warm canvas `#f6f4ee`, ink `#121212`, yellow `#fac800`. White `#fff` surfaces. Dark `#161616` footer only.
+- Yellow is loud and physical: buttons, a tilted band, a full stats section, the CTA orb, sparkles. Never text on light (use gold `#8a6d00`).
+- Type is the hero. Anton uppercase display at poster scale, Inter Tight for reading.
+- Round, soft shapes: pill buttons, 20–28px cards. Hairlines, no heavy borders.
+- Signatures: 4-point yellow star, diagonal ↗ arrow, `( Eyebrow )` labels, outlined giant words, velocity marquees.
 
-## Typography Direction
-- **Headline style:** Large. Bold. Tight leading. Words fill the screen.
-- **Reveal behavior:** Text earns its place. Nothing appears without motion.
-- **Hierarchy:** Size contrast is extreme. H1 vs body should feel like different worlds.
-- **Font mood:** Modern grotesque. Clean. Editorial. Not playful.
-- **Font:** Epilogue only. All type — display, body, UI, labels, metadata. No other typefaces.
+## Voice
 
----
+**We sound:** direct, warm, specific. "Your business" over "our services". Pain first, then the fix. Numbers over adjectives.
 
-## Voice & Tone
-**What we sound like:**
-- Direct. No fluff.
-- Confident, not arrogant.
-- We say "your business" more than "our services"
-- We name the pain before we offer the solution
+**We never sound:** corporate ("synergy", "leverage", "holistic"), hype ("revolutionizing"), tool-names-first, or AI-written. Pattern list: `.ai/context/ai-slop-stop-skill.md`.
 
-**What we never sound like:**
-- Corporate jargon ("synergy", "leverage", "holistic")
-- Startup hype ("disrupting", "revolutionizing")
-- Overly technical (tool names before outcomes)
-- AI-generated — throat-clearing ("Here's the thing:"), false-contrast formulas ("It's not X, it's Y"), vague-importance claims, empty adverbs, manufactured three-part lists. Full pattern list + fixes: `.ai/context/ai-slop-stop-skill.md`.
+- Wrong: "We leverage cutting-edge AI technologies to provide holistic digital transformation solutions."
+- Right: "You're losing 40 hours a month to work a tool could do. We fix that."
 
-**Example — Wrong:**
-> "We leverage cutting-edge AI technologies to provide holistic digital transformation solutions."
+Headlines are short enough to set in Anton across two lines (≈2–4 words per line).
 
-**Example — Right:**
-> "You're losing 40 hours a month to work a tool could do. We fix that."
+Every shipped string goes through `.ai/commands/macro/humanize.md`.
 
-**Rule:** Every shipped string runs through `.ai/commands/macro/humanize.md` before it goes live — page copy, blog posts, CTAs, meta descriptions, alt text. AI-writing tells are an automatic revision.
+## Motion
 
----
+Letters rise into place, words light up as you scroll, photos open like shutters, CTAs pull toward the cursor. Fast-in, soft-landing ease. Nothing bounces. Details: `.ai/standards/motion-system.md`.
 
-## Motion Identity
-- Animations are **slow and deliberate**. Nothing bounces.
-- Reveals are **vertical** — text slides up into view.
-- Hover states are **subtle**. Underline draws. Color shifts gently.
-- Page transitions: **fade + slight upward drift**.
-- No spinning loaders. No flashy entrances.
-- Motion should feel like a **premium print magazine coming to life**.
+## Photography
 
----
-
-## Photography / Visual Direction
-- Black and white photography only (if used).
-- Abstract textures, grain, noise — welcome.
-- No stock photo smiles. No handshakes. No laptops on desks.
-- Data visualizations: minimal, monochrome with `#FFD600` highlight.
+- Real people doing real work: team, workshops, screens, client sessions. Full color.
+- Team portraits: grayscale, color on hover.
+- Client logos: grayscale at 60%, color on hover.
+- No posed handshakes, no smiling-at-camera stock, no AI illustration.
+- Unsplash placeholders (`IMG` in `data.ts`) are temporary. Swap for real shoots when available.

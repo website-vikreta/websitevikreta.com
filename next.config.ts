@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   reactCompiler: true,
+  // OG routes read persona PNGs + the Anton font from disk at request time.
+  outputFileTracingIncludes: {
+    '/services/ai-automations/**/opengraph-image*': ['./app/services/ai-automations/_og/**', './app/fonts/Anton-Regular.ttf'],
+  },
   images: {
     unoptimized: true,
     remotePatterns: [

@@ -1,154 +1,145 @@
-# Design System — Website Vikreta
+# Design System — `wv`
 
-## Color Tokens
-```css
-:root {
-  /* Light theme — warm off-white palette */
-  --color-bg:            #FAFAF7;   /* page background */
-  --color-surface:       #FFFFFF;   /* cards, elevated containers */
-  --color-bg-subtle:     #FFFFFF;   /* same as surface */
-  --color-bg-muted:      #F0F0ED;   /* muted warm neutral */
-  --color-text:          #121212;   /* primary text */
-  --color-text-muted:    #525252;   /* secondary text */
-  --color-text-faint:    #A0A0A0;   /* metadata, placeholders */
-  --color-accent:        #FFD600;   /* yellow — use sparingly */
-  --color-accent-dark:   #F3CB00;   /* yellow on hover */
-  --color-border:        #E8E8E8;   /* default borders */
-  --color-border-strong: #D4D4D4;   /* focused/elevated borders */
-}
-```
+The only design language on this site. Source of truth is code, this file is the map:
 
-## Typography Scale
-> Font: **Epilogue** only. All type — display headlines, body, UI, labels, metadata. Loaded via `next/font/google`. Single typeface, all weights 100–900.
-```css
-:root {
-  /* Display — Hero headlines only */
-  --text-display:    clamp(3.5rem, 10vw, 9rem);
-  --leading-display: 0.9;
-  --tracking-display: -0.03em;
+- Tokens + every class: `app/wv.css`
+- Primitives (motion, icons, media): `components/wv/ui.tsx`
+- Reference build: `components/wv/Home.tsx` (homepage), `Header.tsx`, `Footer.tsx`
+- Content constants: `components/wv/data.ts`
 
-  /* H1 — Page titles */
-  --text-h1:         clamp(2.5rem, 6vw, 5rem);
-  --leading-h1:      1.0;
+If something is not in this file or `wv.css`, it does not exist. Compose from what is here. Never import a value, font, color or pattern from outside it.
 
-  /* H2 — Section headlines */
-  --text-h2:         clamp(1.75rem, 4vw, 3rem);
-  --leading-h2:      1.1;
+## Legacy (do not extend)
 
-  /* H3 — Card/component titles */
-  --text-h3:         clamp(1.25rem, 2.5vw, 1.75rem);
+`components/sections/*`, `components/ui/*` visuals, `components/home/*`, `.home-*` and `--color-*` tokens in `globals.css`, Utile/Epilogue, GSAP, `components/ui/Reveal.tsx`, Tailwind utility styling. Old pages still render with them. Never use them in new work. Touching a legacy page beyond a small fix = rebuild that section in `wv`.
 
-  /* Body */
-  --text-body:       1rem;       /* 16px */
-  --text-body-lg:    1.125rem;   /* 18px */
-  --leading-body:    1.6;
+## Tokens (scoped on `.wv`)
 
-  /* Meta / Label */
-  --text-meta:       0.75rem;
-  --tracking-meta:   0.12em;
-}
-```
+| Token | Value | Use |
+|---|---|---|
+| `--canvas` | `#f6f4ee` | Page background |
+| `--surface` | `#fff` | Cards, header (solid), drawer, process section |
+| `--surface-2` | `#efece4` | Hover fill on quiet controls, image placeholder |
+| `--ink` / `--text` | `#121212` | Text, dark fills, button wipe |
+| `--muted` | `#5d5b55` | Secondary text, eyebrows, numbers |
+| `--y` | `#fac800` | Yellow. **Fill only** on light grounds |
+| `--y-2` | `#ffde4d` | Hover of a yellow fill |
+| `--gold` | `#8a6d00` | Yellow-family **text** on light grounds (hover text, `is-y` eyebrow) |
+| `--line` | `#1212121a` | Every hairline / border on light |
+| `--line-d` | `#0b0b0c24` | Hairline on yellow |
+| `--pad` | 16px → 32px ≥720 | Side gutter |
 
-## Spacing System
-```css
-:root {
-  --space-1:   0.25rem;   /* 4px */
-  --space-2:   0.5rem;    /* 8px */
-  --space-3:   0.75rem;   /* 12px */
-  --space-4:   1rem;      /* 16px */
-  --space-6:   1.5rem;    /* 24px */
-  --space-8:   2rem;      /* 32px */
-  --space-12:  3rem;      /* 48px */
-  --space-16:  4rem;      /* 64px */
-  --space-24:  6rem;      /* 96px */
-  --space-32:  8rem;      /* 128px */
+Dark ground (footer only): `#161616`, re-scoped `--text #f5f4ef`, `--muted #9b9a96`, `--line #ffffff1a`. On dark, `--y` may be text.
 
-  /* Section padding */
-  --section-y: clamp(4rem, 10vw, 8rem);
-  --section-x: clamp(1.5rem, 5vw, 6rem);
-}
-```
+Sole off-palette exception: the AI Solutions nav item (`.wv-nav-ai`, magenta `#c026d3` bolt + snake border). Nowhere else.
 
-## Grid
-```css
-.container {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding-inline: var(--section-x);
-}
+Rules:
+- Yellow is never text on canvas/surface. Use `--gold`.
+- Yellow full-bleed grounds allowed only as: the tilted band, the stats section, the CTA orb. One yellow ground per viewport.
+- Color photography is allowed. Tints: dark gradient scrims only (`#0b0b0c` → transparent).
+- New hex value in a component = violation. Add a token in `wv.css` only if the user approves.
 
-/* 12-column grid for complex layouts */
-.grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-6);
-}
-```
+## Type
 
-## Section & Hierarchy Conventions
-> Applied conventions that keep pages uniform. See `.ai/learning.md` for full log.
+Two families, loaded in `components/wv/fonts.ts` (`--display`, `--sans`). Wrap any new tree in `wvFonts`.
 
-- **Section vertical rhythm:** every top-level section uses `py-16 md:py-20`. No other section padding.
-- **Heading → content gap:** section heading block uses `mb-10 md:mb-14`.
-- **Heading tiers (one size per tier, sitewide):**
-  - Section heading (H2): `text-h2` token (`clamp(1.75rem,4vw,3rem)`) + `font-bold` + `text-(--color-text)`. Never raw `text-3xl/4xl` or ad-hoc clamps.
-  - Card / item title (H3 tier): `text-2xl sm:text-3xl font-bold`.
-  - Eyebrow / meta label: `text-xs font-bold uppercase tracking-widest text-(--color-text-faint)` or the `text-meta-label` token.
-- **Scroll reveals:** use `components/ui/Reveal.tsx` primitives (see motion-system.md) — section headings masked, cards fade, numbers count up.
+| Role | Spec |
+|---|---|
+| Display (h1/h2/h3, numbers, big labels) | Anton, `uppercase`, weight 400, line-height 0.9–1 |
+| Everything else | Inter Tight, 16px / 1.55 |
+| H1 | `.wv-h1` `clamp(50px, 7.8vw, 112px)` / 0.9 |
+| H2 (section) | `.wv-kt.wv-h2` `clamp(48px, 9vw, 128px)` / 0.92 |
+| H3 large (row/card) | `clamp(30px, 3.6–4.6vw, 52–64px)` / 1 |
+| H3 fixed | 40–44px / 1 |
+| Stat number | `clamp(54px, 8vw, 110px)` |
+| Statement paragraph | `.wv-big-p` `clamp(28px, 4.2vw, 56px)` / 1.12, −0.02em, 500 |
+| Quote | `clamp(26px, 3.4vw, 46px)` / 1.15, 500 |
+| Lead | 17–19px, `--muted`, max 520–560px |
+| Body | 15–16.5px |
+| Small / meta | 13–14.5px |
+| Eyebrow | `.wv-eyebrow` 12px, 600, 0.14em, uppercase, written `( Label )` |
 
-## Component Rules
+Rules: Anton never for body. Inter Tight never uppercase except eyebrow/chip/card-top. No other weights than 400 (Anton) and 500/600/700 (Inter Tight).
 
-### Buttons
-- Primary: White bg, black text. On hover: `#FFD600` bg, black text.
-- Ghost: White border, white text. On hover: White bg, black text.
-- No rounded corners more than 2px. We are not playful.
-- All buttons have 0.3s transition.
+## Layout
 
-### Cards
-- Background: `--color-bg-subtle` (`#111111`)
-- Border: `--color-border` (8% white)
-- On hover: border strengthens to `--color-border-strong`
-- No drop shadows. Depth via color, not shadow.
+- Container: `.wv-wrap` (max 1320px, `--pad` gutters). Every section content sits in it.
+- Section: `.wv-sec` padding 96px, 150px ≥960. Yellow/surface sections: 96px, 130px ≥960.
+- Section head: `.wv-sec-head` = `KineticTitle` (h2) + `.wv-sec-aside` (muted, max 380px, optional `.wv-link`). Grid `1fr auto`, aligned end at ≥960. Gap below 48 → 72px.
+- Split: two columns at ≥960 only — `1.4fr .8fr` or `1.3fr .8fr`, gap 80px (48px stacked).
+- Breakpoints: 720 (gutter), 960 (layout splits, hover-only extras), 1024 (desktop nav). Mobile-first, no others.
+- Lists: hairline rows (`border-top/bottom: 1px var(--line)`) before boxed cards.
 
-### Tags / Badges
-- All caps. Letter spacing 0.1em.
-- Outlined style. Accent color text optional for featured.
-- Font size: `--text-meta`
+## Shape
 
-### Links (inline)
-- No underline by default
-- On hover: underline draws left to right (CSS clip-path animation)
-- Duration: 0.3s
+| Element | Radius |
+|---|---|
+| Buttons, chips, pills, tags, nav links | `999px` |
+| Large card, parallax photo | `28px` |
+| Hero image, step card, panel | `24px` |
+| Media tile, member photo | `20–22px` |
+| Small media, tab | `14–18px` |
+| Logo mark, icon tile | `10px` |
+| Icon buttons, avatars, orb | `50%` |
 
-### Dividers
-- 1px `--color-border`
-- No decorative dividers — whitespace creates separation
+Borders: 1px `--line`. 2px only for avatar rings and the stats rule. Shadows only on floating media (`0 30px 60px -24px #12121259`) and the mega menu. Never on cards.
 
----
+## Signature Elements
 
-## Accent Color Usage — `#FFD600`
-**Budget: max 10% of total visual surface across the entire website.**
-Everything else is black, white, or greys. No exceptions.
+Use these to make something feel `wv`. Do not invent new decoration.
 
-**Where yellow belongs (pick sparingly):**
-- One CTA button per page (primary action only)
-- A single highlighted word or stat in a hero headline
-- Active nav indicator or underline
-- A border-left on a blockquote or key callout
-- Hover state on a primary interactive element
+- `Star` — 4-point sparkle. Separator in marquees, bullet before proof. Yellow.
+- `Arrow` — diagonal ↗. Rotates 45° on parent hover. Every forward link/CTA.
+- `( Eyebrow )` — parenthesised label above statements and quotes.
+- Tilted yellow band — `.wv-band` (−2deg) with two `VelocityMarquee` rows, one solid, one `is-outline`.
+- Outlined giant type — `-webkit-text-stroke` on transparent text (CTA marquee, footer wordmark).
+- Grid background — `.wv-grid-bg`, radial-masked, hero only.
+- Yellow corner glow — radial `#fac8004d`, hero only.
+- Numbering — `01`, `02` in `--muted` 13px, or Anton yellow 64px on step cards.
 
-**Where yellow never goes:**
-- Backgrounds of full sections or large areas
-- Body text or paragraph copy
-- Cards, borders, dividers at scale
-- Decorative elements or patterns
-- More than one instance per page on mobile
+## Components (catalogue)
 
-**The test:** Screenshot the page in greyscale. Convert back. If yellow appears more than ~3 times on a single page, it's too much.
-- No box shadows
-- No color gradients
-- No border-radius > 4px on containers
-- No animation on text color (only opacity/position)
-- No centered body copy beyond hero
-- No more than 3 typefaces in the entire project
+| Need | Use |
+|---|---|
+| Primary CTA | `.wv-btn.wv-btn-y` inside `Magnetic`, + `Arrow` |
+| Secondary CTA | `.wv-btn.wv-btn-ghost` |
+| Compact CTA | add `.wv-btn-sm` |
+| Text link | `.wv-link` + `Arrow size={14}` |
+| CTA group | `.wv-cta-row` (`is-center`) |
+| Closing CTA | `.wv-cta` section: outline marquee + `KineticTitle` + `.wv-cta-orb` + `.wv-cta-meta` |
+| Page hero (home) | `.wv-hero` pattern in `Home.tsx` |
+| Page hero (inner) | `.wv-page` + `.wv-crumbs` + `.wv-h1.wv-page-h1` + `.wv-page-lead` + `.wv-cta-row` |
+| Section title | `KineticTitle` `className="wv-h2"`, 2 lines, `accent` on the last |
+| Statement | eyebrow + `ScrollWords` `.wv-big-p` + `.wv-link`, beside `ParallaxPhoto` |
+| Service/index list | `.wv-svc-list` rows with `HoverLetters`, cursor-follow photo ≥960 |
+| Stats | `.wv-stats` yellow section, `CountUp` in `.wv-stat` |
+| Case study | `.wv-card` sticky stack (`WorkCard`) |
+| Steps | `.wv-process` (pinned horizontal ≥960, stacked mobile) |
+| Testimonial | `.wv-quote` rotator + `.wv-quote-nav` |
+| Team | `.wv-team-grid` + `.wv-member` (grayscale → color, yellow bar on hover) |
+| Logos | `VelocityMarquee` `is-logos` (grayscale, 60% opacity) |
+| Tag | `.wv-card-tags span` (hairline pill) |
+| Badge | `.wv-chip` (yellow pill, `is-lg`) |
+| Status pill | `.wv-pill` + `.wv-dot` |
+| Image | `Photo` (fill), `ParallaxPhoto` (clip reveal + parallax) |
+| Accordion / FAQ | `.wv-acc` + `.wv-acc-btn` + `.wv-plus` (Anton question, hairline rows) |
+| Tabs | `.wv-mega-tab` pattern (`aria-selected` → yellow fill) |
+
+## Inventing a Component
+
+Only when nothing above fits. Build it from this grammar, nothing else:
+
+1. **Name**: `.wv-<name>`, children `.wv-<name>-<part>`, states `.is-<state>`. CSS goes at the end of `app/wv.css` under a `/* wv: <name> */` comment.
+2. **Ground**: canvas, surface, yellow, or ink/dark. Pick one. Text colors follow the token rules above.
+3. **Type**: one Anton display line max per block, Inter Tight for the rest, sizes from the type table.
+4. **Shape**: radius from the shape table by size. 1px `--line` border or no border. No shadow unless it floats.
+5. **Hover** (`(hover: hover)` devices only, choose one): ink fill wipes up from bottom (button), yellow 2px underline grows (link), yellow wash `#fac80038 → transparent` (row), circle fills yellow (icon button), image scales 1.05 over 0.8–0.9s, text turns `--gold`, card lifts −6px and inverts to ink. Always rotate a child `Arrow` 45°.
+6. **Motion**: one effect per element, from `ui.tsx` (see motion-system.md).
+7. **A11y**: split/animated text keeps a `.wv-sr` copy and `aria-hidden` visuals. 2px ink focus ring (inherited). Targets ≥42px.
+8. **Mobile**: works at 360px first. Desktop-only extras (`float`, pin, magnetic) hidden or no-op below 960.
+
+Log the new component in `.ai/learning.md`.
+
+## Never
+
+Gradients except dark scrims, the yellow glow and the row wash. Yellow text on light. Third typeface. New colors. Square corners on interactive elements. Card shadows. Tailwind utility classes in `wv` components. Icon libraries inside `wv` UI (use `Star`, `Arrow`, `Chevron`, `.wv-plus`, or a new inline SVG added to `ui.tsx`: 24px viewBox, `currentColor`, stroke 2, round caps). Centered body copy outside CTA blocks.

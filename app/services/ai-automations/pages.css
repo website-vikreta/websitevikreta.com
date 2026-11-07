@@ -1,0 +1,48 @@
+/* wv: AI automations pages (.wv-axp-*) — tokens only */
+.wv-axp-main{padding-bottom:0}
+@media (max-width:719px){.wv-axp-main{padding-bottom:64px}}
+
+/* picker */
+.wv-axp-chips{display:flex;flex-wrap:wrap;gap:8px}
+.wv-axp-chip{height:44px;padding:0 18px;border-radius:999px;border:1px solid color-mix(in srgb, var(--ink) 22%, transparent);background:var(--surface);font-size:15px;font-weight:600;transition:background .25s,border-color .25s}
+.wv-axp-chip:hover{border-color:var(--ink)}
+.wv-axp-chip[aria-pressed="true"]{background:var(--y);border-color:var(--y)}
+.wv-axp-panel{margin-top:16px;display:grid;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:20px}
+.wv-axp-panel[hidden]{display:none}
+.wv-axp-panel p{font-size:clamp(19px,2.2vw,28px);line-height:1.25;letter-spacing:-.01em}
+.wv-axp-panel .wv-cta-row{margin-top:18px}
+@media (min-width:720px){.wv-axp-panel{grid-template-columns:auto 1fr;padding:28px 36px;gap:36px}}
+
+/* meet the team */
+.wv-axp-team{display:grid;gap:12px}
+.wv-axp-card{position:relative;display:grid;grid-template-columns:42% 1fr;align-items:end;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:28px;overflow:hidden;padding:18px 18px 18px 0}
+.wv-axp-card-img{position:relative;align-self:stretch;min-height:220px}
+.wv-axp-card-img img{object-fit:cover;object-position:top center}
+.wv-axp-card h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(34px,4vw,54px);line-height:1}
+.wv-axp-card-role{display:inline-block;margin-top:6px;background:var(--y);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700}
+.wv-axp-card ul{display:grid;gap:4px;margin-top:12px;color:var(--muted);font-size:16px}
+.wv-axp-card .wv-link{margin-top:14px}
+@media (min-width:960px){.wv-axp-team{grid-template-columns:repeat(3,1fr)}.wv-axp-card{grid-template-columns:1fr;padding:0 0 22px}.wv-axp-card-img{min-height:0;aspect-ratio:4/4.2}.wv-axp-card>div:last-child{padding:0 22px}}
+
+/* branch index */
+.wv-axp-idx{border-top:1px solid var(--line)}
+.wv-axp-idx-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.wv-axp-idx-row:hover{background:linear-gradient(90deg,#fac80038,#0000 70%)}
+.wv-axp-idx-t{display:grid;gap:2px}
+.wv-axp-idx-t strong{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(22px,2.6vw,34px);line-height:1.05}
+.wv-axp-idx-t span{font-size:16px;line-height:1.45}
+.wv-axp-logos{display:none;gap:10px}
+.wv-axp-logos img{width:22px;height:22px;object-fit:contain}
+@media (min-width:720px){.wv-axp-idx-row{grid-template-columns:auto 1fr auto auto;gap:20px}.wv-axp-logos{display:flex}}
+
+/* related products */
+.wv-axp-related{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:720px){.wv-axp-related{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* compact persona band */
+.wv-axp-band{padding:32px 0}
+.wv-axp-band-in{display:grid;gap:14px}
+.wv-axp-band h2{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(24px,3vw,36px);line-height:1.1}
+.wv-axp-band ul{display:flex;flex-wrap:wrap;gap:12px 28px;list-style:none;padding:0}
+.wv-axp-band li{display:flex;align-items:center;gap:10px;font-size:16px}
+.wv-axp-band p{font-size:16px;max-width:64ch}
