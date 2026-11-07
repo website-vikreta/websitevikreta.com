@@ -59,7 +59,33 @@ export type Service = {
 }
 
 // Label → real route, for any sub-page that exists. Everything else renders as '#'.
-const PAGES: Record<string, string> = {}
+const PAGES: Record<string, string> = {
+  'Workflows': '/services/ai-automations/workflow-automation',
+  'CRM automation': '/services/ai-automations/workflow-automation/crm-automation',
+  'Document data extraction': '/services/ai-automations/workflow-automation/document-data-extraction',
+  'AI teammates': '/services/ai-automations/workflow-automation/ai-teammates',
+  'Voice Agents': '/services/ai-automations/ai-voice-agents',
+  'AI receptionist': '/services/ai-automations/ai-voice-agents/ai-receptionist',
+  'Outbound lead qualification': '/services/ai-automations/ai-voice-agents/outbound-lead-qualification',
+  'WhatsApp': '/services/ai-automations/whatsapp-automation',
+  'WhatsApp lead follow-up': '/services/ai-automations/whatsapp-automation/whatsapp-lead-follow-up',
+  'Appointment reminders': '/services/ai-automations/whatsapp-automation/appointment-reminders',
+  'HR': '/services/ai-automations/hr-automation',
+  'Offer letter automation': '/services/ai-automations/hr-automation/offer-letter-automation',
+  'Employee onboarding automation': '/services/ai-automations/hr-automation/employee-onboarding-automation',
+  'AI UGC Ads': '/services/ai-automations/ai-ugc-ads',
+  'AI UGC video ads': '/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads',
+  'AI spokesperson videos': '/services/ai-automations/ai-ugc-ads/ai-spokesperson-videos',
+  'Content': '/services/ai-automations/content-automation',
+  'SEO blog content': '/services/ai-automations/content-automation/seo-blog-content',
+  'Social media content': '/services/ai-automations/content-automation/social-media-content',
+  'Proposals': '/services/ai-automations/proposal-automation',
+  'Proposal generation': '/services/ai-automations/proposal-automation/proposal-generation',
+  'RFP response automation': '/services/ai-automations/proposal-automation/rfp-response-automation',
+  'Finance': '/services/ai-automations/finance-automation',
+  'Invoice automation': '/services/ai-automations/finance-automation/invoice-automation',
+  'Payment reminder automation': '/services/ai-automations/finance-automation/payment-reminder-automation',
+}
 
 type RawGroup = { title: string; blurb: string; leaves: { t: string; tag?: string }[] }
 function svc(
@@ -94,12 +120,16 @@ export const SERVICES: Service[] = [
     image: IMG.ai,
     proof: { label: 'Simpli Home, 20 hours cut to 1', metric: '20h → 1h' },
     cta: 'Book a free process audit',
-    extras: ['Pricing', 'Platforms: Make, n8n, WhatsApp API'],
+    extras: ['Platforms: Make, n8n, WhatsApp API'],
     groups: [
-      { title: 'E-commerce Content Automation', blurb: 'Turn product photos into ready-to-post creatives in bulk.', leaves: [{ t: 'Bulk product image automation' }, { t: 'AI UGC video ads' }, { t: 'AI product visuals' }] },
-      { title: 'Lead Response & Booking', blurb: 'Answer every enquiry in minutes, on WhatsApp and by phone.', leaves: [{ t: 'WhatsApp AI agent' }, { t: 'AI receptionist (voice)', tag: 'New' }, { t: 'Missed call recovery' }] },
-      { title: 'Hiring & Onboarding Automation', blurb: 'Offer letters, NDAs and onboarding without the paperwork chase.', leaves: [{ t: 'Offer letter automation' }, { t: 'Candidate screening' }] },
-      { title: 'Document & Proposal Automation', blurb: 'Generate proposals and contracts from a form or CRM record.', leaves: [{ t: 'Proposal generation' }] },
+      { title: 'Workflows', blurb: 'Connect your tools so leads, data and follow-ups run themselves.', leaves: [{ t: 'CRM automation' }, { t: 'Document data extraction' }, { t: 'AI teammates' }] },
+      { title: 'Voice Agents', blurb: 'Phone agents that answer, qualify and book around the clock.', leaves: [{ t: 'AI receptionist' }, { t: 'Outbound lead qualification' }] },
+      { title: 'WhatsApp', blurb: 'Reply, remind and follow up with customers on WhatsApp.', leaves: [{ t: 'WhatsApp lead follow-up' }, { t: 'Appointment reminders' }] },
+      { title: 'HR', blurb: 'Offer letters and onboarding handled by Meher, our AI HR teammate.', leaves: [{ t: 'Offer letter automation' }, { t: 'Employee onboarding automation' }] },
+      { title: 'AI UGC Ads', blurb: 'Turn product photos into UGC-style video ads in bulk.', leaves: [{ t: 'AI UGC video ads' }, { t: 'AI spokesperson videos' }] },
+      { title: 'Content', blurb: 'Blogs and social posts drafted by Ira, our AI content teammate.', leaves: [{ t: 'SEO blog content' }, { t: 'Social media content' }] },
+      { title: 'Proposals', blurb: 'First-draft proposals and RFP answers in minutes.', leaves: [{ t: 'Proposal generation' }, { t: 'RFP response automation' }] },
+      { title: 'Finance', blurb: 'Invoices and payment reminders handled by Arjun, our AI finance teammate.', leaves: [{ t: 'Invoice automation' }, { t: 'Payment reminder automation' }] },
     ],
   }),
   svc('/services/web-development', {
@@ -163,12 +193,31 @@ export const SERVICES: Service[] = [
   }),
 ]
 
-export const NAV = [
-  { t: 'Work', href: '/work' },
-  { t: 'Process', href: '/#process' },
-  { t: 'Studio', href: '/about' },
-  { t: 'Blog', href: '/blog' },
-  { t: 'Careers', href: '/careers' },
+export type NavItem = {
+  id: string
+  t: string
+  href?: string
+  kind?: 'services' | 'ai' | 'menu'
+  children?: { t: string; href: string }[]
+}
+
+export const AI_HREF = '/services/ai-automations'
+
+export const NAV: NavItem[] = [
+  { id: 'services', t: 'Services', href: '/services', kind: 'services' },
+  { id: 'work', t: 'Work', href: '/work' },
+  {
+    id: 'company',
+    t: 'Company',
+    kind: 'menu',
+    children: [
+      { t: 'Studio', href: '/about' },
+      { t: 'Process', href: '/#process' },
+      { t: 'Careers', href: '/careers' },
+    ],
+  },
+  { id: 'blog', t: 'Blog', href: '/blog' },
+  { id: 'ai', t: 'AI Automations', href: AI_HREF, kind: 'ai' },
 ]
 
 export const ROTATING = ['saves 20 hours a week', 'ranks on Google', 'gets cited by AI', 'scales with you']

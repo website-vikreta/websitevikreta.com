@@ -3,10 +3,9 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { CONTACT, NAV, SERVICES } from './data'
+import { AI_HREF, CONTACT, NAV, SERVICES } from './data'
+import './nav/nav.css'
 import { Arrow, Chevron, Logo, Magnetic, ease } from './ui'
-
-const AI_HREF = '/services/ai-automations'
 
 const TAIL = 70
 const LAYERS = Array.from({ length: 12 }, (_, i) => TAIL - i * 6)
@@ -41,83 +40,107 @@ function Bolt() {
 
 function Drawer({ onNavigate }: { onNavigate: () => void }) {
   const [open, setOpen] = useState<string | null>(null)
+  const toggle = (id: string) => setOpen((o) => (o === id ? null : id))
   const item = (i: number) => ({
     initial: { y: 30, opacity: 0 },
-    animate: { y: 0, opacity: 1, transition: { delay: 0.12 + 0.05 * i, duration: 0.5, ease } },
+    animate: { y: 0, opacity: 1, transition: { delay: 0.1 + 0.05 * i, duration: 0.5, ease } },
   })
+  const Acc = ({ id, title, children, i }: { id: string; title: string; children: React.ReactNode; i: number }) => {
+    const isOpen = open === id
+    return (
+      <motion.div {...item(i)} className="wv-acc">
+        <button className="wv-acc-btn" aria-expanded={isOpen} aria-controls={`wvd-${id}`} onClick={() => toggle(id)}>
+          {title}
+          <span className={`wv-plus${isOpen ? ' is-open' : ''}`} aria-hidden />
+        </button>
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              id={`wvd-${id}`}
+              className="wv-acc-body"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease }}
+            >
+              <div className="wv-acc-pad">{children}</div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    )
+  }
+  let n = 0
   return (
     <div className="wv-drawer-in">
-      <p className="wv-eyebrow">Services</p>
-      {SERVICES.map((s, i) => {
-        const isOpen = open === s.id
-        return (
-          <motion.div key={s.id} {...item(i)} className="wv-acc">
-            <button className="wv-acc-btn" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : s.id)}>
-              {s.title}
-              <span className={`wv-plus${isOpen ? ' is-open' : ''}`} aria-hidden />
-            </button>
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  className="wv-acc-body"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease }}
-                >
-                  <div className="wv-acc-pad">
-                    {s.groups.map((g) => (
-                      <div key={g.title} className="wv-acc-group">
-                        <Link href={g.href} className="wv-acc-gt" onClick={onNavigate}>
-                          {g.title}
-                        </Link>
-                        <ul>
-                          {g.leaves.map((l) => (
-                            <li key={l.t}>
-                              <Link href={l.href} onClick={onNavigate}>
-                                {l.t}
-                              </Link>
-                              {l.tag && <span className="wv-chip">{l.tag}</span>}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                    <div className="wv-acc-extras">
-                      {s.extras.map((x) => (
-                        <Link key={x.t} href={x.href} onClick={onNavigate}>
-                          {x.t}
-                        </Link>
-                      ))}
+      {NAV.map((it) => {
+        const i = n++
+        if (it.kind === 'ai')
+          return (
+            <motion.div key={it.id} {...item(i)} className="wvn-d-ai">
+              <Link href={AI_HREF} onClick={onNavigate} className="wv-nav-ai is-lg">
+                <Snake />
+                <Bolt /> {it.t} <Arrow size={14} />
+              </Link>
+            </motion.div>
+          )
+        if (it.kind === 'services')
+          return (
+            <Acc key={it.id} id="services" title={it.t} i={i}>
+              {SERVICES.map((s) => (
+                <div key={s.id} className="wvn-d-svc">
+                  <Link href={s.href} className="wv-acc-gt" onClick={onNavigate}>
+                    {s.title}
+                  </Link>
+                  {s.groups.map((g) => (
+                    <div key={g.title} className="wv-acc-group">
+                      <Link href={g.href} className="wvn-d-gt" onClick={onNavigate}>
+                        {g.title}
+                      </Link>
+                      <ul>
+                        {g.leaves.map((l) => (
+                          <li key={l.t}>
+                            <Link href={l.href} onClick={onNavigate}>
+                              {l.t}
+                            </Link>
+                            {l.tag && <span className="wv-chip">{l.tag}</span>}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <Link href={s.href} className="wv-link" onClick={onNavigate}>
-                      Explore {s.title} <Arrow size={14} />
+                  ))}
+                </div>
+              ))}
+              <Link href="/services" className="wv-link" onClick={onNavigate}>
+                All services <Arrow size={14} />
+              </Link>
+            </Acc>
+          )
+        if (it.children)
+          return (
+            <Acc key={it.id} id={it.id} title={it.t} i={i}>
+              <ul className="wvn-d-plain">
+                {it.children.map((c) => (
+                  <li key={c.t}>
+                    <Link href={c.href} onClick={onNavigate}>
+                      {c.t}
                     </Link>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  </li>
+                ))}
+              </ul>
+            </Acc>
+          )
+        return (
+          <motion.div key={it.id} {...item(i)} className="wv-acc">
+            <Link href={it.href!} onClick={onNavigate} className="wv-acc-btn">
+              {it.t}
+            </Link>
           </motion.div>
         )
       })}
-      <div className="wv-drawer-links">
-        {NAV.map((n, i) => (
-          <motion.div key={n.t} {...item(SERVICES.length + i)}>
-            <Link href={n.href} onClick={onNavigate} className="wv-drawer-big">
-              {n.t}
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-      <motion.div {...item(SERVICES.length + NAV.length)} className="wv-drawer-ai">
-        <Link href={AI_HREF} onClick={onNavigate} className="wv-nav-ai is-lg">
-          <Snake />
-          <Bolt /> AI Solutions <Arrow size={14} />
-        </Link>
-      </motion.div>
-      <motion.div {...item(SERVICES.length + NAV.length + 1)} className="wv-drawer-foot">
+      <motion.div {...item(n)} className="wv-drawer-foot">
         <Link href="/contact" className="wv-btn wv-btn-y" onClick={onNavigate}>
-          Book a free Consultation <Arrow size={14} />
+          Book a free call <Arrow size={14} />
         </Link>
         <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
       </motion.div>
@@ -125,32 +148,120 @@ function Drawer({ onNavigate }: { onNavigate: () => void }) {
   )
 }
 
-export function Header() {
-  const [mega, setMega] = useState(false)
+function ServicesPanel({ close }: { close: () => void }) {
   const [tab, setTab] = useState(SERVICES[0].id)
+  const cur = SERVICES.find((s) => s.id === tab)!
+  return (
+    <div className="wv-mega-in wvn-svc">
+      <div className="wv-mega-list" role="tablist" aria-orientation="vertical" aria-label="Services">
+        {SERVICES.map((s) => (
+          <button
+            key={s.id}
+            role="tab"
+            id={`wv-tab-${s.id}`}
+            aria-selected={s.id === tab}
+            aria-controls="wv-tabpanel"
+            className="wv-mega-tab"
+            onMouseEnter={() => setTab(s.id)}
+            onFocus={() => setTab(s.id)}
+            onClick={() => setTab(s.id)}
+          >
+            <span className="wv-mega-tt">{s.title}</span>
+            <Arrow size={14} />
+          </button>
+        ))}
+        <Link href="/services" className="wv-mega-all" onClick={close}>
+          All services <Arrow size={14} />
+        </Link>
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={cur.id}
+          role="tabpanel"
+          id="wv-tabpanel"
+          aria-labelledby={`wv-tab-${cur.id}`}
+          className="wv-mega-panel"
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.2, ease }}
+        >
+          <div className="wv-mega-head">
+            <div>
+              <h3>{cur.title}</h3>
+              <p>{cur.blurb}</p>
+            </div>
+            <Link href={cur.href} className="wv-link" onClick={close}>
+              Explore {cur.title} <Arrow size={14} />
+            </Link>
+          </div>
+            <div className={`wv-mega-groups${cur.groups.length > 4 ? ' is-many' : ''}`}>
+              {cur.groups.map((g) => (
+                <div key={g.title} className="wv-mega-group">
+                  <Link href={g.href} className="wv-mega-gt" onClick={close}>
+                    {g.title}
+                  </Link>
+                  <ul>
+                    {g.leaves.map((l) => (
+                      <li key={l.t}>
+                        <Link href={l.href} onClick={close}>
+                          {l.t}
+                        </Link>
+                        {l.tag && <span className="wv-chip">{l.tag}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
+const panelMotion = {
+  initial: { opacity: 0, y: -8 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -6 },
+  transition: { duration: 0.22, ease },
+}
+
+export function Header() {
+  const [openId, setOpenId] = useState<string | null>(null)
   const [drawer, setDrawer] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [solid, setSolid] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const trigger = useRef<HTMLButtonElement>(null)
+  const ptr = useRef('mouse')
+  const root = useRef<HTMLElement>(null)
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const prev = scrollY.getPrevious() ?? 0
     setSolid(y > 24)
-    setHidden(y > 240 && y > prev && !mega && !drawer)
+    setHidden(y > 240 && y > prev && !openId && !drawer)
   })
+
+  const focusTrigger = (id: string) => root.current?.querySelector<HTMLElement>(`[data-nav="${id}"]`)?.focus()
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
-      if (mega) trigger.current?.focus()
-      setMega(false)
+      if (openId) focusTrigger(openId)
+      setOpenId(null)
       setDrawer(false)
     }
+    const onDown = (e: PointerEvent) => {
+      if (openId && !root.current?.contains(e.target as Node)) setOpenId(null)
+    }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [mega])
+    window.addEventListener('pointerdown', onDown)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('pointerdown', onDown)
+    }
+  }, [openId])
 
   useEffect(() => {
     document.documentElement.style.overflow = drawer ? 'hidden' : ''
@@ -159,58 +270,101 @@ export function Header() {
     }
   }, [drawer])
 
-  const open = () => {
-    if (timer.current) clearTimeout(timer.current)
-    setMega(true)
+  const clear = () => timer.current && clearTimeout(timer.current)
+  // Hover intent: short delay when nothing is open, instant switch between open panels.
+  const hover = (id: string | null) => (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse') return
+    clear()
+    if (id === null || openId) return setOpenId(id)
+    timer.current = setTimeout(() => setOpenId(id), 90)
   }
   const close = () => {
-    setMega(false)
+    clear()
+    setOpenId(null)
     setDrawer(false)
   }
-  const cur = SERVICES.find((s) => s.id === tab)!
+  const trig = (id: string) => ({
+    'data-nav': id,
+    'aria-expanded': openId === id,
+    'aria-controls': `wvn-${id}`,
+    onPointerDown: (e: React.PointerEvent) => void (ptr.current = e.pointerType),
+    onPointerEnter: hover(id),
+    onClick: (e: React.MouseEvent) => setOpenId((v) => (v === id && (e.detail === 0 || ptr.current !== 'mouse') ? null : id)),
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        setOpenId(id)
+        requestAnimationFrame(() => document.querySelector<HTMLElement>(`#wvn-${id} a, #wvn-${id} [role=tab]`)?.focus())
+      }
+    },
+  })
 
   return (
     <>
       <motion.header
-        className={`wv-header${solid || mega ? ' is-solid' : ''}`}
+        ref={root}
+        className={`wv-header wvn-header${solid || openId ? ' is-solid' : ''}`}
         animate={{ y: hidden ? '-110%' : '0%' }}
         transition={{ duration: 0.35, ease }}
-        onMouseLeave={() => {
-          timer.current = setTimeout(() => setMega(false), 160)
+        onPointerLeave={(e) => {
+          if (e.pointerType === 'mouse') timer.current = setTimeout(() => setOpenId(null), 180)
         }}
-        onMouseEnter={() => timer.current && clearTimeout(timer.current)}
+        onPointerEnter={clear}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpenId(null)
+        }}
       >
         <div className="wv-bar">
           <Link href="/" className="wv-logo" onClick={close} aria-label="Website Vikreta home">
             <Logo height={38} />
           </Link>
-          <nav className="wv-nav" aria-label="Primary">
-            <button
-              ref={trigger}
-              className={`wv-nav-link${mega ? ' is-open' : ''}`}
-              aria-expanded={mega}
-              aria-controls="wv-mega"
-              onMouseEnter={open}
-              onClick={() => setMega((v) => !v)}
-            >
-              Services <Chevron className="wv-chev" />
-            </button>
-            {NAV.map((n) => (
-              <Link key={n.t} href={n.href} className="wv-nav-link" onMouseEnter={() => setMega(false)} onClick={close}>
-                <span className="wv-roll" data-text={n.t}>
-                  <span>{n.t}</span>
-                </span>
-              </Link>
-            ))}
-            <Link href={AI_HREF} className="wv-nav-ai" onMouseEnter={() => setMega(false)} onClick={close}>
-              <Snake />
-              <Bolt /> AI Solutions
-            </Link>
+          <nav className="wvn-nav" aria-label="Primary">
+            {NAV.map((n) => {
+              if (!n.kind)
+                return (
+                  <Link key={n.id} href={n.href!} className="wv-nav-link" onPointerEnter={hover(null)} onClick={close}>
+                    {n.t}
+                  </Link>
+                )
+              if (n.kind === 'ai')
+                return (
+                  <Link key={n.id} href={AI_HREF} className="wv-nav-ai" onPointerEnter={hover(null)} onClick={close}>
+                    <Snake />
+                    <Bolt /> {n.t}
+                  </Link>
+                )
+              const isOpen = openId === n.id
+              return (
+                <div key={n.id} className={`wvn-item${n.kind === 'menu' ? ' is-rel' : ''}`}>
+                  <button type="button" className={`wv-nav-link${isOpen ? ' is-open' : ''}`} {...trig(n.id)}>
+                    {n.t} <Chevron className="wv-chev" />
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div id={`wvn-${n.id}`} className={`wvn-panel${n.kind === 'menu' ? ' is-menu' : ''}`} {...panelMotion}>
+                        {n.kind === 'services' && <ServicesPanel close={close} />}
+                        {n.kind === 'menu' && (
+                          <ul className="wvn-menu">
+                            {n.children!.map((c) => (
+                              <li key={c.t}>
+                                <Link href={c.href} onClick={close}>
+                                  {c.t}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
           </nav>
           <div className="wv-bar-cta">
             <Magnetic>
               <Link href="/contact" className="wv-btn wv-btn-y wv-btn-sm" onClick={close}>
-                Book a free Consultation <Arrow size={14} />
+                Book a free call <Arrow size={14} />
               </Link>
             </Magnetic>
             <button
@@ -225,87 +379,6 @@ export function Header() {
             </button>
           </div>
         </div>
-        <AnimatePresence>
-          {mega && (
-            <motion.div
-              id="wv-mega"
-              className="wv-mega"
-              initial={{ opacity: 0, y: -12, clipPath: 'inset(0 0 100% 0)' }}
-              animate={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' }}
-              exit={{ opacity: 0, y: -8, clipPath: 'inset(0 0 100% 0)' }}
-              transition={{ duration: 0.38, ease }}
-              onMouseEnter={open}
-            >
-              <div className="wv-mega-in">
-                <div className="wv-mega-list" role="tablist" aria-orientation="vertical" aria-label="Services">
-                  <p className="wv-eyebrow">What we do</p>
-                  {SERVICES.map((s) => (
-                    <button
-                      key={s.id}
-                      role="tab"
-                      id={`wv-tab-${s.id}`}
-                      aria-selected={s.id === tab}
-                      aria-controls={`wv-panel-${s.id}`}
-                      className="wv-mega-tab"
-                      onMouseEnter={() => setTab(s.id)}
-                      onFocus={() => setTab(s.id)}
-                      onClick={() => setTab(s.id)}
-                    >
-                      <span className="wv-mega-tt">{s.title}</span>
-                      <Arrow size={14} />
-                    </button>
-                  ))}
-                  <Link href="/services" className="wv-mega-all" onClick={close}>
-                    All services <Arrow size={14} />
-                  </Link>
-                </div>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={cur.id}
-                    role="tabpanel"
-                    id={`wv-panel-${cur.id}`}
-                    aria-labelledby={`wv-tab-${cur.id}`}
-                    className="wv-mega-panel"
-                    initial={{ opacity: 0, x: 16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.22, ease }}
-                  >
-                    <div className="wv-mega-head">
-                      <div>
-                        <p className="wv-eyebrow is-y">{cur.kicker}</p>
-                        <h3>{cur.title}</h3>
-                        <p>{cur.blurb}</p>
-                      </div>
-                      <Link href={cur.href} className="wv-link" onClick={close}>
-                        Explore {cur.title} <Arrow size={14} />
-                      </Link>
-                    </div>
-                    <div className="wv-mega-groups">
-                      {cur.groups.map((g) => (
-                        <div key={g.title} className="wv-mega-group">
-                          <Link href={g.href} className="wv-mega-gt" onClick={close}>
-                            {g.title}
-                          </Link>
-                          <ul>
-                            {g.leaves.map((l) => (
-                              <li key={l.t}>
-                                <Link href={l.href} onClick={close}>
-                                  {l.t}
-                                </Link>
-                                {l.tag && <span className="wv-chip">{l.tag}</span>}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.header>
       <AnimatePresence>
         {drawer && (
