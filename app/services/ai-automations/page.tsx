@@ -1,93 +1,73 @@
-import type { Metadata } from 'next'
-import AIAutomationsClient from './AIAutomationsClient'
-import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
+import Link from 'next/link'
+import { AllServices, AutomationShell, Avatar, Reading, Crumbs, CtaBlock, Faq, HubHero, JsonLd, ProofBar, ScenarioCards, Sec } from '@/components/wv/automation'
+import { Arrow } from '@/components/wv/ui'
+import { BASE, BLOG, BRANCHES, HUB, PERSONAS, toolLogos } from '@/content/ai-automations'
+import { HubDesk } from '@/components/wv/automation/signatures'
+import { hubMetadata, hubSchema } from '@/lib/ai-automations-seo'
+import { ProblemPicker } from './ProblemPicker'
+import './pages.css'
 
-const PAGE_URL = `${SITE_URL}/services/ai-automations`
+export const metadata = hubMetadata()
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Service',
-      '@id': `${PAGE_URL}#service`,
-      name: 'AI Automation Services',
-      serviceType: 'AI Workflow Automation',
-      description: 'AI workflow automation for the repetitive work eating your team\'s week. We audit your process, connect your tools, and hand the system over documented.',
-      url: PAGE_URL,
-      provider: ORGANIZATION_REF,
-      areaServed: { '@type': 'Country', name: 'India' },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${PAGE_URL}#breadcrumb`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'AI Automations', item: PAGE_URL },
-      ],
-    },
-  ],
-}
+const people = Object.values(PERSONAS)
+const ROLE3: Record<string, string> = { meher: 'HR and workflows', ira: 'Content and ads', arjun: 'Calls, sales, money' }
 
-export const metadata: Metadata = {
-  title: 'AI Automation Agency for Business Workflows | Website Vikreta',
-  description: 'Automate CRM, reporting, support and repetitive operations with custom AI agents and workflows. Get a free process audit from Website Vikreta.',
-  keywords: [
-    'AI automation agency',
-    'AI automation services',
-    'workflow automation company',
-    'AI agent development company',
-    'business process automation services',
-    'n8n automation agency',
-    'custom AI automation solutions',
-    'AI workflow automation for small businesses',
-    'custom AI agents for CRM and operations',
-    'automate repetitive business processes with AI',
-  ],
-  openGraph: {
-    title: 'AI Automation Agency for Business Workflows | Website Vikreta',
-    description: 'Automate CRM, reporting, support and repetitive operations with custom AI agents and workflows. Get a free process audit from Website Vikreta.',
-    url: `${SITE_URL}/services/ai-automations`,
-    siteName: 'Website Vikreta',
-    type: 'website',
-    locale: 'en_IN',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'AI Automation Agency for Business Workflows | Website Vikreta',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'AI Automation Agency for Business Workflows | Website Vikreta',
-    description: 'Automate CRM, reporting, support and repetitive operations with custom AI agents and workflows. Get a free process audit from Website Vikreta.',
-    images: ['/og-image.png'],
-  },
-  alternates: {
-    canonical: `${SITE_URL}/services/ai-automations`,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-}
-
-export default function AIAutomationsPage() {
+export default function Page() {
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <AIAutomationsClient />
-    </>
+    <AutomationShell>
+      <JsonLd data={hubSchema()} />
+      <main className="wv-axp-main">
+        <HubHero hub={HUB} />
+        <ProofBar clients={['simpli-home', 'blancora', 'sbp', 'raicoon', 'tocal', 'carelift']} />
+        <HubDesk hub={HUB} />
+
+        <Sec id="picker" title={["What's eating", 'your week?']}>
+          <ProblemPicker problems={HUB.problems} personas={PERSONAS} base={BASE} />
+        </Sec>
+
+        <Sec id="branches" title={['Eight things', 'we automate']}>
+          <div className="wv-axp-idx">
+            {BRANCHES.map((b) => (
+              <Link key={b.slug} href={`${BASE}/${b.slug}`} className="wv-axp-idx-row">
+                <span className="wv-axp-idx-t">
+                  <strong>{b.name}</strong>
+                  <span>{b.usp}</span>
+                </span>
+                <span className="wv-axp-logos">
+                  {toolLogos(b.tools.slice(0, 4)).map((l) => (
+                    // eslint-disable-next-line @next/next/no-img-element -- svg logo
+                    <img key={l.src} src={l.src} alt={l.alt} />
+                  ))}
+                </span>
+                <Arrow size={18} />
+              </Link>
+            ))}
+          </div>
+        </Sec>
+
+        <ScenarioCards scenarios={HUB.scenarios} />
+
+        <section className="wv-ax-sec wv-axp-band" id="agents">
+          <div className="wv-wrap wv-axp-band-in">
+            <h2>The AI agents behind the work</h2>
+            <ul>
+              {people.map((p) => (
+                <li key={p.id}>
+                  <Avatar persona={p} px={40} />
+                  <span><strong>{p.name}</strong> {ROLE3[p.id]}</span>
+                </li>
+              ))}
+            </ul>
+            <p>We run our own company on these automations too. <Link className="wv-ax-inl" href="#branches">See the eight services</Link>.</p>
+          </div>
+        </section>
+
+        <AllServices />
+        <Reading seed={0} hrefs={BLOG.slice(0, 3).map((x) => x.href)} />
+        <Faq faqs={HUB.faqs} />
+        <Crumbs items={[{ label: 'Home', href: '/' }, { label: 'AI Automations', href: BASE }]} />
+        <CtaBlock title={['Get my', 'automation plan']} interest="AI automation plan" source="ai-automations-hub" waText="Hi, I'd like an AI automation plan" />
+      </main>
+    </AutomationShell>
   )
 }
