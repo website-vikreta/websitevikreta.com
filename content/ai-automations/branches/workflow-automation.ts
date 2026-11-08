@@ -12,7 +12,7 @@ export const branch: Branch = {
   name: 'Workflow Automation',
   navLabel: 'Workflows',
   persona: 'meher',
-  title: 'Workflow Automation with AI | Website Vikreta',
+  title: 'AI Workflow Automation for Small Business | Website Vikreta',
   description:
     'Stop copy and paste. We connect your CRM, inbox, forms and docs so work moves on its own, with AI teammates you brief in plain English. Live in about 14 days.',
   h1: ['Your apps,', 'finally talking.'],

@@ -74,10 +74,10 @@ export function Reveal({ children, className = '', delay = 0, y = 24 }: { childr
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y }}
+      initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-8% 0px' }}
-      transition={{ duration: 0.6, ease, delay }}
+      transition={reduce ? { duration: 0 } : { duration: 0.6, ease, delay }}
     >
       {children}
     </motion.div>
@@ -96,7 +96,7 @@ export function KineticTitle({ lines, className = '', delay = 0, as = 'h2', acce
           key={i}
           aria-hidden
           className={`wv-kt-line${i === accent ? ' is-accent' : ''}`}
-          initial={reduce ? 'show' : 'hide'}
+          initial="hide"
           whileInView="show"
           viewport={{ once: true, margin: '0px 0px -8% 0px' }}
         >
@@ -110,7 +110,7 @@ export function KineticTitle({ lines, className = '', delay = 0, as = 'h2', acce
                     className="wv-kt-ch"
                     variants={{
                       hide: { y: '105%', rotate: 8 },
-                      show: { y: '0%', rotate: 0, transition: { duration: 0.6, ease, delay: delay + 0.08 * i + 0.018 * idx } },
+                      show: { y: '0%', rotate: 0, transition: reduce ? { duration: 0 } : { duration: 0.6, ease, delay: delay + 0.08 * i + 0.018 * idx } },
                     }}
                   >
                     {ch}

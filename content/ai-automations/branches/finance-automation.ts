@@ -7,7 +7,7 @@ export const branch: Branch = {
   persona: 'arjun',
   title: 'Finance Automation for Small Business | Website Vikreta',
   description:
-    'Send invoices on time, chase late payers and keep your books tidy. We run it in QuickBooks or Xero. You approve any payment.',
+    'Send invoices on time, chase late payers and keep your books tidy. We run it in QuickBooks or Xero. You approve any payment. Done for you by Website Vikreta.',
   h1: ['Get paid', 'without chasing.'],
   usp: 'Invoices and reminders go out until paid. You approve every payment.',
   heroSub: 'Invoices out on time, polite reminders on schedule. You approve payments and write-offs.',

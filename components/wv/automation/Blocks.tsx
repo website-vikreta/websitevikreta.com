@@ -10,6 +10,8 @@ import { DemoSlot } from './DemoSlot'
 import { PrefillLink } from './LeadForm'
 import { RichText } from './RichText'
 import { Sec } from './Sections'
+import { ReadCards } from './closing'
+import './product.css'
 
 export function CaseStudy({ cs, productName }: { cs?: CaseT; productName: string }) {
   if (!cs) {
@@ -75,18 +77,7 @@ export function PairsWith({ branch }: { branch: Branch }) {
 }
 
 export function Reading({ hrefs, seed, title }: { hrefs?: string[]; seed: number; title?: string[] }) {
-  const posts = readingFor(hrefs, seed).slice(0, 3)
-  return (
-    <Sec title={title ?? ['Keep', 'reading']} accent={1}>
-      <ul className="wv-ax-read">
-        {posts.map((p) => (
-          <li key={p.href}>
-            <Link href={p.href} className="wv-ax-rel"><strong>{p.title}</strong><Arrow size={16} /></Link>
-          </li>
-        ))}
-      </ul>
-    </Sec>
-  )
+  return <ReadCards posts={readingFor(hrefs, seed)} title={title} />
 }
 
 /** 2 siblings + 1 cross-branch product; uses `page.related` first, tops up automatically. */
@@ -125,26 +116,6 @@ export function RelatedProducts({ branch, product, related }: { branch: Branch; 
       <p className="wv-ax-more">
         Part of <Link href={`${BASE}/${branch.slug}`} className="wv-ax-inl">{branch.name}</Link>. See the whole team on <Link href={BASE} className="wv-ax-inl">AI automations</Link>.
       </p>
-    </Sec>
-  )
-}
-
-/** Compact index of every branch + flagship product, for the hub. */
-export function AllServices() {
-  return (
-    <Sec title={['All AI', 'services']} accent={1}>
-      <div className="wv-ax-all">
-        {BRANCHES.map((b) => (
-          <div key={b.slug}>
-            <Link href={`${BASE}/${b.slug}`} className="wv-ax-all-h">{b.name}</Link>
-            <ul>
-              {b.products.filter((p) => p.page).map((p) => (
-                <li key={p.slug}><Link href={`${BASE}/${b.slug}/${p.slug}`} className="wv-ax-inl">{p.name}</Link></li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
     </Sec>
   )
 }

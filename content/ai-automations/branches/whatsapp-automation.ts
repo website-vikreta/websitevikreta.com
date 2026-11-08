@@ -7,7 +7,7 @@ export const branch: Branch = {
   name: 'WhatsApp & Chat Automation',
   navLabel: 'WhatsApp & Chat',
   persona: 'arjun',
-  title: 'WhatsApp & SMS Automation | Website Vikreta',
+  title: 'WhatsApp & SMS Automation for Follow-Up | Website Vikreta',
   description:
     'Reply to every lead in seconds on WhatsApp, SMS and website chat. Qualify, book and remind automatically. Built for US, UK and EU small businesses.',
   h1: ['Reply to every lead', 'in seconds.'],

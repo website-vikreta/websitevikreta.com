@@ -51,7 +51,7 @@ export function ChatSim({ demo }: { demo: D }) {
           )
         })}
       </div>
-      {done && !reduce && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
+      {done && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
     </div>
   )
 }

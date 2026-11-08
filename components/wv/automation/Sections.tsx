@@ -1,10 +1,12 @@
 import Link from 'next/link'
+import './branch.css'
 import Image from 'next/image'
-import type { Branch, Faq as FaqT, Persona, Product, Scenario, Shift } from '@/content/ai-automations/types'
-import { TOOL_LOGOS, clientLogos, toolLogos } from '@/content/ai-automations/logos'
+import type { Branch, Persona, Product, Scenario, Shift } from '@/content/ai-automations/types'
+import { TOOL_LOGOS, toolLogos } from '@/content/ai-automations/logos'
 import { PrefillLink } from './LeadForm'
 import { RichText } from './RichText'
 import { Arrow, KineticTitle, Reveal, VelocityMarquee } from '../ui'
+import { ClientLogos, SplitFaq } from './closing'
 
 export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }} />
@@ -13,38 +15,20 @@ export function JsonLd({ data }: { data: object }) {
 /** Section wrapper: statement head + content, tight. */
 function Sec({ id, title, accent, children, className = '' }: { id?: string; title?: string[]; accent?: number; children: React.ReactNode; className?: string }) {
   return (
-    <section className={`wv-ax-sec ${className}`} id={id}>
+    <section className={`wv-sec wv-ax-sec ${className}`} id={id}>
       <div className="wv-wrap">
-        {title && <KineticTitle lines={title} className="wv-h2 wv-ax-h2" accent={accent ?? title.length - 1} />}
+        {title && (
+          <div className="wv-sec-head">
+            <KineticTitle lines={title} className="wv-h2" accent={accent ?? title.length - 1} />
+          </div>
+        )}
         {children}
       </div>
     </section>
   )
 }
 
-export function ProofBar({ clients, number = true }: { clients: string[]; number?: boolean }) {
-  const logos = clientLogos(clients.length ? clients : ['simpli-home', 'blancora', 'sbp'])
-  return (
-    <section className="wv-ax-proof">
-      <div className="wv-wrap wv-ax-proof-in">
-        {number && (
-          <p className="wv-ax-proof-n">
-            <strong>20 hrs → 1 hr</strong>
-            <span>a week of manual work, Simpli Home</span>
-          </p>
-        )}
-        <ul className="wv-ax-proof-logos" aria-label="Clients">
-          {logos.map((l) => (
-            <li key={l.src}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- svg/png client marks */}
-              <img src={l.src} alt={l.alt} style={{ height: Math.max(32, Math.min(l.h ?? 32, 40)) }} loading="lazy" />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )
-}
+export const ProofBar = ClientLogos
 
 const CHANNEL_KEY: Record<string, string> = { Email: 'gmail', WhatsApp: 'whatsapp', Slack: 'slack', SMS: 'twilio', 'Web chat': 'intercom' }
 
@@ -130,9 +114,7 @@ export function Shifts({ shifts, title }: { shifts: Shift[]; title?: string[] })
         {shifts.map((s, i) => (
           <Reveal key={i} delay={i * 0.06} className="wv-ax-shift">
             <del><RichText text={s.before} /></del>
-            <span aria-hidden className="wv-ax-shift-ar">
-              <Arrow size={22} />
-            </span>
+            <span aria-hidden className="wv-ax-shift-ar" />
             <strong><RichText text={s.after} /></strong>
           </Reveal>
         ))}
@@ -145,9 +127,11 @@ export function LogoRail({ keys, title }: { keys: string[]; title?: string[] }) 
   const items = toolLogos(keys)
   if (!items.length) return null
   return (
-    <section className="wv-ax-sec wv-ax-rail">
+    <section className="wv-sec wv-ax-sec wv-ax-rail">
       <div className="wv-wrap">
-        <KineticTitle lines={title ?? ['Works with', 'your tools']} className="wv-h2 wv-ax-h2" accent={1} />
+        <div className="wv-sec-head">
+          <KineticTitle lines={title ?? ['Works with', 'your tools']} className="wv-h2" accent={1} />
+        </div>
       </div>
       <VelocityMarquee items={items} baseVelocity={-2} className="wv-ax-rail-mq" />
     </section>
@@ -188,25 +172,6 @@ export function Crumbs({ items }: { items: { label: string; href: string }[] }) 
   )
 }
 
-/** Native <details>: every answer is in the server HTML. */
-export function Faq({ faqs }: { faqs: FaqT[] }) {
-  return (
-    <Sec id="faq" title={['Questions', 'people ask']} className="wv-ax-faqsec">
-      <div className="wv-ax-faq-list">
-        {faqs.map((f, i) => (
-          <details key={i} className="wv-acc wv-ax-acc">
-            <summary className="wv-acc-btn">
-              <span>{f.q}</span>
-              <span className="wv-plus" aria-hidden />
-            </summary>
-            <div className="wv-acc-pad">
-              <p><RichText text={f.a} /></p>
-            </div>
-          </details>
-        ))}
-      </div>
-    </Sec>
-  )
-}
+export const Faq = SplitFaq
 
 export { Sec }

@@ -72,6 +72,12 @@ export function hubSchema() {
   const url = `${SITE_URL}${BASE}`
   return wrap(
     serviceNode(url, 'AI Automation Services', HUB.description, BRANCHES.flatMap((b) => b.products)),
+    {
+      '@type': 'ItemList',
+      '@id': `${url}#services`,
+      name: 'AI automation services',
+      itemListElement: BRANCHES.map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.name, description: b.usp, url: `${url}/${b.slug}` })),
+    },
     ...faqNode(url, HUB.faqs),
     crumbNode(url, [['Home', SITE_URL], ['AI Automations', url]]),
   )
@@ -82,6 +88,12 @@ export function branchSchema(b: Branch) {
   const url = `${hub}/${b.slug}`
   return wrap(
     serviceNode(url, b.name, b.description, b.products, b.slug),
+    {
+      '@type': 'ItemList',
+      '@id': `${url}#products`,
+      name: `${b.name} services`,
+      itemListElement: b.products.filter((p) => p.page).map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: `${url}/${p.slug}` })),
+    },
     ...faqNode(url, b.faqs),
     crumbNode(url, [['Home', SITE_URL], ['AI Automations', hub], [b.name, url]]),
   )

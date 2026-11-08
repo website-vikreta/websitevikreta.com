@@ -78,9 +78,13 @@ export default function HrShelf({ branch }: { branch: Branch }) {
   }
   const t = target(open)
   return (
-    <section className="wv-ax-sec sg-sec" id="shelf">
+    <section className="wv-sec" id="shelf">
       <div className="wv-wrap">
-        <KineticTitle lines={['The paperwork', 'writes itself.']} className="wv-h2 wv-ax-h2" accent={1} />
+        <div className="wv-sec-head">
+          <KineticTitle lines={['The paperwork', 'writes itself.']} className="wv-h2" accent={1} />
+          <div className="wv-sec-aside"><p>Four documents the HR automation drafts, fills and files for you. Open one to see the sample.</p></div>
+        </div>
+
         <ul className="sg-shelf">
           {DOCS.map((d, i) => (
             <li key={d.id} style={{ ['--r' as string]: `${[-3, -1, 1.5, 3.5][i]}deg`, ['--y' as string]: `${[6, 0, 4, 10][i]}px` }}>

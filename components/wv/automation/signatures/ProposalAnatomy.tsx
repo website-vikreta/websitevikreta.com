@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import type { Branch } from '@/content/ai-automations/types'
 import { PERSONAS } from '@/content/ai-automations/personas'
+import { KineticTitle } from '../../ui'
 import './sig-c.css'
 
 const REG = [
@@ -13,39 +14,46 @@ const REG = [
   { id: 'ok', n: 5, label: 'Approval gate', note: 'You approve before it sends. Nothing goes out without your yes.' },
 ] as const
 
+function Hot({ id, on, pick }: { id: string; on: boolean; pick: (id: string) => void }) {
+  const r = REG.find((x) => x.id === id)!
+  return <button type="button" className="wv-sg-hot" aria-pressed={on} aria-label={`${r.n}. ${r.label}`} onClick={() => pick(id)}>{r.n}</button>
+}
+
 export default function ProposalAnatomy({ branch }: { branch: Branch }) {
   const [a, setA] = useState<string>('scope')
   const cur = REG.find((r) => r.id === a)!
   const arjun = PERSONAS.arjun
-  const Hot = ({ id }: { id: string }) => {
-    const r = REG.find((x) => x.id === id)!
-    return <button type="button" className="wv-sg-hot" aria-pressed={a === id} aria-label={`${r.n}. ${r.label}`} onClick={() => setA(id)}>{r.n}</button>
-  }
+  const hot = (id: string) => <Hot id={id} on={a === id} pick={setA} />
   const cls = (id: string) => `wv-sg-sec${a === id ? ' is-on' : ''}`
   return (
-    <section className="wv-sg wv-sg-prop" aria-label={`${branch.name} anatomy`}>
-      <div className="wv-wrap wv-sg-prop-in">
+    <section className="wv-sec wv-sg wv-sg-prop" aria-label={`${branch.name} anatomy`}>
+      <div className="wv-wrap">
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Anatomy of a', 'proposal.']} className="wv-h2" accent={1} />
+          <p className="wv-sec-aside">Tap a number to see where each section comes from, and which part stays with a person.</p>
+        </div>
+        <div className="wv-sg-prop-in">
         <div className="wv-sg-doc">
-          <div className={cls('cover')}><Hot id="cover" />
+          <div className={cls('cover')}>{hot("cover")}
             <small>Proposal · 12 Nov</small>
             <h3>Online booking for Priya&apos;s Studio</h3>
             <span>Prepared by Website Vikreta</span>
           </div>
-          <div className={cls('scope')}><Hot id="scope" />
+          <div className={cls('scope')}>{hot("scope")}
             <h4>Scope</h4>
             <ul><li>Booking page that works after 6 pm</li><li>Reminders by SMS and email</li><li>Calendar sync, live by January</li></ul>
           </div>
           <div className="wv-sg-two">
-            <div className={cls('time')}><Hot id="time" />
+            <div className={cls('time')}>{hot("time")}
               <h4>Timeline</h4>
               <ol><li><b>Wk 1</b> Design</li><li><b>Wk 3</b> Build</li><li><b>Wk 5</b> Launch</li></ol>
             </div>
-            <div className={cls('inv')}><Hot id="inv" />
+            <div className={cls('inv')}>{hot("inv")}
               <h4>Investment</h4>
               <span className="wv-sg-pill is-y">Discussed on call</span>
             </div>
           </div>
-          <div className={cls('ok')}><Hot id="ok" />
+          <div className={cls('ok')}>{hot("ok")}
             <h4>Approval</h4>
             <span className="wv-sg-gate"><i aria-hidden />Waiting for your approval</span>
           </div>
@@ -58,6 +66,7 @@ export default function ProposalAnatomy({ branch }: { branch: Branch }) {
             {REG.map((r) => <button type="button" key={r.id} aria-pressed={a === r.id} onClick={() => setA(r.id)}>{r.n}. {r.label}</button>)}
           </div>
         </aside>
+        </div>
       </div>
     </section>
   )

@@ -18,9 +18,10 @@ export function useClock(end: number) {
   const ref = useRef<HTMLElement>(null)
   const reduce = !!useReducedMotion()
   const [t, setT] = useState(end)
-  const [running, setRunning] = useState(false)
+  const [go, setGo] = useState(false)
+  const running = go && t < end
   const started = useRef(false)
-  const play = useCallback(() => { setT(0); setRunning(true) }, [])
+  const play = useCallback(() => { setT(0); setGo(true) }, [])
   useEffect(() => {
     if (reduce || !ref.current) return
     const io = new IntersectionObserver(([e]) => {
@@ -34,6 +35,5 @@ export function useClock(end: number) {
     const id = setInterval(() => setT((p) => Math.min(end, p + 80)), 80)
     return () => clearInterval(id)
   }, [running, end])
-  useEffect(() => { if (t >= end) setRunning(false) }, [t, end])
   return { ref, t, running, play, reduce }
 }

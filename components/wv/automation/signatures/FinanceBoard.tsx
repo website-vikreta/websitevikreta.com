@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'motion/react'
 import type { Branch } from '@/content/ai-automations/types'
+import { KineticTitle } from '../../ui'
 import { Logo, useClock } from './kit-b'
 
 const COLS = ['Overdue 30+', 'Reminded', 'Promised', 'Paid']
@@ -24,14 +25,14 @@ export default function FinanceBoard({ branch }: { branch: Branch }) {
   const sum = (c: number) => INV.reduce((a, r, i) => a + (cols[i] === c ? r[1] : 0), 0)
   const open = INV.reduce((a, r, i) => a + (cols[i] < 3 ? r[1] : 0), 0)
   return (
-    <section ref={ref} className="sb-sec" aria-labelledby="sb-fin-h">
+    <section ref={ref} className="wv-sec">
       <div className="wv-wrap">
-        <div className="sb-row">
-          <div>
-            <h2 id="sb-fin-h" className="wv-h2 wv-ax-h2">Watch cash come in</h2>
-            <p className="sb-lede">Six overdue invoices. Reminders go out on schedule, promises get logged, payments post to your books.</p>
+        <div className="wv-sec-head">
+          <KineticTitle lines={['Watch cash', 'come in.']} className="wv-h2" accent={1} />
+          <div className="wv-sec-aside">
+            <p>Six overdue invoices. Reminders go out on schedule, promises get logged, payments post to your books.</p>
+            <button type="button" className="sb-replay" onClick={play} disabled={running}>{running ? 'Chasing…' : '↻ Replay'}</button>
           </div>
-          <button type="button" className="sb-replay" onClick={play} disabled={running}>{running ? 'Chasing…' : '↻ Replay'}</button>
         </div>
         <div className="sb-board">
           <div className="sb-tot">

@@ -41,7 +41,7 @@ export function CallSim({ demo }: { demo: D }) {
             <button type="button" className="wv-sim-btn" onClick={toggle} aria-pressed={playing}>{playing ? 'Pause audio' : 'Play audio'}</button>
           </>
         )}
-        {done && !reduce && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
+        {done && <button type="button" className="wv-sim-replay" onClick={replay}>Replay</button>}
       </div>
     </div>
   )

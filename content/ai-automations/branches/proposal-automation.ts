@@ -7,7 +7,7 @@ export const branch: Branch = {
   persona: 'arjun',
   title: 'Proposal Automation for Small Teams | Website Vikreta',
   description:
-    'Turn discovery notes into a client-ready proposal or RFP response in minutes. We draft it. You approve price, terms and scope.',
+    'Turn discovery notes into a client-ready proposal or RFP response in minutes. We draft it. You approve price, terms and scope. Built in your own tools.',
   h1: ['Proposal out the same day', 'as the call.'],
   usp: 'The proposal is drafted from your call notes. You approve price.',
   heroSub: 'Call notes in, client-ready proposal out. Nothing sends until you approve price and terms.',
@@ -95,7 +95,7 @@ export const branch: Branch = {
     },
     {
       q: 'Will the AI send a proposal without my approval?',
-      a: 'No. Every flow has a stop before send. You approve price, terms and scope. Nothing leaves your account until a person says yes. Follow-up reminders are also queued for your review at first.',
+      a: 'No. Every flow has a stop before send. You approve price, terms and scope. Built in your own tools. Nothing leaves your account until a person says yes. Follow-up reminders are also queued for your review at first.',
     },
     {
       q: 'Does proposal automation work with my CRM?',

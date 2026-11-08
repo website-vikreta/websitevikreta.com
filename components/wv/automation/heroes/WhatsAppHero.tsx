@@ -65,7 +65,7 @@ export default function WhatsAppHero({ branch, product }: HeroProps) {
               {msgs.slice(Math.max(0, shown - 4), shown).map((m, k) => {
                 const i = Math.max(0, shown - 4) + k
                 return (
-                  <motion.p key={i} className={`hb-b ${m.from === 'user' ? 'is-out' : 'is-in'}`} initial={reduce ? false : { opacity: 0, y: 12, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.45, ease }}>
+                  <motion.p key={i} className={`hb-b ${m.from === 'user' ? 'is-out' : 'is-in'}`} initial={{ opacity: 0, y: 12, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={reduce ? { duration: 0 } : { duration: 0.45, ease }}>
                     {m.text}
                     {m.attachment && <span className="hb-att"><Lg k="googlecalendar" s={16} /> {m.attachment.label}</span>}
                   </motion.p>

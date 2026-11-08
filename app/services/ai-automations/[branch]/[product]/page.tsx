@@ -27,7 +27,7 @@ export default async function Page({ params }: P) {
   return (
     <AutomationShell>
       <JsonLd data={productSchema(b, p)} />
-      <main className="wv-axp-main">
+      <main className="wv-axp-main wv-ax-glow">
         <BranchHero branch={b} product={p} />
         <ProofBar clients={b.clients} />
         <CaseStudy cs={p.caseStudy} productName={p.name} />

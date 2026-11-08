@@ -23,7 +23,7 @@ export default async function Page({ params }: P) {
   return (
     <AutomationShell>
       <JsonLd data={branchSchema(b)} />
-      <main className="wv-axp-main">
+      <main className="wv-axp-main wv-ax-glow">
         <BranchHero branch={b} />
         <ProofBar clients={b.clients} />
         <BranchSignature branch={b} />
