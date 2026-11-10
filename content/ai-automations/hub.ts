@@ -1,13 +1,16 @@
 import type { Hub } from './types'
 
 export const HUB: Hub = {
-  // 49 chars
-  title: 'AI Automation Agency for Founders | Website Vikreta',
+  // 58 chars
+  title: 'AI Automation Agency for Small Businesses | Website Vikreta',
   description:
-    'AI automation agency for sales, HR, content and finance. We build the workflows in your accounts and run them for you. Live in weeks. Book a call.',
-  h1: ['AI automation that takes', 'the busywork off', 'your team.'],
+    'Missed calls, slow replies, late invoices, hiring paperwork. We build AI automations in your accounts, live in about 14 days.',
+  h1: ['AI automation that', 'takes the busywork', 'off your team.'],
   usp: 'Done-for-you AI automations for sales, HR, content and finance. Live in weeks, built in your accounts.',
-  heroSub: 'Calls, offer letters, posts and invoices handled. You just message it.',
+  // Plain definition up top: AI answers quote mostly from the first part of a page.
+  heroSub: 'AI automation is software that does your repeat work, like calls, offer letters, posts and invoices, inside your own accounts. You just message it.',
+  // Bump when the page content changes. Shown on the page and sent as dateModified.
+  updated: '2026-11-10',
   scenarios: [
     // TODO(owner): real photo
     { industry: 'Dental clinic', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'Dental office with a chair and equipment', line: '7:40 pm call to a dental clinic. Thursday 3:30 was booked by an [AI receptionist](/services/ai-automations/ai-voice-agents/ai-receptionist).' },
@@ -79,7 +82,7 @@ export const HUB: Hub = {
       label: 'of US small businesses are owed money, about $17.5k on average',
       source: { name: 'Intuit QuickBooks Small Business Late Payments Report', year: 2025, url: 'https://quickbooks.intuit.com/r/small-business-data/small-business-late-payments-report-2025/' },
     },
-    { value: '20 to 1', label: 'Hours a week of manual work at Simpli Home' },
+    { value: '11 hrs', label: 'Saved per week at Simpli Home by automating bulk media generation' },
   ],
   steps: [
     { title: 'Talk', body: 'A 20-minute call. You tell us what eats your week.' },
@@ -95,7 +98,7 @@ export const HUB: Hub = {
     'You own every workflow we build.',
   ],
   proof: [
-    { client: 'Simpli Home', result: 'Cut manual work from 20 hours a week to 1.' },
+    { client: 'Simpli Home', result: 'Saved about 11 hours a week by automating bulk media generation in Figma Buzz.' },
     // TODO(owner): real SBP result and permission
     { client: 'SBP', result: 'Placeholder: result to come from owner.', placeholder: true },
     // TODO(owner): real Blancora result and permission
