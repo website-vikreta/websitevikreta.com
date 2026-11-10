@@ -479,7 +479,7 @@ export const UI_UX_FAQS: FaqItem[] = [
     id: 'uiux-timeline',
     question: 'How long does a typical UI/UX engagement take?',
     answer:
-      'A focused flow (e.g. checkout or onboarding) often runs 3–5 weeks. Full product UI with a system is usually 6–10 weeks depending on surface area and review cycles.',
+      'A focused flow (e.g. checkout or onboarding) takes 1 to 2 weeks. A full product UI with a system takes longer, depending on surface area and review cycles. You get a firm date after scoping.',
   },
   {
     id: 'uiux-existing-brand',
