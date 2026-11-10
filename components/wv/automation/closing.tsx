@@ -11,14 +11,13 @@ import { RichText } from './RichText'
 import { WaButton } from './WaButton'
 import './closing.css'
 
-/** Shared closing blocks for every AI automations page: client logos, blog cards, split FAQ, gradient CTA. */
+/** Shared closing blocks for every AI automations page: client logos, blog cards, split FAQ, closing CTA. */
 
 export function ClientLogos({ clients }: { clients: string[] }) {
   const logos = clientLogos(clients.length ? clients : ['simpli-home', 'blancora', 'sbp'])
   return (
     <section className="axc-logos" aria-label="Clients">
       <div className="wv-wrap axc-logos-in">
-        <p className="wv-eyebrow">( Running for )</p>
         <ul>
           {logos.map((l) => (
             <li key={l.src}>
@@ -70,13 +69,18 @@ export async function ReadCards({ posts, title = ['Keep', 'reading'] }: { posts:
 }
 
 /** Native <details>: every answer is in the server HTML. */
-export function SplitFaq({ faqs }: { faqs: FaqT[] }) {
+export function SplitFaq({ faqs, updated }: { faqs: FaqT[]; updated?: string }) {
   return (
     <section className="wv-sec axc-faq" id="faq">
       <div className="wv-wrap axc-faq-in">
         <div className="axc-faq-head">
           <KineticTitle lines={['Questions', 'people ask']} className="wv-h2" accent={1} />
           <p>Not on the list? <a href="#lead" className="wv-link">Ask us directly <Arrow size={14} /></a></p>
+          {updated && (
+            <p className="axc-faq-upd">
+              Updated <time dateTime={updated}>{new Date(`${updated}T00:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</time>
+            </p>
+          )}
         </div>
         <div className="axc-faq-list">
           {faqs.map((f) => (
@@ -99,7 +103,6 @@ export function GradientCta({ title, interest, source, waText }: { title: string
     <section className="axc-cta">
       <div className="wv-wrap axc-cta-in">
         <div className="axc-cta-l">
-          <p className="wv-eyebrow">( Free 20-minute call )</p>
           <KineticTitle lines={title} className="wv-h2" />
           <p className="axc-cta-p">Tell us what eats your week. We come back with what we would automate first, and what it takes.</p>
           <div className="axc-cta-faces">
