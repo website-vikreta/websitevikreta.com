@@ -284,7 +284,7 @@ export const WEB_DEV_HOW_WE_WORK = {
       step: '04',
       title: 'We launch and support',
       description:
-        'Live in 3 to 6 weeks, then bug fixes, content updates, and maintenance so it keeps running as you grow.',
+        'Live in 1 to 2 weeks, then bug fixes, content updates, and maintenance so it keeps running as you grow.',
     },
   ],
 }
@@ -332,7 +332,7 @@ export const WEB_DEV_SUPPORT = {
 export const WEB_DEV_CONTACT = {
   heading: 'Tell us what’s jammed.',
   subhead:
-    'We’ll come back with an honest timeline — most business sites, 3 to 6 weeks — and a quote. No pressure.',
+    'We’ll come back with an honest timeline (most business sites take 1 to 2 weeks) and a scope. No pressure.',
   formHeading: 'Get a project call',
 }
 
@@ -359,7 +359,7 @@ export const WEB_DEV_FAQS: FaqItem[] = [
     id: 'webdev-1',
     question: 'How long until my site is live?',
     answer:
-      'Most business websites take 3 to 6 weeks from kickoff to launch, depending on page count, content readiness, and how quickly feedback comes back. AP Cleanco went from zero web presence to live in three weeks. We’ll give you a realistic timeline upfront.',
+      'A website takes 1 to 2 weeks. It is fast because we build new sites with an agentic, AI-assisted development framework. Recent examples include SmartPhysio, Yeto, CareLift and APCleanCo. We’ll give you a realistic timeline upfront.',
   },
   {
     id: 'webdev-4',

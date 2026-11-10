@@ -38,7 +38,7 @@ const FORM_INITIAL: AuditFormData = {
 }
 
 // Loose E.164-style check: optional leading +, 7–15 digits total.
-// Not India-specific — accepts any country's numbering plan. Same rule as ContactPageContent.tsx.
+// Not India-specific — accepts any country's numbering plan.
 function isValidPhone(phone: string): boolean {
   const digits = phone.trim().replace(/[\s\-().]/g, '')
   return /^\+?[1-9]\d{6,14}$/.test(digits)

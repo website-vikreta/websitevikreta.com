@@ -54,7 +54,7 @@ export function Footer() {
             <Link href="/legal/privacy-policy">Privacy Policy</Link>
             <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link>
             <Link href="/legal/disclaimer">Disclaimer</Link>
-            <Link href="/sitemap.xml">Sitemap</Link>
+            <Link href="/sitemap">Sitemap</Link>
           </nav>
         </div>
       </div>

@@ -137,6 +137,14 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.4,
   },
 
+  // Sitemap (HTML)
+  {
+    url: `${BASE}/sitemap`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.3,
+  },
+
   // Legal
   {
     url: `${BASE}/legal/privacy-policy`,
@@ -158,14 +166,11 @@ const staticRoutes: MetadataRoute.Sitemap = [
   },
 ]
 
-// Latest posts only. The full archive is reachable via /blog and the taxonomy
-// hubs; listing every post here just bloats the sitemap without adding
-// discovery value.
-const BLOG_POST_LIMIT = 12
-
+// Every published post. Revalidated hourly via the fetch cache below, so new
+// and edited Sanity content shows up without a redeploy.
 const BLOG_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))]
-    | order(coalesce(publishedAt, _createdAt) desc)[0...${BLOG_POST_LIMIT}] {
+    | order(coalesce(publishedAt, _createdAt) desc) {
     "slug": slug.current,
     "categorySlug": category->slug.current,
     _updatedAt
