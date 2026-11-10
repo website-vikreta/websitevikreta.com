@@ -5,6 +5,8 @@ import emailjs from '@emailjs/browser'
 import { Arrow, Magnetic } from '../ui'
 import { trackFormSubmit } from '@/lib/analytics'
 import { WaButton } from './WaButton'
+import { CountryPhone } from './CountryPhone'
+import { getCountries } from './countries'
 
 const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
 const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
@@ -71,12 +73,14 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
     const f = new FormData(form)
     const name = String(f.get('name') ?? '').trim()
     const email = String(f.get('email') ?? '').trim()
-    const phone = String(f.get('phone') ?? '').trim()
+    const national = String(f.get('phone') ?? '').replace(/[\s\-().]/g, '').replace(/^0/, '')
+    const cc = getCountries().find((c) => c.iso === f.get('phoneIso'))
+    const phone = national && cc ? `+${cc.dial} ${national}` : ''
     const what = String(f.get('want') ?? '').trim()
     const errs: Record<string, string> = {}
     if (name.length < 2) errs.name = 'Enter your name'
     if (!EMAIL_RE.test(email)) errs.email = 'Enter a valid work email'
-    if (phone && !PHONE_RE.test(phone.replace(/[\s\-().]/g, ''))) errs.phone = 'Enter a valid number, or leave it empty'
+    if (phone && !PHONE_RE.test(phone.replace(/\s/g, ''))) errs.phone = 'Enter a valid number, or leave it empty'
     if (!what) errs.want = 'Tell us what to automate'
     setErrors(errs)
     const first = Object.keys(errs)[0]
@@ -97,7 +101,7 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
           service: `AI Automations: ${interest}`,
           mobile: phone || 'Not provided',
           budget: 'Not specified',
-          message: `${name} wants to automate: ${what}\nService/product: ${interest}\nSource: ${source}`,
+          message: `${name} wants to automate: ${what}\nPhone: ${phone ? `${phone} (${cc?.name})` : 'Not provided'}\nService/product: ${interest}\nSource: ${source}`,
           to_name: 'Website Vikreta',
         },
         PUBLIC_KEY,
@@ -146,11 +150,11 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
     <form className="wv-ax-form" id={id} onSubmit={onSubmit} noValidate>
       {field('name', 'Your name', { type: 'text', autoComplete: 'name', required: true })}
       {field('email', 'Work email', { type: 'email', autoComplete: 'email', required: true })}
-      {field('phone', 'Phone or WhatsApp (optional)', { type: 'tel', autoComplete: 'tel' })}
+      <CountryPhone id={id} label="Phone or WhatsApp (optional)" error={errors.phone} />
       {field('want', 'What should we automate?', { type: 'text', value: want, maxLength: MAX, onChange: (e) => setWant(e.target.value), required: true })}
       <div className="wv-cta-row">
         <Magnetic>
-          <button type="submit" className="wv-btn wv-btn-y" disabled={busy}>
+          <button type="submit" className="wv-btn wv-btn-y" aria-disabled={busy}>
             {busy ? 'Sending…' : 'Get my plan'} <Arrow size={15} />
           </button>
         </Magnetic>

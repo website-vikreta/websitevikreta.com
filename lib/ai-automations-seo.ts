@@ -4,7 +4,8 @@ import { BASE, BRANCHES, HUB } from '@/content/ai-automations'
 import type { Branch, Faq, Product } from '@/content/ai-automations/types'
 import { stripLinks } from '@/components/wv/automation/RichText'
 
-const AREAS = ['United States', 'United Kingdom', 'Canada', 'Australia'].map((name) => ({ '@type': 'Country', name }))
+// Western markets first (primary ICP), then the rest of the world we already serve.
+const AREAS = ['United States', 'United Kingdom', 'Canada', 'Australia', 'India'].map((name) => ({ '@type': 'Country', name }))
 const areaServed = AREAS
 
 /** Placeholder content shows everywhere except production, so the owner can spot what to fill. */
@@ -17,7 +18,7 @@ function meta(title: string, description: string, path: string): Metadata {
     description,
     alternates: { canonical: url },
     robots: { index: true, follow: true },
-    openGraph: { title, description, url, type: 'website', siteName: 'Website Vikreta' },
+    openGraph: { title, description, url, type: 'website', siteName: 'Website Vikreta', locale: 'en_US' },
     twitter: { card: 'summary_large_image', title, description },
   }
 }
@@ -59,6 +60,8 @@ const serviceNode = (url: string, name: string, description: string, products: P
   '@id': `${url}#service`,
   name,
   serviceType: 'AI automation',
+  inLanguage: 'en-US',
+  audience: { '@type': 'BusinessAudience', audienceType: 'Small and mid-sized businesses' },
   description,
   url,
   provider: ORGANIZATION_REF,
@@ -68,10 +71,31 @@ const serviceNode = (url: string, name: string, description: string, products: P
 
 const wrap = (...graph: object[]) => ({ '@context': 'https://schema.org', '@graph': graph })
 
-export function hubSchema() {
+export type Quote = { quote: string; name: string; role: string }
+
+export function hubSchema(quotes: Quote[] = []) {
   const url = `${SITE_URL}${BASE}`
   return wrap(
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#webpage`,
+      url,
+      name: HUB.title,
+      description: HUB.description,
+      inLanguage: 'en-US',
+      dateModified: HUB.updated,
+      about: { '@id': `${url}#service` },
+      publisher: ORGANIZATION_REF,
+    },
     serviceNode(url, 'AI Automation Services', HUB.description, BRANCHES.flatMap((b) => b.products)),
+    // Real, named client quotes shown on the page. Self-serving reviews earn no stars in Google; this is context for other engines.
+    ...quotes.map((q, i) => ({
+      '@type': 'Review',
+      '@id': `${url}#review-${i + 1}`,
+      itemReviewed: ORGANIZATION_REF,
+      reviewBody: q.quote,
+      author: { '@type': 'Person', name: q.name, jobTitle: q.role },
+    })),
     {
       '@type': 'ItemList',
       '@id': `${url}#services`,

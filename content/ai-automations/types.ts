@@ -101,6 +101,8 @@ export type Problem = { id: string; label: string; persona: PersonaId; fix: stri
 
 export type Hub = {
   title: string; description: string
+  /** ISO date the page content last changed */
+  updated: string
   h1: string[]; lead: string
   teamChat: Extract<Demo, { kind: 'chat' }>
   problems: Problem[]

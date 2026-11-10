@@ -1,20 +1,20 @@
-/* wv: AI automations hub (.axc-*). wv tokens + the AI nav pair (violet/pink): ~20% ambient page glow, strike lines, index numbers, FAQ marker, closing CTA ground. Shared by hub, branch and product pages. Buttons stay yellow. */
-.wv-ax-glow{--ai-a:#7c3aed;--ai-b:#ff2d95;--ai:linear-gradient(90deg,var(--ai-a),var(--ai-b));--e:cubic-bezier(.16,1,.3,1);position:relative;background:radial-gradient(900px circle at 90% 4%,#7c3aed33,#0000 70%),radial-gradient(800px circle at 4% 20%,#ff2d9533,#0000 70%),radial-gradient(900px circle at 92% 42%,#7c3aed33,#0000 70%),radial-gradient(800px circle at 6% 62%,#ff2d9533,#0000 70%),radial-gradient(900px circle at 90% 82%,#7c3aed33,#0000 70%)}
+/* wv: AI automations shared blocks (.axc-*). wv tokens only, yellow accents, no ambient glow. Shared by hub, branch and product pages. */
+.wv-ax-glow{--ai-a:var(--y);--ai-b:var(--y);--ai:var(--y);--e:cubic-bezier(.16,1,.3,1);position:relative}
 .wv-ax-glow .hx-sec{background:none}
 @media (max-width:719px){.wv-ax-glow{padding-bottom:64px}}
 
 /* clients */
-.axc-logos{border-block:1px solid var(--line);background:#ffffffb3;padding:32px 0}
+.axc-logos{border-block:1px solid var(--line);background:var(--surface);padding:32px 0}
 .axc-logos-in{display:grid;gap:20px;align-items:center}
 .axc-logos ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px;align-items:center;justify-items:center}
 .axc-logos img{display:block;height:30px;width:auto;max-width:120px;object-fit:contain;filter:grayscale(1);opacity:.6;transition:filter .4s,opacity .4s}
 .axc-logos li:hover img{filter:none;opacity:1}
-@media (min-width:960px){.axc-logos-in{grid-template-columns:auto 1fr;gap:56px}.axc-logos ul{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (min-width:960px){.axc-logos-in{grid-template-columns:1fr}.axc-logos ul{grid-template-columns:repeat(6,minmax(0,1fr))}}
 
 /* reading */
 .axc-posts{display:grid;gap:32px}
 .axc-posts a{display:grid;gap:14px;align-content:start}
-.axc-post-img{position:relative;aspect-ratio:16/10;border-radius:20px;overflow:hidden;background:var(--surface-2)}
+.axc-post-img{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:var(--surface-2)}
 .axc-post-img img{object-fit:cover;transition:transform .9s var(--e)}
 .axc-posts a:hover .axc-post-img img{transform:scale(1.05)}
 .axc-posts strong{margin-top:6px;font-size:clamp(20px,1.7vw,23px);font-weight:600;line-height:1.3;letter-spacing:-.01em;transition:color .25s}
@@ -25,9 +25,9 @@
 @media (min-width:720px){.axc-posts{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}}
 
 /* faq */
-.axc-faq{background:#ffffffb3}
 .axc-faq-in{display:grid;gap:40px}
 .axc-faq-head p{margin-top:24px;font-size:16.5px;color:var(--muted)}
+.axc-faq-head .axc-faq-upd{margin-top:12px;font-size:13.5px}
 .axc-faq-list{border-top:1px solid var(--line)}
 .axc-faq details{position:relative;border-bottom:1px solid var(--line)}
 .axc-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:24px 0;font-size:clamp(18px,1.7vw,22px);font-weight:600;line-height:1.35;letter-spacing:-.01em;transition:color .25s}
@@ -42,20 +42,19 @@
 @media (min-width:960px){
   .axc-faq-in{grid-template-columns:.8fr 1.2fr;gap:80px;align-items:start}
   .axc-faq-head{position:sticky;top:120px}
-  .axc-faq details[open]:before{content:"";position:absolute;left:-24px;top:28px;bottom:30px;width:2px;border-radius:2px;background:linear-gradient(var(--ai-a),var(--ai-b))}
+  .axc-faq details[open]:before{content:"";position:absolute;left:-24px;top:28px;bottom:30px;width:2px;border-radius:2px;background:var(--y)}
 }
 
-/* closing cta: gradient ground */
-.axc-cta{background:linear-gradient(135deg,var(--ai-a),var(--ai-b));color:#fff;padding:96px 0}
+/* closing cta */
+.axc-cta{background:var(--surface);border-top:1px solid var(--line);color:var(--text);padding:96px 0}
 .axc-cta-in{display:grid;gap:40px;align-items:center}
-.axc-cta .wv-eyebrow{color:#ffffffd9;margin-bottom:20px}
+.axc-cta .wv-eyebrow{color:var(--muted);font-size:13px;margin-bottom:20px}
 .axc-cta-p{margin-top:24px;max-width:44ch;font-size:18px;line-height:1.55}
 .axc-cta-faces{display:flex;align-items:center;margin:28px 0}
 .axc-cta-faces .wv-ax-av{margin-left:-12px;border-color:var(--y)}
 .axc-cta-faces .wv-ax-av:first-child{margin-left:0}
 .axc-cta-faces span{margin-left:14px;font-size:15px;font-weight:600}
-.axc-cta .wv-btn-ghost{color:#fff;border-color:#ffffff80}
-.axc-cta-form{color:var(--text);background:var(--surface);border-radius:28px;padding:24px}
+.axc-cta-form{color:var(--text);background:var(--canvas);border:1px solid var(--line);border-radius:28px;padding:24px}
 .axc-cta .wv-ax-form{max-width:none}
 @media (min-width:960px){.axc-cta{padding:130px 0}.axc-cta-in{grid-template-columns:1fr 1fr;gap:80px}.axc-cta-form{padding:40px}}
 

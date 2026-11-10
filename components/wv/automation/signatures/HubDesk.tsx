@@ -57,8 +57,7 @@ export default function HubDesk() {
     <section className="wv-sec sg-hub" id="desk">
       <div className="wv-wrap">
         <div className="wv-sec-head">
-          <KineticTitle lines={['Work that', 'ran today.']} className="wv-h2" accent={1} />
-          <p className="wv-sec-aside">A sample day from the three AI teammates. Pick a service to see what moved without anyone touching it.</p>
+          <KineticTitle lines={['Work that ran today']} className="wv-h2" accent={0} />
         </div>
         <div className="sg-dk">
           <div className="sg-dk-tabs" role="tablist" aria-label="Automated work by service">
