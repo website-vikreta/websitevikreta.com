@@ -49,7 +49,7 @@ export function Footer() {
         </div>
         <FootWord />
         <div className="wv-foot-base">
-          <span>© 2026 Website Vikreta. All rights reserved.</span>
+          <span>&copy; 2020-26 Website Vikreta. All rights reserved.</span>
           <nav className="wv-foot-legal" aria-label="Legal">
             <Link href="/legal/privacy-policy">Privacy Policy</Link>
             <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link>
