@@ -48,10 +48,10 @@ Two families, loaded in `components/wv/fonts.ts` (`--display`, `--sans`). Wrap a
 | Display (h1/h2/h3, numbers, big labels) | Anton, `uppercase`, weight 400, line-height 0.9–1 |
 | Everything else | Inter Tight, 16px / 1.55 |
 | H1 | `.wv-h1` `clamp(50px, 7.8vw, 112px)` / 0.9 |
-| H2 (section) | `.wv-kt.wv-h2` `clamp(48px, 9vw, 128px)` / 0.92 |
+| H2 (section) | `.wv-kt.wv-h2` `clamp(40px, 6vw, 88px)` / 0.92 — always below H1 |
 | H3 large (row/card) | `clamp(30px, 3.6–4.6vw, 52–64px)` / 1 |
 | H3 fixed | 40–44px / 1 |
-| Stat number | `clamp(54px, 8vw, 110px)` |
+| Stat number | `clamp(44px, 5vw, 72px)`, `tabular-nums` |
 | Statement paragraph | `.wv-big-p` `clamp(28px, 4.2vw, 56px)` / 1.12, −0.02em, 500 |
 | Quote | `clamp(26px, 3.4vw, 46px)` / 1.15, 500 |
 | Lead | 17–19px, `--muted`, max 520–560px |
