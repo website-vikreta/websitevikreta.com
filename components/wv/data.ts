@@ -1,3 +1,4 @@
+import { yearsIn } from '@/config/site'
 import { CLIENT_LOGO_MARQUEE_ITEMS } from '@/content/client-logos'
 import { CASE_STUDIES } from '@/lib/work-data'
 
@@ -236,7 +237,7 @@ export const STEPS = [
 ]
 
 export const STATS = [
-  { n: 5, suffix: '+', label: 'Years working with founders across the globe' },
+  { n: yearsIn(), suffix: '+', label: 'Years working with founders across the globe' },
   { n: 68, suffix: '+', label: 'Projects shipped: sites, apps, automations' },
   { n: 6360, suffix: '+', label: 'Hours saved for clients since going AI-first' },
   { n: 100, suffix: '%', label: 'Job Success on Upwork, Top Rated' },

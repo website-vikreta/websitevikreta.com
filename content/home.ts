@@ -1,6 +1,6 @@
 import { ALL_FAQS, type FaqItem } from '@/lib/faq-data'
 import { CASE_STUDIES, WORK_TESTIMONIALS, type CaseStudy, type WorkTestimonial } from '@/lib/work-data'
-import { CALENDLY_URL } from '@/config/site'
+import { CALENDLY_URL, yearsIn } from '@/config/site'
 import { CLIENT_LOGO_MARQUEE_ITEMS } from './client-logos'
 
 export { CLIENT_LOGO_MARQUEE_ITEMS }
@@ -54,7 +54,7 @@ export interface TestimonialItem {
 }
 
 export const STATS: StatItem[] = [
-  { value: 5, suffix: '+', label: 'Years working with founders and teams across the globe' },
+  { value: yearsIn(), suffix: '+', label: 'Years working with founders and teams across the globe' },
   { value: 68, suffix: '+', label: 'Projects shipped: websites, apps, automation, design' },
   { value: 6360, suffix: '+', label: 'Hours saved for clients since we went AI-first' },
 ]

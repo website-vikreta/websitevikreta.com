@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   "name": "Website Vikreta",
   "url": "https://websitevikreta.com",
   "description": "AI-first digital marketing agency...",
-  "foundingDate": "2019",
+  "foundingDate": "2020-08",
   "serviceType": ["AI Automation", "Digital Marketing", "Process Automation"]
 }
 ```

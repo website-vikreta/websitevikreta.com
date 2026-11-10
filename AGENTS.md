@@ -4,7 +4,7 @@
 
 ## Project
 
-Website Vikreta: 5-year agency turned AI-first. We build websites, CRMs, web apps and AI automations that take repetitive work off a business. This site is that announcement. It has to feel like a leap.
+Website Vikreta: agency founded Aug 2020, AI-first since 2026. We build websites, CRMs, web apps and AI automations that take repetitive work off a business. This site is that announcement. It has to feel like a leap.
 
 ## Non-Negotiables
 
