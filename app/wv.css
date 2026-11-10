@@ -75,3 +75,27 @@ html:has(.wv){scrollbar-gutter:auto}
 }
 @media (min-width:960px){.wv-smap{padding-bottom:150px}}
 @media (hover:hover){a.wv-tree-row:hover{color:var(--gold)}}
+
+/* wv: faq */
+.wv-faq-hero{min-height:0;padding-bottom:24px}
+.wv-faq-hero .wv-wrap,.wv-faq,.wv-faq-cta .wv-wrap{max-width:860px;margin-inline:auto}
+.wv-faq-nav{position:relative;z-index:5;background:var(--canvas);border-block:1px solid var(--line)}
+.wv-faq-nav ul{display:flex;flex-wrap:wrap;gap:8px;padding-block:14px;max-width:860px}
+.wv-faq-nav a{display:inline-block;border:1px solid var(--line-d);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;transition:background .2s,border-color .2s}
+.wv-faq-nav a:hover{background:var(--y);border-color:var(--y)}
+.wv-faq{padding-bottom:64px}
+.wv-faq-sec{padding:40px 0 8px;scroll-margin-top:96px}
+.wv-faq-sec>h2,.wv-faq-cta h2{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(26px,3vw,38px);line-height:1;margin-bottom:16px}
+.wv-faq-item{border-top:1px solid var(--line)}
+.wv-faq-item:last-child{border-bottom:1px solid var(--line)}
+.wv-faq-item summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;cursor:pointer;list-style:none}
+.wv-faq-item summary::-webkit-details-marker{display:none}
+.wv-faq-item summary h3{font-size:17px;font-weight:600;line-height:1.35}
+.wv-faq-item .wv-plus:before,.wv-faq-item .wv-plus:after{background:var(--ink)}
+.wv-faq-item[open] .wv-plus:after{transform:rotate(0)}
+.wv-faq-a{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:0 34px 22px 0}
+.wv-faq-a p{font-size:16.5px;line-height:1.7;color:var(--muted)}
+.wv-faq-cta{padding:56px 0 96px}
+.wv-faq-cta p{color:var(--muted);font-size:17px;margin-bottom:24px;max-width:520px}
+@media (min-width:960px){.wv-faq-cta{padding-bottom:150px}.wv-faq-item summary h3{font-size:19px}}
+@media (prefers-reduced-motion:reduce){.wv-faq-nav a{transition:none}}
