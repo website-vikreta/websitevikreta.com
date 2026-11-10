@@ -10,6 +10,7 @@ export function AutomationShell({ children }: { children: ReactNode }) {
     <div className={`wv ${wvFonts}`}>
       <ScrollProgress />
       <Smooth />
+      <noscript><style>{'.wv-kt-ch{transform:none!important}'}</style></noscript>
       {children}
       <StickyCta />
     </div>

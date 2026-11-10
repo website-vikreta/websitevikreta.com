@@ -5,7 +5,8 @@ import { motion, useReducedMotion } from 'motion/react'
 import { PERSONAS } from '@/content/ai-automations/personas'
 import { TOOL_LOGOS } from '@/content/ai-automations/logos'
 import type { Hub, PersonaId } from '@/content/ai-automations/types'
-import { ease } from '../../ui'
+import { ease, CountUp } from '../../ui'
+import { AiBubble } from './AiBubble'
 import { HeroCopy } from '../HeroCopy'
 import './heroes-a.css'
 
@@ -151,7 +152,7 @@ export function ChatStage({ items, faces, channel, logo, t, live, solo }: { item
   )
 }
 
-const ITEMS: ChatItem[] = [
+export const HUB_CHAT: ChatItem[] = [
   { id: '1', at: 600, from: 'user', name: 'Shubham', text: 'Meher, offer letter for Neel. Frontend dev, starts Dec 1.' },
   { id: '2', at: 2400, from: 'meher', name: 'Meher', text: 'Done. Drafted from our template and checked the start date.', card: { kind: 'pdf', title: 'Offer letter · Neel Shah.pdf', meta: 'Sent for e-sign' } },
   { id: '3', at: 4800, from: 'user', name: 'Priya', text: 'Ira, LinkedIn post for tomorrow 10am about the Blancora launch.' },
@@ -161,18 +162,49 @@ const ITEMS: ChatItem[] = [
   { id: '7', at: 13000, from: 'user', name: 'Priya', text: 'Arjun, how did the 3pm call go?' },
   { id: '8', at: 14600, from: 'arjun', name: 'Arjun', text: 'Summary is in the CRM.', card: { kind: 'call', title: 'Call summary · 3pm', lines: ['Revised scope by Friday', 'Budget confirmed', 'Saved to CRM'] } },
 ]
-const END = 16200
+export const HUB_CHAT_END = 16200
+
+const STAT_TILES = [
+  { n: 5, suffix: '+', label: 'Years shipping for founders', tone: 'ink' },
+  { n: 68, suffix: '+', label: 'Projects shipped', tone: 'plain' },
+  { n: 6360, suffix: '+', label: 'Hours saved for clients', tone: 'y' },
+  { n: 100, suffix: '%', label: 'Job Success on Upwork', tone: 'plain' },
+]
 
 export default function HubHero({ hub }: { hub: Hub }) {
-  const { ref, t, live } = useClock(END, 4500, 4800)
+  const { ref, t, live } = useClock(HUB_CHAT_END, 4500, 4800)
+  const reduce = !!useReducedMotion()
+  const bubbleRef = useRef<HTMLDivElement>(null)
+  const tile = (i: number) => ({
+    // title tile (0) paints with the server HTML so the H1 is never waiting on JS (LCP)
+    initial: reduce || i === 0 ? false : { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.7, delay: i * 0.06, ease },
+  })
   return (
-    <HeroShell
-      secRef={ref}
-      className="hx-hub"
-      label="Team chat: Meher writes an offer letter, Ira schedules a LinkedIn post, Arjun sends an invoice that gets paid and summarises a sales call."
-      copy={<HeroCopy h1={hub.h1} sub={hub.heroSub ?? hub.lead} interest="AI teammates" waText="Hi, I'd like AI teammates for my business." />}
-    >
-      <ChatStage items={ITEMS} faces={['meher', 'ira', 'arjun']} channel="# ops" t={t} live={live} />
-    </HeroShell>
+    <section ref={ref} className="bn-sec">
+      <div className="wv-grid-bg" aria-hidden />
+      <div className="wv-wrap bn-grid">
+        <motion.div className="bn-t bn-title" {...tile(0)}>
+          <HeroCopy h1={hub.h1} sub={hub.heroSub ?? hub.lead} interest="AI teammates" waText="Hi, I'd like AI teammates for my business." rated />
+        </motion.div>
+        <motion.div className="bn-t bn-chat" aria-hidden {...tile(1)}>
+          <ChatStage items={HUB_CHAT} faces={['meher', 'ira', 'arjun']} channel="# ops" t={t} live={live} />
+        </motion.div>
+        <motion.div ref={bubbleRef} className="bn-t bn-bubble" aria-hidden {...tile(2)}>
+          <svg className="bn-arcs" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#fff" strokeWidth="1.2">
+            {[40, 62, 84, 106, 128, 150, 172].map((r) => <circle key={r} cx="200" cy="100" r={r} opacity={0.75 - r / 300} />)}
+          </svg>
+          <AiBubble className="bn-canvas" host={bubbleRef} />
+        </motion.div>
+        {STAT_TILES.map((s, i) => (
+          <motion.div key={s.label} className={`bn-t bn-stat is-${s.tone}`} {...tile(i + 3)}>
+            <strong><CountUp to={s.n} suffix={s.suffix} /></strong>
+            <span>{s.label}</span>
+          </motion.div>
+        ))}
+        <p className="hx-sr">Team chat: Meher writes an offer letter, Ira schedules a LinkedIn post, Arjun sends an invoice that gets paid and summarises a sales call.</p>
+      </div>
+    </section>
   )
 }
