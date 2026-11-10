@@ -366,3 +366,11 @@ export function VelocityMarquee({ items, baseVelocity = -3, className = '' }: { 
     </div>
   )
 }
+
+export function InfinityMark({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 60" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" aria-hidden className={`wv-inf ${className}`}>
+      <path d="M60 30C48 12 34 8 24 12 10 18 10 42 24 48c10 4 24 0 36-18s26-22 36-18c14 6 14 30 0 36-10 4-24 0-36-18Z" />
+    </svg>
+  )
+}

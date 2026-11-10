@@ -6,7 +6,7 @@ Be the reference that other Indian agencies point to.
 Prove that design-heavy + SEO-heavy are not opposites.
 
 ## The Story This Website Tells
-A 5-year journey. From building websites for others to building the future of work.
+A journey since August 2020. From building websites for others to building the future of work.
 We didn't just add AI to our services. We rethought what an agency is.
 
 **Arc:**

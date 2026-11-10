@@ -6,7 +6,7 @@ import { SiteFooter, SiteHeader } from '@/components/wv/SiteChrome'
 import { ScrollManager } from '@/components/ui/ScrollManager'
 import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { AuditModalProvider } from '@/components/ui/AuditModalProvider'
-import { CTASection } from '@/components/sections/CTASection'
+import { MapCta } from '@/components/wv/MapCta'
 import './globals.css'
 import Script from 'next/script'
 import { SITE_URL } from '@/config/site'
@@ -122,16 +122,7 @@ export default function RootLayout({
 
       <HideOnStudio>
         <HideOnHome>
-        <CTASection
-          title="Ready when you are."
-          description="Free call. No commitment. Tell us what you're building, or what isn't working, and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
-          mobileDescription="Free call. No pitch. Tell us what's broken, and we'll tell you what we'd do."
-          action={{
-            text: "Book a call",
-            href: "/contact"
-          }}
-          withGlow={true}
-        />
+        <MapCta />
         </HideOnHome>
         <SiteFooter />
       </HideOnStudio>

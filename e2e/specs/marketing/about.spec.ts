@@ -1,19 +1,18 @@
 import { test, expect } from '../../fixtures/test';
 import { PRODUCTION_VIEWPORTS } from '../../helpers/responsive-viewports';
-import { expectAllLinksWork, expectCleanFullScroll, expectSectionOrder, submitInlineAuditForm } from '../../helpers/page-checks';
+import { expectAllLinksWork, expectCleanFullScroll, expectSectionOrder } from '../../helpers/page-checks';
 
 /** About page: the main things only, same approach as home.spec and work.spec. */
 
 // Regexes match only the start: the reveal animation splits some headings into one element per line.
 const ABOUT_HEADINGS = [
-  /^We used to build pages/,
-  /^We start with your bottleneck/,
-  'How we decide what to build',
-  /^The people and process behind/,
-  'The Numbers So Far',
-  "Who we've built for",
-  /^What working with us actually/,
-  "Tell Us What's Broken",
+  /^A creative studio for everything digital/,
+  /^The road/,
+  /^The numbers/,
+  /^What we/,
+  /^How we work/,
+  /^How we decide/,
+  /^Got something/,
 ];
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];
@@ -39,28 +38,22 @@ test.describe('About Page: Buttons & Sections', () => {
     await basePage.navigate('/about');
   });
 
-  test('"Get in Touch" opens the contact page', async ({ page }) => {
-    await page.getByRole('link', { name: /Get in Touch/ }).click();
+  test('"Talk to us" opens the contact page', async ({ page }) => {
+    await page.getByRole('link', { name: /Talk to us/ }).click();
     await expect(page).toHaveURL(/\/contact$/);
   });
 
-  test('"Learn More" scrolls down to the vision section', async ({ page }) => {
-    const vision = page.getByRole('region', { name: 'Our Vision' });
-    await expect(vision).not.toBeInViewport();
-    await page.getByRole('link', { name: /Learn More/ }).click();
-    await expect(page).toHaveURL(/\/about#vision$/);
-    await expect(vision).toBeInViewport();
+  test('roadmap runs 2020 to 2026 and ends on infinity', async ({ page }) => {
+    const road = page.getByRole('region', { name: 'Roadmap' });
+    await expect(road.locator('article')).toHaveCount(6);
+    for (const id of ['y2020', 'y2021', 'y2022', 'y2025', 'y2026', 'inf']) {
+      await expect(road.locator(`#${id}`)).toBeAttached();
+    }
   });
 
-  test('core values list all six principles and "How we work" shows all three cards', async ({ page }) => {
-    await expect(page.getByRole('region', { name: 'Core Values' }).getByRole('heading', { level: 3 })).toHaveCount(6);
-    await expect(page.getByRole('region', { name: 'How We Work' }).getByRole('heading', { level: 3 })).toHaveCount(3);
-  });
-
-  test('"Book a Free Call" form submits with the fake test identity (mocked email)', { tag: '@forms' }, async ({ page }) => {
-    const form = page.locator('#book-a-call');
-    await form.scrollIntoViewIfNeeded();
-    await submitInlineAuditForm(page, form);
+  test('what-we-do links to all six service pages', async ({ page }) => {
+    const links = page.getByRole('region', { name: 'What we do' }).getByRole('link');
+    await expect(links).toHaveCount(7); // six services + "See the work"
   });
 });
 

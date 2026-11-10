@@ -70,3 +70,13 @@ The pre-`wv` log (legacy pages, GSAP, Epilogue/Utile) is in git: `git show 3d6f3
 - Rule: On `/services/ai-automations` the owner's direction beats `.ai/standards/*` and design skills. Typography matches the homepage: Anton uppercase H1/H2 (H2 same size as hero H1), Inter Tight body. Section heads are heading only: no one-liner beside or under it, no heading-left/line-right split. Hero is a bento (title+CTA, live chat, WebGL AI bubble, 4 STATS tiles) on the homepage `wv-grid-bg`. "Where your week goes" is a bento of photo + minimal demo tiles. Section rhythm is one `--axs` token, tuned by visible gap, not padding. Reveals are CSS scroll-driven (`animation-timeline: view()`), opacity/translate/scale/clip-path only. No eyebrows, no decorative numbering, no stats/case studies that are not in `lib/work-data.ts` or `components/wv/data.ts`. Proof is real only.
 - Where: `app/services/ai-automations/{page.tsx,hub.css,Explorer.tsx,WeekSlider.tsx}`, `components/wv/automation/heroes/{HubHero.tsx,AiBubble.tsx,heroes-a.css}`.
 - Date: 2026-11-10
+
+### [Component] — `.wv-mcta` global map CTA
+- Rule: The closing "Ready when you are" CTA on inner pages is `components/wv/MapCta.tsx` (mounted in `app/layout.tsx` inside `HideOnHome`). Pune = home; arcs to each market draw in (`pathLength`), then loop forever: dash flow + SMIL comet dot. Market volume = translucent yellow circles sized by owner-ranked `v` (US > UK > AU > CA > IN > NZ > rest), breathing + ripple. No client pills, no counts. Pages that render under it must not add a second closing CTA.
+- Where: `components/wv/MapCta.tsx`, `app/wv.css` (`/* wv: map cta */`).
+- Date: 2026-11-10
+
+### [Component] — `/about` roadmap + hero photo trail
+- Rule: Every block animates with an existing primitive: hero H1 `KineticTitle as="span"` + lead/CTA `Reveal` + scroll fade (Home pattern); era headlines `KineticTitle`, chips stagger in, rows `Reveal` + `HoverLetters`; cards lift −6px on hover. `.wv-rm` = sticky year rail (≥960) + scroll-lit era list; `.wv-hv` = mouse-only photo trail in the hero, hidden over text/CTAs (`HV_BLOCK`) with a 0.7s eased fade, off on touch/<960/reduced motion.
+- Where: `components/wv/About.tsx`, `content/about.ts`, `app/wv.css` (`/* wv: about */`).
+- Date: 2026-11-10

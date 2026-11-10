@@ -1,7 +1,8 @@
+import { yearsInPhrase } from '@/config/site'
 import type { FaqItem } from '@/lib/faq-data'
 
 export const WEB_DEV_HERO = {
-  line1: 'Five years in.',
+  line1: `${yearsInPhrase()}.`,
   line2: 'The engine room',
   line3Before: 'still ',
   line3Accent: 'holds.',

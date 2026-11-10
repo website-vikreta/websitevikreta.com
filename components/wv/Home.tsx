@@ -422,10 +422,10 @@ function Cta() {
         <KineticTitle lines={['Got something', 'worth building?']} accent={1} className="wv-h2" />
         <Reveal className="wv-cta-row is-center">
           <Magnetic strength={0.5}>
-            <a href={`mailto:${CONTACT.email}`} className="wv-cta-orb">
+            <Link href="/contact" className="wv-cta-orb">
               <span>Book a free Consultation</span>
               <Arrow size={26} />
-            </a>
+            </Link>
           </Magnetic>
         </Reveal>
         <Reveal className="wv-cta-meta">
