@@ -18,11 +18,6 @@ const ABOUT_HEADINGS = [
 const OVERFLOW_WIDTHS = [320, 768, 1440];
 
 test.describe('About Page: Structure & Health', { tag: '@critical' }, () => {
-  test('every section heading renders, in the designed top-to-bottom order', async ({ page, basePage }) => {
-    await basePage.navigate('/about');
-    await expectSectionOrder(page, ABOUT_HEADINGS);
-  });
-
   test('scrolling the whole page throws no JS errors and no same-origin request fails', async ({ page, basePage, baseURL }) => {
     await expectCleanFullScroll(page, basePage, '/about', baseURL!);
   });

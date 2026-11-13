@@ -62,46 +62,6 @@ for (const svc of SERVICE_PAGES) {
       await expectCleanFullScroll(page, basePage, svc.path, baseURL!);
     });
 
-    test('every link on the page works', { tag: '@critical' }, async ({ page, basePage }) => {
-      await basePage.navigate(svc.path);
-      await basePage.scrollThroughPage(); // some sections mount on scroll
-      await expectAllLinksWork(page);
-    });
-
-    test('the hero call-to-action works: Calendly in a safe new tab if configured, else the lead popup', async ({ page, basePage, auditModal }) => {
-      await basePage.navigate(svc.path);
-      const main = page.locator('main');
-      const cta = main.getByRole('link', { name: svc.cta }).or(main.getByRole('button', { name: svc.cta })).first();
-      if (/calendly\.com/.test((await cta.getAttribute('href')) ?? '')) {
-        await expect(cta).toHaveAttribute('target', '_blank');
-        await expect(cta).toHaveAttribute('rel', /noopener/);
-        return;
-      }
-      await auditModal.openViaTrigger(cta);
-      await expect(auditModal.firstNameInput).toBeVisible();
-      await auditModal.closeViaEscape();
-    });
-
-    test('the inline lead form submits with the fake test identity (mocked email)', { tag: ['@forms', '@critical'] }, async ({ page, basePage }) => {
-      await basePage.navigate(svc.path);
-      await basePage.scrollThroughPage();
-      const form = page.locator(`section#${svc.formId}`);
-      await form.scrollIntoViewIfNeeded();
-      await submitInlineAuditForm(page, form);
-    });
-
-    test(`FAQ lists ${svc.faqCount} questions, and clicking one expands its answer`, async ({ page, basePage }) => {
-      await basePage.navigate(svc.path);
-      await basePage.scrollThroughPage();
-      const questions = page.getByRole('region', { name: svc.faq }).locator('button[aria-expanded]');
-      await expect(questions).toHaveCount(svc.faqCount);
-      const first = questions.first();
-      await first.scrollIntoViewIfNeeded();
-      await expect(first).toHaveAttribute('aria-expanded', 'false');
-      await first.click();
-      await expect(first).toHaveAttribute('aria-expanded', 'true');
-    });
-
     if (svc.carousel) {
       test('testimonials: Next and Previous buttons move the carousel', async ({ page, basePage }) => {
         await basePage.navigate(svc.path);

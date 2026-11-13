@@ -41,6 +41,8 @@ interface BaseProps {
 interface ButtonAsLink extends BaseProps {
   href:      string
   external?: boolean
+  /** Prefills the popup's Subject when `href` opens an audit modal. */
+  modalSubject?: string
   onClick?:  never
   type?:     never
   disabled?: never
@@ -108,14 +110,14 @@ export function Button({
   )
 
   if ('href' in rest && rest.href) {
-    const { href, external } = rest as ButtonAsLink
+    const { href, external, modalSubject } = rest as ButtonAsLink
     return (
       <Link
         href={href}
         className={classes}
         onClick={(e) => {
           if (external) trackLinkClick(href, 'button')
-          else if (AUDIT_MODAL_CONFIGS[href]) { e.preventDefault(); openAuditModal(AUDIT_MODAL_CONFIGS[href]) }
+          else if (AUDIT_MODAL_CONFIGS[href]) { e.preventDefault(); openAuditModal({ ...AUDIT_MODAL_CONFIGS[href], defaultSubject: modalSubject ?? AUDIT_MODAL_CONFIGS[href].defaultSubject }) }
           else scrollToHash(e, href)
         }}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}

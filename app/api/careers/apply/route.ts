@@ -7,6 +7,9 @@ const EMAILJS_TEMPLATE_ID  = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_TEMPLATE_ID
 const EMAILJS_PUBLIC_KEY   = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY            ?? ''
 const EMAILJS_PRIVATE_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY           ?? ''
 
+// Sanity stores "Full-time" / "Part-time"; the HR Application Tracker sheet's dropdown uses "Full Time" / "Part Time".
+const JOB_TYPE_LABEL: Record<string, string> = { 'Full-time': 'Full Time', 'Part-time': 'Part Time', Internship: 'Internship' }
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
@@ -24,13 +27,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const opening = await writeClient.fetch<{ isActive: boolean } | null>(
-      `*[_type == "opening" && _id == $openingId][0]{ isActive }`,
+    const opening = await writeClient.fetch<{ isActive: boolean; type?: string } | null>(
+      `*[_type == "opening" && _id == $openingId][0]{ isActive, type }`,
       { openingId }
     )
     if (!opening || !opening.isActive) {
       return NextResponse.json({ error: 'This role is not accepting applications.' }, { status: 403 })
     }
+
+    // ponytail: openings without a type are all internships today
+    const jobType = (opening.type && JOB_TYPE_LABEL[opening.type]) || opening.type || 'Internship'
 
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 })
@@ -53,6 +59,7 @@ export async function POST(req: NextRequest) {
     await writeClient.create({
       _type: 'submission',
       candidateName: name,
+      jobType,
       email,
       phone: phone ?? '',
       notes: notes ?? '',
@@ -85,6 +92,7 @@ export async function POST(req: NextRequest) {
         candidate_phone: phone ?? 'Not provided',
         notes:           notes ?? 'Not provided',
         job_title:       openingTitle,
+        job_type:        jobType,
         job_url:         jobUrl,
         resume_url:      resumePublicUrl,
       },

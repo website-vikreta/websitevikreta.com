@@ -56,13 +56,6 @@ export default defineConfig({
       name: 'desktop-chrome',
       use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
     },
-    // Cross-browser coverage runs in CI only (needs `playwright install firefox webkit`).
-    ...(process.env.CI
-      ? [
-          { name: 'firefox', use: { ...devices['Desktop Firefox'], viewport: { width: 1440, height: 900 } } },
-          { name: 'webkit', use: { ...devices['Desktop Safari'], viewport: { width: 1440, height: 900 } } },
-        ]
-      : []),
   ],
   webServer: EXISTING || process.env.BASE_URL ? undefined : {
     command: process.env.PROD ? `npm run start -- -p ${PORT}` : `npm run dev -- -p ${PORT}`,

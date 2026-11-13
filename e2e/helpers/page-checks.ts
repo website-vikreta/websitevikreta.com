@@ -41,7 +41,7 @@ export async function expectCleanFullScroll(page: Page, basePage: BasePage, path
 
   await basePage.navigate(path);
   await basePage.scrollThroughPage();
-  await expect(page.getByRole('region', { name: 'Footer' })).toBeVisible();
+  await expect(page.getByRole('contentinfo')).toBeVisible();
 
   const known = failed.filter((f) => new URL(f.split(' ')[1]).pathname in KNOWN_BROKEN_PATHS);
   for (const f of known) {

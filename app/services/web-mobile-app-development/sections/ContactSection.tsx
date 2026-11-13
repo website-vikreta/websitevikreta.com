@@ -48,6 +48,7 @@ export default function ContactSection() {
             <div className="cta-form-card bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
               <AuditForm
                 formName="book_project_call_inline"
+                defaultSubject="Free project call"
                 heading="Book a Free Project Call"
                 subjectPlaceholder="What do you need built?"
                 messagePlaceholder="Describe the CRM, portal, or app you need…"

@@ -27,12 +27,13 @@ export function WorkTestimonialsSection({
   const isPaused = useRef(false)
   const isTweening = useRef(false)
   const resumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const lastInteraction = useRef(Date.now())
+  const lastInteraction = useRef(0) // set on mount below, Date.now() isn't render-safe
   const [step, setStep] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const reduced = useReducedMotion()
 
   useEffect(() => {
+    lastInteraction.current = Date.now()
     const mq = window.matchMedia('(max-width: 767px)')
     const update = () => {
       const mobile = mq.matches

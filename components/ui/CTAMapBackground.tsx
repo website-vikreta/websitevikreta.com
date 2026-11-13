@@ -47,8 +47,28 @@ const ALL_LINKS: [string, string][] = [
   ['la', 'zurich'],
 ]
 
-// Module-level in-memory cache
+// Module-level cache. Cache the promise (not just the result) so the desktop and mobile
+// instances mounted together share one request instead of fetching the 107 KB file twice.
 let cachedWorldData: FeatureCollection<Geometry> | null = null
+let worldDataPromise: Promise<FeatureCollection<Geometry>> | null = null
+
+function loadWorldData(): Promise<FeatureCollection<Geometry>> {
+  worldDataPromise ??= fetch('/data/countries-110m.json')
+    .then((res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      return res.json()
+    })
+    .then((topology: CountriesTopology) => {
+      const countries = feature(topology, topology.objects.countries) as FeatureCollection<Geometry>
+      cachedWorldData = { ...countries, features: countries.features.filter((f) => f.id !== '010') }
+      return cachedWorldData
+    })
+    .catch((err) => {
+      worldDataPromise = null
+      throw err
+    })
+  return worldDataPromise
+}
 
 interface CTAMapBackgroundProps {
   variant?: 'desktop' | 'mobile'
@@ -65,21 +85,8 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
     }
 
     let isMounted = true
-    fetch('/data/countries-110m.json')
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        return res.json()
-      })
-      .then((topology: CountriesTopology) => {
-        if (!isMounted) return
-        const countries = feature(topology, topology.objects.countries) as FeatureCollection<Geometry>
-        const inhabited = {
-          ...countries,
-          features: countries.features.filter((f) => f.id !== '010'),
-        }
-        cachedWorldData = inhabited
-        setWorldData(inhabited)
-      })
+    loadWorldData()
+      .then((data) => { if (isMounted) setWorldData(data) })
       .catch((err) => {
         console.warn('Map background unavailable, continuing with flat CTA:', err)
       })
@@ -214,21 +221,24 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
       .cta-arc-flow {
         animation: ctaArcFlow 3.4s linear infinite;
       }
+      /* Scale (compositor) instead of animating r: circle r is 10, so 0.5 → 1.5 → 2.2 = 5 → 15 → 22 */
       @keyframes ctaHubPulse {
         0% {
-          r: 5px;
+          transform: scale(0.5);
           opacity: 0.8;
         }
         50% {
-          r: 15px;
+          transform: scale(1.5);
           opacity: 0.25;
         }
         100% {
-          r: 22px;
+          transform: scale(2.2);
           opacity: 0;
         }
       }
       .cta-hub-pulse {
+        transform-box: fill-box;
+        transform-origin: center;
         animation: ctaHubPulse 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
       }
       @keyframes ctaPillFloatA {
@@ -386,7 +396,7 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
                 {mobileData.hubs.map((hub) => (
                   <g key={hub.id} transform={`translate(${hub.x}, ${hub.y})`}>
                     {(hub.id === 'zurich' || hub.id === 'pune') && (
-                      <circle r="7" fill="none" stroke="var(--color-accent)" strokeWidth="0.8" className="cta-hub-pulse" />
+                      <circle r="10" fill="none" stroke="var(--color-accent)" strokeWidth="0.8" className="cta-hub-pulse" />
                     )}
                     <circle r={hub.isMajor ? 2.6 : 1.6} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="0.8" />
                     <circle r={hub.isMajor ? 1.2 : 0.7} fill="var(--color-text)" />
@@ -514,7 +524,7 @@ export function CTAMapBackground({ variant = 'desktop' }: CTAMapBackgroundProps)
                 {hub.isMajor && (
                   <>
                     <circle r="15" fill="var(--color-accent)" opacity="0.22" className="pointer-events-none" />
-                    <circle r="12" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
+                    <circle r="10" fill="none" stroke="var(--color-accent)" strokeWidth="1.2" className="cta-hub-pulse" />
                   </>
                 )}
                 <circle r={hub.isMajor ? 4.2 : 2.6} fill="var(--color-accent)" stroke="var(--color-text)" strokeWidth="1" />

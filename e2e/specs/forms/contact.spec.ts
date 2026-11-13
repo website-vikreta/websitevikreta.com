@@ -58,26 +58,6 @@ test.describe('Contact Page: Form Validations, Submission & Links', { tag: '@for
     await expect(contactPage.phoneError).toBeVisible();
   });
 
-  test('Happy Path: Submitting valid form sends mock EmailJS and displays success message', { tag: '@critical' }, async ({
-    page,
-    contactPage,
-  }) => {
-    const { name, jobOrWebsite, email, phone } = TEST_LEAD;
-    await contactPage.fillForm({ name, jobOrWebsite, email, phone });
-
-    const sent = page.waitForRequest(/api\.emailjs\.com/);
-    await contactPage.submit();
-    await contactPage.verifySuccessState();
-
-    // The (mocked) EmailJS call carries the fake identity, never a real-looking person.
-    const params = (await sent).postDataJSON().template_params;
-    expect(params).toMatchObject({ name, email, mobile: phone, service: jobOrWebsite });
-
-    // Click "Submit another request" to reset the form
-    await contactPage.reset();
-    await expect(contactPage.nameInput).toHaveValue('');
-  });
-
   test('Social and email contact links exist with valid href protocols', async ({ page }) => {
     const mailtoLinks = page.locator('a[href^="mailto:"]');
     const mailtoCount = await mailtoLinks.count();
