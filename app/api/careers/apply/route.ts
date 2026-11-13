@@ -24,13 +24,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const opening = await writeClient.fetch<{ isActive: boolean } | null>(
-      `*[_type == "opening" && _id == $openingId][0]{ isActive }`,
+    const opening = await writeClient.fetch<{ isActive: boolean; designation?: string } | null>(
+      `*[_type == "opening" && _id == $openingId][0]{ isActive, designation }`,
       { openingId }
     )
     if (!opening || !opening.isActive) {
       return NextResponse.json({ error: 'This role is not accepting applications.' }, { status: 403 })
     }
+
+    const designation = opening.designation ?? ''
 
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 })
@@ -53,6 +55,7 @@ export async function POST(req: NextRequest) {
     await writeClient.create({
       _type: 'submission',
       candidateName: name,
+      designation,
       email,
       phone: phone ?? '',
       notes: notes ?? '',
@@ -85,6 +88,7 @@ export async function POST(req: NextRequest) {
         candidate_phone: phone ?? 'Not provided',
         notes:           notes ?? 'Not provided',
         job_title:       openingTitle,
+        designation,
         job_url:         jobUrl,
         resume_url:      resumePublicUrl,
       },

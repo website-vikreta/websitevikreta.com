@@ -41,6 +41,24 @@ export const openingType = defineType({
       validation: r => r.required(),
     }),
     defineField({
+      name: 'designation',
+      title: 'Designation',
+      type: 'string',
+      group: 'details',
+      description: 'Department / field this role belongs to. Sent with the application to the HR tracker.',
+      options: {
+        list: [
+          'AI Automation',
+          'Digital Marketing',
+          'Email Marketing',
+          'Graphic Design',
+          'SEO Specialist',
+          'Video Editing',
+          'Web Developer',
+        ],
+      },
+    }),
+    defineField({
       name: 'stipend',
       title: 'Stipend / Salary',
       type: 'string',
