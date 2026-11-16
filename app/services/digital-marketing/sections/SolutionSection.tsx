@@ -150,7 +150,7 @@ export default function SolutionSection() {
                   {system.description}
                 </p>
                 <div className="service-copy mt-6">
-                  <Button href="#marketing-audit" variant="ghost" size="sm" showArrow>
+                  <Button href="#marketing-audit" modalSubject={`${system.title}: marketing audit`} variant="ghost" size="sm" showArrow>
                     {system.cta}
                   </Button>
                 </div>

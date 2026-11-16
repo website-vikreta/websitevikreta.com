@@ -30,6 +30,13 @@ export const submissionType = defineType({
       validation: r => r.required(),
     }),
     defineField({
+      name: 'jobType',
+      title: 'Job Type',
+      type: 'string',
+      description: "Copied from the opening's Role Type when the candidate applies.",
+      readOnly: true,
+    }),
+    defineField({
       name: 'resume',
       title: 'Resume (PDF)',
       type: 'file',
