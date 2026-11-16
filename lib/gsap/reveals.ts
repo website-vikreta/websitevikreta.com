@@ -186,6 +186,38 @@ export function revealClipImage(
   return tl
 }
 
+interface RevealDrawOptions extends ScrollOptions {
+  delay?: number
+}
+
+/**
+ * SVG stroke draw — path starts fully hidden via dashoffset, then reveals along its length.
+ * No-ops when the path has no length (display:none / unmeasured).
+ */
+export function revealDraw(
+  target: Element | string,
+  options: RevealDrawOptions = {},
+): gsap.core.Tween {
+  const { delay = 0 } = options
+  const el = firstElement(target)
+  const path = el instanceof SVGGeometryElement ? el : null
+  if (!path) return gsap.set(el ?? {}, {})
+
+  const len = path.getTotalLength()
+  if (!len || prefersReducedMotion()) {
+    return gsap.set(path, { strokeDasharray: len || 1, strokeDashoffset: 0 })
+  }
+
+  gsap.set(path, { strokeDasharray: len, strokeDashoffset: len })
+  return gsap.to(path, {
+    strokeDashoffset: 0,
+    duration: DUR.slow,
+    ease: EASE.draw,
+    delay,
+    scrollTrigger: scrollVars(path, options),
+  })
+}
+
 interface CountUpOptions extends ScrollOptions {
   suffix?: string
   duration?: number

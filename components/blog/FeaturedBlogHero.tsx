@@ -52,7 +52,7 @@ export function FeaturedBlogHero({ post }: FeaturedBlogHeroProps) {
         </p>
 
         <TextLink href={postHref(post.categorySlug, post.slug)} arrow="diagonal">
-          Read more
+          Read more<span className="sr-only"> about {post.title}</span>
         </TextLink>
       </div>
     </article>
