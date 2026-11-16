@@ -77,7 +77,7 @@ export const GLOBE_CLIENTS: GlobeClient[] = [
     quote: 'Team was timely, design was great and they did above and beyond my request.',
     clientRole: 'Stacey Bae, Developer',
     url: 'https://www.archmodal.com/',
-    logo: '/client-logos/archmodal.svg',
+    logo: '/client-logos/archmodal.webp',
   },
   {
     id: 'cozmo-realty',
@@ -157,7 +157,7 @@ export const GLOBE_CLIENTS: GlobeClient[] = [
     deliverable: 'Advisory firm web architecture',
     summary: 'Positioning and information structure for institutional management consulting.',
     url: 'https://www.katalystcs.co.in/',
-    logo: '/client-logos/katalyst.png',
+    logo: '/client-logos/katalyst.webp',
   },
   {
     id: 'jaxl',

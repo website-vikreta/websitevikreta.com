@@ -163,7 +163,7 @@ export const WEB_PROJECTS: WebProject[] = [
     description:
       'A polished home page for an architectural modeling and design studio.',
     href: 'https://www.archmodal.com/',
-    logo: '/client-logos/archmodal.svg',
+    logo: '/client-logos/archmodal.webp',
     image: '/services/web-development/proof/archmodal.webp',
     imageAlt: 'Archmodal website preview',
     skills: 'UI/UX DESIGN / WEB DEVELOPMENT',

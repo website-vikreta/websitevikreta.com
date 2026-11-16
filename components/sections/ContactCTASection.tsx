@@ -11,6 +11,7 @@ interface ContactCTASectionProps {
   subheading: ReactNode
   formHeading: string
   subjectPlaceholder?: string
+  defaultSubject?: string
   messagePlaceholder?: string
   /** Override the section's padding/background. Default matches the sitewide `py-16 md:py-20` standard. */
   className?: string
@@ -32,6 +33,7 @@ export function ContactCTASection({
   subheading,
   formHeading,
   subjectPlaceholder = 'What do you need help with?',
+  defaultSubject = 'Free call',
   messagePlaceholder = "Describe what isn't working…",
   className = 'py-16 md:py-20',
 }: ContactCTASectionProps) {
@@ -69,6 +71,7 @@ export function ContactCTASection({
               formName={id}
               heading={formHeading}
               subjectPlaceholder={subjectPlaceholder}
+              defaultSubject={defaultSubject}
               messagePlaceholder={messagePlaceholder}
             />
           </div>
