@@ -33,7 +33,7 @@
 |------------|----------|
 | a spec file name: `home`, `work`, `about`, `faq`, `blog`, `careers`, `contact`, `audit-modal`, `services`, `navigation`, `seo`, `smoke` | `-- <name>` (file filter) |
 | an area folder: `marketing`, `forms`, `site-wide` | `-- e2e/specs/<area>` |
-| one service page, e.g. `uiux-design`, `ai-automations` | `-- services --grep "/services/<slug>"` |
+| one service page, e.g. `uiux-design`, `ai` | `-- services --grep "/services/<slug>"` |
 | a tag: `@forms`, `@smoke`, `@critical` | `-- --grep <tag>` |
 | anything else | `ls e2e/specs/*` and pick the closest; if nothing fits, say there are no tests for it yet |
 
