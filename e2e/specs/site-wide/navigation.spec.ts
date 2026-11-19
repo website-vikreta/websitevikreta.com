@@ -124,7 +124,7 @@ test.describe('Global Navigation, Scroll States & Mobile Drawer', () => {
   }) => {
     await basePage.navigate('/');
 
-    const footer = page.getByRole('region', { name: 'Footer' });
+    const footer = page.getByRole('contentinfo');
     await footer.scrollIntoViewIfNeeded();
     await expect(footer).toBeVisible();
 

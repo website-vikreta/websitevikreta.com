@@ -48,6 +48,7 @@ export default function ContactSection() {
             <div className="cta-form-card bg-(--color-surface) border border-(--color-border) p-5 sm:p-6 md:p-8">
               <AuditForm
                 formName="book_marketing_audit_inline"
+                defaultSubject="Free marketing audit"
                 heading="Book a Free Marketing Audit"
                 subjectPlaceholder="What are you trying to grow?"
                 messagePlaceholder="Tell us about your traffic, leads, or rankings goal…"

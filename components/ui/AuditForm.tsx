@@ -62,6 +62,8 @@ interface AuditFormProps {
   heading?:  string
   subjectPlaceholder?: string
   messagePlaceholder?: string
+  /** Prefills the Subject field on mount (e.g. the plan the visitor clicked "Get a quote" on). */
+  defaultSubject?: string
   /** Fires after a confirmed successful send (e.g. so a modal can auto-close). */
   onSuccess?: () => void
 }
@@ -78,9 +80,10 @@ export function AuditForm({
   heading = 'Book a Free Process Audit',
   subjectPlaceholder = 'What do you need automated?',
   messagePlaceholder = 'Describe the repetitive work you want to automate…',
+  defaultSubject = '',
   onSuccess,
 }: AuditFormProps) {
-  const [form,       setForm]       = useState<AuditFormData>(FORM_INITIAL)
+  const [form,       setForm]       = useState<AuditFormData>({ ...FORM_INITIAL, subject: defaultSubject })
   const [errors,     setErrors]     = useState<AuditFormErrors>({})
   const [submitting, setSubmitting] = useState(false)
   const [submitted,  setSubmitted]  = useState(false)
