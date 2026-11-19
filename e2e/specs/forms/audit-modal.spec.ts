@@ -3,7 +3,7 @@ import { TEST_LEAD } from '../../fixtures/test-data';
 
 test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', { tag: '@forms' }, () => {
   test.beforeEach(async ({ basePage }) => {
-    await basePage.navigate('/services/ai-automations');
+    await basePage.navigate('/services/ai');
   });
 
   test('Audit Modal opens from CTA and auto-focuses first input field', async ({ auditModal }) => {

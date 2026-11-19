@@ -1,8 +1,8 @@
 'use client'
 import { useRef } from 'react'
 import Image from 'next/image'
-import type { Branch } from '@/content/ai-automations/types'
-import { TOOL_LOGOS, CLIENTS } from '@/content/ai-automations/logos'
+import type { Branch } from '@/content/ai/types'
+import { TOOL_LOGOS, CLIENTS } from '@/content/ai/logos'
 import { KineticTitle } from '../../ui'
 import './sig-c.css'
 

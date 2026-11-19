@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import type { Persona } from '@/content/ai-automations/types'
+import type { Persona } from '@/content/ai/types'
 
 type Size = 'sm' | 'md' | 'lg'
 // Source images are ~280-500px wide; sizes never exceed that.

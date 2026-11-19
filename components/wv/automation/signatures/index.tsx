@@ -1,8 +1,9 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 import HrShelf from './HrShelf'
 import WorkflowPicker from './WorkflowPicker'
 import VoiceCallLog from './VoiceCallLog'
 import WhatsAppRace from './WhatsAppRace'
+import CommerceCart from './CommerceCart'
 import FinanceBoard from './FinanceBoard'
 import UgcGallery from './UgcGallery'
 import ContentFeed from './ContentFeed'
@@ -16,6 +17,7 @@ const MAP: Record<string, (p: P) => React.ReactNode> = {
   'workflow-automation': WorkflowPicker,
   'ai-voice-agents': VoiceCallLog,
   'whatsapp-automation': WhatsAppRace,
+  'conversational-commerce': CommerceCart,
   'finance-automation': FinanceBoard,
   'ai-ugc-ads': UgcGallery,
   'content-automation': ContentFeed,

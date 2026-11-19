@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import Link from 'next/link'
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 import { Arrow, KineticTitle } from '../../ui'
 import { prefillLead } from '../LeadForm'
 import './sig-a.css'
@@ -74,7 +74,7 @@ export default function HrShelf({ branch }: { branch: Branch }) {
   const [open, setOpen] = useState<Doc>(DOCS[0])
   const target = (d: Doc) => {
     const p = branch.products.find((x) => x.slug === d.slug)
-    return { p, href: p?.page ? `/services/ai-automations/${branch.slug}/${p.slug}` : null, interest: p?.name ?? d.name }
+    return { p, href: p?.page ? `/services/ai/${branch.slug}/${p.slug}` : null, interest: p?.name ?? d.name }
   }
   const t = target(open)
   return (

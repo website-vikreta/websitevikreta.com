@@ -1,4 +1,4 @@
-import type { Persona } from '@/content/ai-automations/types'
+import type { Persona } from '@/content/ai/types'
 import { Arrow, KineticTitle, Magnetic, Star } from '../ui'
 import { PrefillLink } from './LeadForm'
 import { Avatar } from './Persona'

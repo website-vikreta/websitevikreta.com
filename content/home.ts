@@ -65,7 +65,7 @@ export const HERO: HeroContent = {
   heading: ['We ', { hl: 'automate' }, ' the busywork and build websites that ', { hl: 'grow' }, ' your business.'],
   sub: 'Website Vikreta builds AI automations, websites, apps and marketing for businesses that want to go digital properly. We listen before we touch anything.',
   chips: [
-    { label: 'AI Automations', href: '/services/ai-automations' },
+    { label: 'Applied AI', href: '/services/ai' },
     { label: 'Web Development', href: '/services/web-development' },
     { label: 'Apps & CRM', href: '/services/web-mobile-app-development' },
     { label: 'UI/UX Design', href: '/services/uiux-design' },
@@ -106,9 +106,9 @@ export const SERVICES_HEADING: HeadingPart[] = ['WHAT WE ', { hl: 'DO' }]
 
 export const SERVICES: ServiceItem[] = [
   {
-    title: 'AI Automations',
+    title: 'Applied AI',
     icon: 'bot',
-    href: '/services/ai-automations',
+    href: '/services/ai',
     description:
       'We audit the hours your team spends on CRM, reporting, and support, then build custom AI agents and workflow automation that take that work off their plate.',
   },

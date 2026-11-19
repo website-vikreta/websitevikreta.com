@@ -9,7 +9,7 @@ const BASE = process.argv[2] ?? 'http://localhost:3000'
 const CASES = [
   { route: '/', modalHash: null },
   { route: '/services/web-development', modalHash: '#get-quote' },
-  { route: '/services/ai-automations', modalHash: '#book-audit' },
+  { route: '/services/ai', modalHash: '#book-audit' },
   { route: '/services/digital-marketing', modalHash: '#marketing-audit' },
   { route: '/services/web-mobile-app-development', modalHash: '#start-project' },
   { route: '/work', modalHash: null },

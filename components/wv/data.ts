@@ -44,6 +44,18 @@ export const CONTACT = {
   linkedin: 'https://linkedin.com/company/websitevikreta',
 }
 
+// Footer "Ask an AI about us": each link opens the assistant with this prompt prefilled.
+// Keep it to verifiable facts only.
+const ASK_AI_PROMPT = `Tell me about Website Vikreta (https://www.websitevikreta.com), a UI/UX design and web development studio based in Pune, India, founded in 2020. Cover: what they design and build (business websites, e-commerce stores, web apps, redesigns), the technologies they use (Figma, Next.js, React, WordPress, Shopify), their AI automation add-on, the clients and work shown at https://www.websitevikreta.com/work, and why a business might choose them over a freelancer or template site. Sources: https://www.websitevikreta.com/, https://www.linkedin.com/company/websitevikreta, https://www.upwork.com/agencies/websitevikreta/`
+
+export const ASK_AI = [
+  { name: 'ChatGPT', icon: 'chatgpt.svg', base: 'https://chatgpt.com/?q=' },
+  { name: 'Claude', icon: '02-Claude.svg', base: 'https://claude.ai/new?q=' },
+  { name: 'Perplexity', icon: 'perplexity.svg', base: 'https://www.perplexity.ai/search?q=' },
+  { name: 'Gemini', icon: '17-Gemini.svg', base: 'https://www.google.com/search?udm=50&q=' },
+  { name: 'Grok', icon: 'grok.svg', base: 'https://grok.com/?q=' },
+].map((a) => ({ name: a.name, icon: `/tools-logos/${a.icon}`, href: a.base + encodeURIComponent(ASK_AI_PROMPT) }))
+
 type Leaf = { t: string; href: string; tag?: string }
 type Group = { title: string; blurb: string; href: string; leaves: Leaf[] }
 export type Service = {
@@ -61,31 +73,37 @@ export type Service = {
 
 // Label → real route, for any sub-page that exists. Everything else renders as '#'.
 const PAGES: Record<string, string> = {
-  'Workflows': '/services/ai-automations/workflow-automation',
-  'CRM automation': '/services/ai-automations/workflow-automation/crm-automation',
-  'Document data extraction': '/services/ai-automations/workflow-automation/document-data-extraction',
-  'AI teammates': '/services/ai-automations/workflow-automation/ai-teammates',
-  'Voice Agents': '/services/ai-automations/ai-voice-agents',
-  'AI receptionist': '/services/ai-automations/ai-voice-agents/ai-receptionist',
-  'Outbound lead qualification': '/services/ai-automations/ai-voice-agents/outbound-lead-qualification',
-  'WhatsApp': '/services/ai-automations/whatsapp-automation',
-  'WhatsApp lead follow-up': '/services/ai-automations/whatsapp-automation/whatsapp-lead-follow-up',
-  'Appointment reminders': '/services/ai-automations/whatsapp-automation/appointment-reminders',
-  'HR': '/services/ai-automations/hr-automation',
-  'Offer letter automation': '/services/ai-automations/hr-automation/offer-letter-automation',
-  'Employee onboarding automation': '/services/ai-automations/hr-automation/employee-onboarding-automation',
-  'AI UGC Ads': '/services/ai-automations/ai-ugc-ads',
-  'AI UGC video ads': '/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads',
-  'AI spokesperson videos': '/services/ai-automations/ai-ugc-ads/ai-spokesperson-videos',
-  'Content': '/services/ai-automations/content-automation',
-  'SEO blog content': '/services/ai-automations/content-automation/seo-blog-content',
-  'Social media content': '/services/ai-automations/content-automation/social-media-content',
-  'Proposals': '/services/ai-automations/proposal-automation',
-  'Proposal generation': '/services/ai-automations/proposal-automation/proposal-generation',
-  'RFP response automation': '/services/ai-automations/proposal-automation/rfp-response-automation',
-  'Finance': '/services/ai-automations/finance-automation',
-  'Invoice automation': '/services/ai-automations/finance-automation/invoice-automation',
-  'Payment reminder automation': '/services/ai-automations/finance-automation/payment-reminder-automation',
+  'Conversational AI': '/services/ai/conversational-ai',
+  'Automation & Ops': '/services/ai/automation-ops',
+  'AI Content & Ads': '/services/ai/ai-content-ads',
+  'AI Search Visibility': '/services/ai/ai-search-visibility',
+  'AEO & GEO': '/services/digital-marketing',
+  'Workflows': '/services/ai/workflow-automation',
+  'CRM automation': '/services/ai/workflow-automation/crm-automation',
+  'Document data extraction': '/services/ai/workflow-automation/document-data-extraction',
+  'AI teammates': '/services/ai/workflow-automation/ai-teammates',
+  'Voice Agents': '/services/ai/ai-voice-agents',
+  'AI receptionist': '/services/ai/ai-voice-agents/ai-receptionist',
+  'Outbound lead qualification': '/services/ai/ai-voice-agents/outbound-lead-qualification',
+  'Chatbots & WhatsApp': '/services/ai/whatsapp-automation',
+  'Conversational commerce': '/services/ai/conversational-commerce',
+  'WhatsApp lead follow-up': '/services/ai/whatsapp-automation/whatsapp-lead-follow-up',
+  'Appointment reminders': '/services/ai/whatsapp-automation/appointment-reminders',
+  'HR': '/services/ai/hr-automation',
+  'Offer letter automation': '/services/ai/hr-automation/offer-letter-automation',
+  'Employee onboarding automation': '/services/ai/hr-automation/employee-onboarding-automation',
+  'AI UGC Ads': '/services/ai/ai-ugc-ads',
+  'AI UGC video ads': '/services/ai/ai-ugc-ads/ai-ugc-video-ads',
+  'AI spokesperson videos': '/services/ai/ai-ugc-ads/ai-spokesperson-videos',
+  'Content': '/services/ai/content-automation',
+  'SEO blog content': '/services/ai/content-automation/seo-blog-content',
+  'Social media content': '/services/ai/content-automation/social-media-content',
+  'Proposals': '/services/ai/proposal-automation',
+  'Proposal generation': '/services/ai/proposal-automation/proposal-generation',
+  'RFP response automation': '/services/ai/proposal-automation/rfp-response-automation',
+  'Finance': '/services/ai/finance-automation',
+  'Invoice automation': '/services/ai/finance-automation/invoice-automation',
+  'Payment reminder automation': '/services/ai/finance-automation/payment-reminder-automation',
 }
 
 type RawGroup = { title: string; blurb: string; leaves: { t: string; tag?: string }[] }
@@ -113,9 +131,9 @@ function svc(
 }
 
 export const SERVICES: Service[] = [
-  svc('/services/ai-automations', {
+  svc('/services/ai', {
     id: 'ai',
-    title: 'AI Apps & Automations',
+    title: 'Applied AI',
     kicker: 'Take the busywork off your team',
     blurb: 'Fixed-scope projects that take repetitive work off your team, built on the tools you already use.',
     image: IMG.ai,
@@ -123,14 +141,11 @@ export const SERVICES: Service[] = [
     cta: 'Book a free process audit',
     extras: ['Platforms: Make, n8n, WhatsApp API'],
     groups: [
-      { title: 'Workflows', blurb: 'Connect your tools so leads, data and follow-ups run themselves.', leaves: [{ t: 'CRM automation' }, { t: 'Document data extraction' }, { t: 'AI teammates' }] },
-      { title: 'Voice Agents', blurb: 'Phone agents that answer, qualify and book around the clock.', leaves: [{ t: 'AI receptionist' }, { t: 'Outbound lead qualification' }] },
-      { title: 'WhatsApp', blurb: 'Reply, remind and follow up with customers on WhatsApp.', leaves: [{ t: 'WhatsApp lead follow-up' }, { t: 'Appointment reminders' }] },
-      { title: 'HR', blurb: 'Offer letters and onboarding handled by Meher, our AI HR teammate.', leaves: [{ t: 'Offer letter automation' }, { t: 'Employee onboarding automation' }] },
-      { title: 'AI UGC Ads', blurb: 'Turn product photos into UGC-style video ads in bulk.', leaves: [{ t: 'AI UGC video ads' }, { t: 'AI spokesperson videos' }] },
-      { title: 'Content', blurb: 'Blogs and social posts drafted by Ira, our AI content teammate.', leaves: [{ t: 'SEO blog content' }, { t: 'Social media content' }] },
-      { title: 'Proposals', blurb: 'First-draft proposals and RFP answers in minutes.', leaves: [{ t: 'Proposal generation' }, { t: 'RFP response automation' }] },
-      { title: 'Finance', blurb: 'Invoices and payment reminders handled by Arjun, our AI finance teammate.', leaves: [{ t: 'Invoice automation' }, { t: 'Payment reminder automation' }] },
+      // Four pillars; leaves are the branch pages. Chatbots live in the WhatsApp & Chat branch (one page, no keyword split).
+      { title: 'Conversational AI', blurb: 'Agents that answer, qualify and sell on calls, WhatsApp and chat.', leaves: [{ t: 'Voice Agents' }, { t: 'Chatbots & WhatsApp' }, { t: 'Conversational commerce', tag: 'New' }] },
+      { title: 'Automation & Ops', blurb: 'Workflows, HR, proposals and finance that run themselves.', leaves: [{ t: 'Workflows' }, { t: 'HR' }, { t: 'Proposals' }, { t: 'Finance' }] },
+      { title: 'AI Content & Ads', blurb: 'Blogs, social posts and UGC-style video ads, made in bulk.', leaves: [{ t: 'Content' }, { t: 'AI UGC Ads' }] },
+      { title: 'AI Search Visibility', blurb: 'Get cited when buyers ask ChatGPT, Perplexity and Google AI.', leaves: [{ t: 'AEO & GEO' }] },
     ],
   }),
   svc('/services/web-development', {
@@ -202,7 +217,7 @@ export type NavItem = {
   children?: { t: string; href: string }[]
 }
 
-export const AI_HREF = '/services/ai-automations'
+export const AI_HREF = '/services/ai'
 
 export const NAV: NavItem[] = [
   { id: 'services', t: 'Services', href: '/services', kind: 'services' },
@@ -218,7 +233,7 @@ export const NAV: NavItem[] = [
     ],
   },
   { id: 'blog', t: 'Blog', href: '/blog' },
-  { id: 'ai', t: 'AI Automations', href: AI_HREF, kind: 'ai' },
+  { id: 'ai', t: 'Applied AI', href: AI_HREF, kind: 'ai' },
 ]
 
 export const ROTATING = ['saves 20 hours a week', 'ranks on Google', 'gets cited by AI', 'scales with you']
@@ -226,7 +241,7 @@ export const ROTATING = ['saves 20 hours a week', 'ranks on Google', 'gets cited
 export const MANIFESTO =
   'Most businesses run on a website, a CRM and a pile of manual work in between. We design, build and automate all three, then hand you a system your team owns.'
 
-export const BAND = ['AI Automations', 'Web Development', 'CRMs', 'Web Apps', 'UI/UX', 'SEO & GEO']
+export const BAND = ['Applied AI', 'Web Development', 'CRMs', 'Web Apps', 'UI/UX', 'SEO & GEO']
 
 
 export const STEPS = [

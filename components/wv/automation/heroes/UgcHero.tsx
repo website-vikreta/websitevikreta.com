@@ -1,9 +1,9 @@
 'use client'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import type { Branch, Product } from '@/content/ai-automations/types'
-import { PERSONAS } from '@/content/ai-automations/personas'
-import { TOOL_LOGOS, CLIENTS } from '@/content/ai-automations/logos'
+import type { Branch, Product } from '@/content/ai/types'
+import { PERSONAS } from '@/content/ai/personas'
+import { TOOL_LOGOS, CLIENTS } from '@/content/ai/logos'
 import { HeroCopy } from '../HeroCopy'
 import './heroes-c.css'
 

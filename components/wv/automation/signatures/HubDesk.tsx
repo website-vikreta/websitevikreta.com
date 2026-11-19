@@ -2,9 +2,9 @@
 import { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PERSONAS } from '@/content/ai-automations/personas'
-import { TOOL_LOGOS } from '@/content/ai-automations/logos'
-import type { PersonaId } from '@/content/ai-automations/types'
+import { PERSONAS } from '@/content/ai/personas'
+import { TOOL_LOGOS } from '@/content/ai/logos'
+import type { PersonaId } from '@/content/ai/types'
 import { Arrow, KineticTitle } from '../../ui'
 import './sig-a.css'
 
@@ -98,7 +98,7 @@ export default function HubDesk() {
                 )
               })}
             </ul>
-            <Link href={`/services/ai-automations/${svc.branch}`} className="sg-more">
+            <Link href={`/services/ai/${svc.branch}`} className="sg-more">
               See how it works <Arrow size={14} />
             </Link>
           </div>

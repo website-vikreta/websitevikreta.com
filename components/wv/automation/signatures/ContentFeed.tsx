@@ -1,9 +1,9 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import type { Branch } from '@/content/ai-automations/types'
-import { PERSONAS } from '@/content/ai-automations/personas'
-import { TOOL_LOGOS } from '@/content/ai-automations/logos'
+import type { Branch } from '@/content/ai/types'
+import { PERSONAS } from '@/content/ai/personas'
+import { TOOL_LOGOS } from '@/content/ai/logos'
 import { KineticTitle } from '../../ui'
 import './sig-c.css'
 

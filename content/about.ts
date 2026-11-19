@@ -66,7 +66,7 @@ export const ERAS: Era[] = [
     headline: ['The first', 'AI services'],
     why: 'Clients started asking what AI could take off their plate. We built the first answers.',
     beats: ['Chatbots', 'RAG', 'Document data extraction', 'Website data scraping'],
-    links: [{ t: 'AI services', href: '/services/ai-automations' }],
+    links: [{ t: 'AI services', href: '/services/ai' }],
   },
   {
     id: 'y2026',
@@ -76,7 +76,7 @@ export const ERAS: Era[] = [
     why: 'Agentic AI arrived and changed what is possible to automate. We became AI-first and opened two new lines of business: AI automations and AI services. Same studio, same sprints, a different starting question.',
     beats: ['AI automations', 'AI services', 'Agentic AI'],
     links: [
-      { t: 'AI automations', href: '/services/ai-automations' },
+      { t: 'AI automations', href: '/services/ai' },
       { t: 'Read the blog', href: '/blog' },
     ],
     now: true,
@@ -99,7 +99,7 @@ export const SERVICES_ROWS = [
   { t: 'UI/UX design', d: 'Product design and redesigns that people can use without a manual.', href: '/services/uiux-design' },
   { t: 'Digital marketing', d: 'SEO and organic growth that compounds.', href: '/services/digital-marketing' },
   { t: 'CRMs & custom apps', d: 'The system your team lives in, wired to the rest of your tools.', href: '/services/apps-crm' },
-  { t: 'AI automations', d: 'Agents and workflows that take repetitive work off your team.', href: '/services/ai-automations' },
+  { t: 'AI automations', d: 'Agents and workflows that take repetitive work off your team.', href: '/services/ai' },
 ]
 
 export const WORKING = [

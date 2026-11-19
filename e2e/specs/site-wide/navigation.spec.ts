@@ -18,7 +18,7 @@ test.describe('Global Navigation, Scroll States & Mobile Drawer', () => {
     await nav.openServicesDropdown();
 
     const serviceLinks = [
-      '/services/ai-automations',
+      '/services/ai',
       '/services/web-development',
       '/services/web-mobile-app-development',
       '/services/uiux-design',
@@ -78,7 +78,7 @@ test.describe('Global Navigation, Scroll States & Mobile Drawer', () => {
 
     // Expand services accordion
     await nav.expandMobileServices();
-    await expect(nav.mobileDrawer.locator('a[href="/services/ai-automations"]').first()).toBeVisible();
+    await expect(nav.mobileDrawer.locator('a[href="/services/ai"]').first()).toBeVisible();
     await expect(nav.mobileDrawer.locator('a[href="/services/web-development"]').first()).toBeVisible();
 
     // Close drawer

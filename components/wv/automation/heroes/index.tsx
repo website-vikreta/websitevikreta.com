@@ -1,8 +1,9 @@
-import type { Branch, Product } from '@/content/ai-automations/types'
+import type { Branch, Product } from '@/content/ai/types'
 import HrHero from './HrHero'
 import WorkflowHero from './WorkflowHero'
 import VoiceHero from './VoiceHero'
 import WhatsAppHero from './WhatsAppHero'
+import CommerceHero from './CommerceHero'
 import FinanceHero from './FinanceHero'
 import UgcHero from './UgcHero'
 import ContentHero from './ContentHero'
@@ -16,6 +17,7 @@ const MAP: Record<string, (p: P) => React.ReactNode> = {
   'workflow-automation': WorkflowHero,
   'ai-voice-agents': VoiceHero,
   'whatsapp-automation': WhatsAppHero,
+  'conversational-commerce': CommerceHero,
   'finance-automation': FinanceHero,
   'ai-ugc-ads': UgcHero,
   'content-automation': ContentHero,

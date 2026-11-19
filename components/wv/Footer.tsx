@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { CONTACT, SERVICES } from './data'
+import { ASK_AI, CONTACT, SERVICES } from './data'
 import { FootWord } from './FootWord'
 import { Arrow, Logo } from './ui'
 
@@ -46,6 +46,20 @@ export function Footer() {
               <li><a href={CONTACT.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></li>
             </ul>
           </div>
+        </div>
+        <div className="wv-foot-ai">
+          <p>Don&rsquo;t take our word for it. Ask your favourite AI about Website Vikreta.</p>
+          <ul aria-label="Ask an AI about Website Vikreta">
+            {ASK_AI.map((a) => (
+              <li key={a.name}>
+                <a href={a.href} target="_blank" rel="noopener noreferrer" title={`Ask ${a.name} about Website Vikreta`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG */}
+                  <img src={a.icon} alt="" width={16} height={16} loading="lazy" />
+                  {a.name} <Arrow size={12} />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
         <FootWord />
         <div className="wv-foot-base">

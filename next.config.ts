@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   // OG routes read persona PNGs + the Anton font from disk at request time.
   outputFileTracingIncludes: {
-    '/services/ai-automations/**/opengraph-image*': ['./app/services/ai-automations/_og/**', './app/fonts/Anton-Regular.ttf'],
+    '/services/ai/**/opengraph-image*': ['./app/services/ai/_og/**', './app/fonts/Anton-Regular.ttf'],
   },
   images: {
     unoptimized: true,
@@ -44,8 +44,14 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/services',
-        destination: '/services/ai-automations',
+        destination: '/services/ai',
         permanent: false,
+      },
+      // Renamed AI Automations -> Applied AI (2026-11-10). Covers the hub and every branch/product page.
+      {
+        source: '/services/ai-automations/:path*',
+        destination: '/services/ai/:path*',
+        permanent: true,
       },
     ]
   },

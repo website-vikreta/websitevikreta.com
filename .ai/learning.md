@@ -42,13 +42,13 @@ The pre-`wv` log (legacy pages, GSAP, Epilogue/Utile) is in git: `git show 3d6f3
 - Date: 2026-10-30
 
 ### [Palette] — AI pages use wv tokens only (2026-11-09, supersedes the 2026-11-07 violet/pink exception)
-- Rule: No violet/pink glow or gradient on `/services/ai-automations/**`. `--ai-a/--ai-b/--ai` on `.wv-ax-glow` now resolve to `var(--y)` (fills only: strike lines, FAQ open marker). Closing CTA sits on `--surface`. Anton only for H1/H2 and the Week counter; list item titles are Inter Tight 600.
-- Where: `components/wv/automation/closing.css`, `app/services/ai-automations/hub.css`.
+- Rule: No violet/pink glow or gradient on `/services/ai/**`. `--ai-a/--ai-b/--ai` on `.wv-ax-glow` now resolve to `var(--y)` (fills only: strike lines, FAQ open marker). Closing CTA sits on `--surface`. Anton only for H1/H2 and the Week counter; list item titles are Inter Tight 600.
+- Where: `components/wv/automation/closing.css`, `app/services/ai/hub.css`.
 - Date: 2026-11-07
 
 ### [Component] — `.axh-week` scroll-struck chores
 - Rule: Real number counts down with scroll (`useScroll` + `useMotionValueEvent`, state only on integer change); list items get `is-done` by threshold and a CSS strike draws in. Mobile: left column `display:contents` so the counter can stick under the header.
-- Where: `app/services/ai-automations/Week.tsx`.
+- Where: `app/services/ai/Week.tsx`.
 - Date: 2026-11-07
 
 ### [Motion] — never branch `initial` on `useReducedMotion`
@@ -62,13 +62,13 @@ The pre-`wv` log (legacy pages, GSAP, Epilogue/Utile) is in git: `git show 3d6f3
 - Date: 2026-11-07
 
 ### [Layout] — AI pages share closing blocks
-- Rule: Every `/services/ai-automations/**` page ends with `ProofBar`, `Reading`, `Faq`, `CtaBlock`, which now alias `components/wv/automation/closing.tsx`. Put `wv-ax-glow` on `<main>` for the shared `--ai*` accent tokens (yellow). The global map CTA is hidden on these routes (`HideOnHome`).
+- Rule: Every `/services/ai/**` page ends with `ProofBar`, `Reading`, `Faq`, `CtaBlock`, which now alias `components/wv/automation/closing.tsx`. Put `wv-ax-glow` on `<main>` for the shared `--ai*` accent tokens (yellow). The global map CTA is hidden on these routes (`HideOnHome`).
 - Where: `components/wv/automation/closing.tsx`, `closing.css`, `components/ui/ConditionalShell.tsx`.
 - Date: 2026-11-07
 
 ### [Override] — AI hub design is owner-led, not wv defaults (owner decision 2026-11-09, revised 2026-11-10)
-- Rule: On `/services/ai-automations` the owner's direction beats `.ai/standards/*` and design skills. Typography matches the homepage: Anton uppercase H1/H2 (H2 same size as hero H1), Inter Tight body. Section heads are heading only: no one-liner beside or under it, no heading-left/line-right split. Hero is a bento (title+CTA, live chat, WebGL AI bubble, 4 STATS tiles) on the homepage `wv-grid-bg`. "Where your week goes" is a bento of photo + minimal demo tiles. Section rhythm is one `--axs` token, tuned by visible gap, not padding. Reveals are CSS scroll-driven (`animation-timeline: view()`), opacity/translate/scale/clip-path only. No eyebrows, no decorative numbering, no stats/case studies that are not in `lib/work-data.ts` or `components/wv/data.ts`. Proof is real only.
-- Where: `app/services/ai-automations/{page.tsx,hub.css,Explorer.tsx,WeekSlider.tsx}`, `components/wv/automation/heroes/{HubHero.tsx,AiBubble.tsx,heroes-a.css}`.
+- Rule: On `/services/ai` the owner's direction beats `.ai/standards/*` and design skills. Typography matches the homepage: Anton uppercase H1/H2 (H2 same size as hero H1), Inter Tight body. Section heads are heading only: no one-liner beside or under it, no heading-left/line-right split. Hero is a bento (title+CTA, live chat, WebGL AI bubble, 4 STATS tiles) on the homepage `wv-grid-bg`. "Where your week goes" is a bento of photo + minimal demo tiles. Section rhythm is one `--axs` token, tuned by visible gap, not padding. Reveals are CSS scroll-driven (`animation-timeline: view()`), opacity/translate/scale/clip-path only. No eyebrows, no decorative numbering, no stats/case studies that are not in `lib/work-data.ts` or `components/wv/data.ts`. Proof is real only.
+- Where: `app/services/ai/{page.tsx,hub.css,Explorer.tsx,WeekSlider.tsx}`, `components/wv/automation/heroes/{HubHero.tsx,AiBubble.tsx,heroes-a.css}`.
 - Date: 2026-11-10
 
 ### [Component] — `.wv-mcta` global map CTA

@@ -1,7 +1,7 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'motion/react'
-import { TOOL_LOGOS } from '@/content/ai-automations/logos'
+import { TOOL_LOGOS } from '@/content/ai/logos'
 import './sig-b.css'
 
 export function Logo({ k, s = 22 }: { k: string; s?: number }) {

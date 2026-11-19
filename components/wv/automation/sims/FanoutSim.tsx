@@ -1,5 +1,5 @@
 'use client'
-import type { Demo } from '@/content/ai-automations/types'
+import type { Demo } from '@/content/ai/types'
 import { useSim } from './useSim'
 
 type D = Extract<Demo, { kind: 'fanout' }>

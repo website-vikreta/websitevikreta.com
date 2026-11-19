@@ -40,14 +40,14 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Do you only build websites, or do you handle AI automation too?',
         answer:
           'We do both with the same team. We build the website, then the systems that run behind it: workflow automation, AI voice and WhatsApp agents, content and finance automations. Because it is one team, nothing gets lost in a handoff to a second agency halfway through a project.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: '5',
         question: 'What\'s your process like?',
         answer:
           'We work in four stages: discovery, design, build, launch. You approve pieces along the way instead of waiting for one big reveal. For AI automation the steps are a 20-minute call, mapping the steps and tools, building and testing on your real cases, then running it in your accounts while we monitor.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: '6',
@@ -68,7 +68,7 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Should I hire an agency or build AI automation in-house?',
         answer:
           'Hire an agency when nobody on your team has the time or skill to design, test and monitor the workflows. Build in-house if you already have a technical person with spare capacity. Website Vikreta builds inside your accounts, so you can take it over later. Our own company runs on these automations.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: 'choose-an-agency',
@@ -137,7 +137,7 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Are tool and platform subscriptions part of the project?',
         answer:
           'No. Subscriptions you own, such as Make, n8n, HubSpot, QuickBooks or your e-signature tool, are billed by those vendors. Usage fees for phone, AI models and Meta WhatsApp messages are also separate where they apply. We tell you what you will need before you commit.',
-        href: '/services/ai-automations/whatsapp-automation',
+        href: '/services/ai/whatsapp-automation',
       },
       {
         id: 'refunds',
@@ -164,28 +164,28 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'What is AI automation, in plain words?',
         answer:
           'AI automation is software that does your repeat work, like answering calls, writing offer letters, scheduling posts and chasing invoices, inside your own accounts. You message it in plain words, like a group chat. Website Vikreta builds, tests and monitors it so you do not write code.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: 'what-can-you-automate',
         question: 'What can you automate in my business?',
         answer:
           "We automate sales, HR, content and finance work: missed calls and slow lead replies, invoice chasing, offer letters and contracts, blog and social content, proposals, and copy-paste data between apps. We also create ad creatives such as AI UGC video ads. Each has its own product page with its own timeline and limits.",
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: 'ai-automation-timeline',
         question: 'How long does it take to build an AI automation?',
         answer:
           'Most projects go live in about 14 days. Single flows such as offer letters take about a week. Voice agents take 1 to 2 weeks, and custom agents about 3 weeks. You get a date after the mapping step, not before.',
-        href: '/services/ai-automations/hr-automation/offer-letter-automation',
+        href: '/services/ai/hr-automation/offer-letter-automation',
       },
       {
         id: 'ai-automation-tools',
         question: 'What tools does AI automation work with?',
         answer:
           'Most tools you already use: Gmail, Google Workspace, Slack, WhatsApp, HubSpot, Zoho, Salesforce, QuickBooks, Stripe, Airtable and Notion. If a tool has an API or a connector, we can plug it in. If it does not, we say so up front.',
-        href: '/services/ai-automations/workflow-automation',
+        href: '/services/ai/workflow-automation',
       },
       {
         id: 'zapier-make-n8n',
@@ -199,14 +199,14 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Which AI models and tools do you use?',
         answer:
           'We use OpenAI, Claude, Gemini, Perplexity, Llama, Flux and ElevenLabs for models, and Make.com, n8n, Microsoft Power Apps and Power Automate for workflows, among others. We are tool-agnostic and pick what fits the job. AI only sees the fields it needs, and sensitive steps wait for a human.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: 'data-safety',
         question: 'Is my business data safe with AI automation?',
         answer:
           'Workflows run in your own accounts, so your data is not copied into ours. We use least-access permissions, keep a run log of every step, and put sensitive actions behind human approval. Contracts and NDAs cover confidentiality, and you can revoke access at any time.',
-        href: '/services/ai-automations/workflow-automation',
+        href: '/services/ai/workflow-automation',
       },
       {
         id: 'human-approval',
@@ -220,21 +220,21 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Can AI talk to my customers on calls and WhatsApp?',
         answer:
           'Yes. We build AI voice agents that answer and book calls, and WhatsApp and chat agents that reply to leads in seconds. They always say they are AI. Calls and messages need consent first, and anything the agent cannot answer is handed to a person with a transcript.',
-        href: '/services/ai-automations/ai-voice-agents',
+        href: '/services/ai/ai-voice-agents',
       },
       {
         id: 'whatsapp-allowed',
         question: "Is WhatsApp automation allowed?",
         answer:
           "Yes, through the official WhatsApp Business API. Tools that automate the regular consumer app break WhatsApp rules and risk a ban. Customers must opt in before you message them. Meta's message fees are billed by Meta separately.",
-        href: '/services/ai-automations/whatsapp-automation',
+        href: '/services/ai/whatsapp-automation',
       },
       {
         id: 'automation-breaks',
         question: 'What happens if the automation breaks?',
         answer:
           'We get alerted on failures, and the run pauses instead of sending bad data. We fix issues within a day or two of you reporting them. If an app changes its API, we update the workflow. This monitoring is what a plain Zapier subscription does not give you.',
-        href: '/services/ai-automations/workflow-automation',
+        href: '/services/ai/workflow-automation',
       },
       {
         id: 'automation-results',
@@ -248,7 +248,7 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'What is not included in your AI automation work?',
         answer:
           'Legal advice, payroll decisions, hiring decisions, fake reviews, medical advice, and calls or messages to people who have not opted in. We do not auto-reject candidates and we do not message purchased lists. Anything involving payments or contracts waits for your approval.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
     ],
   },
@@ -323,7 +323,7 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Can you work with our existing tools and tech stack?',
         answer:
           'Yes. We work on any stack you need, and we have built on Shopify, the WhatsApp Business API and delivery-partner integrations. We connect to HubSpot, Zoho, Google Workspace, Slack and more. We work with what you have instead of asking you to start over.',
-        href: '/services/ai-automations/workflow-automation',
+        href: '/services/ai/workflow-automation',
       },
     ],
   },
@@ -405,14 +405,14 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'Can AI write blog posts that rank on Google?',
         answer:
           'Yes, if the post is useful, accurate and written for a real search need. Google does not ban AI content; it ranks quality. Our content automation adds research, linked sources and a human edit on every post, and nothing goes live without your approval.',
-        href: '/services/ai-automations/content-automation',
+        href: '/services/ai/content-automation',
       },
       {
         id: 'paid-ads',
         question: 'Do you run paid ads on Meta or Google?',
         answer:
           'No, Website Vikreta does not run paid ad campaigns or manage ad spend on Meta, Google or other platforms. We do create ad creatives, including AI UGC video ads, spokesperson videos, hooks and scripts, and bulk ad variations, which your team or media buyer runs. Our marketing work is SEO, GEO and content.',
-        href: '/services/ai-automations/ai-ugc-ads',
+        href: '/services/ai/ai-ugc-ads',
       },
     ],
   },
@@ -425,7 +425,7 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: 'What happens after the site or system launches?',
         answer:
           'Every project includes support, and the terms are written into your contract. Launch is when monitoring and fixing starts, and AI systems especially need tuning once real usage begins. For automations we watch runs and fix what breaks, including updates when an app changes its API.',
-        href: '/services/ai-automations',
+        href: '/services/ai',
       },
       {
         id: 'fix-response',
@@ -446,7 +446,7 @@ export const FAQ_GROUPS: { id: string; title: string; items: FaqItem[] }[] = [
         question: "Who owns the website, code, automations and data we pay for?",
         answer:
           "You do. After full payment you own everything: the code, designs and content. Automations run in your own accounts under your logins. The site does not depend on us to keep running, there are no licensing fees, and there is no lock-in if you stop working with us.",
-        href: '/services/ai-automations/workflow-automation',
+        href: '/services/ai/workflow-automation',
       },
       {
         id: 'handover',

@@ -47,7 +47,7 @@ test.describe('Services Directory, Sub-Pages & 308 Permanent Redirects', () => {
  * (fake identity, EmailJS mocked), the FAQ expands, the testimonial carousel moves, no overflow.
  */
 const SERVICE_PAGES = [
-  { path: '/services/ai-automations', cta: /Book a Free Process Audit/, formId: 'book-audit', faq: 'AI automation frequently asked questions', faqCount: 6, carousel: null },
+  { path: '/services/ai', cta: /Book a Free Process Audit/, formId: 'book-audit', faq: 'AI automation frequently asked questions', faqCount: 6, carousel: null },
   { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, formId: 'start-project', faq: 'Apps & CRM FAQs', faqCount: 3, carousel: 'Client testimonials' },
   { path: '/services/web-development', cta: /Book a call/, formId: 'get-quote', faq: 'Web Development FAQs', faqCount: 5, carousel: 'Client testimonials' },
   { path: '/services/uiux-design', cta: /Book a call/, formId: 'get-quote', faq: 'UI/UX design FAQs', faqCount: 5, carousel: 'UI/UX client testimonials' },

@@ -106,7 +106,7 @@ export function ContactForm() {
   }, [])
   const current = countries.find((x) => x.c === country)
 
-  // Prefill from ?service= / ?interest= (links from AI Automations pages).
+  // Prefill from ?service= / ?interest= (links from Applied AI pages).
   useEffect(() => {
     const q = new URLSearchParams(window.location.search)
     const v = (q.get('service') || q.get('interest') || '').slice(0, 70)

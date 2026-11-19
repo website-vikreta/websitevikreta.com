@@ -6,7 +6,7 @@ import { PRODUCTION_VIEWPORTS } from './helpers/responsive-viewports';
 const TARGET_PAGES = [
   { name: 'home', path: '/' },
   { name: 'services', path: '/services' },
-  { name: 'service_ai_automations', path: '/services/ai-automations' },
+  { name: 'service_ai_automations', path: '/services/ai' },
   { name: 'service_apps_crm', path: '/services/web-mobile-app-development' },
   { name: 'service_web_dev', path: '/services/web-development' },
   { name: 'service_ui_ux', path: '/services/uiux-design' },

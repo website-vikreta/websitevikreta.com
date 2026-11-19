@@ -1,4 +1,4 @@
-import type { Demo } from '@/content/ai-automations/types'
+import type { Demo } from '@/content/ai/types'
 import { BeforeAfter, CallSim, ChatSim, DocSim, FanoutSim, FlowSim, TimelineSim } from './sims'
 
 export function DemoSlot({ demo }: { demo: Demo }) {

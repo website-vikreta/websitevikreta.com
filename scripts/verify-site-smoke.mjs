@@ -14,7 +14,7 @@ const ROUTES = [
   '/work/case-studies',
   '/services',
   '/services/web-development',
-  '/services/ai-automations',
+  '/services/ai',
   '/services/digital-marketing',
   '/services/web-mobile-app-development',
   '/services/uiux-design',
@@ -25,7 +25,7 @@ const ROUTES = [
 ]
 
 const MODAL_CASES = [
-  { route: '/services/ai-automations', hash: '#book-audit' },
+  { route: '/services/ai', hash: '#book-audit' },
   { route: '/services/digital-marketing', hash: '#marketing-audit' },
   { route: '/services/web-mobile-app-development', hash: '#start-project' },
 ]

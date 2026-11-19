@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 import { animate, motion, useMotionValue, useTransform } from 'motion/react'
-import type { Branch, Demo, Product } from '@/content/ai-automations/types'
+import type { Branch, Demo, Product } from '@/content/ai/types'
 import { ease } from '../../ui'
 import { HeroCopy } from '../HeroCopy'
 import { ChatStage, HeroShell, toolLogo, useClock, type ChatItem } from './HubHero'

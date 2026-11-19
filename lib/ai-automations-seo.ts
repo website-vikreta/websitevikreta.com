@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
-import { BASE, BRANCHES, HUB } from '@/content/ai-automations'
-import type { Branch, Faq, Product } from '@/content/ai-automations/types'
+import { BASE, BRANCHES, HUB, getBranch, pillarOf } from '@/content/ai'
+import type { Pillar } from '@/content/ai'
+import type { Branch, Faq, Product } from '@/content/ai/types'
 import { stripLinks } from '@/components/wv/automation/RichText'
 
 // Western markets first (primary ICP), then the rest of the world we already serve.
@@ -25,6 +26,7 @@ function meta(title: string, description: string, path: string): Metadata {
 
 export const hubMetadata = () => meta(HUB.title, HUB.description, BASE)
 export const branchMetadata = (b: Branch) => meta(b.title, b.description, `${BASE}/${b.slug}`)
+export const pillarMetadata = (p: Pillar) => meta(p.title, p.description, `${BASE}/${p.slug}`)
 export const productMetadata = (b: Branch, p: Product) =>
   meta(p.page?.title ?? p.name, p.page?.description ?? p.oneLiner, `${BASE}/${b.slug}/${p.slug}`)
 
@@ -40,6 +42,11 @@ const crumbNode = (url: string, crumbs: [string, string][]) => ({
   '@id': `${url}#breadcrumb`,
   itemListElement: crumbs.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })),
 })
+
+const pillarCrumb = (branch: string): [string, string][] => {
+  const pl = pillarOf(branch)
+  return pl ? [[pl.name, `${SITE_URL}${BASE}/${pl.slug}`]] : []
+}
 
 const catalog = (name: string, products: Product[], branch?: string) => ({
   '@type': 'OfferCatalog',
@@ -103,7 +110,7 @@ export function hubSchema(quotes: Quote[] = []) {
       itemListElement: BRANCHES.map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.name, description: b.usp, url: `${url}/${b.slug}` })),
     },
     ...faqNode(url, HUB.faqs),
-    crumbNode(url, [['Home', SITE_URL], ['AI Automations', url]]),
+    crumbNode(url, [['Home', SITE_URL], ['Applied AI', url]]),
   )
 }
 
@@ -119,7 +126,7 @@ export function branchSchema(b: Branch) {
       itemListElement: b.products.filter((p) => p.page).map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: `${url}/${p.slug}` })),
     },
     ...faqNode(url, b.faqs),
-    crumbNode(url, [['Home', SITE_URL], ['AI Automations', hub], [b.name, url]]),
+    crumbNode(url, [['Home', SITE_URL], ['Applied AI', hub], ...pillarCrumb(b.slug), [b.name, url]]),
   )
 }
 
@@ -130,6 +137,35 @@ export function productSchema(b: Branch, p: Product) {
   return wrap(
     serviceNode(url, p.name, p.page?.description ?? p.oneLiner, [p]),
     ...faqNode(url, p.page?.faqs ?? []),
-    crumbNode(url, [['Home', SITE_URL], ['AI Automations', hub], [b.name, bUrl], [p.name, url]]),
+    crumbNode(url, [['Home', SITE_URL], ['Applied AI', hub], ...pillarCrumb(b.slug), [b.name, bUrl], [p.name, url]]),
+  )
+}
+
+export function pillarSchema(pl: Pillar) {
+  const hub = `${SITE_URL}${BASE}`
+  const url = `${hub}/${pl.slug}`
+  const items = [
+    ...pl.branches.flatMap((s) => { const b = getBranch(s); return b ? [{ name: b.name, description: b.usp, url: `${hub}/${b.slug}` }] : [] }),
+    ...(pl.links ?? []).map((l) => ({ name: l.label, description: l.blurb, url: `${SITE_URL}${l.href}` })),
+  ]
+  return wrap(
+    {
+      '@type': 'CollectionPage',
+      '@id': `${url}#webpage`,
+      url,
+      name: pl.title,
+      description: pl.description,
+      inLanguage: 'en-US',
+      publisher: ORGANIZATION_REF,
+      mainEntity: { '@id': `${url}#services` },
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${url}#services`,
+      name: pl.name,
+      itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, ...it })),
+    },
+    ...faqNode(url, pl.faqs),
+    crumbNode(url, [['Home', SITE_URL], ['Applied AI', hub], [pl.name, url]]),
   )
 }
