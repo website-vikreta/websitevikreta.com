@@ -2,7 +2,7 @@ import { Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export const SERVICE_ROUTES = [
-  { path: '/services/ai-automations', label: 'AI Automations' },
+  { path: '/services/ai', label: 'Applied AI' },
   { path: '/services/web-mobile-app-development', label: 'Web & Mobile App Development' },
   { path: '/services/web-development', label: 'Web Development' },
   { path: '/services/uiux-design', label: 'UI/UX Design' },

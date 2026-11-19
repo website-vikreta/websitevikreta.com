@@ -32,7 +32,7 @@ const STATS = [
 ];
 
 const SERVICE_HREFS = [
-  '/services/ai-automations',
+  '/services/ai',
   '/services/web-development',
   '/services/web-mobile-app-development',
   '/services/uiux-design',

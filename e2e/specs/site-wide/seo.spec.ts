@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test';
 
 test.describe('SEO Metadata, OpenGraph & JSON-LD Structured Data', () => {
-  const auditPages = ['/', '/services/ai-automations', '/about', '/contact', '/careers'];
+  const auditPages = ['/', '/services/ai', '/about', '/contact', '/careers'];
 
   for (const pagePath of auditPages) {
     test(`Page "${pagePath}" has valid title, meta description, and canonical link`, async ({
