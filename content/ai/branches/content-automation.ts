@@ -26,7 +26,7 @@ export const branch: Branch = {
   heroSub: 'Blog, LinkedIn, Instagram, X and email, drafted and scheduled. You approve each one.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'Agencies', photo: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=70&auto=format&fit=crop', alt: 'A presenter at a table of people with laptops', line: 'An agency drops one client call recording. Your automation returns 20 posts through [content repurposing](/services/ai-automations/content-automation/content-repurposing).' },
+    { industry: 'Agencies', photo: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=70&auto=format&fit=crop', alt: 'A presenter at a table of people with laptops', line: 'An agency drops one client call recording. Your automation returns 20 posts through [content repurposing](/services/ai/content-automation/content-repurposing).' },
     // TODO(owner): real photo
     { industry: 'B2B and SaaS', photo: 'https://images.unsplash.com/photo-1690378820474-b468b8ee64d3?w=1200&q=70&auto=format&fit=crop', alt: 'A group of people around a table with laptops at a startup', line: 'A SaaS founder posts the changelog to four channels by lunch.' },
     // TODO(owner): real photo
@@ -46,7 +46,7 @@ export const branch: Branch = {
   lead: 'Your automation researches, drafts and schedules your blog and social posts. You approve. We run our own content this way.',
   answerQ: 'What is content automation?',
   answer:
-    'Content automation uses AI to do the slow parts of content: research, first drafts, resizing for each channel, and scheduling. A person still sets the idea, checks the facts, and approves the voice. You publish more, with less time spent on each piece. Start with [SEO blog content](/services/ai-automations/content-automation/seo-blog-content) or [social media content](/services/ai-automations/content-automation/social-media-content).',
+    'Content automation uses AI to do the slow parts of content: research, first drafts, resizing for each channel, and scheduling. A person still sets the idea, checks the facts, and approves the voice. You publish more, with less time spent on each piece. Start with [SEO blog content](/services/ai/content-automation/seo-blog-content) or [social media content](/services/ai/content-automation/social-media-content).',
   demo: fanout,
   stats: [
     {

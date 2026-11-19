@@ -28,7 +28,7 @@ export const branch: Branch = {
   heroSub: 'Send a product link. Get disclosed AI-presenter ads to test on Meta and TikTok.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'D2C skincare', photo: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=1200&q=70&auto=format&fit=crop', alt: 'Skincare bottles and a jade roller on a striped towel', line: 'Monday 9am: 24 ad variants ready for a skincare launch, from one [AI UGC video ads](/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads) brief.' }, // TODO(owner): confirm turnaround,
+    { industry: 'D2C skincare', photo: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=1200&q=70&auto=format&fit=crop', alt: 'Skincare bottles and a jade roller on a striped towel', line: 'Monday 9am: 24 ad variants ready for a skincare launch, from one [AI UGC video ads](/services/ai/ai-ugc-ads/ai-ugc-video-ads) brief.' }, // TODO(owner): confirm turnaround,
     // TODO(owner): real photo
     { industry: 'Gyms', photo: 'https://images.unsplash.com/photo-1722925541142-5db2668ca492?w=1200&q=70&auto=format&fit=crop', alt: 'A woman lifting a barbell in a gym', line: 'A gym owner tests six hooks for the new-year offer by Friday.' },
     // TODO(owner): real photo
@@ -48,7 +48,7 @@ export const branch: Branch = {
   lead: 'An AI presenter presents your product on camera. You get a batch of ad variants to test, labeled as AI, without waiting on creators.',
   answerQ: 'What are AI UGC ads?',
   answer:
-    'AI UGC ads are short, creator-style videos made with an AI presenter instead of a hired creator. You send a product and a brief. We write the hooks, generate the video, and cut variants for Meta and TikTok. The presenter is disclosed as AI. Nobody is posed as a real customer. See [AI UGC video ads](/services/ai-automations/ai-ugc-ads/ai-ugc-video-ads) for what is included.',
+    'AI UGC ads are short, creator-style videos made with an AI presenter instead of a hired creator. You send a product and a brief. We write the hooks, generate the video, and cut variants for Meta and TikTok. The presenter is disclosed as AI. Nobody is posed as a real customer. See [AI UGC video ads](/services/ai/ai-ugc-ads/ai-ugc-video-ads) for what is included.',
   demo: ugcDemo,
   stats: [
     {
@@ -94,7 +94,7 @@ export const branch: Branch = {
     },
     {
       q: 'Can I use my own face or brand character?',
-      a: 'Yes. Use our presenter, or your own presenter built with written consent through our [AI spokesperson videos](/services/ai-automations/ai-ugc-ads/ai-spokesperson-videos). We never clone anyone without a signed release.',
+      a: 'Yes. Use our presenter, or your own presenter built with written consent through our [AI spokesperson videos](/services/ai/ai-ugc-ads/ai-spokesperson-videos). We never clone anyone without a signed release.',
     },
     {
       q: 'What do you need from me to start?',
@@ -186,7 +186,7 @@ export const branch: Branch = {
       keyword: 'AI spokesperson video for business',
       oneLiner: 'One AI face for your explainers, launches, and updates.',
       answer:
-        'An AI spokesperson is a digital presenter that reads your script on camera. Use it for product demos, onboarding clips, launch news, and ads. You can use our presenter or your own AI presenter. It is always disclosed as AI. Update a line, and the video is remade without a reshoot. Pair it with [ad hooks and scripts](/services/ai-automations/ai-ugc-ads/ad-hooks-and-scripts) for ads.',
+        'An AI spokesperson is a digital presenter that reads your script on camera. Use it for product demos, onboarding clips, launch news, and ads. You can use our presenter or your own AI presenter. It is always disclosed as AI. Update a line, and the video is remade without a reshoot. Pair it with [ad hooks and scripts](/services/ai/ai-ugc-ads/ad-hooks-and-scripts) for ads.',
       persona: 'ira',
       channels: ['Web', 'Email', 'Social', 'Sales decks'],
       kpi: { value: '[N]', label: 'videos per month, no reshoots', placeholder: true }, // TODO(owner)

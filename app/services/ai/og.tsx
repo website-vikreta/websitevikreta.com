@@ -5,7 +5,7 @@ import { ImageResponse } from 'next/og'
 export const ogSize = { width: 1200, height: 630 }
 
 const png = async (id: string) =>
-  `data:image/png;base64,${(await readFile(join(process.cwd(), 'app', 'services', 'ai-automations', '_og', `${id}-front.png`))).toString('base64')}`
+  `data:image/png;base64,${(await readFile(join(process.cwd(), 'app', 'services', 'ai', '_og', `${id}-front.png`))).toString('base64')}`
 
 // personas: one id for a branch/product card, all three for the hub.
 export async function ogImage(kicker: string, title: string, personas: string[] = []) {

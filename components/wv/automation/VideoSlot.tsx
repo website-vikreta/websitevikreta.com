@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import type { Video } from '@/content/ai-automations/types'
+import type { Video } from '@/content/ai/types'
 import { showPlaceholders } from '@/lib/ai-automations-seo'
 import { JsonLd } from './Sections'
 import { VideoPlayer } from './VideoPlayer'

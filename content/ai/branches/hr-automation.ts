@@ -1,4 +1,4 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 
 const SHRM = { name: 'SHRM Benchmarking', year: 2022, url: 'https://www.shrm.org/content/dam/en/shrm/research/2025-recruiting-benchmarking-report.pdf' }
 
@@ -15,11 +15,11 @@ export const branch: Branch = {
   heroSub: 'Your template is filled, a person approves, and it goes out for e-sign.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'Recruiting firm', photo: 'https://images.unsplash.com/photo-1686771416537-bf4a4f263d88?w=1200&q=70&auto=format&fit=crop', alt: 'A man and a woman sitting across a table at a job interview', line: 'Friday 4 pm: three offers out before the weekend with [offer letter automation](/services/ai-automations/hr-automation/offer-letter-automation). One line each.' },
+    { industry: 'Recruiting firm', photo: 'https://images.unsplash.com/photo-1686771416537-bf4a4f263d88?w=1200&q=70&auto=format&fit=crop', alt: 'A man and a woman sitting across a table at a job interview', line: 'Friday 4 pm: three offers out before the weekend with [offer letter automation](/services/ai/hr-automation/offer-letter-automation). One line each.' },
     // TODO(owner): real photo
     { industry: 'Agency', photo: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=70&auto=format&fit=crop', alt: 'Man signing a document at a desk', line: 'Contractor NDA signed and filed in Drive. Nobody opened a template.' },
     // TODO(owner): real photo
-    { industry: 'Growing startup', photo: 'https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=1200&q=70&auto=format&fit=crop', alt: 'Small team in a meeting room', line: 'Monday start: [onboarding automation](/services/ai-automations/hr-automation/employee-onboarding-automation) had accounts, welcome email and week-one plan ready Friday.' },
+    { industry: 'Growing startup', photo: 'https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=1200&q=70&auto=format&fit=crop', alt: 'Small team in a meeting room', line: 'Monday start: [onboarding automation](/services/ai/hr-automation/employee-onboarding-automation) had accounts, welcome email and week-one plan ready Friday.' },
   ],
   shifts: [
     { before: '45 min per offer letter', after: 'One line in chat' },
@@ -35,7 +35,7 @@ export const branch: Branch = {
   lead: 'Offer letters, NDAs, onboarding and completion letters, filled and sent in minutes. A person on your team approves every offer.',
   answerQ: 'What is HR automation?',
   answer:
-    'HR automation hands the repeat paperwork of hiring to software. Offer letters, contracts, NDAs, onboarding steps and completion certificates fill themselves from your data and go out on time. People still make the decisions. We automate the typing, sending and chasing. Start with [offer letter automation](/services/ai-automations/hr-automation/offer-letter-automation) or [employee onboarding automation](/services/ai-automations/hr-automation/employee-onboarding-automation).',
+    'HR automation hands the repeat paperwork of hiring to software. Offer letters, contracts, NDAs, onboarding steps and completion certificates fill themselves from your data and go out on time. People still make the decisions. We automate the typing, sending and chasing. Start with [offer letter automation](/services/ai/hr-automation/offer-letter-automation) or [employee onboarding automation](/services/ai/hr-automation/employee-onboarding-automation).',
   demo: {
     kind: 'doc',
     title: 'Offer letter, filled in seconds',
@@ -85,7 +85,7 @@ export const branch: Branch = {
   faqs: [
     {
       q: 'Can you automate offer letters?',
-      a: 'Yes. The automation fills your approved template from candidate details, sends it to you to approve, then sends it for e-signature and files the signed copy. See [offer letter automation](/services/ai-automations/hr-automation/offer-letter-automation). A person approves every offer before it leaves.',
+      a: 'Yes. The automation fills your approved template from candidate details, sends it to you to approve, then sends it for e-signature and files the signed copy. See [offer letter automation](/services/ai/hr-automation/offer-letter-automation). A person approves every offer before it leaves.',
     },
     {
       q: 'Are e-signed offer letters legally valid?',
@@ -93,11 +93,11 @@ export const branch: Branch = {
     },
     {
       q: 'Does NYC Local Law 144 apply to my small business?',
-      a: 'It applies to automated tools that screen or rank candidates for NYC jobs. It needs an annual bias audit and notice to candidates. It does not apply to offer-letter generation. The employer, not the vendor, is responsible. [Resume screening](/services/ai-automations/hr-automation/resume-screening) is the part it touches.',
+      a: 'It applies to automated tools that screen or rank candidates for NYC jobs. It needs an annual bias audit and notice to candidates. It does not apply to offer-letter generation. The employer, not the vendor, is responsible. [Resume screening](/services/ai/hr-automation/resume-screening) is the part it touches.',
     },
     {
       q: 'Which tools does HR automation work with?',
-      a: 'Google Workspace, Airtable, Notion, Slack, Make and n8n, plus the e-signature tool you already use. We do not ask you to switch. For wider setups, see [workflow automation](/services/ai-automations/workflow-automation).',
+      a: 'Google Workspace, Airtable, Notion, Slack, Make and n8n, plus the e-signature tool you already use. We do not ask you to switch. For wider setups, see [workflow automation](/services/ai/workflow-automation).',
     },
     {
       q: 'How long does HR automation take to set up?',

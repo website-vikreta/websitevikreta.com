@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import './branch.css'
 import Image from 'next/image'
-import type { Branch, Persona, Product, Scenario, Shift } from '@/content/ai-automations/types'
-import { TOOL_LOGOS, toolLogos } from '@/content/ai-automations/logos'
+import type { Branch, Persona, Product, Scenario, Shift } from '@/content/ai/types'
+import { TOOL_LOGOS, toolLogos } from '@/content/ai/logos'
 import { PrefillLink } from './LeadForm'
 import { RichText } from './RichText'
 import { Arrow, KineticTitle, Reveal, VelocityMarquee } from '../ui'
@@ -75,7 +75,7 @@ export function ProductList({ branch, persona, title }: { branch: Branch; person
             </>
           )
           return p.page ? (
-            <Link key={p.slug} href={`/services/ai-automations/${branch.slug}/${p.slug}`} className="wv-ax-row">
+            <Link key={p.slug} href={`/services/ai/${branch.slug}/${p.slug}`} className="wv-ax-row">
               {inner}
             </Link>
           ) : (

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { AutomationShell, BranchHero, CaseStudy, Crumbs, CtaBlock, Faq, HowItRuns, IncludeExclude, JsonLd, ProofBar, Reading, RelatedProducts, Shifts } from '@/components/wv/automation'
-import { BASE, BRANCHES, getBranch, getProduct, productParams } from '@/content/ai-automations'
+import { BASE, BRANCHES, pillarOf, getBranch, getProduct, productParams } from '@/content/ai'
 import { productMetadata, productSchema } from '@/lib/ai-automations-seo'
 import '../../pages.css'
 
@@ -22,6 +22,7 @@ export default async function Page({ params }: P) {
   const p = getProduct(branch, product)
   if (!b || !p?.page) notFound()
   const pg = p.page
+  const pl = pillarOf(b.slug)
   const wa = `Hi, I'm interested in ${p.name}`
 
   return (
@@ -40,7 +41,8 @@ export default async function Page({ params }: P) {
         <Crumbs
           items={[
             { label: 'Home', href: '/' },
-            { label: 'AI Automations', href: BASE },
+            { label: 'Applied AI', href: BASE },
+            ...(pl ? [{ label: pl.name, href: `${BASE}/${pl.slug}` }] : []),
             { label: b.name, href: `${BASE}/${b.slug}` },
             { label: p.name, href: `${BASE}/${b.slug}/${p.slug}` },
           ]}

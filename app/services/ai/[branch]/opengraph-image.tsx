@@ -1,4 +1,4 @@
-import { branchParams, getBranch } from '@/content/ai-automations'
+import { branchParams, getBranch } from '@/content/ai'
 import { ogImage, ogSize } from '../og'
 
 export const size = ogSize
@@ -8,5 +8,5 @@ export const generateStaticParams = branchParams
 
 export default async function Image({ params }: { params: Promise<{ branch: string }> }) {
   const b = getBranch((await params).branch)
-  return ogImage('AI Automations', b?.name ?? 'AI Automations', b ? [b.persona] : [])
+  return ogImage('Applied AI', b?.name ?? 'Applied AI', b ? [b.persona] : [])
 }

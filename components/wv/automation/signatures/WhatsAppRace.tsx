@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'motion/react'
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 import { KineticTitle } from '../../ui'
 import { Logo, useClock } from './kit-b'
 

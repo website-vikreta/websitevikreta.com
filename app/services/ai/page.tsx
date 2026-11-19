@@ -4,7 +4,7 @@ import { AutomationShell, CtaBlock, Faq, HubHero, JsonLd, Reading, stripLinks } 
 import { HubDesk } from '@/components/wv/automation/signatures'
 import { CLIENT_LOGOS } from '@/components/wv/data'
 import { Arrow, VelocityMarquee } from '@/components/wv/ui'
-import { BASE, BLOG, BRANCHES, HUB, toolLogos } from '@/content/ai-automations'
+import { BASE, BLOG, BRANCHES, HUB, PILLARS, toolLogos } from '@/content/ai'
 import { hubMetadata, hubSchema } from '@/lib/ai-automations-seo'
 import { CASE_STUDIES, WORK_TESTIMONIALS } from '@/lib/work-data'
 import { Explorer, type ExplorerRow } from './Explorer'
@@ -12,6 +12,7 @@ import { Steps } from './Steps'
 import { CostCalc } from './CostCalc'
 import { WeekSlider } from './WeekSlider'
 import './hub.css'
+import './pillar.css'
 
 export const metadata = hubMetadata()
 
@@ -75,6 +76,11 @@ export default function Page() {
           <div className="wv-wrap">
             <Head id="services-h" title="Where your week goes" />
             <Explorer rows={ROWS} />
+            <ul className="axpl-ul" aria-label="Browse by area">
+              {PILLARS.map((p) => (
+                <li key={p.slug}><Link href={`${BASE}/${p.slug}`}>{p.name} <Arrow size={14} /></Link></li>
+              ))}
+            </ul>
           </div>
         </section>
 

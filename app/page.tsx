@@ -46,9 +46,9 @@ const jsonLd = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'AI Automations',
+          name: 'Applied AI',
           description: 'Custom AI automation systems that eliminate repetitive work and connect business tools into intelligent workflows.',
-          url: `${SITE_URL}/services/ai-automations`,
+          url: `${SITE_URL}/services/ai`,
         },
       },
       {

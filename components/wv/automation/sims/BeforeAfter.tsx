@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useInView, useReducedMotion } from 'motion/react'
 import { useRef } from 'react'
 import Image from 'next/image'
-import type { Demo } from '@/content/ai-automations/types'
+import type { Demo } from '@/content/ai/types'
 
 type D = Extract<Demo, { kind: 'beforeAfter' }>
 

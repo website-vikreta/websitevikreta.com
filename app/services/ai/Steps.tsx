@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from 'motion/react'
-import type { Step } from '@/content/ai-automations/types'
+import type { Step } from '@/content/ai/types'
 
 /** Scroll-linked track: the yellow line fills as the section scrolls and each step lights up when the line reaches it. Reduced motion: all lit, line full. */
 export function Steps({ steps }: { steps: Step[] }) {

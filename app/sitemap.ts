@@ -6,16 +6,19 @@ import { CASE_STUDIES } from '@/lib/work-data'
 import { postHref } from '@/lib/blog-url'
 import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 
-import { BRANCHES, BASE as AI_BASE } from '@/content/ai-automations'
+import { BRANCHES, PILLARS, BASE as AI_BASE } from '@/content/ai'
 
 const BASE = SITE_URL
 
-const aiRoutes: MetadataRoute.Sitemap = BRANCHES.flatMap((b) => [
+const aiRoutes: MetadataRoute.Sitemap = [
+  ...PILLARS.map((p) => ({ url: `${BASE}${AI_BASE}/${p.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.85 })),
+  ...BRANCHES.flatMap((b) => [
   { url: `${BASE}${AI_BASE}/${b.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
   ...b.products.filter((p) => p.page).map((p) => ({
     url: `${BASE}${AI_BASE}/${b.slug}/${p.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7,
   })),
-])
+]),
+]
 
 const staticRoutes: MetadataRoute.Sitemap = [
   // Home
@@ -28,7 +31,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
 
   // Services
   {
-    url: `${BASE}/services/ai-automations`,
+    url: `${BASE}/services/ai`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.9,

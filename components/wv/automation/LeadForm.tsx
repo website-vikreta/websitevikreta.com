@@ -98,7 +98,7 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
           name,
           reply_to: email,
           email,
-          service: `AI Automations: ${interest}`,
+          service: `Applied AI: ${interest}`,
           mobile: phone || 'Not provided',
           budget: 'Not specified',
           message: `${name} wants to automate: ${what}\nPhone: ${phone ? `${phone} (${cc?.name})` : 'Not provided'}\nService/product: ${interest}\nSource: ${source}`,

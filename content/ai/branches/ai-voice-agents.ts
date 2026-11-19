@@ -1,4 +1,4 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 
 const callRail = { name: 'CallRail consumer survey', year: 2025, url: 'https://www.callrail.com/blog/missed-calls-cost-businesses-more-than-ever' }
 const hbr = { name: 'Harvard Business Review, "The Short Life of Online Sales Leads"', year: 2011, url: 'https://hbr.org/2011/03/the-short-life-of-online-sales-leads' }
@@ -16,11 +16,11 @@ export const branch: Branch = {
   heroSub: 'Day, night, weekends. A summary lands in your CRM after each call.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'Dental clinic', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'Dental office with a chair and equipment', line: '7:40 pm call to a dental clinic. The [AI receptionist](/services/ai-automations/ai-voice-agents/ai-receptionist) booked Thursday 3:30.' },
+    { industry: 'Dental clinic', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'Dental office with a chair and equipment', line: '7:40 pm call to a dental clinic. The [AI receptionist](/services/ai/ai-voice-agents/ai-receptionist) booked Thursday 3:30.' },
     // TODO(owner): real photo
     { industry: 'Restaurant', photo: 'https://images.unsplash.com/photo-1551529563-fce9529e67ac?w=1200&q=70&auto=format&fit=crop', alt: 'Man in a cap standing across from a restaurant menu board', line: 'Saturday rush, phone ringing. The agent took six table bookings. Staff never stopped.' },
     // TODO(owner): real photo
-    { industry: 'Real estate', photo: 'https://images.unsplash.com/photo-1626178793926-22b28830aa30?w=1200&q=70&auto=format&fit=crop', alt: 'Man holding a model house at a desk with a calculator', line: 'Sunday 9 pm: buyer called about the listing. The agent booked Monday\'s showing through [appointment booking calls](/services/ai-automations/ai-voice-agents/appointment-booking-calls).' },
+    { industry: 'Real estate', photo: 'https://images.unsplash.com/photo-1626178793926-22b28830aa30?w=1200&q=70&auto=format&fit=crop', alt: 'Man holding a model house at a desk with a calculator', line: 'Sunday 9 pm: buyer called about the listing. The agent booked Monday\'s showing through [appointment booking calls](/services/ai/ai-voice-agents/appointment-booking-calls).' },
   ],
   shifts: [
     { before: 'Missed calls go to voicemail', after: 'Calls answered on ring one' },
@@ -36,7 +36,7 @@ export const branch: Branch = {
   lead: 'Every call gets answered, asks the right questions and books the job into your calendar. Day, night and weekends.',
   answerQ: 'What is an AI voice agent?',
   answer:
-    'An AI voice agent is software that talks on the phone like a person. It picks up when a customer calls, answers common questions, collects details and books an appointment in your calendar. It can also call new leads back within minutes. It tells callers it is AI, and hands off to you when needed. Start with an [AI receptionist](/services/ai-automations/ai-voice-agents/ai-receptionist) or [outbound lead qualification](/services/ai-automations/ai-voice-agents/outbound-lead-qualification).',
+    'An AI voice agent is software that talks on the phone like a person. It picks up when a customer calls, answers common questions, collects details and books an appointment in your calendar. It can also call new leads back within minutes. It tells callers it is AI, and hands off to you when needed. Start with an [AI receptionist](/services/ai/ai-voice-agents/ai-receptionist) or [outbound lead qualification](/services/ai/ai-voice-agents/outbound-lead-qualification).',
   demo: {
     kind: 'call',
     title: 'A missed call that became a booking',
@@ -85,11 +85,11 @@ export const branch: Branch = {
     },
     {
       q: 'Can an AI voice agent book into my calendar?',
-      a: 'Yes. It checks your live calendar, offers open slots, confirms the time and writes the booking back to Google Calendar, Calendly or your CRM. The caller gets a text confirmation. See [appointment booking calls](/services/ai-automations/ai-voice-agents/appointment-booking-calls).',
+      a: 'Yes. It checks your live calendar, offers open slots, confirms the time and writes the booking back to Google Calendar, Calendly or your CRM. The caller gets a text confirmation. See [appointment booking calls](/services/ai/ai-voice-agents/appointment-booking-calls).',
     },
     {
       q: 'What happens when it cannot answer?',
-      a: 'It says so, takes a message and flags the call. You choose the rule: warm transfer in business hours, a booked callback, or a text to you. Every call has a transcript. [After-hours answering](/services/ai-automations/ai-voice-agents/after-hours-answering) follows the same rules.',
+      a: 'It says so, takes a message and flags the call. You choose the rule: warm transfer in business hours, a booked callback, or a text to you. Every call has a transcript. [After-hours answering](/services/ai/ai-voice-agents/after-hours-answering) follows the same rules.',
     },
     {
       q: 'Is it HIPAA compliant?',
@@ -101,7 +101,7 @@ export const branch: Branch = {
     },
     {
       q: 'Can it make outbound calls?',
-      a: 'Yes, to people who gave consent. Your automation calls new leads within minutes, asks your qualifying questions and books a call. No consent means no call. See [outbound lead qualification](/services/ai-automations/ai-voice-agents/outbound-lead-qualification).',
+      a: 'Yes, to people who gave consent. Your automation calls new leads within minutes, asks your qualifying questions and books a call. No consent means no call. See [outbound lead qualification](/services/ai/ai-voice-agents/outbound-lead-qualification).',
     },
     {
       q: 'What does an AI voice agent cost?',

@@ -5,10 +5,11 @@ import { wvFonts } from '@/components/wv/fonts'
 import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 import { SITE_URL } from '@/config/site'
 import { CASE_STUDIES } from '@/lib/work-data'
-import { BRANCHES, BASE as AI } from '@/content/ai-automations'
+import { BRANCHES, BASE as AI } from '@/content/ai'
+import { SERVICES } from '@/components/wv/data'
 
 const title = 'Sitemap | Website Vikreta'
-const description = 'Every page on Website Vikreta in one place: services, AI automations, work, company, blog and legal.'
+const description = 'Every page on Website Vikreta in one place: services, applied AI, work, company, blog and legal.'
 
 export const metadata: Metadata = {
   title,
@@ -30,12 +31,21 @@ const TREE: Node = {
       link: false,
       children: [
         {
-          t: 'AI Automations',
+          t: 'Applied AI',
           href: AI,
-          children: BRANCHES.map((b) => ({
-            t: b.navLabel,
-            href: `${AI}/${b.slug}`,
-            children: b.products.filter((p) => p.page).map((p) => ({ t: p.name, href: `${AI}/${b.slug}/${p.slug}` })),
+          // Pillars come from the nav (components/wv/data.ts) so both stay in sync.
+          children: SERVICES.find((s) => s.id === 'ai')!.groups.map((g) => ({
+            t: g.title,
+            href: g.href,
+            children: g.leaves.filter((l) => l.href !== '#').map((l) => {
+              const b = BRANCHES.find((x) => l.href === `${AI}/${x.slug}`)
+              if (!b) return { t: l.t, href: l.href }
+              return {
+                t: b.navLabel,
+                href: l.href,
+                children: b.products.filter((p) => p.page).map((p) => ({ t: p.name, href: `${AI}/${b.slug}/${p.slug}` })),
+              }
+            }),
           })),
         },
         { t: 'Web Development', href: '/services/web-development' },
@@ -101,7 +111,7 @@ function Branch({ n }: { n: Node }) {
         <summary>{row}</summary>
         <ul>
           {n.children.map((c) => (
-            <Branch key={c.href} n={c} />
+            <Branch key={c.t + c.href} n={c} />
           ))}
         </ul>
       </details>

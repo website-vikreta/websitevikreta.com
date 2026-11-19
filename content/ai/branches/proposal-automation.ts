@@ -1,4 +1,4 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 
 export const branch: Branch = {
   slug: 'proposal-automation',
@@ -13,7 +13,7 @@ export const branch: Branch = {
   heroSub: 'Call notes in, client-ready proposal out. Nothing sends until you approve price and terms.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'Agencies', photo: 'https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?w=1200&q=70&auto=format&fit=crop', alt: 'Two people shaking hands in front of a laptop', line: 'An agency lead hangs up at 3pm. The draft is ready by 3:20, then [proposal follow-up](/services/ai-automations/proposal-automation/proposal-follow-up) starts.' },
+    { industry: 'Agencies', photo: 'https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?w=1200&q=70&auto=format&fit=crop', alt: 'Two people shaking hands in front of a laptop', line: 'An agency lead hangs up at 3pm. The draft is ready by 3:20, then [proposal follow-up](/services/ai/proposal-automation/proposal-follow-up) starts.' },
     // TODO(owner): real photo
     { industry: 'Recruiting', photo: 'https://images.unsplash.com/photo-1698047682091-782b1e5c6536?w=1200&q=70&auto=format&fit=crop', alt: 'Two women shaking hands across a table after an interview', line: 'A recruiting agency answers a new client brief the same afternoon.' },
     // TODO(owner): real photo
@@ -33,7 +33,7 @@ export const branch: Branch = {
   lead: 'We turn your discovery notes into a finished proposal, scope and follow-up. You approve price and terms before anything goes out.',
   answerQ: 'What is proposal automation?',
   answer:
-    'Proposal automation is software that drafts your proposals, scopes and RFP answers from notes, past wins and your own templates. You review and approve. It sends nothing on its own. We build it for you, inside your tools, so a first draft takes minutes instead of days. See [proposal generation](/services/ai-automations/proposal-automation/proposal-generation) and [RFP response automation](/services/ai-automations/proposal-automation/rfp-response-automation).',
+    'Proposal automation is software that drafts your proposals, scopes and RFP answers from notes, past wins and your own templates. You review and approve. It sends nothing on its own. We build it for you, inside your tools, so a first draft takes minutes instead of days. See [proposal generation](/services/ai/proposal-automation/proposal-generation) and [RFP response automation](/services/ai/proposal-automation/rfp-response-automation).',
   demo: {
     kind: 'doc',
     title: 'Notes in, proposal out',

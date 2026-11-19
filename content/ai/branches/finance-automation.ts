@@ -1,4 +1,4 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 
 export const branch: Branch = {
   slug: 'finance-automation',
@@ -13,7 +13,7 @@ export const branch: Branch = {
   heroSub: 'Invoices out on time, polite reminders on schedule. You approve payments and write-offs.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'Clinics', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'A modern dental office with a chair and equipment', line: 'A clinic\'s overdue invoices get a polite nudge on day 7, then day 14, through [payment reminder automation](/services/ai-automations/finance-automation/payment-reminder-automation).' },
+    { industry: 'Clinics', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'A modern dental office with a chair and equipment', line: 'A clinic\'s overdue invoices get a polite nudge on day 7, then day 14, through [payment reminder automation](/services/ai/finance-automation/payment-reminder-automation).' },
     // TODO(owner): real photo
     { industry: 'Agencies', photo: 'https://images.unsplash.com/photo-1629184510982-cf91280c1d53?w=1200&q=70&auto=format&fit=crop', alt: 'A person using a laptop at a wooden table', line: 'An agency sends 30 client invoices on the 1st without opening QuickBooks.' },
     // TODO(owner): real photo
@@ -33,7 +33,7 @@ export const branch: Branch = {
   lead: 'Your automation sends the invoice, nudges late payers and pulls the numbers. You approve every payment and write-off.',
   answerQ: 'What is finance automation?',
   answer:
-    'Finance automation uses software to do routine money tasks: send invoices, remind late payers, read receipts and build reports. It runs inside your accounting tool, like QuickBooks or Xero. A person approves any payment or write-off. We are not accountants, and we give no tax advice. See [invoice automation](/services/ai-automations/finance-automation/invoice-automation) and [payment reminder automation](/services/ai-automations/finance-automation/payment-reminder-automation).',
+    'Finance automation uses software to do routine money tasks: send invoices, remind late payers, read receipts and build reports. It runs inside your accounting tool, like QuickBooks or Xero. A person approves any payment or write-off. We are not accountants, and we give no tax advice. See [invoice automation](/services/ai/finance-automation/invoice-automation) and [payment reminder automation](/services/ai/finance-automation/payment-reminder-automation).',
   demo: {
     kind: 'timeline',
     title: 'One invoice, start to paid',

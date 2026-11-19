@@ -1,4 +1,4 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 
 const hbr = { name: 'Harvard Business Review, "The Short Life of Online Sales Leads"', year: 2011, url: 'https://hbr.org/2011/03/the-short-life-of-online-sales-leads' }
 
@@ -15,11 +15,11 @@ export const branch: Branch = {
   heroSub: 'Web form, WhatsApp, SMS and chat. Your team steps in when it counts.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'D2C brand', photo: 'https://images.unsplash.com/photo-1770013413878-2530e2c3d82b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman checking a package with her phone near a laptop and boxes', line: 'Where is my order? Asked at 11 pm. [Order updates](/services/ai-automations/whatsapp-automation/order-updates) answered in six seconds.' },
+    { industry: 'D2C brand', photo: 'https://images.unsplash.com/photo-1770013413878-2530e2c3d82b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman checking a package with her phone near a laptop and boxes', line: 'Where is my order? Asked at 11 pm. [Order updates](/services/ai/whatsapp-automation/order-updates) answered in six seconds.' },
     // TODO(owner): real photo
     { industry: 'Salon or clinic', photo: 'https://images.unsplash.com/photo-1653762379954-8943c787e78b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman at a table looking at her phone', line: 'Reminder went out the day before. Two clients rescheduled by text, no calls.' },
     // TODO(owner): real photo
-    { industry: 'Edtech', photo: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1200&q=70&auto=format&fit=crop', alt: 'Person studying online on a laptop', line: 'Course lead filled the form at 9:02. [WhatsApp lead follow-up](/services/ai-automations/whatsapp-automation/whatsapp-lead-follow-up) replied at 9:02.' },
+    { industry: 'Edtech', photo: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1200&q=70&auto=format&fit=crop', alt: 'Person studying online on a laptop', line: 'Course lead filled the form at 9:02. [WhatsApp lead follow-up](/services/ai/whatsapp-automation/whatsapp-lead-follow-up) replied at 9:02.' },
   ],
   shifts: [
     { before: 'Leads wait hours for a reply', after: 'Reply in six seconds' },
@@ -35,7 +35,7 @@ export const branch: Branch = {
   lead: 'Your automation answers new leads on WhatsApp, SMS and your website chat, qualifies them and books the call. Your team steps in when it counts.',
   answerQ: 'What is WhatsApp and chat automation?',
   answer:
-    'WhatsApp and chat automation uses AI to reply to customers in the apps they already use: WhatsApp, SMS and website chat. It answers questions, qualifies new leads, books appointments and sends reminders. It works with opt-in contacts and approved message templates, and hands off to your team when a person is needed. Start with [WhatsApp lead follow-up](/services/ai-automations/whatsapp-automation/whatsapp-lead-follow-up) or [appointment reminders](/services/ai-automations/whatsapp-automation/appointment-reminders).',
+    'WhatsApp and chat automation uses AI to reply to customers in the apps they already use: WhatsApp, SMS and website chat. It answers questions, qualifies new leads, books appointments and sends reminders. It works with opt-in contacts and approved message templates, and hands off to your team when a person is needed. Start with [WhatsApp lead follow-up](/services/ai/whatsapp-automation/whatsapp-lead-follow-up) or [appointment reminders](/services/ai/whatsapp-automation/appointment-reminders).',
   demo: {
     kind: 'chat',
     channel: 'whatsapp',
@@ -95,7 +95,7 @@ export const branch: Branch = {
     },
     {
       q: 'Does this work in the US?',
-      a: 'Yes, but most US customers expect SMS. Business SMS needs A2P 10DLC registration, which can take days to approve, and clear STOP handling. We set up both channels from one flow. See [AI website chat agent](/services/ai-automations/whatsapp-automation/ai-website-chat-agent) too.',
+      a: 'Yes, but most US customers expect SMS. Business SMS needs A2P 10DLC registration, which can take days to approve, and clear STOP handling. We set up both channels from one flow. See [AI website chat agent](/services/ai/whatsapp-automation/ai-website-chat-agent) too.',
     },
     {
       q: 'How long until it goes live?',

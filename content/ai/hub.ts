@@ -1,8 +1,8 @@
 import type { Hub } from './types'
 
 export const HUB: Hub = {
-  // 58 chars
-  title: 'AI Automation Agency for Small Businesses | Website Vikreta',
+  // 49 chars. Nav says "Applied AI"; title keeps the searched terms.
+  title: 'AI Services & Automation Agency | Website Vikreta',
   description:
     'Missed calls, slow replies, late invoices, hiring paperwork. We build AI automations in your accounts, live in about 14 days.',
   h1: ['AI automation that', 'takes the busywork', 'off your team.'],
@@ -13,13 +13,13 @@ export const HUB: Hub = {
   updated: '2026-11-10',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'Dental clinic', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'Dental office with a chair and equipment', line: '7:40 pm call to a dental clinic. Thursday 3:30 was booked by an [AI receptionist](/services/ai-automations/ai-voice-agents/ai-receptionist).' },
+    { industry: 'Dental clinic', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=70&auto=format&fit=crop', alt: 'Dental office with a chair and equipment', line: '7:40 pm call to a dental clinic. Thursday 3:30 was booked by an [AI receptionist](/services/ai/ai-voice-agents/ai-receptionist).' },
     // TODO(owner): real photo
     { industry: 'D2C brand', photo: 'https://images.unsplash.com/photo-1770013413878-2530e2c3d82b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman checking a package with her phone near a laptop and boxes', line: 'Order question at 11 pm on WhatsApp. Answered in six seconds.' },
     // TODO(owner): real photo
-    { industry: 'Recruiting firm', photo: 'https://images.unsplash.com/photo-1686771416537-bf4a4f263d88?w=1200&q=70&auto=format&fit=crop', alt: 'A man and a woman sitting across a table at a job interview', line: 'Neel\'s offer letter: one line to the assistant, signed by lunch. See [HR automation](/services/ai-automations/hr-automation).' },
+    { industry: 'Recruiting firm', photo: 'https://images.unsplash.com/photo-1686771416537-bf4a4f263d88?w=1200&q=70&auto=format&fit=crop', alt: 'A man and a woman sitting across a table at a job interview', line: 'Neel\'s offer letter: one line to the assistant, signed by lunch. See [HR automation](/services/ai/hr-automation).' },
     // TODO(owner): real photo
-    { industry: 'Finance firm', photo: 'https://images.unsplash.com/photo-1735825764485-93a381fd5779?w=1200&q=70&auto=format&fit=crop', alt: 'Person at a desk with a laptop and invoice papers', line: 'Invoice 30 days late. The second reminder, from [finance automation](/services/ai-automations/finance-automation), got it paid Friday.' },
+    { industry: 'Finance firm', photo: 'https://images.unsplash.com/photo-1735825764485-93a381fd5779?w=1200&q=70&auto=format&fit=crop', alt: 'Person at a desk with a laptop and invoice papers', line: 'Invoice 30 days late. The second reminder, from [finance automation](/services/ai/finance-automation), got it paid Friday.' },
     // TODO(owner): real photo
     { industry: 'Agency', photo: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=70&auto=format&fit=crop', alt: 'Man presenting to a team seated at laptops', line: 'Monday brief from one call. A month of posts queued.' },
     // TODO(owner): real photo
@@ -57,6 +57,7 @@ export const HUB: Hub = {
   problems: [
     { id: 'missed-calls', label: 'Missed calls', persona: 'arjun', branch: 'ai-voice-agents', fix: 'Calls get answered and booked automatically, with a summary in your CRM.' },
     { id: 'slow-replies', label: 'Slow lead replies', persona: 'arjun', branch: 'whatsapp-automation', fix: 'Leads get a WhatsApp reply in seconds, and the warm ones come to you.' },
+    { id: 'abandoned-carts', label: 'Abandoned carts', persona: 'arjun', branch: 'conversational-commerce', fix: 'Shoppers get product help and a checkout link in chat, and left carts get one nudge.' },
     { id: 'chasing-invoices', label: 'Chasing invoices', persona: 'arjun', branch: 'finance-automation', fix: 'Invoices go out on time and late ones are chased until paid.' },
     { id: 'hiring-paperwork', label: 'Hiring paperwork', persona: 'meher', branch: 'hr-automation', fix: 'Offer letters and contracts are written, sent for e-sign and filed for you.' },
     { id: 'content-backlog', label: 'Content backlog', persona: 'ira', branch: 'content-automation', fix: 'One idea becomes a blog, posts and a newsletter, scheduled for you.' },
@@ -111,11 +112,11 @@ export const HUB: Hub = {
     },
     {
       q: 'How long does it take to build an AI automation?',
-      a: 'Most projects go live in about 14 days. Single flows like [offer letter automation](/services/ai-automations/hr-automation/offer-letter-automation) take about a week. Bigger setups with many tools take longer. You get a date after the mapping step.',
+      a: 'Most projects go live in about 14 days. Single flows like [offer letter automation](/services/ai/hr-automation/offer-letter-automation) take about a week. Bigger setups with many tools take longer. You get a date after the mapping step.',
     },
     {
       q: 'What tools does AI automation work with?',
-      a: 'Most tools you already use: Gmail, Google Workspace, Slack, WhatsApp, HubSpot, Salesforce, QuickBooks, Stripe and Notion. If a tool has an API or connector, we can plug it in. See [workflow automation](/services/ai-automations/workflow-automation).',
+      a: 'Most tools you already use: Gmail, Google Workspace, Slack, WhatsApp, HubSpot, Salesforce, QuickBooks, Stripe and Notion. If a tool has an API or connector, we can plug it in. See [workflow automation](/services/ai/workflow-automation).',
     },
     {
       q: 'Do I need a tech team to use AI automation?',
@@ -127,7 +128,7 @@ export const HUB: Hub = {
     },
     {
       q: 'Can AI talk to my customers?',
-      a: 'Yes, on [calls](/services/ai-automations/ai-voice-agents), [WhatsApp and chat](/services/ai-automations/whatsapp-automation). It always says it is AI. Under the FCC\'s 2024 ruling, AI voices are "artificial" under the TCPA, so calls need consent. It hands off to a person when a case gets tricky.',
+      a: 'Yes, on [calls](/services/ai/ai-voice-agents), [WhatsApp and chat](/services/ai/whatsapp-automation). It always says it is AI. Under the FCC\'s 2024 ruling, AI voices are "artificial" under the TCPA, so calls need consent. It hands off to a person when a case gets tricky.',
     },
     {
       q: 'What happens if the automation breaks?',

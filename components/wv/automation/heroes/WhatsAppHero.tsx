@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'motion/react'
-import type { ChatMessage } from '@/content/ai-automations/types'
+import type { ChatMessage } from '@/content/ai/types'
 import { ease } from '../../ui'
 import { HeroCopy } from '../HeroCopy'
 import { Lg, heroCopy, useStage, type HeroProps } from './VoiceHero'

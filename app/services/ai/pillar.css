@@ -1,0 +1,16 @@
+/* wv: Applied AI pillar pages (.axpl-*) — tokens only */
+/* 72px = fixed header height; no token for it */
+.axpl-hero{padding:calc(72px + clamp(40px,6vw,80px)) 0 clamp(24px,4vw,48px)}
+.axpl-ans{padding:0 0 clamp(32px,5vw,64px)}
+.axpl-grid{display:grid;gap:20px;grid-template-columns:1fr}
+@media (min-width:960px){.axpl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.axpl-card{display:flex;flex-direction:column;gap:14px;padding:clamp(22px,3vw,32px);border:1px solid var(--line);border-radius:20px;background:var(--surface)}
+.axpl-card h3{font:600 clamp(20px,2.2vw,26px)/1.2 var(--font-inter-tight,inherit)}
+.axpl-card h3 a:hover{color:var(--gold)}
+.axpl-card p{margin:0}
+.axpl-kpi{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-block:1px solid var(--line)}
+.axpl-kpi b{font:600 28px/1 var(--font-inter-tight,inherit)}
+.axpl-kpi span{font-size:14px;opacity:.75}
+.axpl-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.axpl-ul a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-weight:500}
+.axpl-ul a:hover{color:var(--gold)}

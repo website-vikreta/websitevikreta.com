@@ -1,4 +1,4 @@
-import type { Branch } from '@/content/ai-automations/types'
+import type { Branch } from '@/content/ai/types'
 
 const HBR = { name: 'Harvard Business Review, The Short Life of Online Sales Leads', year: 2011, url: 'https://hbr.org/2011/03/the-short-life-of-online-sales-leads' }
 const MCK = {
@@ -22,9 +22,9 @@ export const branch: Branch = {
     // TODO(owner): real photo
     { industry: 'Online store', photo: 'https://images.unsplash.com/photo-1783115259399-3a5a3e0e4592?w=1200&q=70&auto=format&fit=crop', alt: 'Hands typing on a laptop showing a spreadsheet', line: 'Tuesday: 40 new orders copied into the sheet automatically. Nobody typed.' },
     // TODO(owner): real photo
-    { industry: 'Accounting firm', photo: 'https://images.unsplash.com/photo-1735825764485-93a381fd5779?w=1200&q=70&auto=format&fit=crop', alt: 'Person at a desk with a laptop and invoice papers', line: 'Client invoices read, coded and filed by [document data extraction](/services/ai-automations/workflow-automation/document-data-extraction). Month-end took one afternoon.' },
+    { industry: 'Accounting firm', photo: 'https://images.unsplash.com/photo-1735825764485-93a381fd5779?w=1200&q=70&auto=format&fit=crop', alt: 'Person at a desk with a laptop and invoice papers', line: 'Client invoices read, coded and filed by [document data extraction](/services/ai/workflow-automation/document-data-extraction). Month-end took one afternoon.' },
     // TODO(owner): real photo
-    { industry: 'Agency', photo: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=70&auto=format&fit=crop', alt: 'Man presenting to a team seated at laptops', line: 'New lead in HubSpot, ping in Slack, intro email sent in eleven seconds with [speed to lead](/services/ai-automations/workflow-automation/speed-to-lead).' },
+    { industry: 'Agency', photo: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=70&auto=format&fit=crop', alt: 'Man presenting to a team seated at laptops', line: 'New lead in HubSpot, ping in Slack, intro email sent in eleven seconds with [speed to lead](/services/ai/workflow-automation/speed-to-lead).' },
   ],
   shifts: [
     { before: 'Retyping leads into the CRM', after: 'Lead lands in HubSpot, tagged' },
@@ -40,7 +40,7 @@ export const branch: Branch = {
   lead: 'We connect your CRM, inbox, forms and docs so work moves on its own. Then add AI teammates you message like people.',
   answerQ: 'What is workflow automation?',
   answer:
-    'Workflow automation connects the tools you already use so a task in one starts the next step in another. A form fills the CRM, a PDF becomes clean data, a new lead gets a reply in seconds. AI adds the reading and writing. You stay in charge of every decision that matters. Start with [CRM automation](/services/ai-automations/workflow-automation/crm-automation), [document data extraction](/services/ai-automations/workflow-automation/document-data-extraction) or an [AI teammate](/services/ai-automations/workflow-automation/ai-teammates).',
+    'Workflow automation connects the tools you already use so a task in one starts the next step in another. A form fills the CRM, a PDF becomes clean data, a new lead gets a reply in seconds. AI adds the reading and writing. You stay in charge of every decision that matters. Start with [CRM automation](/services/ai/workflow-automation/crm-automation), [document data extraction](/services/ai/workflow-automation/document-data-extraction) or an [AI teammate](/services/ai/workflow-automation/ai-teammates).',
   demo: {
     kind: 'flow',
     title: 'A lead comes in, and everything follows',
@@ -93,7 +93,7 @@ export const branch: Branch = {
     },
     {
       q: 'How long does setup take?',
-      a: 'A form to CRM to Slack flow takes about a week. [CRM automation](/services/ai-automations/workflow-automation/crm-automation) and document extraction take about 10 days. An AI teammate or knowledge base takes about 14. Custom agents take about 3 weeks.',
+      a: 'A form to CRM to Slack flow takes about a week. [CRM automation](/services/ai/workflow-automation/crm-automation) and document extraction take about 10 days. An AI teammate or knowledge base takes about 14. Custom agents take about 3 weeks.',
     },
     {
       q: 'Do I need to change my tools?',

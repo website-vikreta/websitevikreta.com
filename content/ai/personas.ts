@@ -53,6 +53,6 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     img: img('arjun', 'Arjun'),
     // TODO(owner): voice clip
     voice: undefined,
-    branches: ['ai-voice-agents', 'whatsapp-automation', 'proposal-automation', 'finance-automation'],
+    branches: ['ai-voice-agents', 'whatsapp-automation', 'conversational-commerce', 'proposal-automation', 'finance-automation'],
   },
 }

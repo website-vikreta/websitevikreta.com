@@ -13,11 +13,11 @@ export const SERVICES: Service[] = [
   {
     id: 1,
     number: '01',
-    title: 'AI Automation & Workflow Optimization',
+    title: 'Applied AI: Automation, Chatbots & Voice Agents',
     description:
       'We audit your business, find the hours your team wastes, and wire in AI systems that handle it — so your people do what only humans should.',
     tag: 'Any tool, any stack, no limitation',
-    href: '/services/ai-automations',
+    href: '/services/ai',
     isNew: true,
     image: '/our-services/ai-automations.jpeg',
   },
