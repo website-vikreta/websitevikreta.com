@@ -5,7 +5,7 @@ import { BASE, BRANCHES, pillarOf, branchParams, getBranch, PERSONAS } from '@/c
 import { branchMetadata, branchSchema } from '@/lib/ai-automations-seo'
 import '../pages.css'
 
-export const dynamicParams = false
+export const dynamicParams = true
 export const generateStaticParams = branchParams
 
 type P = { params: Promise<{ branch: string }> }
