@@ -61,7 +61,7 @@
 .axb-lg-row span{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#fff}
 .axb-lg-row img{width:18px;height:18px;object-fit:contain}
 .axb-txt{position:static}
-.axb-txt h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(30px,2.8vw,44px);line-height:.95;max-width:calc(100% - 56px)}
+.axb-txt h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(30px,2.8vw,44px);line-height:.95;max-width:calc(100% - 56px);overflow-wrap:break-word}
 .axb-txt h3 a:after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit}
 .axb-txt h3 a:focus-visible{outline:none}
 .axb-txt p{margin-top:10px;max-width:40ch;font-size:15.5px;line-height:1.45;color:var(--muted)}
@@ -165,6 +165,7 @@
   .axb-content-backlog{grid-column:9/13}
   .axb-ad-creatives{grid-column:1/6}
   .axb-slow-proposals{grid-column:6/13}
+  .axb-abandoned-carts{grid-column:1/13}
   .axb-copy-paste{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px;align-items:end}
   .axb-copy-paste .axb-demo{order:2;align-self:stretch;margin:0}
   .axb-copy-paste .axb-txt{order:1}
