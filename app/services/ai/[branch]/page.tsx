@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation'
-import { AutomationShell, BranchHero, Crumbs, CtaBlock, Faq, JsonLd, LogoRail, PairsWith, ProductList, ProofBar, Reading, ScenarioCards, Shifts, VideoSlot } from '@/components/wv/automation'
+import { AutomationShell, BranchHero, Crumbs, CtaBlock, Faq, JsonLd, LogoRail, PairsWith, ProductList, Reading, ScenarioCards, Shifts, VideoSlot } from '@/components/wv/automation'
 import { BranchSignature } from '@/components/wv/automation/signatures'
 import { BASE, BRANCHES, pillarOf, branchParams, getBranch, PERSONAS } from '@/content/ai'
+import { CLIENT_LOGOS } from '@/components/wv/data'
 import { branchMetadata, branchSchema } from '@/lib/ai-automations-seo'
+import { VelocityMarquee } from '@/components/wv/ui'
 import '../pages.css'
 
 export const dynamicParams = true
@@ -26,7 +28,9 @@ export default async function Page({ params }: P) {
       <JsonLd data={branchSchema(b)} />
       <main className="wv-axp-main wv-ax-glow">
         <BranchHero branch={b} />
-        <ProofBar clients={b.clients} />
+        <div className="wv-wrap axh-logos" aria-label="Clients">
+          <VelocityMarquee items={CLIENT_LOGOS} baseVelocity={-2} className="is-logos" />
+        </div>
         <BranchSignature branch={b} />
         <ProductList branch={b} persona={persona} />
         <Shifts shifts={b.shifts} />

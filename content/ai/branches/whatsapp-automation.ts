@@ -15,7 +15,7 @@ export const branch: Branch = {
   heroSub: 'Web form, WhatsApp, SMS and chat. Your team steps in when it counts.',
   scenarios: [
     // TODO(owner): real photo
-    { industry: 'D2C brand', photo: 'https://images.unsplash.com/photo-1770013413878-2530e2c3d82b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman checking a package with her phone near a laptop and boxes', line: 'Where is my order? Asked at 11 pm. [Order updates](/services/ai/whatsapp-automation/order-updates) answered in six seconds.' },
+    { industry: 'D2C brand', photo: 'https://images.unsplash.com/photo-1770013413878-2530e2c3d82b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman checking a package with her phone near a laptop and boxes', line: 'Where is my order? Asked at 11 pm. Order updates answered in six seconds.' },
     // TODO(owner): real photo
     { industry: 'Salon or clinic', photo: 'https://images.unsplash.com/photo-1653762379954-8943c787e78b?w=1200&q=70&auto=format&fit=crop', alt: 'Woman at a table looking at her phone', line: 'Reminder went out the day before. Two clients rescheduled by text, no calls.' },
     // TODO(owner): real photo
@@ -31,7 +31,7 @@ export const branch: Branch = {
   tools: ['whatsapp', 'twilio', 'hubspot', 'googlesheets', 'googlecalendar', 'shopify', 'typeform', 'instagram', 'slack', 'make'],
   clients: ['simpli-home', 'blancora', 'sustainable-bitcoin-protocol'],
   pairsWith: ['ai-voice-agents', 'finance-automation'],
-  reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi'],
+  reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi', '/blog/ai-and-automation/ai-strategy-real-world-outcomes'],
   lead: 'Your automation answers new leads on WhatsApp, SMS and your website chat, qualifies them and books the call. Your team steps in when it counts.',
   answerQ: 'What is WhatsApp and chat automation?',
   answer:
@@ -95,7 +95,7 @@ export const branch: Branch = {
     },
     {
       q: 'Does this work in the US?',
-      a: 'Yes, but most US customers expect SMS. Business SMS needs A2P 10DLC registration, which can take days to approve, and clear STOP handling. We set up both channels from one flow. See [AI website chat agent](/services/ai/whatsapp-automation/ai-website-chat-agent) too.',
+      a: 'Yes, but most US customers expect SMS. Business SMS needs A2P 10DLC registration, which can take days to approve, and clear STOP handling. We set up both channels from one flow, and the AI website chat agent is part of the same team.',
     },
     {
       q: 'How long until it goes live?',

@@ -4,7 +4,7 @@ import { BASE, BRANCHES, PERSONAS, getProduct } from '@/content/ai'
 import { CLIENTS } from '@/content/ai/logos'
 import { blogList, readingFor, pairsWithOf } from '@/content/ai/links'
 import { showPlaceholders } from '@/lib/ai-automations-seo'
-import { Arrow } from '../ui'
+import { Arrow, Reveal } from '../ui'
 import { Avatar } from './Persona'
 import { DemoSlot } from './DemoSlot'
 import { PrefillLink } from './LeadForm'
@@ -61,15 +61,17 @@ export function PairsWith({ branch }: { branch: Branch }) {
   return (
     <Sec title={['Pairs well', 'with']} accent={1}>
       <div className="wv-ax-pairs">
-        {pair.map((b) => (
-          <Link key={b.slug} href={`${BASE}/${b.slug}`} className="wv-ax-rel">
-            <span className="wv-ax-rel-top">
-              <Avatar persona={PERSONAS[b.persona]} px={44} />
-              <strong>{b.name}</strong>
-            </span>
-            <span className="wv-ax-rel-s">{PERSONAS[b.persona].name}: {b.usp}</span>
-            <Arrow size={16} />
-          </Link>
+        {pair.map((b, i) => (
+          <Reveal key={b.slug} delay={i * 0.05}>
+            <Link key={b.slug} href={`${BASE}/${b.slug}`} className="wv-ax-rel">
+              <span className="wv-ax-rel-top">
+                <Avatar persona={PERSONAS[b.persona]} px={44} />
+                <strong>{b.name}</strong>
+              </span>
+              <span className="wv-ax-rel-s">{PERSONAS[b.persona].name}: {b.usp}</span>
+              <Arrow size={16} />
+            </Link>
+          </Reveal>
         ))}
       </div>
     </Sec>

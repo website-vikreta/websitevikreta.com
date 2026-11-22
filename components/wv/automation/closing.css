@@ -3,13 +3,18 @@
 .wv-ax-glow .hx-sec{background:none}
 @media (max-width:719px){.wv-ax-glow{padding-bottom:64px}}
 
-/* clients */
-.axc-logos{border-block:1px solid var(--line);background:var(--surface);padding:32px 0}
-.axc-logos-in{display:grid;gap:20px;align-items:center}
-.axc-logos ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px;align-items:center;justify-items:center}
-.axc-logos img{display:block;height:30px;width:auto;max-width:120px;object-fit:contain;filter:grayscale(1);opacity:.6;transition:filter .4s,opacity .4s}
-.axc-logos li:hover img{filter:none;opacity:1}
-@media (min-width:960px){.axc-logos-in{grid-template-columns:1fr}.axc-logos ul{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* clients — horizontal wordmark row (Image 1) */
+.axc-logos{background:var(--canvas);padding:64px 0}
+.axc-logos-in{display:flex;flex-direction:column;align-items:center;gap:10px}
+.axc-logos ul{display:flex;flex-wrap:wrap;gap:46px 64px;align-items:center;justify-content:center;list-style:none;margin:0;padding:0}
+.axc-logos li{display:flex;align-items:center;justify-content:center}
+.axc-logos img{display:block;height:32px;width:auto;max-width:220px;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1);opacity:.55;transition:filter .4s,opacity .4s,transform .3s}
+.axc-logos li:hover img{filter:none;opacity:1;transform:scale(1.06)}
+@media (min-width: 960px){
+  .axc-logos{padding:96px 0}
+  .axc-logos ul{gap:72px 110px}
+  .axc-logos img{height:38px}
+}
 
 /* reading */
 .axc-posts{display:grid;gap:32px}

@@ -1,4 +1,20 @@
 /* wv: AI automations branch + product pages (.wv-axp-*) — tokens only */
-.wv-axp-main{padding-bottom:0}
-@media (max-width:719px){.wv-axp-main{padding-bottom:64px}}
 
+/* One vertical rhythm: a single gap between blocks, not double section padding.
+   .wv-sec's 96/150px top+bottom would put 192–300px of dead space between
+   adjacent sections, so inside these pages the gap is owned by this rule. */
+.wv-axp-main{--ax-gap:56px;--ax-head:24px;padding-bottom:0}
+@media (min-width:960px){.wv-axp-main{--ax-gap:80px;--ax-head:32px}}
+
+.wv-axp-main > * + *{margin-top:var(--ax-gap)}
+.wv-axp-main .wv-sec{padding-block:0}
+.wv-axp-main .wv-sec-head{margin-bottom:var(--ax-head)}
+.wv-axp-main .wv-ax-rail .wv-sec-head{margin-bottom:var(--ax-head)}
+
+/* logos belong to the hero: sit tight underneath, no extra gap above */
+.wv-axp-main > .axh-logos,
+.wv-axp-main > .axc-logos{margin-top:0;padding-block:28px}
+
+/* closing CTA is its own band: border-top is the separator, its padding is the gap */
+.wv-axp-main > .axc-cta{margin-top:0;padding-block:64px}
+@media (min-width:960px){.wv-axp-main > .axc-cta{padding-block:88px}}
