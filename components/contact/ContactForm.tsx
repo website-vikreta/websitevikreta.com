@@ -97,6 +97,14 @@ export function ContactForm() {
   const [isSubmitting, setSubmit] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [sendError, setSendError] = useState(false)
+  // Country names come from Intl.DisplayNames, and Node's ICU wording can differ
+  // from the browser's (e.g. "Falkland Islands" vs "Falkland Islands (Islas
+  // Malvinas)"). Render the full list only after hydration so the server HTML
+  // and the first client render match.
+  const [mounted, setMounted] = useState(false)
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- flip after hydration
+  useEffect(() => setMounted(true), [])
 
   const countries = useMemo(() => {
     const names = new Intl.DisplayNames(['en'], { type: 'region' })
@@ -237,9 +245,11 @@ export function ContactForm() {
               }}
               disabled={isSubmitting}
             >
-              {countries.map((x) => (
-                <option key={x.c} value={x.c}>{flag(x.c)} {x.name} +{x.code}</option>
-              ))}
+              {mounted
+                ? countries.map((x) => (
+                    <option key={x.c} value={x.c}>{flag(x.c)} {x.name} +{x.code}</option>
+                  ))
+                : <option value={country}>+{current?.code}</option>}
             </select>
           </div>
           <input
