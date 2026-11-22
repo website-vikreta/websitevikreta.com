@@ -7,9 +7,9 @@ const u = (id: string, w = 1200) => `https://images.unsplash.com/${id}?auto=form
 // Per-logo heights (px) tuned by eye so every mark reads the same visual size:
 // wide wordmarks sit shorter, square or boxed marks sit taller.
 const LOGO_H: Record<string, number> = {
-  'ambrosia.svg': 34, 'ap-cleanco.svg': 34, 'archmodal.svg': 44, 'blancora.svg': 38,
-  'boompanda.png': 30, 'budget-renovations.svg': 40, 'champion-lenders.svg': 30, 'cozmo-realty.svg': 34,
-  'katalyst.png': 28, 'limra-events.png': 36, 'raicoon.svg': 30, 'simpli-home.svg': 36,
+  'ambrosia.svg': 34, 'ap-cleanco.svg': 34, 'archmodal.webp': 44, 'blancora.svg': 38,
+  'boompanda.webp': 30, 'budget-renovations.webp': 40, 'champion-lenders.svg': 30, 'cozmo-realty.svg': 34,
+  'katalyst.webp': 28, 'limra-events.webp': 36, 'raicoon.svg': 30, 'simpli-home.svg': 36,
   'sr-design-hub.svg': 40, 'strandzboost.svg': 32, 'sustainable-bitcoin-protocol.svg': 36, 'tocal.svg': 28,
   'workik.svg': 40, 'smart-physio-plus.png': 34, 'carelift.svg': 34, 'yeto-holidays.png': 32,
 }
