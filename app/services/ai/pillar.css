@@ -1,16 +1,95 @@
 /* wv: Applied AI pillar pages (.axpl-*) — tokens only */
 /* 72px = fixed header height; no token for it */
-.axpl-hero{padding:calc(72px + clamp(40px,6vw,80px)) 0 clamp(24px,4vw,48px)}
+.axpl-hero{padding:calc(72px + clamp(40px,6vw,80px)) 0 clamp(96px,8vw,120px)}
+.axpl-hero-in{display:grid;grid-template-columns:1fr;gap:clamp(32px,6vw,64px);align-items:center}
+.axpl-hero-copy{max-width:min(100%,560px)}
+@media (min-width:960px){
+  .axpl-hero-in{grid-template-columns:1fr 520px;align-items:start}
+}
+
+/* conversational-ai hero art — static reuse of the branch stage styles (hb-*).
+   Layout classes use .cv-wrap descendant specificity so they always win over
+   the heroes-b.css positioning, whatever order the bundles load in. Cards sit
+   fully inside this column: no negative offsets, no rotation, no animation. */
+.cv-stage{position:relative;width:100%;-webkit-user-select:none;user-select:none}
+.cv-wrap{position:relative;height:410px;padding-top:14px}
+.cv-wrap .cv-voice{position:absolute;left:0;top:14px;width:62%;height:300px;z-index:1;padding:12px 14px;gap:8px}
+.cv-wrap .cv-phone{position:absolute;right:0;top:14px;width:44%;height:356px;z-index:2}
+.cv-wrap .cv-cart{display:none}
+.cv-wrap .cv-chip-voice{position:absolute;top:2px;left:10px;z-index:3}
+.cv-wrap .cv-chip-phone{position:absolute;top:2px;right:10px;left:auto;z-index:3}
+.cv-wrap .cv-chip-cart{display:none}
+.cv-wrap .cv-line-3{display:none}
+.cv-wrap .cv-b-first{display:none}
+.cv-wrap .hb-call-top span:nth-child(2){display:none}
+.cv-wrap .hb-live i{animation:none}
+.cv-wrap .cv-lines{flex:none;overflow:visible}
+.cv-av-tx{display:flex;flex-direction:column;line-height:1.25}
+.cv-status{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--y) 16%,transparent);font-size:12.5px;font-weight:600}
+.cv-status .hb-tick{width:22px;height:22px;font-size:12px;margin-left:0}
+@media (min-width:960px){
+  .cv-wrap{height:620px;padding-top:16px}
+  .cv-wrap .cv-voice{top:16px;width:58%;height:340px;padding:16px 18px;gap:10px}
+  .cv-wrap .cv-phone{top:16px;width:46%;height:500px}
+  .cv-wrap .cv-cart{display:flex;position:absolute;left:0;top:388px;width:48%;max-width:none;flex-direction:column;align-items:stretch;gap:8px;padding:14px;z-index:2}
+  .cv-wrap .cv-cart b{display:flex;align-items:center;gap:6px;margin:0 0 2px}
+  .cv-wrap .cv-cart .hb-field{display:block}
+  .cv-wrap .cv-cart .hb-send{text-align:center}
+  .cv-wrap .cv-chip-voice{top:4px;left:12px}
+  .cv-wrap .cv-chip-phone{top:4px;right:12px}
+  .cv-wrap .cv-chip-cart{display:inline-block;position:absolute;top:376px;left:10px;z-index:3}
+  .cv-wrap .cv-line-3{display:-webkit-box}
+  .cv-wrap .cv-b-first{display:block}
+  .cv-wrap .hb-call-top span:nth-child(2){display:inline}
+}
+
 .axpl-ans{padding:0 0 clamp(32px,5vw,64px)}
-.axpl-grid{display:grid;gap:20px;grid-template-columns:1fr}
-@media (min-width:960px){.axpl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.axpl-card{display:flex;flex-direction:column;gap:14px;padding:clamp(22px,3vw,32px);border:1px solid var(--line);border-radius:20px;background:var(--surface)}
-.axpl-card h3{font:600 clamp(20px,2.2vw,26px)/1.2 var(--font-inter-tight,inherit)}
-.axpl-card h3 a:hover{color:var(--gold)}
-.axpl-card p{margin:0}
-.axpl-kpi{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-block:1px solid var(--line)}
-.axpl-kpi b{font:600 28px/1 var(--font-inter-tight,inherit)}
+.axpl-ans p{max-width:760px}
+.axpl-trust{background:var(--surface-2);padding:clamp(32px,4vw,64px) 0}
+.axpl-trust-in{display:grid;gap:clamp(16px,3vw,28px)}
+@media (min-width:720px){.axpl-trust-in{grid-template-columns:repeat(3,1fr);gap:24px}}
+.axpl-trust-item{display:flex;gap:14px;align-items:flex-start;padding:clamp(18px,2vw,26px);border:1px solid var(--line);border-radius:20px;background:var(--surface);transition:transform .25s var(--e),border-color .25s}
+.axpl-trust-item:hover{transform:translateY(-2px);border-color:var(--gold)}
+.axpl-trust-check{flex:none;width:40px;height:40px;border-radius:50%;background:var(--y);color:var(--ink);font:600 18px/1 var(--sans);display:grid;place-items:center}
+.axpl-trust-item strong{display:block;font-size:clamp(17px,1.6vw,20px);margin-bottom:6px;letter-spacing:-.01em}
+.axpl-trust-item p{margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
+
+/* client logo marquee — same rail/effect as the AI hub, branch and home pages */
+.axpl-logos{padding-block:clamp(8px,2vw,24px)}
+
+/* 3 channel cards — yellow/black brand interactions, hover → press.
+   The whole card clicks through to the branch (stretched title link);
+   product rows sit above it with their own links. */
+.axpl-grid{display:grid;gap:clamp(20px,4vw,32px);grid-template-columns:1fr}
+@media (min-width:720px){.axpl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.axpl-card{position:relative;display:flex;flex-direction:column;gap:clamp(12px,2vw,18px);padding:clamp(24px,3vw,34px);border:1px solid var(--line);border-radius:20px;background:var(--surface);transition:transform .3s var(--e),border-color .3s var(--e),box-shadow .3s var(--e)}
+.axpl-card::before{content:"";position:absolute;top:0;left:22px;right:22px;height:4px;border-radius:0 0 4px 4px;background:var(--y);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--e);pointer-events:none}
+.axpl-card:hover,.axpl-card:focus-within{transform:translateY(-5px);border-color:color-mix(in srgb,var(--ink) 32%,transparent);box-shadow:0 26px 52px -18px color-mix(in srgb,var(--ink) 24%,transparent),0 12px 28px -14px color-mix(in srgb,var(--y) 60%,transparent)}
+.axpl-card:hover::before,.axpl-card:focus-within::before{transform:scaleX(1)}
+.axpl-card:active{transform:translateY(-2px) scale(.995);transition-duration:.12s}
+.axpl-card h3{font:600 clamp(20px,2.2vw,26px)/1.2 var(--font-inter-tight,inherit);overflow:hidden}
+.axpl-card h3 a{color:inherit}
+.axpl-card h3 a::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.axpl-roll{position:relative;display:block;transition:transform .45s var(--e)}
+.axpl-roll::before{content:attr(data-text);position:absolute;top:100%;left:0;width:100%;color:var(--ink)}
+.axpl-card:hover .axpl-roll,.axpl-card:focus-within .axpl-roll{transform:translateY(-100%)}
+.axpl-card .wv-btn{position:relative}
+.axpl-card p{margin:0;color:var(--muted);font-size:16px;line-height:1.55}
+.axpl-kpi{position:relative;display:flex;flex-direction:column;gap:4px;padding:12px 0;border-block:1px solid var(--line);margin-top:auto}
+.axpl-kpi::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--y);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--e);pointer-events:none}
+.axpl-card:hover .axpl-kpi::after,.axpl-card:focus-within .axpl-kpi::after{transform:scaleX(1)}
+.axpl-kpi b{font:600 28px/1.15 var(--font-inter-tight,inherit)}
 .axpl-kpi span{font-size:14px;opacity:.75}
-.axpl-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.axpl-ul a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-weight:500}
-.axpl-ul a:hover{color:var(--gold)}
+.axpl-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;margin-top:auto}
+.axpl-card .axpl-ul a{position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px;margin-inline:-10px;border-top:1px solid var(--line);border-radius:10px;font-weight:500;color:inherit;transition:background-color .25s var(--e)}
+.axpl-card .axpl-ul a:hover,.axpl-card .axpl-ul a:focus-visible{background:color-mix(in srgb,var(--y) 18%,transparent)}
+.axpl-card .axpl-ul a:active{background:color-mix(in srgb,var(--y) 42%,transparent);transition-duration:.1s}
+.axpl-card .axpl-ul a .wv-arrow{transition:transform .25s var(--e),color .25s var(--e)}
+.axpl-card .axpl-ul a:hover .wv-arrow,.axpl-card .axpl-ul a:focus-visible .wv-arrow{transform:translate(3px,-3px);color:var(--gold)}
+@media (prefers-reduced-motion:reduce){
+  .axpl-card,.axpl-card::before,.axpl-roll,.axpl-kpi::after,.axpl-card .axpl-ul a,.axpl-card .axpl-ul a .wv-arrow{transition:none}
+  .axpl-card:hover,.axpl-card:focus-within,.axpl-card:active{transform:none}
+  .axpl-card:hover .axpl-roll,.axpl-card:focus-within .axpl-roll{transform:none}
+  .axpl-card .axpl-ul a:hover .wv-arrow,.axpl-card .axpl-ul a:focus-visible .wv-arrow{transform:none}
+}
+@media (min-width:960px){.axpl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
