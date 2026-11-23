@@ -32,7 +32,7 @@ export const branch: Branch = {
   tools: ['googlecalendar', 'hubspot', 'slack', 'twilio', 'gmail', 'googlesheets', 'zoho', 'openai', 'elevenlabs', 'make'],
   clients: ['simpli-home', 'blancora', 'sustainable-bitcoin-protocol'],
   pairsWith: ['whatsapp-automation', 'workflow-automation'],
-  reading: ['/blog/ai-and-automation/establishing-human-oversight-automation', '/blog/business-growth/ai-automation-roi'],
+  reading: ['/blog/ai-and-automation/establishing-human-oversight-automation', '/blog/business-growth/ai-automation-roi', '/blog/educational/ai-chatbot-cost-india'],
   lead: 'Every call gets answered, asks the right questions and books the job into your calendar. Day, night and weekends.',
   answerQ: 'What is an AI voice agent?',
   answer:

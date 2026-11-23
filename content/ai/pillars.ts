@@ -13,6 +13,8 @@ export type Pillar = {
   branches: string[]
   /** Pages outside /services/ai that this pillar routes to. */
   links?: { label: string; href: string; blurb: string }[]
+  /** Blog posts to show in Keep reading. */
+  reading?: string[]
   faqs: Faq[]
 }
 
@@ -28,6 +30,7 @@ export const PILLARS: Pillar[] = [
     answer:
       'Conversational AI is software that talks with your customers by voice or text. It answers calls, replies on WhatsApp and web chat, qualifies leads, books appointments and helps people buy. It runs on your own scripts, tools and rules. A person can step in at any point. We build and run it for you.',
     branches: ['ai-voice-agents', 'whatsapp-automation', 'conversational-commerce'],
+    reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi', '/blog/educational/ai-chatbot-cost-india'],
     faqs: [
       { q: 'What is the difference between a voice agent and a chatbot?', a: 'A voice agent talks on the phone. A chatbot types on WhatsApp, web chat or SMS. Both follow your rules and hand off to a person. Many businesses start with one and add the other.' },
       { q: 'Will customers know they are talking to AI?', a: 'Yes. We label every AI voice and chat as AI. We never pose an AI as a real person.' },

@@ -31,7 +31,7 @@ export const branch: Branch = {
   tools: ['whatsapp', 'instagram', 'shopify', 'woocommerce', 'stripe', 'twilio', 'googlesheets', 'slack', 'make'],
   clients: ['simpli-home', 'blancora'],
   pairsWith: ['whatsapp-automation', 'finance-automation'],
-  reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi'],
+  reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi', '/blog/educational/ai-chatbot-cost-india'],
   lead: 'Your store sells inside WhatsApp, Instagram DM and website chat. The AI helps shoppers choose, sends a payment link and brings back abandoned carts.',
   answerQ: 'What is conversational commerce?',
   answer:
