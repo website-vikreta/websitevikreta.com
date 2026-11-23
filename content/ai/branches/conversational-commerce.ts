@@ -274,7 +274,7 @@ export const branch: Branch = {
           },
           {
             q: 'Does it replace my support team?',
-            a: 'No. It takes the repeat pre-sale questions so your team can focus on complex ones. For order status, returns and help after the sale, see [WhatsApp customer support](/services/ai/whatsapp-automation/whatsapp-customer-support).',
+            a: 'No. It takes the repeat pre-sale questions so your team can focus on complex ones. For order status, returns and help after the sale, see WhatsApp customer support.',
           },
         ],
         related: [
