@@ -164,7 +164,58 @@
 .cw-chk-row svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 
 /* Tags sit below text-heavy hero cards instead of over them */
-.cw-hero-art.is-card .cw-hero-tag{bottom:-14px;left:16px}
+.cw-hero-art.is-card .cw-hero-tag:not(.is-b){bottom:-14px;left:16px}
+
+/* Store and headless hero art */
+.cw-store{padding:20px;display:grid;gap:14px;background:var(--surface)}
+.cw-store-top{display:flex;align-items:center;justify-content:space-between}
+.cw-store-top>b{width:70px;height:12px;border-radius:4px;background:var(--ink)}
+.cw-store-top span{display:flex;align-items:center;gap:6px}
+.cw-store-top span i{width:26px;height:6px;border-radius:999px;background:#1212121f}
+.cw-store-top span u{width:26px;height:26px;border-radius:50%;background:var(--y);display:grid;place-items:center;text-decoration:none;font-size:12px;font-weight:700}
+.cw-store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cw-store-tile{padding:8px;border:1px solid var(--line);border-radius:14px;background:var(--canvas);display:grid;gap:7px}
+.cw-store-tile i{display:block;aspect-ratio:1.3;border-radius:10px;background:var(--surface-2)}
+.cw-store-tile b{display:block;width:70%;height:8px;border-radius:4px;background:var(--ink)}
+.cw-store-tile em{display:block;width:34%;height:7px;border-radius:4px;background:#1212124d}
+.cw-store-cta{height:40px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;background:var(--y);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.cw-hl{padding:26px 22px;display:grid;gap:0;background:var(--surface)}
+.cw-hl-step{display:grid;justify-items:center}
+.cw-hl-node{width:100%;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--canvas)}
+.cw-hl-node.is-y{background:var(--y);border-color:var(--y)}
+.cw-hl-node b{display:block;font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:24px;line-height:1}
+.cw-hl-node span{display:block;margin-top:4px;color:var(--muted);font-size:13px}
+.cw-hl-node.is-y span{color:var(--ink)}
+.cw-hl-link{display:block;width:0;height:30px;border-left:2px dashed var(--ink);opacity:.4}
+
+/* Compare table and connects grid (e-commerce pages) */
+.cw-compare{background:var(--surface);border-top:1px solid var(--line)}
+.cw-cmp{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--canvas)}
+.cw-cmp-head{display:none}
+.cw-cmp-row{display:grid;gap:10px;padding:20px;border-top:1px solid var(--line)}
+.cw-cmp-head+.cw-cmp-row{border-top:0}
+.cw-cmp-k{font-family:var(--display);text-transform:uppercase;font-size:24px;line-height:1}
+.cw-cmp-row span[role=cell]{font-size:15px;line-height:1.45}
+.cw-cmp-row span[role=cell]::before{content:attr(data-col);display:block;margin-bottom:2px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cw-cmp-row span.is-on{padding:10px 12px;border-radius:12px;background:#fac80038}
+@media (min-width:960px){
+  .cw-cmp-head{display:grid;grid-template-columns:.7fr repeat(3,1fr);gap:0;padding:0}
+  .cw-cmp-head b{padding:20px;font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:28px;line-height:1;display:flex;align-items:center;gap:10px}
+  .cw-cmp-head b.is-on{background:var(--y)}
+  .cw-cmp-head small{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.1em;padding:2px 8px;border-radius:999px;background:var(--ink);color:#fff}
+  .cw-cmp-head+.cw-cmp-row{border-top:1px solid var(--line)}
+  .cw-cmp-row{grid-template-columns:.7fr repeat(3,1fr);gap:0;padding:0}
+  .cw-cmp-row>span{padding:20px}
+  .cw-cmp-row span[role=cell]::before{display:none}
+  .cw-cmp-row span.is-on{padding:20px;border-radius:0;background:#fac80038}
+}
+.cw-conn{display:grid;gap:0;border-top:1px solid var(--line)}
+.cw-conn li{border-bottom:1px solid var(--line);padding:24px 0}
+.cw-conn h3{font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:clamp(30px,3vw,40px);line-height:1;margin-top:6px}
+.cw-conn p{color:var(--muted);margin-top:8px;max-width:340px;font-size:15px}
+.cw-conn-n{font-size:13px;font-weight:600;color:var(--muted)}
+@media (min-width:720px){.cw-conn{grid-template-columns:repeat(2,1fr);column-gap:48px}}
+@media (min-width:960px){.cw-conn{grid-template-columns:repeat(3,1fr)}}
 
 /* Rotating word + tags */
 .cw-rot{display:flex;align-items:baseline;gap:.4em;font-family:var(--display);text-transform:uppercase;font-size:26px;line-height:1;margin:0}

@@ -86,6 +86,24 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.7,
   },
   {
+    url: `${BASE}/services/web-development/ecommerce/shopify-development`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce/woocommerce-stores`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce/headless-commerce`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
     url: `${BASE}/services/web-mobile-app-development`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
