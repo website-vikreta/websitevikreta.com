@@ -23,6 +23,86 @@ function Section({ title, aside }: { title: string[]; aside?: React.ReactNode })
   )
 }
 
+/** Old site fading behind a clean rebuild, joined by a redirect arrow. Drawn with blocks, no client screenshots. */
+function BeforeAfter() {
+  return (
+    <div className="cw-ba" aria-hidden>
+      <div className="cw-ba-card is-old">
+        <div className="cw-browser-bar">
+          <i /><i /><i />
+          <em>OLD</em>
+        </div>
+        <div className="cw-ba-body">
+          <div className="cw-ba-nav"><i /><i /><i /><i /></div>
+          <b className="cw-ba-block" />
+          <div className="cw-ba-three"><i /><i /><i /></div>
+          <b className="cw-ba-strip" />
+        </div>
+      </div>
+      <div className="cw-ba-card is-new">
+        <div className="cw-browser-bar">
+          <i /><i /><i />
+          <span className="is-mono">vikreta.com/new</span>
+          <em className="is-y">NEW</em>
+        </div>
+        <div className="cw-ba-body">
+          <div className="cw-ba-top"><b /><span><i /><i /></span></div>
+          <b className="cw-ba-h" />
+          <b className="cw-ba-h is-short" />
+          <i className="cw-ba-sub" />
+          <div className="cw-ba-cta"><span>Convert <Arrow size={11} /></span><i /></div>
+          <div className="cw-ba-two"><i><b /></i><i><b /></i></div>
+        </div>
+      </div>
+      <span className="cw-ba-301">
+        301 redirect <Arrow size={12} />
+      </span>
+    </div>
+  )
+}
+
+/** The three Core Web Vitals as plain bars. Illustration only, no measured values. */
+function Vitals() {
+  const rows = [
+    { k: 'LCP', t: 'Loading', d: 'How fast the main content shows up', w: '78%' },
+    { k: 'INP', t: 'Responding', d: 'How fast it reacts to a tap or click', w: '64%' },
+    { k: 'CLS', t: 'Staying still', d: 'Whether the layout jumps while loading', w: '88%' },
+  ]
+  return (
+    <div className="cw-vit" aria-hidden>
+      {rows.map((r) => (
+        <div key={r.k} className="cw-vit-row">
+          <div>
+            <b>{r.t}</b>
+            <span>{r.d}</span>
+          </div>
+          <em>{r.k}</em>
+          <i>
+            <u style={{ width: r.w }} />
+          </i>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** What a maintenance month covers, as a checked list. */
+function Checklist() {
+  const rows = ['Updates applied', 'Backups checked', 'Links and forms tested', 'Small fixes done']
+  return (
+    <div className="cw-chk" aria-hidden>
+      {rows.map((r) => (
+        <div key={r} className="cw-chk-row">
+          <span>
+            <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+          </span>
+          {r}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 /** A generic one-offer page, drawn with blocks. Used instead of a client screenshot on the landing-pages hero. */
 function Wireframe() {
   return (
@@ -67,7 +147,7 @@ function Hero({ c }: { c: C }) {
           <nav className="wv-crumbs" aria-label="Breadcrumb">
             <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href="/services/web-development">Web Design &amp; Development</Link>/<span aria-current="page">{c.crumb}</span>
           </nav>
-          <h1 className="wv-h1">
+          <h1 className={`wv-h1${c.h1.some((l) => l.length > 13) ? ' is-long' : ''}`}>
             <KineticTitle as="p" lines={c.h1} accent={1} delay={0.1} />
           </h1>
           <Reveal delay={0.45} className="cw-hero-sub">
@@ -83,7 +163,7 @@ function Hero({ c }: { c: C }) {
               </Link>
             </div>
             <p className="cw-rot">
-              Built to <RotatingWord words={hero.words} />
+              {hero.rot} <RotatingWord words={hero.words} />
             </p>
             <div className="cw-hero-proof">
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
@@ -95,22 +175,27 @@ function Hero({ c }: { c: C }) {
             </div>
           </Reveal>
         </div>
-        <Reveal delay={0.3} className="cw-hero-art">
-          <div className="cw-browser">
-            <i className="cw-cross is-tl" aria-hidden />
-            <i className="cw-cross is-tr" aria-hidden />
-            <div className="cw-browser-bar">
-              <i /><i /><i />
-              <span>{hero.url}</span>
-            </div>
-            {hero.art === 'shot' ? (
-              <div className="cw-browser-shot">
-                <Photo src={SHOT.image!} alt={SHOT.imageAlt!} priority sizes="(min-width: 960px) 30vw, 90vw" />
+        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${hero.art === 'vitals' || hero.art === 'checklist' ? ' is-card' : ''}`}>
+          {hero.art === 'ba' ? (
+            <BeforeAfter />
+          ) : (
+            <div className="cw-browser">
+              <i className="cw-cross is-tl" aria-hidden />
+              <i className="cw-cross is-tr" aria-hidden />
+              <div className="cw-browser-bar">
+                <i /><i /><i />
+                <span>{hero.url}</span>
               </div>
-            ) : (
-              <Wireframe />
-            )}
-          </div>
+              {hero.art === 'shot' && (
+                <div className="cw-browser-shot">
+                  <Photo src={SHOT.image!} alt={SHOT.imageAlt!} priority sizes="(min-width: 960px) 30vw, 90vw" />
+                </div>
+              )}
+              {hero.art === 'wire' && <Wireframe />}
+              {hero.art === 'vitals' && <Vitals />}
+              {hero.art === 'checklist' && <Checklist />}
+            </div>
+          )}
           <span className="cw-hero-tag">
             <i className="cw-dot" /> {hero.tag}
           </span>

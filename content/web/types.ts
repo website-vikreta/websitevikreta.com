@@ -7,8 +7,10 @@ export type LeafContent = {
     words: string[]
     proof: string
     tag: string
-    /** 'shot' = real AP Cleanco screenshot, 'wire' = generic landing-page wireframe */
-    art: 'shot' | 'wire'
+    /** Lead-in for the rotating word, e.g. "Built to" or "We" */
+    rot: string
+    /** 'shot' = real AP Cleanco screenshot, 'wire' = generic landing-page wireframe, 'ba' = old vs new cards, 'vitals' = three speed measures, 'checklist' = upkeep checklist */
+    art: 'shot' | 'wire' | 'ba' | 'vitals' | 'checklist'
     url: string
   }
   band: [string[], string[]]
