@@ -30,6 +30,7 @@ export const LANDING: LeafContent = {
     words: ['Convert', 'Load', 'Match', 'Track'],
     proof: 'AP Cleanco went from no website to live in 2 weeks.',
     tag: 'One goal per page',
+    rot: 'Built to',
     art: 'wire',
     url: 'yourbrand.com/offer',
   },
@@ -126,7 +127,7 @@ export const LANDING: LeafContent = {
       d: 'A full marketing site, built to rank and easy to edit.',
       href: '/services/web-development/business-websites/company-service-websites',
     },
-    { t: 'Website redesign & migration', d: 'Replace the old site without losing the rankings it earned.' },
-    { t: 'Website maintenance', d: 'Updates, backups and fixes, so it keeps working.' },
+    { t: 'Website redesign & migration', d: 'Replace the old site without losing the rankings it earned.', href: '/services/web-development/business-websites/website-redesign-migration' },
+    { t: 'Website maintenance', d: 'Updates, backups and fixes, so it keeps working.', href: '/services/web-development/cms-performance/website-maintenance' },
   ],
 }
