@@ -50,6 +50,24 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.8,
   },
   {
+    url: `${BASE}/services/web-development/business-websites`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
     url: `${BASE}/services/web-development/business-websites/company-service-websites`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
