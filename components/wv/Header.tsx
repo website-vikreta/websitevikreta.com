@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { AI_HREF, CONTACT, NAV, SERVICES } from './data'
 import './nav/nav.css'
@@ -149,6 +150,7 @@ function Drawer({ onNavigate }: { onNavigate: () => void }) {
 }
 
 function ServicesPanel({ close }: { close: () => void }) {
+  const router = useRouter()
   const [tab, setTab] = useState(SERVICES[0].id)
   const cur = SERVICES.find((s) => s.id === tab)!
   return (
@@ -164,7 +166,10 @@ function ServicesPanel({ close }: { close: () => void }) {
             className="wv-mega-tab"
             onMouseEnter={() => setTab(s.id)}
             onFocus={() => setTab(s.id)}
-            onClick={() => setTab(s.id)}
+            onClick={() => {
+              close()
+              router.push(s.href)
+            }}
           >
             <span className="wv-mega-tt">{s.title}</span>
             <Arrow size={14} />

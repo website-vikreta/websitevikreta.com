@@ -23,10 +23,11 @@ export const UIUX_PILLAR: PillarProps = {
       t: 'Research & Strategy',
       strip: 'UX audits, user testing and site structure.',
       d: 'Find out where users get stuck before redesigning anything.',
+      href: `${P}/research-strategy`,
       rows: [
         { t: 'UX audit', d: 'A ranked list of where visitors get stuck and what to fix first.', href: UX_AUDIT },
-        { t: 'User interviews & testing', d: 'Hear from real users and watch them use it.' },
-        { t: 'Information architecture', d: 'Structure and navigation that make sense before any pixels.' },
+        { t: 'User interviews & testing', d: 'Hear from real users and watch them use it.', href: `${P}/research-strategy/user-interviews-testing` },
+        { t: 'Information architecture', d: 'Structure and navigation that make sense before any pixels.', href: `${P}/research-strategy/information-architecture` },
       ],
     },
     {
@@ -34,10 +35,11 @@ export const UIUX_PILLAR: PillarProps = {
       t: 'Product Design',
       strip: 'Dashboards, mobile apps and prototypes.',
       d: 'Interfaces for web apps, dashboards and mobile that feel obvious.',
+      href: `${P}/product-design`,
       rows: [
-        { t: 'SaaS & dashboard UI', d: 'Clear screens for data-heavy products.' },
-        { t: 'Mobile app design', d: 'iOS and Android flows that fit the thumb.' },
-        { t: 'Interactive prototypes', d: 'Click through the idea before engineering builds it.' },
+        { t: 'SaaS & dashboard UI', d: 'Clear screens for data-heavy products.', href: `${P}/product-design/saas-dashboard-ui` },
+        { t: 'Mobile app design', d: 'iOS and Android flows that fit the thumb.', href: `${P}/product-design/mobile-app-design` },
+        { t: 'Interactive prototypes', d: 'Click through the idea before engineering builds it.', href: `${P}/product-design/interactive-prototypes` },
       ],
     },
     {
@@ -45,10 +47,11 @@ export const UIUX_PILLAR: PillarProps = {
       t: 'Design Systems',
       strip: 'Figma systems, component libraries, AI agents.',
       d: 'Components and rules that keep every new screen consistent.',
+      href: `${P}/design-systems`,
       rows: [
-        { t: 'Figma design systems', d: 'Tokens and components your whole team designs from.' },
-        { t: 'Component libraries', d: 'Coded components that match the design exactly.' },
-        { t: 'Design for AI agents', d: 'Interfaces for products where an agent does part of the work.', tag: 'New' },
+        { t: 'Figma design systems', d: 'Tokens and components your whole team designs from.', href: `${P}/design-systems/figma-design-systems` },
+        { t: 'Component libraries', d: 'Coded components that match the design exactly.', href: `${P}/design-systems/component-libraries` },
+        { t: 'Design for AI agents', d: 'Interfaces for products where an agent does part of the work.', tag: 'New', href: `${P}/design-systems/design-for-ai-agents` },
       ],
     },
   ],

@@ -51,7 +51,7 @@ export const UX_AUDIT: LeafContent = {
   build: {
     aside: 'A short, ranked list you can act on this week.',
     rows: [
-      { t: 'Friction review', href: '/services/uiux-design', d: 'We walk your key flows like a first-time visitor and note every place they hesitate.', pop: ['Sign-up and checkout flows', 'Forms and error messages', 'Navigation and search'] },
+      { t: 'Friction review', href: '/services/uiux-design/research-strategy/user-interviews-testing', d: 'We walk your key flows like a first-time visitor and note every place they hesitate.', pop: ['Sign-up and checkout flows', 'Forms and error messages', 'Navigation and search'] },
       { t: 'Journey map', href: '/services/uiux-design', d: 'One page showing the steps people take, and where they drop off.', pop: ['Steps from first click to goal', 'Drop-off points marked', 'Plain labels, no jargon'] },
       { t: 'Analytics and heatmap read', href: '/services/uiux-design', d: 'We read your analytics and session replays for patterns, so findings are backed by what people actually did.', pop: ['Where people click', 'Where they stop scrolling', 'What they skip'] },
       { t: 'Accessibility check', href: '/services/uiux-design', d: 'A check for phones, keyboards and screen readers, so more people can use it.', pop: ['Colour contrast', 'Keyboard use', 'Clear labels'] },

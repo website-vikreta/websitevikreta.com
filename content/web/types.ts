@@ -20,7 +20,7 @@ export type LeafContent = {
     /** Lead-in for the rotating word, e.g. "Built to" or "We" */
     rot: string
     /** 'shot' = real AP Cleanco screenshot, 'wire' = generic landing-page wireframe, 'ba' = old vs new cards, 'vitals' = three speed measures, 'checklist' = upkeep checklist */
-    art: 'shot' | 'wire' | 'ba' | 'vitals' | 'checklist' | 'store' | 'headless' | 'audit'
+    art: 'shot' | 'wire' | 'ba' | 'vitals' | 'checklist' | 'store' | 'headless' | 'audit' | 'sessions' | 'sitemap' | 'tokens' | 'library' | 'agent' | 'dashboard' | 'mobile' | 'proto'
     url: string
   }
   band: [string[], string[]]
