@@ -178,6 +178,39 @@ function Wireframe() {
   )
 }
 
+/** A page wireframe with three numbered pins and a ranked findings list. Blocks only, no client data. */
+function Audit() {
+  const rows = [
+    { n: 1, w: '62%', sev: 'High' },
+    { n: 2, w: '48%', sev: 'Medium' },
+    { n: 3, w: '74%', sev: 'Low' },
+  ]
+  return (
+    <div className="cw-aud" aria-hidden>
+      <div className="cw-aud-page">
+        <i className="cw-aud-nav" />
+        <b className="cw-aud-h" />
+        <i className="cw-aud-p" />
+        <i className="cw-aud-p is-short" />
+        <span className="cw-aud-btn" />
+        <div className="cw-aud-two"><i /><i /></div>
+        <u className="cw-pin is-1">1</u>
+        <u className="cw-pin is-2">2</u>
+        <u className="cw-pin is-3">3</u>
+      </div>
+      <ul className="cw-aud-list">
+        {rows.map((r) => (
+          <li key={r.n}>
+            <u>{r.n}</u>
+            <i style={{ width: r.w }} />
+            <em className={`is-${r.sev.toLowerCase()}`}>{r.sev}</em>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function Hero({ c }: { c: C }) {
   const { hero } = c
   return (
@@ -191,7 +224,7 @@ function Hero({ c }: { c: C }) {
       <div className="wv-wrap cw-hero-in">
         <div className="cw-hero-copy">
           <nav className="wv-crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href="/services/web-development">Web Design &amp; Development</Link>/<span aria-current="page">{c.crumb}</span>
+            <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href={c.parent?.href ?? '/services/web-development'}>{c.parent?.label ?? <>Web Design &amp; Development</>}</Link>/<span aria-current="page">{c.crumb}</span>
           </nav>
           <h1 className={`wv-h1${c.h1.some((l) => l.length > 13) ? ' is-long' : ''}`}>
             <KineticTitle as="p" lines={c.h1} accent={1} delay={0.1} />
@@ -201,7 +234,7 @@ function Hero({ c }: { c: C }) {
             <div className="wv-cta-row">
               <Magnetic>
                 <Link href="/contact" className="wv-btn wv-btn-y">
-                  Get a free website audit <Arrow size={15} />
+                  {c.cta ?? 'Get a free website audit'} <Arrow size={15} />
                 </Link>
               </Magnetic>
               <Link href="#proof" className="wv-btn wv-btn-ghost">
@@ -221,7 +254,7 @@ function Hero({ c }: { c: C }) {
             </div>
           </Reveal>
         </div>
-        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${['vitals', 'checklist', 'store', 'headless'].includes(hero.art) ? ' is-card' : ''}`}>
+        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${['vitals', 'checklist', 'store', 'headless', 'audit'].includes(hero.art) ? ' is-card' : ''}`}>
           {hero.art === 'ba' ? (
             <BeforeAfter />
           ) : (
@@ -242,6 +275,7 @@ function Hero({ c }: { c: C }) {
               {hero.art === 'checklist' && <Checklist />}
               {hero.art === 'store' && <Store />}
               {hero.art === 'headless' && <Headless />}
+              {hero.art === 'audit' && <Audit />}
             </div>
           )}
           <span className="cw-hero-tag">
@@ -529,7 +563,7 @@ function Proof({ c }: { c: C }) {
   return (
     <section className="wv-sec" id="proof">
       <div className="wv-wrap">
-        <Section title={['Sites we', 'have shipped']} aside={<p>{proof.aside}</p>} />
+        <Section title={c.proofTitle ?? ['Sites we', 'have shipped']} aside={<p>{proof.aside}</p>} />
         <div className="wv-stack">
           {cases.map((p, i) => (
             <ProofCard key={p.slug} p={p} i={i} total={total} metric={proof.metric[p.slug]} />
@@ -578,21 +612,22 @@ const WEB_QUOTES = [
   { tab: 'Cozmo Realty', ...who('Sang Hyun Han'), logo: undefined as string | undefined },
 ]
 
-export function Quote() {
+export function Quote({ quotes }: { quotes?: C['quotes'] }) {
   const reduce = useReducedMotion()
+  const list = quotes ? quotes.map((x) => ({ tab: x.tab, ...who(x.name), logo: undefined as string | undefined })) : WEB_QUOTES
   const [a, setA] = useState(0)
   useEffect(() => {
     if (reduce) return
-    const t = setInterval(() => setA((v) => (v + 1) % WEB_QUOTES.length), 7000)
+    const t = setInterval(() => setA((v) => (v + 1) % list.length), 7000)
     return () => clearInterval(t)
-  }, [reduce, a])
-  const q = WEB_QUOTES[a]
+  }, [reduce, a, list.length])
+  const q = list[a]
   return (
     <section className="wv-sec cw-quote-sec" aria-label="What clients say">
       <div className="cw-ghost-circle" aria-hidden />
       <div className="wv-wrap cw-quote-in">
         <div className="cw-quote-tabs" role="tablist" aria-label="Choose a client">
-          {WEB_QUOTES.map((t, i) => (
+          {list.map((t, i) => (
             <button key={t.tab} role="tab" aria-selected={i === a} onClick={() => setA(i)} className={i === a ? 'is-on' : ''}>
               {t.tab}
             </button>
@@ -742,8 +777,8 @@ export function LeafPage({ c }: { c: C }) {
       <Compare c={c} />
       <Process steps={c.steps} />
       <Proof c={c} />
-      <Stats />
-      <Quote />
+      <Stats items={c.stats?.map((ix) => STATS[ix])} />
+      <Quote quotes={c.quotes} />
       <Fit c={c} />
       <Faq faqs={c.faqs} />
       <Related c={c} />

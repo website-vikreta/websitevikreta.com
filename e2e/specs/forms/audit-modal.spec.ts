@@ -5,7 +5,7 @@ test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', { tag
   test.beforeEach(async ({ basePage }) => {
     // The new /services/ai hub uses an inline lead form, not the sitewide popup.
     // Legacy service pages still open the audit modal from their hero CTA.
-    await basePage.navigate('/services/uiux-design');
+    await basePage.navigate('/services/digital-marketing');
   });
 
   test('Audit Modal opens from CTA and auto-focuses first input field', async ({ auditModal }) => {

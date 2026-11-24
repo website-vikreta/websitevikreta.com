@@ -8,6 +8,8 @@ export const PILLAR = {
   h1: ['Websites that', 'load, rank', 'and sell.'],
   lead: 'Custom websites and online stores for growing businesses. Fast to load, written to rank, easy for your team to edit. Our fastest site went live in 2 weeks.',
   words: ['load', 'rank', 'sell', 'convert'],
+  groupsAside: 'Three groups, nine services. Start with the one that fits, we will tell you if another one fits better.',
+  includesAside: 'Whichever group you pick, these four come standard.',
 
   groups: [
     {

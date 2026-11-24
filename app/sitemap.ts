@@ -68,6 +68,12 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.75,
   },
   {
+    url: `${BASE}/services/uiux-design/research-strategy/ux-audit`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
     url: `${BASE}/services/web-development/business-websites/company-service-websites`,
     lastModified: new Date(),
     changeFrequency: 'monthly',

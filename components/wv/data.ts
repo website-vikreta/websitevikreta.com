@@ -73,6 +73,7 @@ export type Service = {
 
 // Label → real route, for any sub-page that exists. Everything else renders as '#'.
 const PAGES: Record<string, string> = {
+  'UX audit': '/services/uiux-design/research-strategy/ux-audit',
   'Business Websites': '/services/web-development/business-websites',
   'CMS & Performance': '/services/web-development/cms-performance',
   'E-commerce': '/services/web-development/ecommerce',
