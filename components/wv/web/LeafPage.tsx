@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion, useMotionValue, type MotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
-import { BAND_A, BAND_B, BUILD, FAQS, FIT, FRICTION, HERO, PROOF, STEPS } from '@/content/web/company-websites'
+import type { LeafContent } from '@/content/web/types'
 import { CASE_STUDIES, WEB_PROJECTS } from '@/lib/work-data'
 import { CLIENT_LOGOS, QUOTES, STATS } from '../data'
 import { Arrow, CountUp, HoverLetters, KineticTitle, Magnetic, ParallaxPhoto, Photo, Reveal, RotatingWord, ScrollWords, Star, VelocityMarquee, ease } from '../ui'
@@ -11,6 +11,8 @@ import './web.css'
 
 const QUOTE = CASE_STUDIES.find((c) => c.slug === 'ap-cleanco')!
 const SHOT = WEB_PROJECTS.find((p) => p.slug === 'ap-cleanco-site')!
+
+type C = LeafContent
 
 function Section({ title, aside }: { title: string[]; aside?: React.ReactNode }) {
   return (
@@ -21,7 +23,37 @@ function Section({ title, aside }: { title: string[]; aside?: React.ReactNode })
   )
 }
 
-function Hero() {
+/** A generic one-offer page, drawn with blocks. Used instead of a client screenshot on the landing-pages hero. */
+function Wireframe() {
+  return (
+    <div className="cw-wire" aria-hidden>
+      <i className="cw-wire-tag" />
+      <b className="cw-wire-h" />
+      <b className="cw-wire-h is-soft" />
+      <i className="cw-wire-p" />
+      <i className="cw-wire-p is-short" />
+      <div className="cw-wire-form">
+        <i className="cw-wire-label" />
+        <span className="cw-wire-field"><i /></span>
+        <span className="cw-wire-field"><i className="is-long" /></span>
+        <span className="cw-wire-btn">
+          Get started <Arrow size={13} />
+        </span>
+      </div>
+      <div className="cw-wire-proof">
+        <i />
+        <span>
+          {[0, 1, 2, 3, 4].map((n) => (
+            <Star key={n} />
+          ))}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function Hero({ c }: { c: C }) {
+  const { hero } = c
   return (
     <section className="cw-hero">
       <div className="wv-grid-bg" aria-hidden />
@@ -33,13 +65,13 @@ function Hero() {
       <div className="wv-wrap cw-hero-in">
         <div className="cw-hero-copy">
           <nav className="wv-crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href="/services/web-development">Web Design &amp; Development</Link>/<span aria-current="page">Company &amp; service websites</span>
+            <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href="/services/web-development">Web Design &amp; Development</Link>/<span aria-current="page">{c.crumb}</span>
           </nav>
           <h1 className="wv-h1">
-            <KineticTitle as="p" lines={['A website that', 'works for you']} accent={1} delay={0.1} />
+            <KineticTitle as="p" lines={c.h1} accent={1} delay={0.1} />
           </h1>
           <Reveal delay={0.45} className="cw-hero-sub">
-            <p className="wv-page-lead">{HERO.lead}</p>
+            <p className="wv-page-lead">{hero.lead}</p>
             <div className="wv-cta-row">
               <Magnetic>
                 <Link href="/contact" className="wv-btn wv-btn-y">
@@ -51,11 +83,11 @@ function Hero() {
               </Link>
             </div>
             <p className="cw-rot">
-              Built to <RotatingWord words={HERO.words} />
+              Built to <RotatingWord words={hero.words} />
             </p>
             <div className="cw-hero-proof">
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                <Star /> {HERO.proof}
+                <Star /> {hero.proof}
               </span>
               <span className="wv-pill">
                 <i className="cw-dot" /> Taking new projects
@@ -69,14 +101,18 @@ function Hero() {
             <i className="cw-cross is-tr" aria-hidden />
             <div className="cw-browser-bar">
               <i /><i /><i />
-              <span>apcleanco.com</span>
+              <span>{hero.url}</span>
             </div>
-            <div className="cw-browser-shot">
-              <Photo src={SHOT.image!} alt={SHOT.imageAlt!} priority sizes="(min-width: 960px) 30vw, 90vw" />
-            </div>
+            {hero.art === 'shot' ? (
+              <div className="cw-browser-shot">
+                <Photo src={SHOT.image!} alt={SHOT.imageAlt!} priority sizes="(min-width: 960px) 30vw, 90vw" />
+              </div>
+            ) : (
+              <Wireframe />
+            )}
           </div>
           <span className="cw-hero-tag">
-            <i className="cw-dot" /> Live in 2 weeks
+            <i className="cw-dot" /> {hero.tag}
           </span>
           <a href="https://www.upwork.com/agencies/websitevikreta/" target="_blank" rel="noopener noreferrer" className="cw-hero-tag is-b">
             <Star /> Top Rated on Upwork
@@ -95,24 +131,26 @@ const GLYPHS = [
   <svg key="a" viewBox="0 0 24 24" aria-hidden><path d="M4 7h16M4 12h10M4 17h5" /></svg>,
   <svg key="b" viewBox="0 0 24 24" aria-hidden><circle cx="12" cy="12" r="8" /><path d="m6.3 17.7 11.4-11.4" /></svg>,
   <svg key="c" viewBox="0 0 24 24" aria-hidden><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>,
+  <svg key="d" viewBox="0 0 24 24" aria-hidden><path d="M4 5h16M7 11h10M10 17h4" /></svg>,
 ]
 
-function Friction() {
+function Friction({ c }: { c: C }) {
+  const { friction } = c
   return (
     <section className="wv-sec cw-friction" id="friction">
       <div className="wv-wrap cw-friction-in">
         <div>
-          <ScrollWords text={FRICTION.statement} className="wv-big-p" />
+          <ScrollWords text={friction.statement} className="wv-big-p" />
           <Reveal className="cw-friction-foot">
             <Link href="#build" className="wv-link">
               See how we fix it <Arrow size={14} />
             </Link>
           </Reveal>
           <ul className="cw-friction-list">
-            {FRICTION.items.map((f, i) => (
+            {friction.items.map((f) => (
               <li key={f.t}>
-                <span className="cw-glyph">{GLYPHS[i]}</span>
-                <Reveal delay={0.06 * i}>
+                <span className="cw-glyph">{GLYPHS[f.g]}</span>
+                <Reveal>
                   <h3>{f.t}</h3>
                   <p>{f.d}</p>
                 </Reveal>
@@ -120,13 +158,14 @@ function Friction() {
             ))}
           </ul>
         </div>
-        <ParallaxPhoto src="/services/web-development/company/friction.webp" alt="A small-business desk: a laptop stuck on a loading spinner and a phone showing Google results" className="cw-friction-photo" sizes="(min-width: 960px) 34vw, 100vw" />
+        <ParallaxPhoto src={friction.photo} alt={friction.alt} className="cw-friction-photo" sizes="(min-width: 960px) 34vw, 100vw" />
       </div>
     </section>
   )
 }
 
-function Build() {
+function Build({ c }: { c: C }) {
+  const { build } = c
   const reduce = useReducedMotion()
   const [hover, setHover] = useState<number | null>(null)
   const list = useRef<HTMLDivElement>(null)
@@ -134,11 +173,11 @@ function Build() {
   const my = useMotionValue(0)
   const x = useSpring(mx, { stiffness: 350, damping: 30 })
   const y = useSpring(my, { stiffness: 350, damping: 30 })
-  const row = hover === null ? null : BUILD.rows[hover]
+  const row = hover === null ? null : build.rows[hover]
   return (
     <section className="wv-sec cw-build" id="build">
       <div className="wv-wrap">
-        <Section title={['What you', 'get']} aside={<p>{BUILD.aside}</p>} />
+        <Section title={['What you', 'get']} aside={<p>{build.aside}</p>} />
         <div
           ref={list}
           className="wv-svc-list cw-build-list"
@@ -150,7 +189,7 @@ function Build() {
           }}
           onPointerLeave={() => setHover(null)}
         >
-          {BUILD.rows.map((r, i) => (
+          {build.rows.map((r, i) => (
             <Reveal key={r.t} delay={0.04 * i}>
               <Link href={r.href} className="wv-svc-row" aria-label={`${r.t}: see ours`} onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(i)}>
                 <span className="wv-svc-n">0{i + 1}</span>
@@ -182,7 +221,7 @@ function Build() {
   )
 }
 
-function Step({ s, i, p }: { s: (typeof STEPS.items)[number]; i: number; p: MotionValue<number> }) {
+function Step({ s, i, p }: { s: C['steps']['items'][number]; i: number; p: MotionValue<number> }) {
   const reduce = useReducedMotion()
   const from = i * 0.2
   const opacity = useTransform(p, [from, from + 0.25], [reduce ? 1 : 0.35, 1])
@@ -199,14 +238,14 @@ function Step({ s, i, p }: { s: (typeof STEPS.items)[number]; i: number; p: Moti
 }
 
 /** The four steps wake up one by one and a yellow rail fills as you scroll through them. */
-function Process() {
+function Process({ c }: { c: C }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] })
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
   return (
     <section className="wv-sec cw-steps-sec" id="process">
       <div className="wv-wrap">
-        <Section title={['Four steps,', 'no surprises']} aside={<p>{STEPS.aside}</p>} />
+        <Section title={['Four steps,', 'no surprises']} aside={<p>{c.steps.aside}</p>} />
         <div ref={ref}>
           <div className="cw-dim" aria-hidden>
             <span>01</span>
@@ -216,7 +255,7 @@ function Process() {
             <span>04</span>
           </div>
           <ol className="cw-steps">
-            {STEPS.items.map((s, i) => (
+            {c.steps.items.map((s, i) => (
               <Step key={s.n} s={s} i={i} p={scrollYProgress} />
             ))}
           </ol>
@@ -226,11 +265,11 @@ function Process() {
   )
 }
 
-function Band() {
+function Band({ c }: { c: C }) {
   return (
     <div className="wv-band" role="group" aria-label="Stack and promise">
-      <VelocityMarquee items={BAND_A} baseVelocity={-4} className="is-band" />
-      <VelocityMarquee items={BAND_B} baseVelocity={3} className="is-band is-outline" />
+      <VelocityMarquee items={c.band[0]} baseVelocity={-4} className="is-band" />
+      <VelocityMarquee items={c.band[1]} baseVelocity={3} className="is-band is-outline" />
     </div>
   )
 }
@@ -238,7 +277,7 @@ function Band() {
 type Project = (typeof WEB_PROJECTS)[number]
 
 /** Sticky slot: each card pins a little lower than the last, then scales back and dims as the next one slides over it. */
-function ProofCard({ p, i, total }: { p: Project; i: number; total: number }) {
+function StackSlot({ i, total, className, children }: { i: number; total: number; className: string; children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
@@ -246,54 +285,73 @@ function ProofCard({ p, i, total }: { p: Project; i: number; total: number }) {
   const dim = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 0.5])
   return (
     <div ref={ref} className="wv-stack-slot" style={{ top: `calc(96px + ${22 * i}px)` }}>
-      <motion.article className="cw-case" style={{ scale }}>
-        <div className="cw-case-copy">
-          <div>
-            <div className="cw-case-tags">
-              {p.skills.split(' / ').map((t) => (
-                <span key={t}>{t}</span>
-              ))}
-            </div>
-            <h3>{p.title}</h3>
-            <p>{p.description}</p>
-          </div>
-          <div>
-            {PROOF.metric[p.slug] && (
-              <div className="cw-case-metric">
-                <small>Result</small>
-                <b>{PROOF.metric[p.slug]}</b>
-              </div>
-            )}
-            <a href={p.href} target="_blank" rel="noopener noreferrer" className="wv-link">
-              View live site <Arrow size={14} />
-            </a>
-          </div>
-        </div>
-        <div className="cw-browser">
-          <div className="cw-browser-bar">
-            <i /><i /><i />
-            <span>{p.href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '')}</span>
-          </div>
-          <div className="cw-browser-shot">
-            <Photo src={p.image!} alt={p.imageAlt!} sizes="(min-width: 960px) 44vw, 90vw" />
-          </div>
-        </div>
+      <motion.article className={className} style={{ scale }}>
+        {children}
         <motion.div className="wv-card-dim" style={{ opacity: dim }} aria-hidden />
       </motion.article>
     </div>
   )
 }
 
-function Proof() {
-  const cases = PROOF.slugs.map((s) => WEB_PROJECTS.find((p) => p.slug === s)!)
+function ProofCard({ p, i, total, metric }: { p: Project; i: number; total: number; metric?: string }) {
+  return (
+    <StackSlot i={i} total={total} className="cw-case">
+      <div className="cw-case-copy">
+        <div>
+          <div className="cw-case-tags">
+            {p.skills.split(' / ').map((t) => (
+              <span key={t}>{t}</span>
+            ))}
+          </div>
+          <h3>{p.title}</h3>
+          <p>{p.description}</p>
+        </div>
+        <div>
+          {metric && (
+            <div className="cw-case-metric">
+              <small>Result</small>
+              <b>{metric}</b>
+            </div>
+          )}
+          <a href={p.href} target="_blank" rel="noopener noreferrer" className="wv-link">
+            View live site <Arrow size={14} />
+          </a>
+        </div>
+      </div>
+      <div className="cw-browser">
+        <div className="cw-browser-bar">
+          <i /><i /><i />
+          <span>{p.href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '')}</span>
+        </div>
+        <div className="cw-browser-shot">
+          <Photo src={p.image!} alt={p.imageAlt!} sizes="(min-width: 960px) 44vw, 90vw" />
+        </div>
+      </div>
+    </StackSlot>
+  )
+}
+
+function Proof({ c }: { c: C }) {
+  const { proof } = c
+  const cases = proof.slugs.map((s) => WEB_PROJECTS.find((p) => p.slug === s)!)
+  const total = cases.length + (proof.invite ? 1 : 0)
   return (
     <section className="wv-sec" id="proof">
       <div className="wv-wrap">
-        <Section title={['Sites we', 'have shipped']} aside={<p>{PROOF.aside}</p>} />
+        <Section title={['Sites we', 'have shipped']} aside={<p>{proof.aside}</p>} />
         <div className="wv-stack">
           {cases.map((p, i) => (
-            <ProofCard key={p.slug} p={p} i={i} total={cases.length} />
+            <ProofCard key={p.slug} p={p} i={i} total={total} metric={proof.metric[p.slug]} />
           ))}
+          {proof.invite && (
+            <StackSlot i={cases.length} total={total} className="cw-case is-invite">
+              <h3>{proof.invite.t}</h3>
+              <p>{proof.invite.d}</p>
+              <Link href={proof.invite.href} className="wv-btn wv-btn-y">
+                {proof.invite.cta} <Arrow size={15} />
+              </Link>
+            </StackSlot>
+          )}
         </div>
       </div>
     </section>
@@ -374,7 +432,7 @@ function Quote() {
   )
 }
 
-function Fit() {
+function Fit({ c }: { c: C }) {
   return (
     <section className="wv-sec cw-fit">
       <div className="wv-wrap">
@@ -383,7 +441,7 @@ function Fit() {
           <div>
             <h3>A good fit</h3>
             <ul>
-              {FIT.good.map((t) => (
+              {c.fit.good.map((t) => (
                 <li key={t}>
                   <Star /> <span>{t}</span>
                 </li>
@@ -393,7 +451,7 @@ function Fit() {
           <div>
             <h3>Probably not</h3>
             <ul>
-              {FIT.notFit.map((n) => (
+              {c.fit.notFit.map((n) => (
                 <li key={n.t}>
                   <i className="cw-dash" aria-hidden />
                   <div>
@@ -413,14 +471,14 @@ function Fit() {
   )
 }
 
-function Faq() {
+function Faq({ c }: { c: C }) {
   const [open, setOpen] = useState(0)
   return (
     <section className="wv-sec" id="faq">
       <div className="wv-wrap">
         <Section title={['Questions', 'we get asked']} />
         <div>
-          {FAQS.map((f, i) => (
+          {c.faqs.map((f, i) => (
             <div key={f.q} className={`cw-faq-item${open === i ? ' is-open' : ''}`}>
               <h3>
                 <button className="cw-faq-q" aria-expanded={open === i} aria-controls={`cw-faq-${i}`} onClick={() => setOpen(open === i ? -1 : i)}>
@@ -441,49 +499,60 @@ function Faq() {
   )
 }
 
-const RELATED = [
-  { t: 'Landing pages', d: 'One page, one job. Built to turn a campaign into enquiries.' },
-  { t: 'Website redesign & migration', d: 'Replace the old site without losing the rankings it earned.' },
-  { t: 'Website maintenance', d: 'Updates, backups and fixes, so it keeps working.' },
-]
-
-function Related() {
+function Related({ c }: { c: C }) {
   return (
     <section className="wv-sec cw-rel">
       <div className="wv-wrap">
         <h2 className="cw-rel-title">Keep exploring</h2>
         <div className="cw-rel-grid">
-          {RELATED.map((r, i) => (
-            <Reveal key={r.t} delay={0.06 * i}>
-              <div className="cw-rel-card">
+          {c.related.map((r, i) => {
+            const inner = (
+              <>
                 <div>
                   <h3>{r.t}</h3>
                   <p>{r.d}</p>
                 </div>
-                <span className="wv-chip">Coming soon</span>
-              </div>
-            </Reveal>
-          ))}
+                {r.href ? (
+                  <span className="wv-link">
+                    Open <Arrow size={14} />
+                  </span>
+                ) : (
+                  <span className="wv-chip">Coming soon</span>
+                )}
+              </>
+            )
+            return (
+              <Reveal key={r.t} delay={0.06 * i}>
+                {r.href ? (
+                  <Link href={r.href} className="cw-rel-card is-link">
+                    {inner}
+                  </Link>
+                ) : (
+                  <div className="cw-rel-card">{inner}</div>
+                )}
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
 
-export function CompanyWebsites() {
+export function LeafPage({ c }: { c: C }) {
   return (
     <main>
-      <Hero />
-      <Band />
-      <Friction />
-      <Build />
-      <Process />
-      <Proof />
+      <Hero c={c} />
+      <Band c={c} />
+      <Friction c={c} />
+      <Build c={c} />
+      <Process c={c} />
+      <Proof c={c} />
       <Stats />
       <Quote />
-      <Fit />
-      <Faq />
-      <Related />
+      <Fit c={c} />
+      <Faq c={c} />
+      <Related c={c} />
     </main>
   )
 }

@@ -1,3 +1,5 @@
+import type { LeafContent } from './types'
+
 /** Copy for /services/web-development/business-websites/company-service-websites. Real proof only: figures come from lib/work-data.ts and components/wv/data.ts. */
 
 export const PATH = '/services/web-development/business-websites/company-service-websites'
@@ -11,9 +13,9 @@ export const HERO = {
 export const FRICTION = {
   statement: 'Most company websites look fine and sell nothing. They are slow, buried on Google, and every small edit means calling a developer.',
   items: [
-    { t: 'It loads slowly.', d: 'Visitors leave before the page finishes.' },
-    { t: 'Nobody finds it.', d: 'Great work, invisible on Google.' },
-    { t: 'You cannot edit it.', d: 'Every change waits on someone else.' },
+    { t: 'It loads slowly.', d: 'Visitors leave before the page finishes.', g: 0 as const },
+    { t: 'Nobody finds it.', d: 'Great work, invisible on Google.', g: 1 as const },
+    { t: 'You cannot edit it.', d: 'Every change waits on someone else.', g: 2 as const },
   ],
 }
 
@@ -81,3 +83,27 @@ export const FAQS = [
   },
   { q: 'What happens after launch?', a: 'We hand it over and train your team. If you want help later, we offer maintenance.' },
 ]
+
+const RELATED = [
+  { t: 'Landing pages', d: 'One page, one job. Built to turn a campaign into enquiries.', href: '/services/web-development/business-websites/landing-pages' },
+  { t: 'Website redesign & migration', d: 'Replace the old site without losing the rankings it earned.' },
+  { t: 'Website maintenance', d: 'Updates, backups and fixes, so it keeps working.' },
+]
+
+export const COMPANY: LeafContent = {
+  crumb: 'Company & service websites',
+  h1: ['A website that', 'works for you'],
+  hero: { ...HERO, tag: 'Live in 2 weeks', art: 'shot', url: 'apcleanco.com' },
+  band: [BAND_A, BAND_B],
+  friction: {
+    ...FRICTION,
+    photo: '/services/web-development/company/friction.webp',
+    alt: 'A small-business desk: a laptop stuck on a loading spinner and a phone showing Google results',
+  },
+  build: BUILD,
+  steps: STEPS,
+  proof: PROOF,
+  fit: FIT,
+  faqs: FAQS,
+  related: RELATED,
+}

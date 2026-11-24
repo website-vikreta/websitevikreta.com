@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import '@/app/wv.css'
-import { CompanyWebsites } from '@/components/wv/web/CompanyWebsites'
+import { LeafPage } from '@/components/wv/web/LeafPage'
 import { wvFonts } from '@/components/wv/fonts'
 import { ScrollProgress, Smooth } from '@/components/wv/ui'
 import { ORGANIZATION_REF, SITE_URL } from '@/config/site'
-import { FAQS, PATH } from '@/content/web/company-websites'
+import { COMPANY, FAQS, PATH } from '@/content/web/company-websites'
 
 const URL = `${SITE_URL}${PATH}`
 const TITLE = 'Company & Service Website Design and Development | Website Vikreta'
@@ -56,7 +56,7 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ScrollProgress />
       <Smooth />
-      <CompanyWebsites />
+      <LeafPage c={COMPANY} />
     </div>
   )
 }
