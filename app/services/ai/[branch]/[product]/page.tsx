@@ -4,7 +4,7 @@ import { BASE, BRANCHES, pillarOf, getBranch, getProduct, productParams } from '
 import { productMetadata, productSchema } from '@/lib/ai-automations-seo'
 import '../../pages.css'
 
-export const dynamicParams = false
+export const dynamicParams = true
 export const generateStaticParams = productParams
 
 type P = { params: Promise<{ branch: string; product: string }> }

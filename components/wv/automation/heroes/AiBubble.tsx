@@ -75,13 +75,25 @@ export function AiBubble({ className = '', host }: { className?: string; host?: 
     const sh = (type: number, src: string) => {
       const s = gl.createShader(type)!
       gl.shaderSource(s, src); gl.compileShader(s)
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.error('AiBubble shader:', gl.getShaderInfoLog(s))
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+        const log = gl.getShaderInfoLog(s)
+        if (log) console.error('AiBubble shader:', log)
+        gl.deleteShader(s)
+        setOk(false)
+        return s
+      }
       return s
     }
     const pr = gl.createProgram()!
     gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS))
     gl.linkProgram(pr)
-    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { console.error('AiBubble link:', gl.getProgramInfoLog(pr)); setOk(false); return }
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+      const log = gl.getProgramInfoLog(pr)
+      if (log) console.error('AiBubble link:', log)
+      gl.deleteProgram(pr)
+      setOk(false)
+      return
+    }
     gl.useProgram(pr)
     const buf = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, buf)

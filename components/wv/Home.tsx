@@ -16,6 +16,11 @@ function Hero() {
   const by = useTransform(sy, (v) => -18 * v)
   const fx = useTransform(sx, (v) => 26 * v)
   const fy = useTransform(sy, (v) => 26 * v)
+  // The back image animates its own y (60 -> 0), which writes to the motion
+  // value it shares via style. The tag needs its own values or it inherits
+  // that entrance offset and hydration fails.
+  const tagX = useTransform(sx, (v) => -18 * v)
+  const tagY = useTransform(sy, (v) => -18 * v)
   const { scrollY } = useScroll()
   const opacity = useTransform(scrollY, [0, 600], [1, 0.2])
   const y = useTransform(scrollY, [0, 600], [0, reduce ? 0 : -80])
@@ -85,7 +90,7 @@ function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             className="wv-hero-tag is-b"
-            style={{ x: bx, y: by }}
+            style={{ x: tagX, y: tagY }}
             initial={!reduce && { opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease, delay: 0.95 }}

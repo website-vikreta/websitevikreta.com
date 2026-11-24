@@ -144,6 +144,9 @@
 }
 
 html {
+  /* Motion's useScroll measures documentElement as the scroll container and
+     warns in dev unless it is positioned. */
+  position: relative;
   overflow-x: clip;
   scrollbar-gutter: stable;
   background-color: var(--color-bg);
