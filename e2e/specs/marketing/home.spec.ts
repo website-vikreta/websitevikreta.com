@@ -1,6 +1,5 @@
 import { test, expect } from '../../fixtures/test';
 import { PRODUCTION_VIEWPORTS } from '../../helpers/responsive-viewports';
-import { TEST_LEAD } from '../../fixtures/test-data';
 import { expectAllLinksWork, expectCleanFullScroll, expectSectionOrder } from '../../helpers/page-checks';
 
 /**
@@ -11,35 +10,27 @@ import { expectAllLinksWork, expectCleanFullScroll, expectSectionOrder } from '.
 
 /** Every landing section heading, in the order they must appear top to bottom (text match is case-insensitive). */
 const SECTION_HEADINGS = [
-  'We automate the busywork',
-  "WHO WE'VE BUILT FOR",
-  'RESULTS, NOT PROMISES',
-  'WHAT WE DO',
-  'HOW WE WORK',
-  'WHY WEBSITE VIKRETA',
-  'THE NUMBERS SO FAR',
-  'WHAT CLIENTS SAY',
-  'BOOK A FREE CALL',
-  'QUESTIONS, ANSWERED',
-  'FROM THE BLOG',
-  "TELL US WHAT'S SLOWING YOU DOWN",
+  'What we build',
+  'Small team. Real results.',
+  'Featured projects',
+  'How we work',
+  'Got something worth building?',
 ];
 
 const STATS = [
-  ['5+', 'Years working with founders and teams across the globe'],
-  ['68+', 'Projects shipped: websites, apps, automation, design'],
-  ['6,360+', 'Hours saved for clients since we went AI-first'],
+  ['6+', 'Years working with founders across the globe'],
+  ['68+', 'Projects shipped: sites, apps, automations'],
+  ['6,360+', 'Hours saved for clients since going AI-first'],
+  ['100%', 'Job Success on Upwork, Top Rated'],
 ];
 
 const SERVICE_HREFS = [
   '/services/ai',
   '/services/web-development',
-  '/services/web-mobile-app-development',
+  '/services/apps-crm',
   '/services/uiux-design',
   '/services/digital-marketing',
 ];
-
-const TESTIMONIAL_NAMES = ['Darcy McGilvery', 'John Kim', 'Stacey Bae', 'Rudra Ghodke', 'Sang Hyun Han', 'Benoit Marcell'];
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];
 
@@ -59,27 +50,16 @@ test.describe('Landing Page: Structure & Health', { tag: '@critical' }, () => {
   });
 });
 
-test.describe('Landing Page: Hero & Lead Journey (mocked email)', () => {
-  test('Book a free audit → audit modal → submit sends the fake test identity, never a real lead', { tag: ['@forms', '@critical'] }, async ({
-    page,
-    homePage,
-    auditModal,
-  }) => {
+test.describe('Landing Page: Hero & Lead Journey', () => {
+  test('"Book a free Consultation" goes to the contact form, not a popup', { tag: ['@forms', '@critical'] }, async ({ page, homePage }) => {
     await homePage.goto();
     await homePage.waitForHeroReveal();
-    await auditModal.openViaTrigger(homePage.primaryCta);
-    await auditModal.fillForm(TEST_LEAD);
-
-    const sent = page.waitForRequest(/api\.emailjs\.com/);
-    await auditModal.submit();
-    await auditModal.verifySuccessState();
-
-    const request = await sent;
-    expect(await (await request.response())?.text(), 'EmailJS was not mocked').toBe('OK');
-    expect(request.postDataJSON().template_params).toMatchObject({ name: TEST_LEAD.name, email: TEST_LEAD.email, mobile: TEST_LEAD.phone });
+    await homePage.primaryCta.click();
+    await expect(page).toHaveURL(/\/contact$/);
+    await expect(page.locator('form.wv-ct-form')).toBeVisible();
   });
 
-  test('"See our work" navigates to /work', async ({ page, homePage }) => {
+  test('"See the work" navigates to /work', async ({ page, homePage }) => {
     await homePage.goto();
     await homePage.waitForHeroReveal();
     await homePage.secondaryCta.click();
@@ -93,7 +73,7 @@ test.describe('Landing Page: Hero & Lead Journey (mocked email)', () => {
     await expect(homePage.getH1()).toBeVisible();
     await expect(homePage.primaryCta).toBeInViewport();
     await homePage.primaryCta.click();
-    await expect(page.locator('.audit-modal-content')).toBeVisible();
+    await expect(page).toHaveURL(/\/contact$/);
   });
 });
 
@@ -102,24 +82,24 @@ test.describe('Landing Page: Sections', () => {
     await homePage.goto();
   });
 
-  test('stats show the right values', async ({ homePage }) => {
+  test('results tiles show the right values', async ({ homePage }) => {
     await homePage.stats.scrollIntoViewIfNeeded();
     for (const [value, label] of STATS) {
-      const stat = homePage.stats.getByRole('listitem').filter({ hasText: label });
+      const stat = homePage.stats.locator('.wv-stat').filter({ hasText: label });
       await expect(stat, `Missing stat "${label}"`).toBeVisible();
       await expect(stat).toContainText(value);
     }
   });
 
-  test('services: five cards link to the right service pages', async ({ homePage }) => {
-    await expect(homePage.serviceCards).toHaveCount(5);
+  test('services: five rows link to the right service pages', async ({ homePage }) => {
+    await expect(homePage.serviceRows).toHaveCount(5);
     for (const href of SERVICE_HREFS) {
-      await expect(homePage.serviceCards.and(homePage.page.locator(`a[href="${href}"]`)), `No card links to ${href}`).toHaveCount(1);
+      await expect(homePage.serviceRows.and(homePage.page.locator(`a[href="${href}"]`)), `No row links to ${href}`).toHaveCount(1);
     }
   });
 
-  test('services: a card actually navigates', async ({ page, homePage }) => {
-    const link = homePage.serviceCards.and(page.locator('a[href="/services/web-development"]'));
+  test('services: a row actually navigates', async ({ page, homePage }) => {
+    const link = homePage.serviceRows.and(page.locator('a[href="/services/web-development"]'));
     await link.scrollIntoViewIfNeeded();
     await link.click();
     await expect(page).toHaveURL(/\/services\/web-development$/);
@@ -137,41 +117,28 @@ test.describe('Landing Page: Sections', () => {
     await expect(page.locator('h1').first()).toBeVisible();
   });
 
-  test('testimonials: quotes and author names render', async ({ homePage }) => {
-    await expect(homePage.testimonials.locator('blockquote').first()).toBeAttached();
-    for (const name of TESTIMONIAL_NAMES) await expect(homePage.testimonials).toContainText(name);
-  });
-
-  test('FAQ: answers expand and collapse', async ({ homePage }) => {
-    await expect(homePage.faqs).toHaveCount(6);
-    const first = homePage.faqs.first();
-    await first.scrollIntoViewIfNeeded();
-    await first.locator('summary').click();
-    await expect(first).toHaveAttribute('open', '');
-    await first.locator('summary').click();
-    await expect(first).not.toHaveAttribute('open', '');
-  });
-
-  test('contact: inline form is on the page', async ({ homePage }) => {
-    await expect(homePage.contactSection.locator('form')).toBeAttached();
-  });
-
-  test('book a call: Calendly embed when configured, contact fallback otherwise', async ({ homePage }) => {
-    if ((await homePage.bookCall.locator('iframe').count()) > 0) {
-      await expect(homePage.bookCall.locator('iframe[title*="Book a free call"]')).toBeAttached();
-    } else {
-      await expect(homePage.bookCall.getByRole('link', { name: 'Contact us' })).toHaveAttribute('href', '/contact');
+  test('process: four numbered steps render', async ({ homePage }) => {
+    await homePage.processSteps.first().scrollIntoViewIfNeeded();
+    await expect(homePage.processSteps).toHaveCount(5); // 4 text steps + 1 image step
+    for (const title of ['Watch', 'Find', 'Build', 'Hand over']) {
+      await expect(homePage.processSteps.filter({ hasText: title }).first()).toBeVisible();
     }
   });
 
-  test('blog preview: clicking a post title opens that post', async ({ page, homePage }) => {
-    const link = homePage.blogCards.first().getByRole('heading', { level: 3 }).getByRole('link');
-    await link.scrollIntoViewIfNeeded();
-    const href = await link.getAttribute('href');
-    expect(href).toMatch(/^\/blog\/[^/]+\/[^/]+$/);
-    await link.click();
-    await expect(page).toHaveURL(new RegExp(`${href}$`));
-    await expect(page.locator('h1').first()).toBeVisible();
+  test('testimonials: each tab swaps in its quote and author', async ({ homePage }) => {
+    const tabs = homePage.testimonials.getByRole('tab');
+    await expect(tabs).toHaveCount(6);
+    await expect(homePage.testimonials.locator('blockquote')).toHaveCount(1);
+    for (const name of ['Sang Hyun Han', 'Darcy McGilvery', 'Brad van Voorhees', 'John Kim', 'Rudra Ghodke', 'Abhinav Singh']) {
+      await homePage.testimonials.getByRole('tab', { name }).click();
+      await expect(homePage.testimonials.locator('blockquote')).toContainText(name);
+    }
+  });
+
+  test('closing CTA: consultation, email and phone are present', async ({ homePage }) => {
+    await expect(homePage.ctaSection.getByRole('link', { name: /Book a free Consultation/i })).toHaveAttribute('href', '/contact');
+    await expect(homePage.ctaSection.locator('a[href^="mailto:"]')).toBeAttached();
+    await expect(homePage.ctaSection.locator('a[href^="tel:"]')).toBeAttached();
   });
 });
 

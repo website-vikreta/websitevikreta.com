@@ -12,7 +12,6 @@ const ABOUT_HEADINGS = [
   /^What we/,
   /^How we work/,
   /^How we decide/,
-  /^Got something/,
 ];
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];

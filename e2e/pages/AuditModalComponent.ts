@@ -40,8 +40,13 @@ export class AuditModalComponent {
     this.successMessage = this.modalContent.locator('text=Thanks, we\'ll get back to you within 24 hours.');
   }
 
+  /** Any CTA whose href is wired to AUDIT_MODAL_CONFIGS opens this dialog. */
   async openViaTrigger(trigger?: Locator): Promise<void> {
-    const btn = trigger ?? this.page.locator('button:has-text("Audit"), a[href*="audit"], button:has-text("Process Audit")').locator('visible=true').first();
+    const popupHashes = ['#book-audit', '#start-project', '#get-quote', '#marketing-audit', '#book-uiux-call', '#get-uiux-quote', '#whatsapp-demo'];
+    const selector = popupHashes.map((hash) => `a[href="${hash}"]`).join(', ');
+    const btn = trigger ?? this.page.locator(selector).locator('visible=true').first();
+    // The handler lives on a client component; a click before hydration is a no-op.
+    await expect.poll(() => btn.evaluate((el) => Object.keys(el).some((k) => k.startsWith('__reactFiber')))).toBe(true);
     await btn.click();
     await expect(this.modalContent).toBeVisible({ timeout: 10000 });
   }

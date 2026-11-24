@@ -60,7 +60,7 @@ export function ProductList({ branch, persona, title }: { branch: Branch; person
     <Sec id="products" title={title ?? [`What ${persona.name}`, 'handles']}>
       <p className="wv-ax-answer"><RichText text={branch.answer} /></p>
       <div className="wv-ax-rows">
-        {branch.products.map((p) => {
+        {branch.products.map((p, i) => {
           const inner = (
             <>
               <RowLogo list={p.channels} tools={branch.tools} />
@@ -75,13 +75,17 @@ export function ProductList({ branch, persona, title }: { branch: Branch; person
             </>
           )
           return p.page ? (
-            <Link key={p.slug} href={`/services/ai/${branch.slug}/${p.slug}`} className="wv-ax-row">
-              {inner}
-            </Link>
+            <Reveal key={p.slug} delay={i * 0.05}>
+              <Link key={p.slug} href={`/services/ai/${branch.slug}/${p.slug}`} className="wv-ax-row">
+                {inner}
+              </Link>
+            </Reveal>
           ) : (
-            <PrefillLink key={p.slug} interest={p.name} className="wv-ax-row">
-              {inner}
-            </PrefillLink>
+            <Reveal key={p.slug} delay={i * 0.05}>
+              <PrefillLink key={p.slug} interest={p.name} className="wv-ax-row">
+                {inner}
+              </PrefillLink>
+            </Reveal>
           )
         })}
       </div>

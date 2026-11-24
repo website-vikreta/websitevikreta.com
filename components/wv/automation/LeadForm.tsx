@@ -33,7 +33,7 @@ export function PrefillLink({ interest, className, children }: { interest: strin
   return (
     <a
       className={className}
-      href={`?interest=${encodeURIComponent(interest)}#lead`}
+      href="#lead"
       onClick={(e) => {
         e.preventDefault()
         prefillLead(interest)

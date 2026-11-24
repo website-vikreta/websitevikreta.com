@@ -59,7 +59,7 @@ export async function expectCleanFullScroll(page: Page, basePage: BasePage, path
  * `#hash` hrefs that open the lead popup instead of scrolling (components/ui/AuditModalProvider.tsx
  * AUDIT_MODAL_CONFIGS). They need no matching id on the page. Keep in sync when a popup is added.
  */
-const POPUP_HASHES = new Set(['#book-audit', '#start-project', '#get-quote', '#marketing-audit', '#book-uiux-call', '#get-uiux-quote']);
+const POPUP_HASHES = new Set(['#book-audit', '#start-project', '#get-quote', '#marketing-audit', '#book-uiux-call', '#get-uiux-quote', '#whatsapp-demo']);
 
 /**
  * Every link in the current page's DOM (nav, drawer, main, footer — hidden ones too):
@@ -80,7 +80,7 @@ export async function expectAllLinksWork(page: Page): Promise<void> {
 
   const broken: string[] = [];
   for (const href of internal) {
-    const res = await page.request.get(href);
+    const res = await page.request.get(href, { timeout: 60_000 });
     if (!res.ok()) broken.push(`${res.status()} ${href}`);
   }
   expect.soft(broken, 'Internal links that do not load').toEqual([]);
@@ -138,4 +138,26 @@ export async function submitInlineAuditForm(page: Page, root: Locator): Promise<
     service_type: TEST_LEAD.subject,
     message: TEST_LEAD.message,
   });
+}
+
+/**
+ * Fills the wv AI lead form (components/wv/automation/LeadForm.tsx) inside `root`,
+ * submits it, and checks the "Got it." success state plus the mocked EmailJS payload.
+ * Phone is optional on this form, so it is left blank to stay country-agnostic.
+ */
+export async function submitInlineWvLeadForm(page: Page, root: Locator): Promise<void> {
+  await root.locator('input[name="name"]').fill(TEST_LEAD.name);
+  await root.locator('input[name="email"]').fill(TEST_LEAD.email);
+  await root.locator('input[name="want"]').fill(TEST_LEAD.subject);
+
+  const sent = page.waitForRequest(/api\.emailjs\.com/);
+  await root.locator('button[type="submit"]').click();
+  await expect(root.getByText('Got it.')).toBeVisible();
+
+  const request = await sent;
+  expect(await (await request.response())?.text(), 'EmailJS was not mocked').toBe('OK');
+  const params = request.postDataJSON().template_params;
+  expect(params).toMatchObject({ name: TEST_LEAD.name, email: TEST_LEAD.email, reply_to: TEST_LEAD.email });
+  expect(params.service).toMatch(/^Applied AI: /);
+  expect(params.message).toContain(TEST_LEAD.subject);
 }

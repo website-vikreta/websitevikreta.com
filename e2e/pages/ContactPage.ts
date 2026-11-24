@@ -37,7 +37,7 @@ export class ContactPage extends BasePage {
     this.resetButton = page.locator('button:has-text("Submit another request")');
 
     this.nameError = page.locator('#err-name');
-    this.jobError = page.locator('#err-job');
+    this.jobError = page.locator('#err-jobOrWebsite');
     this.emailError = page.locator('#err-email');
     this.phoneError = page.locator('#err-phone');
   }
