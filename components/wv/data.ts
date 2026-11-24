@@ -75,6 +75,10 @@ export type Service = {
 const PAGES: Record<string, string> = {
   'Company & service websites': '/services/web-development/business-websites/company-service-websites',
   'Landing pages': '/services/web-development/business-websites/landing-pages',
+  'Website redesign & migration': '/services/web-development/business-websites/website-redesign-migration',
+  'Next.js & Webflow builds': '/services/web-development/cms-performance/nextjs-webflow-builds',
+  'Core Web Vitals optimisation': '/services/web-development/cms-performance/core-web-vitals-optimisation',
+  'Website maintenance': '/services/web-development/cms-performance/website-maintenance',
   'Conversational AI': '/services/ai/conversational-ai',
   'Automation & Ops': '/services/ai/automation-ops',
   'AI Content & Ads': '/services/ai/ai-content-ads',

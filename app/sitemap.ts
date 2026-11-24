@@ -62,6 +62,30 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.7,
   },
   {
+    url: `${BASE}/services/web-development/business-websites/website-redesign-migration`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance/nextjs-webflow-builds`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance/core-web-vitals-optimisation`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance/website-maintenance`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
     url: `${BASE}/services/web-mobile-app-development`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
