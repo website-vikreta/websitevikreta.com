@@ -31,7 +31,7 @@ export const branch: Branch = {
   tools: ['whatsapp', 'instagram', 'shopify', 'woocommerce', 'stripe', 'twilio', 'googlesheets', 'slack', 'make'],
   clients: ['simpli-home', 'blancora'],
   pairsWith: ['whatsapp-automation', 'finance-automation'],
-  reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi'],
+  reading: ['/blog/ai-and-automation/ai-automation-connecting-tools', '/blog/business-growth/ai-automation-roi', '/blog/educational/ai-chatbot-cost-india'],
   lead: 'Your store sells inside WhatsApp, Instagram DM and website chat. The AI helps shoppers choose, sends a payment link and brings back abandoned carts.',
   answerQ: 'What is conversational commerce?',
   answer:
@@ -274,7 +274,7 @@ export const branch: Branch = {
           },
           {
             q: 'Does it replace my support team?',
-            a: 'No. It takes the repeat pre-sale questions so your team can focus on complex ones. For order status, returns and help after the sale, see [WhatsApp customer support](/services/ai/whatsapp-automation/whatsapp-customer-support).',
+            a: 'No. It takes the repeat pre-sale questions so your team can focus on complex ones. For order status, returns and help after the sale, see WhatsApp customer support.',
           },
         ],
         related: [

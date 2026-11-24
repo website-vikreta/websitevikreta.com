@@ -20,7 +20,7 @@ export const branch: Branch = {
     // TODO(owner): real photo
     { industry: 'Restaurant', photo: 'https://images.unsplash.com/photo-1551529563-fce9529e67ac?w=1200&q=70&auto=format&fit=crop', alt: 'Man in a cap standing across from a restaurant menu board', line: 'Saturday rush, phone ringing. The agent took six table bookings. Staff never stopped.' },
     // TODO(owner): real photo
-    { industry: 'Real estate', photo: 'https://images.unsplash.com/photo-1626178793926-22b28830aa30?w=1200&q=70&auto=format&fit=crop', alt: 'Man holding a model house at a desk with a calculator', line: 'Sunday 9 pm: buyer called about the listing. The agent booked Monday\'s showing through [appointment booking calls](/services/ai/ai-voice-agents/appointment-booking-calls).' },
+    { industry: 'Real estate', photo: 'https://images.unsplash.com/photo-1626178793926-22b28830aa30?w=1200&q=70&auto=format&fit=crop', alt: 'Man holding a model house at a desk with a calculator', line: "Sunday 9 pm: buyer called about the listing. The agent booked Monday's showing through appointment booking calls." },
   ],
   shifts: [
     { before: 'Missed calls go to voicemail', after: 'Calls answered on ring one' },
@@ -32,7 +32,7 @@ export const branch: Branch = {
   tools: ['googlecalendar', 'hubspot', 'slack', 'twilio', 'gmail', 'googlesheets', 'zoho', 'openai', 'elevenlabs', 'make'],
   clients: ['simpli-home', 'blancora', 'sustainable-bitcoin-protocol'],
   pairsWith: ['whatsapp-automation', 'workflow-automation'],
-  reading: ['/blog/ai-and-automation/establishing-human-oversight-automation', '/blog/business-growth/ai-automation-roi'],
+  reading: ['/blog/ai-and-automation/establishing-human-oversight-automation', '/blog/business-growth/ai-automation-roi', '/blog/educational/ai-chatbot-cost-india'],
   lead: 'Every call gets answered, asks the right questions and books the job into your calendar. Day, night and weekends.',
   answerQ: 'What is an AI voice agent?',
   answer:
@@ -85,11 +85,11 @@ export const branch: Branch = {
     },
     {
       q: 'Can an AI voice agent book into my calendar?',
-      a: 'Yes. It checks your live calendar, offers open slots, confirms the time and writes the booking back to Google Calendar, Calendly or your CRM. The caller gets a text confirmation. See [appointment booking calls](/services/ai/ai-voice-agents/appointment-booking-calls).',
+      a: 'Yes. It checks your live calendar, offers open slots, confirms the time and writes the booking back to Google Calendar, Calendly or your CRM. The caller gets a text confirmation. See appointment booking calls.',
     },
     {
       q: 'What happens when it cannot answer?',
-      a: 'It says so, takes a message and flags the call. You choose the rule: warm transfer in business hours, a booked callback, or a text to you. Every call has a transcript. [After-hours answering](/services/ai/ai-voice-agents/after-hours-answering) follows the same rules.',
+      a: 'It says so, takes a message and flags the call. You choose the rule: warm transfer in business hours, a booked callback, or a text to you. Every call has a transcript. After-hours answering follows the same rules.',
     },
     {
       q: 'Is it HIPAA compliant?',

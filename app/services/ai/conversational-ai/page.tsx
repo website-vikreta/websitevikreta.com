@@ -7,5 +7,5 @@ const pillar = getPillar('conversational-ai')!
 export const metadata = pillarMetadata(pillar)
 
 export default function Page() {
-  return <PillarPage pillar={pillar} />
+  return <PillarPage pillar={pillar} rated />
 }

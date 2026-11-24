@@ -9,6 +9,7 @@ export const BLOG: { href: string; title: string }[] = [
   { href: '/blog/ai-and-automation/establishing-human-oversight-automation', title: 'Human oversight in automation: where people stay in the loop' },
   { href: '/blog/ai-and-automation/ai-strategy-real-world-outcomes', title: 'AI strategy that delivers real-world outcomes' },
   { href: '/blog/educational/google-ai-search-optimization-guide', title: 'Google AI search optimization guide' },
+  { href: '/blog/educational/ai-chatbot-cost-india', title: 'Chatbot cost in India: website, WhatsApp and voice bot prices' },
 ]
 
 export const blog = (href: string) => BLOG.find((b) => b.href === href)
