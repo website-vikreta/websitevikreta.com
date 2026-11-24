@@ -1,7 +1,9 @@
 /* wv: company & service websites page (cw-*). Tokens only from .wv; no new colours. */
 
 /* Shared bits */
-.cw-hero .cw-ghost-circle{width:300px;height:300px;top:360px;right:-170px}
+/* Below 960 the section head stacks: wv.css gives it a 1fr/auto grid at every width, which squeezes the title to a few px. */
+@media (max-width:959px){.cw-page .wv-sec-head{grid-template-columns:minmax(0,1fr);align-items:start}.cw-page .wv-sec-aside{text-align:left}}
+.cw-hero .cw-ghost-circle{width:260px;height:260px;top:-90px;right:-150px}
 .cw-hero .wv-crumbs{flex-wrap:wrap;gap:4px 8px}
 @media (min-width:960px){.cw-hero .cw-ghost-circle{width:520px;height:520px;top:40px;right:-200px}}
 .cw-ghost-circle{position:absolute;border:2px solid var(--y);border-radius:50%;pointer-events:none}
@@ -27,15 +29,17 @@
 .cw-hero-proof .wv-star{color:var(--y)}
 .cw-dot{width:8px;height:8px;border-radius:50%;background:var(--y);display:inline-block}
 .cw-hero-art{position:relative;justify-self:center;width:100%;max-width:460px}
-.cw-hero-art::before{content:"";position:absolute;inset:28px -18px -22px 22px;background:var(--y);border-radius:28px}
+.cw-hero-art::before{content:"";position:absolute;inset:28px -8px -22px 16px;background:var(--y);border-radius:28px}
+@media (min-width:720px){.cw-hero-art::before{inset:28px -18px -22px 22px}}
 .cw-browser{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 60px -24px #12121259}
 .cw-browser-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
 .cw-browser-bar i{width:9px;height:9px;border-radius:50%;background:#12121233}
 .cw-browser-bar span{margin:0 auto;padding:3px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:11px;color:var(--muted)}
 .cw-browser-shot{position:relative;aspect-ratio:4/3;background:var(--surface-2)}
-.cw-hero-tag{position:absolute;left:-14px;bottom:26px;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:600}
+.cw-hero-tag{position:absolute;left:8px;bottom:26px;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:600}
 .cw-hero-foot{position:relative;z-index:1;border-top:1px solid var(--line);padding-block:22px 26px;display:grid;gap:14px}
 .cw-hero-foot>span{font-size:13px;color:var(--muted)}
+@media (min-width:720px){.cw-hero-tag{left:-14px}.cw-hero-tag.is-b{right:-10px}}
 @media (min-width:960px){
   .cw-hero{padding-top:150px}
   .cw-hero-in{grid-template-columns:1.6fr 1fr;align-items:center;gap:80px}
@@ -55,6 +59,7 @@
 .cw-glyph{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
 .cw-glyph svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .cw-friction-photo{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/5;background:var(--surface-2)}
+@media (max-width:959px){.cw-friction::after{width:420px;height:210px;border-radius:210px 210px 0 0}}
 @media (min-width:960px){
   .cw-friction-in{grid-template-columns:1.4fr .8fr;gap:80px;align-items:start}
   .cw-friction-photo{aspect-ratio:auto;min-height:560px;position:sticky;top:110px}
@@ -112,7 +117,7 @@
 /* Rotating word + tags */
 .cw-rot{display:flex;align-items:baseline;gap:.4em;font-family:var(--display);text-transform:uppercase;font-size:26px;line-height:1;margin:0}
 .cw-rot .wv-rot{color:var(--ink);background:none;padding:0}
-.cw-hero-tag.is-b{left:auto;right:-10px;top:30px;bottom:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.cw-hero-tag.is-b{left:auto;right:8px;top:30px;bottom:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
 .cw-hero-tag.is-b .wv-star{width:14px;height:14px;color:var(--y)}
 
 /* Proof */
@@ -134,11 +139,13 @@
 @media (min-width:960px){.cw-case.is-invite{grid-template-columns:1fr;padding:48px}}
 
 /* Stats: three columns */
-@media (min-width:960px){.cw-stats .wv-stats-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:719px){.cw-stats .wv-stats-grid{grid-template-columns:1fr}.cw-stats .wv-stat{border-right:0}}
+@media (min-width:720px){.cw-stats .wv-stats-grid{grid-template-columns:repeat(3,1fr)}}
 
 /* Testimonial */
 .cw-quote-sec{position:relative;overflow:hidden}
-.cw-quote-sec .cw-ghost-circle{width:480px;height:480px;top:-200px;right:-200px;opacity:.9}
+.cw-quote-sec .cw-ghost-circle{width:240px;height:240px;top:-110px;right:-120px;opacity:.9}
+@media (min-width:960px){.cw-quote-sec .cw-ghost-circle{width:480px;height:480px;top:-200px;right:-200px}}
 .cw-quote-in{position:relative;z-index:1;max-width:980px}
 .cw-quote-in blockquote p{font-size:clamp(26px,3.4vw,46px);line-height:1.15;font-weight:500;letter-spacing:-.02em;margin-top:22px}
 .cw-quote-in footer{display:flex;align-items:center;gap:14px;margin-top:34px;padding-top:26px;border-top:1px solid var(--line)}

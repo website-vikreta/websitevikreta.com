@@ -541,7 +541,7 @@ function Related({ c }: { c: C }) {
 
 export function LeafPage({ c }: { c: C }) {
   return (
-    <main>
+    <main className="cw-page">
       <Hero c={c} />
       <Band c={c} />
       <Friction c={c} />
