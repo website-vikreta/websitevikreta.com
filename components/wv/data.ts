@@ -234,7 +234,6 @@ export const NAV: NavItem[] = [
     kind: 'menu',
     children: [
       { t: 'Studio', href: '/about' },
-      { t: 'Process', href: '/#process' },
       { t: 'Careers', href: '/careers' },
     ],
   },
