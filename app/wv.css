@@ -254,7 +254,7 @@ html:has(.wv){scrollbar-gutter:auto}
 
 /* wv: text link (design-system: Components) */
 .wv-link{display:inline-flex;align-items:center;gap:6px;font-weight:600}
-.wv-link:hover{text-decoration:underline 2px;text-underline-offset:3px;text-decoration-color:var(--y)}
+
 
 /* wv: statement paragraph (design-system: Type) */
 .wv-big-p{font-size:clamp(28px,4.2vw,56px);line-height:1.12;letter-spacing:-0.02em;font-weight:500}
