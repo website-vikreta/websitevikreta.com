@@ -547,3 +547,24 @@
 .cw-pro-arrow{display:grid;place-items:center;width:30px}.cw-pro-arrow svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:420px){.cw-pro-scr{width:70px;height:124px}.cw-pro-arrow{width:20px}}
 @media (prefers-reduced-motion:reduce){.cw-pro-tap{animation:none}}
+
+/* UI/UX hero art: one size for every card, a little bigger than the web pages. */
+.cw-hero-art.is-card .cw-browser{display:flex;flex-direction:column}
+.cw-aud,.cw-ses,.cw-map,.cw-tok,.cw-lib,.cw-agt,.cw-board,.cw-mob,.cw-pro{flex:1;min-height:360px;padding:24px;align-content:center;gap:16px}
+.cw-map{justify-items:center}
+@media (min-width:960px){
+  .cw-hero-art.is-card{max-width:520px}
+  .cw-aud,.cw-ses,.cw-map,.cw-tok,.cw-lib,.cw-agt,.cw-board,.cw-mob,.cw-pro{min-height:440px;padding:32px;gap:20px}
+  .cw-board-chart{height:150px}
+  .cw-board-rows i{height:28px}
+  .cw-mob-ph{width:158px;height:310px}.cw-mob-ph.is-front{height:324px}
+  .cw-mob-img{height:76px}
+  .cw-pro-scr{width:90px;height:170px}
+  .cw-tok-row i{height:44px}
+  .cw-tok-type strong{font-size:54px}
+  .cw-tok-space{height:64px}
+  .cw-lib-code{padding:20px;gap:12px}
+  .cw-agt-me{padding:16px 18px}.cw-agt-ai{padding:16px 18px}
+  .cw-aud-page{padding:16px}.cw-aud-two i{height:40px}
+  .cw-ses-frame{min-height:190px}
+}
