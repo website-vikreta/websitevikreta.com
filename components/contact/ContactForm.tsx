@@ -5,6 +5,7 @@ import { Linkedin, Whatsapp, Instagram, Envelope, Telephone, ArrowUpRight, Arrow
 import emailjs from '@emailjs/browser'
 import { getCountries, getCountryCallingCode, parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js/min'
 import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
+import Turnstile, { type TurnstileHandle } from '@/components/wv/Turnstile'
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
@@ -97,6 +98,7 @@ export function ContactForm() {
   const [isSubmitting, setSubmit] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [sendError, setSendError] = useState(false)
+  const turnstileRef = useRef<TurnstileHandle | null>(null)
   // Country names come from Intl.DisplayNames, and Node's ICU wording can differ
   // from the browser's (e.g. "Falkland Islands" vs "Falkland Islands (Islas
   // Malvinas)"). Render the full list only after hydration so the server HTML
@@ -159,6 +161,10 @@ export function ContactForm() {
       document.getElementById(`ct-${firstBad}`)?.focus()
       return
     }
+    // Bot check must pass before any email is sent.
+    const verified = await turnstileRef.current?.verify()
+    if (verified === false) return
+
     const e164 = parsePhoneNumberFromString(form.phone.trim(), country)!.number
     setSubmit(true)
     setSendError(false)
@@ -298,6 +304,8 @@ export function ContactForm() {
           </a>
         </p>
       )}
+
+      <Turnstile ref={turnstileRef} />
 
       <button type="submit" className="wv-btn wv-btn-y" disabled={isSubmitting}>
         {isSubmitting ? (<><ArrowClockwise size={14} className="animate-spin" aria-hidden="true" />Sending…</>) : 'Send Info'}

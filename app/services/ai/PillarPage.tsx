@@ -1,16 +1,27 @@
 import Link from 'next/link'
 import { AutomationShell, Crumbs, CtaBlock, Faq, HeroCopy, JsonLd, Reading, RichText } from '@/components/wv/automation'
 import ConversationalAiHeroArt from '@/components/wv/automation/ConversationalAiHeroArt'
+import AutomationOpsHeroArt from '@/components/wv/automation/heroes/AutomationOpsHeroArt'
+import AiContentAdsHeroArt from '@/components/wv/automation/heroes/AiContentAdsHeroArt'
+import AiSearchVisibilityHeroArt from '@/components/wv/automation/heroes/AiSearchVisibilityHeroArt'
 import { Arrow, VelocityMarquee } from '@/components/wv/ui'
 import { CLIENT_LOGOS } from '@/components/wv/data'
 import { BASE, getBranch, type Pillar } from '@/content/ai'
 import { pillarSchema, showPlaceholders } from '@/lib/ai-automations-seo'
 import './pillar.css'
 
-const TRUST_ITEMS = [
+const CONVERSATIONAL_TRUST = [
   { label: 'Voice agents', text: 'Calls answered, leads booked, CRM updated — 24/7.' },
   { label: 'WhatsApp & chat', text: 'Leads get a reply in seconds, qualify and book.' },
   { label: 'Conversational commerce', text: 'Shoppers ask, pick and pay — all in the chat.' },
+]
+
+// This pillar has no AI child branches — its work lives in the SEO & GEO
+// service it links to. Mirror that page's three real focus areas here.
+const SEARCH_VISIBILITY_TRUST = [
+  { label: 'SEO & GEO foundations', text: 'Technical fixes, structured content and schema so you rank and get cited.' },
+  { label: 'Content systems', text: 'Answer-first content that keeps earning rankings and citations after launch.' },
+  { label: 'Local search', text: 'A consistent local presence across search and maps, tied to enquiries rather than vanity numbers.' },
 ]
 
 export function PillarPage({ 
@@ -19,6 +30,12 @@ export function PillarPage({
 }: { pillar: Pillar; rated?: boolean }) {
   const branches = pl.branches.flatMap((s) => getBranch(s) ?? [])
   const wa = `Hi, I'm interested in ${pl.name}`
+  // Trust items come from the branch USPs so each pillar shows its own services.
+  // Conversational AI keeps its hand-written channel copy; AI Search Visibility
+  // uses the real SEO & GEO focus areas it links to; the rest use their children.
+  const trustItems = pl.slug === 'conversational-ai' ? CONVERSATIONAL_TRUST
+    : pl.slug === 'ai-search-visibility' ? SEARCH_VISIBILITY_TRUST
+    : branches.map((b) => ({ label: b.name, text: b.usp }))
   return (
     <AutomationShell>
       <JsonLd data={pillarSchema(pl)} />
@@ -28,7 +45,10 @@ export function PillarPage({
             <div className="axpl-hero-copy">
               <HeroCopy h1={pl.h1} sub={pl.lead} interest={pl.name} waText={wa} rated={rated} />
             </div>
-            <ConversationalAiHeroArt />
+            {pl.slug === 'automation-ops' ? <AutomationOpsHeroArt />
+              : pl.slug === 'ai-content-ads' ? <AiContentAdsHeroArt />
+              : pl.slug === 'ai-search-visibility' ? <AiSearchVisibilityHeroArt />
+              : <ConversationalAiHeroArt />}
           </div>
         </section>
         <section className="axpl-ans" aria-label={pl.answerQ}>
@@ -39,7 +59,7 @@ export function PillarPage({
         </section>
         <section className="axpl-trust" aria-label="Channels">
           <div className="wv-wrap axpl-trust-in">
-            {TRUST_ITEMS.map((item) => (
+            {trustItems.map((item) => (
               <div key={item.label} className="axpl-trust-item">
                 <span className="axpl-trust-check">✓</span>
                 <div>

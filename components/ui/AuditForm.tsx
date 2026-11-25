@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { revealFadeUp } from '@/lib/gsap/reveals'
 import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
+import Turnstile, { type TurnstileHandle } from '@/components/wv/Turnstile'
 
 // ─── CSS-transition tokens (micro-interactions; per motion-spec §6) ───────────
 const CSS_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
@@ -93,6 +94,7 @@ export function AuditForm({
   const fieldId = (name: string) => `${uid}-${name}`
 
   const successRef = useRef<HTMLDivElement>(null)
+  const turnstileRef = useRef<TurnstileHandle | null>(null)
 
   // Success message: fades/rises in on submit (feedback, not a scroll reveal — load-triggered).
   useEffect(() => {
@@ -112,10 +114,7 @@ export function AuditForm({
     if (sendError) setSendError(false)
   }
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    const errs = validateForm(form)
-    if (Object.keys(errs).length > 0) { setErrors(errs); return }
+  async function sendAudit() {
     setSubmitting(true)
     setSendError(false)
     try {
@@ -146,6 +145,16 @@ export function AuditForm({
     }
   }
 
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    const errs = validateForm(form)
+    if (Object.keys(errs).length > 0) { setErrors(errs); return }
+    // Bot check must pass before any email is sent.
+    const verified = await turnstileRef.current?.verify()
+    if (verified === false) return
+    await sendAudit()
+  }
+
   function reset() {
     setSubmitted(false)
     setForm(FORM_INITIAL)
@@ -172,7 +181,6 @@ export function AuditForm({
 
   return (
     <form onSubmit={handleSubmit} noValidate className="min-w-0">
-
       {heading && (
         <h2 className="font-sans font-bold text-2xl sm:text-3xl leading-[1.1] text-(--color-text) mb-6">
           {heading}
@@ -361,6 +369,8 @@ export function AuditForm({
             </a>
           </p>
         )}
+
+        <Turnstile ref={turnstileRef} />
 
         <Button
           type="submit"

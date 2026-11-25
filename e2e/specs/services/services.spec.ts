@@ -54,7 +54,8 @@ const SERVICE_PAGES = [
   // The wv web pillar: hero CTA links to /contact, the closing is the global map CTA (no inline form), LeafPage FAQ (first answer open).
   { path: '/services/web-development', cta: /Get a free website audit/, formId: null, formKind: 'audit', ctaKind: 'link', faq: 'Questions people ask', faqKind: 'leaf', faqCount: 5, carousel: null },
   { path: '/services/uiux-design', cta: /Get a free UX audit/, formId: null, formKind: 'audit', ctaKind: 'link', faq: 'Questions people ask', faqKind: 'leaf', faqCount: 5, carousel: null },
-  { path: '/services/digital-marketing', cta: /Book a Free Marketing Audit/, formId: 'marketing-audit', formKind: 'audit', ctaKind: 'modal', faq: 'Digital Marketing FAQs', faqKind: 'region', faqCount: 4, carousel: null },
+  // SEO & GEO uses the rebuilt wv pillar: the closing Get my plan form is inline.
+  { path: '/services/digital-marketing', cta: /Get my plan/, formId: 'lead', formKind: 'wv', ctaKind: 'form', faq: 'Questions people ask', faqKind: 'native', faqCount: 6, carousel: null },
 ] as const;
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];
