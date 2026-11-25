@@ -160,7 +160,7 @@ export async function submitInlineWvLeadForm(page: Page, root: Locator): Promise
   const request = await sent;
   expect((await (await request.response())?.json())?.mocked, 'lead submit was not mocked').toBe(true);
   const params = request.postDataJSON().params;
-  expect(params).toMatchObject({ name: TEST_LEAD.name, email: TEST_LEAD.email, reply_to: TEST_LEAD.email });
+  expect(params).toMatchObject({ name: TEST_LEAD.name, email: TEST_LEAD.email }); // reply_to is added by /api/contact
   // Applied AI pages keep the old prefix; the SEO & GEO pillar sends its own.
   expect(params.service).toMatch(/^(Applied AI|SEO & GEO): /);
   expect(params.message).toContain(TEST_LEAD.subject);
