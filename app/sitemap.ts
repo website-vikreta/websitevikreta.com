@@ -7,6 +7,7 @@ import { postHref } from '@/lib/blog-url'
 import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 
 import { BRANCHES, PILLARS, BASE as AI_BASE } from '@/content/ai'
+import { SERVICES, BASE as MARKETING_BASE } from '@/content/marketing'
 
 const BASE = SITE_URL
 
@@ -62,11 +63,25 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.8,
   },
   {
-    url: `${BASE}/services/digital-marketing`,
+    url: `${BASE}${MARKETING_BASE}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.8,
   },
+  ...SERVICES.flatMap((s) => [
+    {
+      url: `${BASE}${MARKETING_BASE}/${s.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    },
+    ...s.subServices.filter((p) => p.page).map((p) => ({
+      url: `${BASE}${MARKETING_BASE}/${s.slug}/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.65,
+    })),
+  ]),
 
   // Work
   {
