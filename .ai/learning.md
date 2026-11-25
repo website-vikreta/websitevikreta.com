@@ -1,25 +1,85 @@
-# Learning Log — Uniformity & Consistency
+# Learning Log — `wv`
 
-Persistent memory of design + code conventions for this site. Every reusable decision lands here so the site stays uniform across pages and sessions.
+Reusable decisions made while building in `wv`. Read before building. One entry = one rule, exact values.
+On conflict: follow the rule or update it with a reason. Never diverge silently.
 
-## How To Use This File
+The pre-`wv` log (legacy pages, GSAP, Epilogue/Utile) is in git: `git show 3d6f391:.ai/learning.md`. Use it only when fixing a legacy page.
 
-- **Before building** any page/component: read this file. Reuse what exists. Do not reinvent.
-- **After learning** anything reusable: log it here immediately. One entry = one rule.
-- **On conflict**: if new work contradicts a logged rule, stop. Either follow the rule or update the rule with reason. Never silently diverge.
-- Keep entries short, specific, copy-pasteable. Prefer exact values (px, ms, hex, token names) over prose.
-
-## Entry Format
+## Format
 
 ```
-### [Topic] — short title
-- Rule: <the convention, exact values>
-- Where: <files/components using it>
-- Why: <reason, if not obvious>
+### [Topic] — title
+- Rule: <exact values>
+- Where: <files>
 - Date: YYYY-MM-DD
 ```
 
 ---
+
+### [System] — `wv` is the only design language
+- Rule: New work uses `app/wv.css` + `components/wv/*` only. Spec in `.ai/standards/design-system.md`.
+- Where: homepage (`WvPage`), header/footer (`SiteChrome`).
+- Date: 2026-10-30
+
+### [Color] — yellow text uses gold
+- Rule: `--y #fac800` is fill-only on light grounds. Yellow-family text/hover text = `--gold #8a6d00`. On the dark footer, `--y` text is fine.
+- Where: `.wv-eyebrow.is-y`, `.wv-mega-gt:hover`, `.wv-svc-row:hover .wv-hl-ch`.
+- Date: 2026-10-30
+
+### [Shell] — global chrome reuses `.wv` tokens without page styles
+- Rule: Header/footer render inside `.wv.wv-shell` so tokens apply but canvas background/min-height don't leak into legacy pages.
+- Where: `components/wv/SiteChrome.tsx`.
+- Date: 2026-10-30
+
+### [Motion] — split text is screen-reader safe
+- Rule: Any per-letter/per-word animation renders a `.wv-sr` copy of the full string and marks animated spans `aria-hidden`.
+- Where: `KineticTitle`, `RotatingWord`, `HoverLetters`, `ScrollWords`, `CountUp`, `VelocityMarquee`.
+- Date: 2026-10-30
+
+### [Exception] — AI Solutions nav item is the only off-palette element
+- Rule: Magenta `#c026d3` bolt + animated snake border on `.wv-nav-ai` only. Do not reuse magenta anywhere.
+- Where: `components/wv/Header.tsx`.
+- Date: 2026-10-30
+
+### [Palette] — AI pages use wv tokens only (2026-11-09, supersedes the 2026-11-07 violet/pink exception)
+- Rule: No violet/pink glow or gradient on `/services/ai/**`. `--ai-a/--ai-b/--ai` on `.wv-ax-glow` now resolve to `var(--y)` (fills only: strike lines, FAQ open marker). Closing CTA sits on `--surface`. Anton only for H1/H2 and the Week counter; list item titles are Inter Tight 600.
+- Where: `components/wv/automation/closing.css`, `app/services/ai/hub.css`.
+- Date: 2026-11-07
+
+### [Component] — `.axh-week` scroll-struck chores
+- Rule: Real number counts down with scroll (`useScroll` + `useMotionValueEvent`, state only on integer change); list items get `is-done` by threshold and a CSS strike draws in. Mobile: left column `display:contents` so the counter can stick under the header.
+- Where: `app/services/ai/Week.tsx`.
+- Date: 2026-11-07
+
+### [Motion] — never branch `initial` on `useReducedMotion`
+- Rule: It is `null` on the server, so `initial={reduce ? … : …}` causes a hydration mismatch. Keep `initial` constant; zero the `transition` when reduced.
+- Where: `Reveal`, `KineticTitle` in `components/wv/ui.tsx`.
+- Date: 2026-11-07
+
+### [Motion] — also applies to `render` branches, not just `initial`
+- Rule: Never `{cond && !reduce && <X/>}` or `initial={reduce ? …}` in a component that SSRs. `useReducedMotion()` is `null` on the server, so the server and the first client render disagree. Hide with CSS `@media (prefers-reduced-motion: reduce)` or zero the `transition`.
+- Where: sims replay button (`sims.css`), `WhatsAppHero`, `FinanceHero`, `VoiceHero`.
+- Date: 2026-11-07
+
+### [Layout] — AI pages share closing blocks
+- Rule: Every `/services/ai/**` page ends with `ProofBar`, `Reading`, `Faq`, `CtaBlock`, which now alias `components/wv/automation/closing.tsx`. Put `wv-ax-glow` on `<main>` for the shared `--ai*` accent tokens (yellow). The global map CTA is hidden on these routes (`HideOnHome`).
+- Where: `components/wv/automation/closing.tsx`, `closing.css`, `components/ui/ConditionalShell.tsx`.
+- Date: 2026-11-07
+
+### [Override] — AI hub design is owner-led, not wv defaults (owner decision 2026-11-09, revised 2026-11-10)
+- Rule: On `/services/ai` the owner's direction beats `.ai/standards/*` and design skills. Typography matches the homepage: Anton uppercase H1/H2 (H2 same size as hero H1), Inter Tight body. Section heads are heading only: no one-liner beside or under it, no heading-left/line-right split. Hero is a bento (title+CTA, live chat, WebGL AI bubble, 4 STATS tiles) on the homepage `wv-grid-bg`. "Where your week goes" is a bento of photo + minimal demo tiles. Section rhythm is one `--axs` token, tuned by visible gap, not padding. Reveals are CSS scroll-driven (`animation-timeline: view()`), opacity/translate/scale/clip-path only. No eyebrows, no decorative numbering, no stats/case studies that are not in `lib/work-data.ts` or `components/wv/data.ts`. Proof is real only.
+- Where: `app/services/ai/{page.tsx,hub.css,Explorer.tsx,WeekSlider.tsx}`, `components/wv/automation/heroes/{HubHero.tsx,AiBubble.tsx,heroes-a.css}`.
+- Date: 2026-11-10
+
+### [Component] — `.wv-mcta` global map CTA
+- Rule: The closing "Ready when you are" CTA on inner pages is `components/wv/MapCta.tsx` (mounted in `app/layout.tsx` inside `HideOnHome`). Pune = home; arcs to each market draw in (`pathLength`), then loop forever: dash flow + SMIL comet dot. Market volume = translucent yellow circles sized by owner-ranked `v` (US > UK > AU > CA > IN > NZ > rest), breathing + ripple. No client pills, no counts. Pages that render under it must not add a second closing CTA.
+- Where: `components/wv/MapCta.tsx`, `app/wv.css` (`/* wv: map cta */`).
+- Date: 2026-11-10
+
+### [Component] — `/about` roadmap + hero photo trail
+- Rule: Every block animates with an existing primitive: hero H1 `KineticTitle as="span"` + lead/CTA `Reveal` + scroll fade (Home pattern); era headlines `KineticTitle`, chips stagger in, rows `Reveal` + `HoverLetters`; cards lift −6px on hover. `.wv-rm` = sticky year rail (≥960) + scroll-lit era list; `.wv-hv` = mouse-only photo trail in the hero, hidden over text/CTAs (`HV_BLOCK`) with a 0.7s eased fade, off on touch/<960/reduced motion.
+- Where: `components/wv/About.tsx`, `content/about.ts`, `app/wv.css` (`/* wv: about */`).
+- Date: 2026-11-10
 
 ## Spacing & Layout
 
@@ -1314,3 +1374,28 @@ _None logged yet._
 - **The general lesson**: before reaching for a connected/sequential layout (timeline, arrow-chain, numbered steps), check whether the content actually has inherent order — this is the same "unordered sets stay un-numbered" rule already logged for FixesSection/Pain's flip cards, just missed on the first two passes at this exact section. A plain grid is the correct default for parallel facts; a connector/sequence layout has to be earned by the content, not applied because it looks more designed.
 - Where: `app/services/web-mobile-app-development/sections/ImpactSection.tsx`.
 - Date: 2026-09-26
+
+### [Content] — non-AI pillars use a parallel content namespace, not `content/ai`
+- Rule: `/services/digital-marketing` is a real wv pillar with the same three-tier shape as the AI pillars (pillar → service → sub-service), but its content lives in `content/marketing/` with `BASE = '/services/digital-marketing'`, not in `content/ai/branches/`. Reusing the AI branch model would force AI personas and demo machinery onto an SEO/GEO page. Routes: `[service]` and `[service]/[sub]`, both `dynamicParams = true` with `notFound()` for unknown slugs.
+- Rule: canonical truth for this section — WV does **not** run paid ad campaigns or manage ad spend. Scope is SEO foundations, AEO/GEO and content systems; ad creatives cross-link to `/services/ai/ai-content-ads`. Only proof used is the published AP Cleanco case study. No invented metrics in nav proof or copy.
+- Where: `content/marketing/{types,services,index}.ts`, `lib/marketing-seo.ts`, `app/services/digital-marketing/**`, `components/wv/data.ts`, `app/sitemap.ts`, `app/services/ai/PillarPage.tsx`.
+- Date: 2026-11-24
+
+### [Component] — marketing flow scenes and hero boards
+- Rule: `mk-*` styles in `app/services/digital-marketing/marketing.css` only; no legacy tokens. `FlowScenes.tsx` exports one animated scene per service (crawl → fix → result, buyer prompt → engines → citation, research → draft → publish). The same scene renders in the hero board **and** inside its pillar card via `CardFlow`, so the card and its hero tell one story. `useClock` supplies the shared ms clock; SSR/reduced motion get the final frame; offscreen scenes pause. Every board has an adjacent `.wv-sr` text alternative.
+- Rule: `MarketingCta` has its own marketing copy (the shared `CtaBlock` talks about AI personas). Its section id is `marketing-lead` — `LeadForm` already owns `id="lead"`, so reusing `lead` on the wrapper breaks the e2e `#lead` locator with duplicate IDs.
+- Where: `components/wv/marketing/{FlowScenes,HeroArt,Cta}.tsx`.
+- Date: 2026-11-24
+
+### [Polish] — CTA theme, hero flow, homepage process on the marketing pillar
+- Rule: a non-AI pillar's closing CTA must reuse the shared light `.axc-cta` shell (white `--surface`, dark ink), never a bespoke dark `--ink` section. The form wording was also wrong for SEO/GEO: `LeadForm` now accepts `topic='grow'` → "What do you need help with?" and an `SEO & GEO:` EmailJS service prefix; the default stays `Applied AI:` and "What should we automate?" for every AI page.
+- Rule: hero art must read as a flow at a glance, not three empty panels. `VisibilityBoard` shows one buyer question, three horizontal lanes (SEO → FOUND, AEO/GEO → CITED, Content → COMPOUND) and keeps each node at 62% opacity in its resting state so the board is never blank between animation beats.
+- Rule: to give a section the homepage `Process()` effect, copy the mechanics into local `mk-proc*` classes — pinned 300vh section, sticky 100vh inner, horizontal `x` from `useScroll`, progress rail, 380px step cards + a 520px visual card. `desktop` starts false so the pinned class is decided after mount; SSR/first render stay identical. Reduced motion and <960px get a vertical stack.
+- Where: `components/wv/marketing/{Cta,VisibilityBoard,ProcessTrack}.tsx`, `components/wv/automation/LeadForm.tsx`, `app/services/digital-marketing/{page.tsx,marketing.css}`, `e2e/helpers/page-checks.ts`.
+- Date: 2026-11-24
+
+### [Component] — Gated Cloudflare Turnstile on all lead forms
+- Rule: Every lead form under `/services/**` (inline `LeadForm` on the AI and SEO/GEO pages, and `AuditForm` in inline contact sections and the `#book-audit` popup) uses Cloudflare Turnstile immediately before the submit button. The widget is rendered with `appearance: 'always'` but `execution: 'execute'`, and stays behind a "Tick above to verify" placeholder until the visitor ticks the checkbox. That tick is the only gate that can start verification: it reveals and executes the widget, posts the token to `/api/captcha/verify`, and EmailJS fires only on `success: true`. `TurnstileHandle.verify()` returns true only after that click-to-verified flow, so Cloudflare's auto-solve on trusted visitors can never submit the form by itself. Never clip/collapse the container — `.wv-turnstile` must give the iframe room to render. Failure message: "CAPTCHA verification failed — please retype CAPTCHA and try again."
+- Where: `components/wv/Turnstile.tsx` (widget + `verify()`), `app/api/captcha/verify/route.ts` (server siteverify), `components/wv/automation/LeadForm.tsx`, `components/ui/AuditForm.tsx`, `app/globals.css` (`.wv-turnstile*` styles).
+- Env: `NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY` (browser) + `CLOUDFLARE_TURNSTILE_SECRET_KEY` (server-only). Widget dashboard mode must be Managed; `execution: 'execute'` and the placeholder gate are set in code.
+- Date: 2026-11-25

@@ -6,7 +6,20 @@ import { CASE_STUDIES } from '@/lib/work-data'
 import { postHref } from '@/lib/blog-url'
 import { BLOG_SEARCH_PATH } from '@/lib/blog-search-params'
 
+import { BRANCHES, PILLARS, BASE as AI_BASE } from '@/content/ai'
+import { SERVICES, BASE as MARKETING_BASE } from '@/content/marketing'
+
 const BASE = SITE_URL
+
+const aiRoutes: MetadataRoute.Sitemap = [
+  ...PILLARS.map((p) => ({ url: `${BASE}${AI_BASE}/${p.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.85 })),
+  ...BRANCHES.flatMap((b) => [
+  { url: `${BASE}${AI_BASE}/${b.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
+  ...b.products.filter((p) => p.page).map((p) => ({
+    url: `${BASE}${AI_BASE}/${b.slug}/${p.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7,
+  })),
+]),
+]
 
 const staticRoutes: MetadataRoute.Sitemap = [
   // Home
@@ -19,11 +32,12 @@ const staticRoutes: MetadataRoute.Sitemap = [
 
   // Services
   {
-    url: `${BASE}/services/ai-automations`,
+    url: `${BASE}/services/ai`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.9,
   },
+  ...aiRoutes,
   {
     url: `${BASE}/services/ai-automations/whatsapp-automation`,
     lastModified: new Date(),
@@ -35,6 +49,150 @@ const staticRoutes: MetadataRoute.Sitemap = [
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.8,
+  },
+  {
+    url: `${BASE}/services/web-development/business-websites`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/uiux-design/research-strategy`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/uiux-design/design-systems`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/uiux-design/product-design`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  },
+  {
+    url: `${BASE}/services/uiux-design/product-design/saas-dashboard-ui`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/product-design/mobile-app-design`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/product-design/interactive-prototypes`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/design-systems/figma-design-systems`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/design-systems/component-libraries`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/design-systems/design-for-ai-agents`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/research-strategy/user-interviews-testing`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/research-strategy/information-architecture`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/uiux-design/research-strategy/ux-audit`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/business-websites/company-service-websites`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/business-websites/landing-pages`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/business-websites/website-redesign-migration`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance/nextjs-webflow-builds`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance/core-web-vitals-optimisation`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/cms-performance/website-maintenance`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce/shopify-development`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce/woocommerce-stores`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    url: `${BASE}/services/web-development/ecommerce/headless-commerce`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
   },
   {
     url: `${BASE}/services/web-mobile-app-development`,
@@ -49,11 +207,25 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.8,
   },
   {
-    url: `${BASE}/services/digital-marketing`,
+    url: `${BASE}${MARKETING_BASE}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 0.8,
   },
+  ...SERVICES.flatMap((s) => [
+    {
+      url: `${BASE}${MARKETING_BASE}/${s.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    },
+    ...s.subServices.filter((p) => p.page).map((p) => ({
+      url: `${BASE}${MARKETING_BASE}/${s.slug}/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.65,
+    })),
+  ]),
 
   // Work
   {
@@ -133,6 +305,14 @@ const staticRoutes: MetadataRoute.Sitemap = [
     priority: 0.4,
   },
 
+  // Sitemap (HTML)
+  {
+    url: `${BASE}/sitemap`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.3,
+  },
+
   // Legal
   {
     url: `${BASE}/legal/privacy-policy`,
@@ -154,14 +334,11 @@ const staticRoutes: MetadataRoute.Sitemap = [
   },
 ]
 
-// Latest posts only. The full archive is reachable via /blog and the taxonomy
-// hubs; listing every post here just bloats the sitemap without adding
-// discovery value.
-const BLOG_POST_LIMIT = 12
-
+// Every published post. Revalidated hourly via the fetch cache below, so new
+// and edited Sanity content shows up without a redeploy.
 const BLOG_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))]
-    | order(coalesce(publishedAt, _createdAt) desc)[0...${BLOG_POST_LIMIT}] {
+    | order(coalesce(publishedAt, _createdAt) desc) {
     "slug": slug.current,
     "categorySlug": category->slug.current,
     _updatedAt

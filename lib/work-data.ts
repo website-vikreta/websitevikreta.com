@@ -98,13 +98,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       'Garage cleaning company, no web presence at all. We built the marketing site from scratch. Local SEO baked in, loads fast, written to convert.',
     excerpt:
       'A local service business with no digital presence. We built a fast marketing site with local SEO and copy written to convert enquiries.',
-    metric: { value: '3 weeks', label: 'Concept to launch' },
+    metric: { value: '2 weeks', label: 'Concept to launch' },
     challenge:
       'AP Cleanco had no website, no search visibility, and no system for turning local enquiries into booked jobs.',
     approach:
       'We built a custom Next.js marketing site from scratch: fast loads, local SEO structure, and conversion-focused copy for a garage cleaning service.',
     result:
-      'A credible online presence live in three weeks, with a site built to rank locally and convert visitors into leads.',
+      'A credible online presence live in two weeks, with a site built to rank locally and convert visitors into leads.',
     testimonial: {
       quote: 'Fastest turnaround we had. Quality was better than agencies charging 5x.',
       role: 'Co-founder, AP Cleanco',

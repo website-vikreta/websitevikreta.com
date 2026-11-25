@@ -153,7 +153,7 @@ export default function TermsAndConditionsPage() {
   return (
     <LegalPageLayout
       title="Terms & Conditions"
-      lastUpdated="August 19, 2020"
+      lastUpdated="November 10, 2026"
       sections={sections}
     />
   )

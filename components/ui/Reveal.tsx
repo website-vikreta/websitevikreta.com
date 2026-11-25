@@ -19,7 +19,7 @@ const VIEWPORT = { once: true, amount: 0.1, margin: REVEAL_MARGIN } as const
  * reveal as the service pages: SplitText breaks the copy into lines, each line
  * is masked with overflow-hidden, and the lines slide up one by one. The old
  * motion/react version masked the block as a single unit, which is why headings
- * here read differently from /services/ai-automations.
+ * here read differently from /services/ai.
  */
 export function RevealText({
   as = 'div',

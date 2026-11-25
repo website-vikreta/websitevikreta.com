@@ -35,3 +35,21 @@ export const ORGANIZATION_REF = {
  * effect until the next one.
  */
 export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL ?? ''
+
+/** Founded August 2020. Single source for "N years in" copy and JSON-LD foundingDate. */
+export const FOUNDED = { year: 2020, month: 8 } as const
+export const FOUNDING_DATE = '2020-08'
+
+const WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen']
+
+/** Whole years since founding, e.g. 6 in Nov 2026. */
+export function yearsIn(now = new Date()): number {
+  const y = now.getFullYear() - FOUNDED.year
+  return now.getMonth() + 1 >= FOUNDED.month ? y : y - 1
+}
+
+/** "Six years in" */
+export function yearsInPhrase(now = new Date()): string {
+  const n = yearsIn(now)
+  return `${WORDS[n] ?? n} years in`
+}

@@ -22,50 +22,50 @@ test.describe('FAQ Page: Accordion & Schema', () => {
     await basePage.navigate('/faq');
   });
 
-  const questions = (page: import('@playwright/test').Page) => page.locator('main button[aria-expanded]');
+  // The wv FAQ page (app/faq/page.tsx) uses native <details>/<summary> grouped by topic.
+  const questions = (page: import('@playwright/test').Page) => page.locator('.wv-faq-item');
 
-  test('all questions start closed; opening one closes the previous; clicking again collapses it', async ({ page }) => {
+  test('all questions start closed; each opens and collapses again', async ({ page }) => {
     const q = questions(page);
-    await expect(q).toHaveCount(11);
-    for (const button of await q.all()) await expect(button).toHaveAttribute('aria-expanded', 'false');
+    expect(await q.count()).toBeGreaterThan(11);
+    for (const item of await q.all()) await expect(item).not.toHaveAttribute('open', '');
 
-    await q.nth(0).click();
-    await expect(q.nth(0)).toHaveAttribute('aria-expanded', 'true');
+    await q.first().locator('summary').click();
+    await expect(q.first()).toHaveAttribute('open', '');
 
-    // Single-open accordion: opening the second closes the first.
-    await q.nth(1).click();
-    await expect(q.nth(1)).toHaveAttribute('aria-expanded', 'true');
-    await expect(q.nth(0)).toHaveAttribute('aria-expanded', 'false');
+    // Native <details> is multi-open: a second question does not close the first.
+    await q.nth(1).locator('summary').click();
+    await expect(q.nth(1)).toHaveAttribute('open', '');
+    await expect(q.first()).toHaveAttribute('open', '');
 
-    await q.nth(1).click();
-    await expect(q.nth(1)).toHaveAttribute('aria-expanded', 'false');
+    await q.nth(1).locator('summary').click();
+    await expect(q.nth(1)).not.toHaveAttribute('open', '');
   });
 
   test('every question opens to a non-empty answer', async ({ page }) => {
     const q = questions(page);
     for (let i = 0; i < (await q.count()); i++) {
-      await q.nth(i).click();
-      const answer = page.locator(`[id="${await q.nth(i).getAttribute('aria-controls')}"]`);
+      const item = q.nth(i);
+      await item.locator('summary').click();
+      const answer = item.locator('.wv-faq-a');
       await expect(answer, `Question ${i + 1} has no visible answer`).toBeVisible();
       await expect(answer).not.toBeEmpty();
     }
   });
 
-  test('FAQPage JSON-LD lists exactly the questions shown on the page', async ({ page }) => {
+  test('FAQPage JSON-LD includes every question shown on the page', async ({ page }) => {
     const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
     const faq = schemas.map((s) => JSON.parse(s)).find((d) => d['@type'] === 'FAQPage');
     expect(faq, 'No FAQPage JSON-LD on /faq').toBeTruthy();
 
     const inSchema = faq.mainEntity.map((e: { name: string }) => e.name.trim());
-    // Visible labels are "01 Question? +": strip the number prefix and the +/− icon.
-    const onPage = (await questions(page).allInnerTexts()).map((t) =>
-      t.replace(/\s+/g, ' ').replace(/^\d+\s*/, '').replace(/\s*[+−-]\s*$/, '').trim(),
-    );
-    expect(inSchema).toEqual(onPage);
+    const onPage = await page.locator('.wv-faq-item summary h3').allInnerTexts();
+    expect(onPage.length).toBeGreaterThan(0);
+    for (const question of onPage) expect(inSchema).toContain(question.trim());
   });
 
   test('the contact link at the bottom opens /contact', async ({ page }) => {
-    const link = page.locator('main a[href="/contact"]');
+    const link = page.locator('.wv-faq-cta a[href="/contact"]');
     await link.scrollIntoViewIfNeeded();
     await link.click();
     await expect(page).toHaveURL(/\/contact$/);

@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import localFont from 'next/font/local'
-import { ConditionalNavbar } from '@/components/ui/ConditionalNavbar'
-import { ConditionalShell } from '@/components/ui/ConditionalShell'
+import { HideOnHome, HideOnStudio } from '@/components/ui/ConditionalShell'
+import { SiteBackToTop, SiteFooter, SiteHeader } from '@/components/wv/SiteChrome'
 import { ScrollManager } from '@/components/ui/ScrollManager'
 import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { AuditModalProvider } from '@/components/ui/AuditModalProvider'
-import { CTASection } from '@/components/sections/CTASection'
-import { FooterSection } from '@/components/sections/FooterSection'
+import { MapCta } from '@/components/wv/MapCta'
 import './globals.css'
 import Script from 'next/script'
 import { SITE_URL } from '@/config/site'
@@ -61,7 +60,9 @@ export default function RootLayout({
         </Suspense>
         <ScrollManager />
         <AuditModalProvider>
-          <ConditionalNavbar />
+          <HideOnStudio>
+            <SiteHeader />
+          </HideOnStudio>
           {children}
         </AuditModalProvider>
         {/* <GoToTop /> */}
@@ -119,19 +120,13 @@ export default function RootLayout({
           />
         )}
 
-      <ConditionalShell>
-        <CTASection
-          title="Ready when you are."
-          description="Free call. No commitment. Tell us what you're building, or what isn't working, and we'll tell you what we'd actually do about it. Not a pitch. Just a conversation."
-          mobileDescription="Free call. No pitch. Tell us what's broken, and we'll tell you what we'd do."
-          action={{
-            text: "Book a call",
-            href: "/contact"
-          }}
-          withGlow={true}
-        />
-        <FooterSection />
-      </ConditionalShell>
+      <HideOnStudio>
+        <HideOnHome>
+        <MapCta />
+        </HideOnHome>
+        <SiteFooter />
+        <SiteBackToTop />
+      </HideOnStudio>
       </body>
     </html>
   )

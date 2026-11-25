@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test';
 import { SERVICE_ROUTES } from '../../pages/ServicesPage';
 import { PRODUCTION_VIEWPORTS } from '../../helpers/responsive-viewports';
-import { expectAllLinksWork, expectCarouselButtonsMove, expectCleanFullScroll, submitInlineAuditForm } from '../../helpers/page-checks';
+import { expectAllLinksWork, expectCarouselButtonsMove, expectCleanFullScroll, submitInlineAuditForm, submitInlineWvLeadForm } from '../../helpers/page-checks';
 
 test.describe('Services Directory, Sub-Pages & 308 Permanent Redirects', () => {
   for (const { path } of SERVICE_ROUTES) {
@@ -47,12 +47,16 @@ test.describe('Services Directory, Sub-Pages & 308 Permanent Redirects', () => {
  * (fake identity, EmailJS mocked), the FAQ expands, the testimonial carousel moves, no overflow.
  */
 const SERVICE_PAGES = [
-  { path: '/services/ai-automations', cta: /Book a Free Process Audit/, formId: 'book-audit', faq: 'AI automation frequently asked questions', faqCount: 6, carousel: null },
-  { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, formId: 'start-project', faq: 'Apps & CRM FAQs', faqCount: 3, carousel: 'Client testimonials' },
-  { path: '/services/web-development', cta: /Book a call/, formId: 'get-quote', faq: 'Web Development FAQs', faqCount: 5, carousel: 'Client testimonials' },
-  { path: '/services/uiux-design', cta: /Book a call/, formId: 'get-quote', faq: 'UI/UX design FAQs', faqCount: 5, carousel: 'UI/UX client testimonials' },
-  { path: '/services/digital-marketing', cta: /Book a Free Marketing Audit/, formId: 'marketing-audit', faq: 'Digital Marketing FAQs', faqCount: 4, carousel: null },
-];
+  // The new Applied AI hub uses the wv inline lead form + native <details> FAQ, and its
+  // hero CTA prefills that form instead of opening the legacy audit popup.
+  { path: '/services/ai', cta: /Get my plan/, formId: 'lead', formKind: 'wv', ctaKind: 'form', faq: 'Questions people ask', faqKind: 'native', faqCount: 8, carousel: null },
+  { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, formId: 'start-project', formKind: 'audit', ctaKind: 'modal', faq: 'Apps & CRM FAQs', faqKind: 'region', faqCount: 3, carousel: 'Client testimonials' },
+  // The wv web pillar: hero CTA links to /contact, the closing is the global map CTA (no inline form), LeafPage FAQ (first answer open).
+  { path: '/services/web-development', cta: /Get a free website audit/, formId: null, formKind: 'audit', ctaKind: 'link', faq: 'Questions people ask', faqKind: 'leaf', faqCount: 5, carousel: null },
+  { path: '/services/uiux-design', cta: /Get a free UX audit/, formId: null, formKind: 'audit', ctaKind: 'link', faq: 'Questions people ask', faqKind: 'leaf', faqCount: 5, carousel: null },
+  // SEO & GEO uses the rebuilt wv pillar: the closing Get my plan form is inline.
+  { path: '/services/digital-marketing', cta: /Get my plan/, formId: 'lead', formKind: 'wv', ctaKind: 'form', faq: 'Questions people ask', faqKind: 'native', faqCount: 6, carousel: null },
+] as const;
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];
 
@@ -68,10 +72,19 @@ for (const svc of SERVICE_PAGES) {
       await expectAllLinksWork(page);
     });
 
-    test('the hero call-to-action works: Calendly in a safe new tab if configured, else the lead popup', async ({ page, basePage, auditModal }) => {
+    test('the hero call-to-action works: prefill form, Calendly new tab or the lead popup', async ({ page, basePage, auditModal }) => {
       await basePage.navigate(svc.path);
       const main = page.locator('main');
       const cta = main.getByRole('link', { name: svc.cta }).or(main.getByRole('button', { name: svc.cta })).first();
+      if (svc.ctaKind === 'link') {
+        await expect(cta).toHaveAttribute('href', '/contact');
+        return;
+      }
+      if (svc.ctaKind === 'form') {
+        await cta.click();
+        await expect(page).toHaveURL(/#lead$/);
+        return;
+      }
       if (/calendly\.com/.test((await cta.getAttribute('href')) ?? '')) {
         await expect(cta).toHaveAttribute('target', '_blank');
         await expect(cta).toHaveAttribute('rel', /noopener/);
@@ -83,16 +96,39 @@ for (const svc of SERVICE_PAGES) {
     });
 
     test('the inline lead form submits with the fake test identity (mocked email)', { tag: ['@forms', '@critical'] }, async ({ page, basePage }) => {
+      test.skip(!svc.formId, 'no inline form on this page');
       await basePage.navigate(svc.path);
       await basePage.scrollThroughPage();
-      const form = page.locator(`section#${svc.formId}`);
+      const form = page.locator(`#${svc.formId}`);
       await form.scrollIntoViewIfNeeded();
-      await submitInlineAuditForm(page, form);
+      if (svc.formKind === 'wv') await submitInlineWvLeadForm(page, form);
+      else await submitInlineAuditForm(page, form);
     });
 
     test(`FAQ lists ${svc.faqCount} questions, and clicking one expands its answer`, async ({ page, basePage }) => {
       await basePage.navigate(svc.path);
       await basePage.scrollThroughPage();
+      if (svc.faqKind === 'native') {
+        const faq = page.locator('#faq');
+        const items = faq.locator('details');
+        await expect(items).toHaveCount(svc.faqCount);
+        const first = items.first();
+        await first.scrollIntoViewIfNeeded();
+        await expect(first).not.toHaveAttribute('open', '');
+        await first.locator('summary').click();
+        await expect(first).toHaveAttribute('open', '');
+        return;
+      }
+      if (svc.faqKind === 'leaf') {
+        const questions = page.locator('#faq button[aria-expanded]');
+        await expect(questions).toHaveCount(svc.faqCount);
+        await expect(questions.first()).toHaveAttribute('aria-expanded', 'true');
+        const second = questions.nth(1);
+        await second.scrollIntoViewIfNeeded();
+        await second.click();
+        await expect(second).toHaveAttribute('aria-expanded', 'true');
+        return;
+      }
       const questions = page.getByRole('region', { name: svc.faq }).locator('button[aria-expanded]');
       await expect(questions).toHaveCount(svc.faqCount);
       const first = questions.first();

@@ -2,7 +2,7 @@
 
 ## Company
 **Name:** Website Vikreta
-**Age:** 5 years
+**Founded:** August 2020 (compute age from this; 6 years as of Nov 2026)
 **Location:** India (global clients)
 **Stage:** Pivoted 1 year ago
 

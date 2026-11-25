@@ -1,6 +1,6 @@
 # UI/UX hero — image drop folder
 
-Hero uses a **static two-frame stack** beside the headline (no floating panels, no multiplayer cursors). Monochrome + one `#FFD600` accent max per image.
+Hero uses a **static two-frame stack** beside the headline (no floating panels, no multiplayer cursors). Monochrome + one `#fac800` accent max per image.
 
 | File | Ratio | Export size | What to show |
 |------|-------|-------------|--------------|

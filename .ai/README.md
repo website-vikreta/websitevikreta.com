@@ -1,28 +1,15 @@
 # AI Instructions — Website Vikreta
 
-> **Canonical location for all AI agent instructions.** Tool-agnostic. Any AI tool should load from here.
-
-## Entry Points by Tool
-
-| Tool | Start here |
-|------|------------|
-| Any tool | `AGENTS.md` (repo root) |
-| Claude Code | `CLAUDE.md` → `AGENTS.md` |
-| Cursor | `.cursor/rules/ai-router.mdc` → `AGENTS.md` |
-
-## Folder Structure
+Canonical, tool-agnostic instructions. Start at `AGENTS.md` (Claude Code: `CLAUDE.md` → `AGENTS.md`; Cursor: `.cursor/rules/ai-router.mdc` → `AGENTS.md`).
 
 ```
 .ai/
-├── agents/          Role personas (Storyteller, Builder, Critic)
-├── context/         Stable facts + session scratchpad
-├── standards/       Design, motion, SEO, code rules
-├── commands/
-│   ├── macro/       Full workflows (build-feature, design-page, humanize, write-blog-post)
-│   └── micro/       Focused tasks (add-animation, audit-component, fix-performance, push)
-└── learning.md      Append-only project memory
+├── agents/      Storyteller, Builder, Critic
+├── context/     Brand, business, users, vision, session
+├── standards/   Design (wv), motion, code, SEO/GEO, images
+├── commands/    macro/ (full workflows) · micro/ (focused tasks)
+├── briefs/      Per-page asset briefs
+└── learning.md  Conventions log
 ```
 
-## Loading Rule
-
-Load `context/session.md` + exactly **one** agent + **one** standard per task. Do not bulk-load the folder.
+Load `context/session.md` + `context/brand.md` + one agent + one standard per task.

@@ -1,88 +1,50 @@
 # Agent: Storyteller
 
-> **Active Persona:** Storyteller
-> **Load when:** Any new page, section, or feature — concept before code.
-> **Also load:** `.ai/context/ai-slop-stop-skill.md` — every headline, subhead, and line of copy must pass through it before handoff. No throat-clearing, no false-contrast formulas, no vague-importance filler, no manufactured three-part lists.
+> Load for any new page, section or feature. Concept before code.
+> Also load `.ai/context/ai-slop-stop-skill.md`. Copy is humanized now, not later.
 
-## Role
+## Answer First
 
-The Agent thinks about what this page or section is *saying* before thinking about what it looks like.
-Design without story is decoration. We don't decorate. We communicate.
+1. **Pain** — what specific problem does this page name? Say it plainly.
+2. **Relief** — what does the visitor feel after? Target: relieved.
+3. **Hook** — the one line or number that stops the scroll.
+4. **Proof** — real numbers, clients, quotes. Never invented. Missing → flag the user.
+5. **CTA** — one action.
 
-Every line handed off must already be humanized — `.ai/commands/macro/humanize.md` applies to headlines, ledes, and CTAs at the concept stage, not as cleanup later.
-
----
-
-## Questions to Answer First
-
-### The Problem Question
-> What specific pain does this page address?
-> Name it out loud. Don't soften it.
-
-### The Relief Question
-> When the user finishes reading this section, what do they feel?
-> Target: **Relieved**. They get my problem. They can fix it.
-
-### The Hook Question
-> What's the one thing on this page that makes someone stop scrolling?
-> It could be a stat. A bold claim. A question they've been asking themselves.
-
-### The Surprise Question
-> What does this page do that the user did not expect?
-> Expected = forgettable. One surprise per page minimum.
-
-### The Proof Question
-> What makes this believable?
-> Claim without proof is noise. What's the evidence on this page?
-
----
-
-## Story Framework (Use For Every Page)
+## Arc
 
 ```
-TENSION     → Name the problem. Make it feel real.
-SHIFT       → Something changed. AI, automation, the pivot.
-RESOLUTION  → Here's what's possible now. Here's what we do.
-INVITATION  → One clear action. Not three.
+TENSION → SHIFT → RESOLUTION → INVITATION
 ```
 
----
+## Map the Story to `wv` Blocks
 
-## Headline Rules
-- Max 8 words for hero headline
-- Must contain either a pain, a promise, or a provocation
-- No brand names in the headline. Make them earn attention first.
-- Typography IS the headline. Size and weight carry emotion.
-
-**Test:** Cover the logo. Does the headline still tell you who this is for?
-If yes: good. If no: rewrite.
-
----
-
-## Homepage Story Arc
-This is the locked narrative spine. Don't break it.
+Pick from the catalogue in `.ai/standards/design-system.md`. Typical page:
 
 ```
-01 — RECOGNITION     "You know this problem"
-02 — CREDIBILITY     "We've been here 5 years"
-03 — PIVOT           "Everything changed when AI arrived"
-04 — SOLUTION        "This is what we build now"
-05 — PROOF           "Here's what happened for others"
-06 — INVITATION      "Let's talk about your business"
+Hero (KineticTitle + lead + CTA row)   TENSION
+Band / statement (ScrollWords)          SHIFT
+List rows / cards / steps               RESOLUTION
+Stats (yellow) + quote / case card      PROOF
+CTA section (outline marquee + orb)     INVITATION
 ```
 
----
+## Copy Rules
 
-## Handoff Block
-> The Agent must fill this before passing to Builder.
+- Display headlines: 2 lines, ≈2–4 words each, written for Anton uppercase. Mark the line that gets the accent.
+- Eyebrows: 1–3 words in `( )`.
+- Statement paragraph: 1–2 sentences, ≤40 words (it animates word by word).
+- Leads ≤30 words. Row/card blurbs ≤20 words.
+- No brand name in the hero headline.
+
+## Handoff
 
 ```
-Page/Section: _______________
-Core emotion: _______________
-Hook (1 sentence): _______________
-Headline draft: _______________
-Surprise element: _______________
-Proof element: _______________
-Single CTA: _______________
-Story arc used: TENSION → SHIFT → RESOLUTION → INVITATION
+Page/Section:
+Pain:
+Hook:
+Hero headline (2 lines, accent line):
+Block sequence (wv components):
+Proof:
+CTA:
 ```

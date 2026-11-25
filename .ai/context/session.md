@@ -1,94 +1,50 @@
-# Session State — Live Scratchpad
+# Session State
 
-> Update this file at the end of every task. This is the only context file loaded by default alongside the task-specific file. Keep it under 100 lines.
-
----
+> Live scratchpad. Update at the end of every task. Keep under 60 lines. History lives in git.
 
 ## Current Task
 <!-- What are we building right now? -->
-WhatsApp Packages section: equal-height 2-up pricing cards with CSS subgrid so title/price/CTA align. Eyebrow slot reserved on both cards. Full-width CTAs.
+Automation & Ops pillar (`/services/ai/automation-ops`) hero art redesign — real behaving image matching sub-page content. The abstract hub-and-spoke graph was rejected by the user; replaced with a 4-panel live "back office board":
+1. `components/wv/automation/heroes/AutomationOpsHeroArt.tsx` — four realistic animated scenes, one per child page, on one shared `useClock` loop: Workflows (Form→CRM→Slack→Gmail nodes light up, `Steps run, no hand-offs 4/4` — factual, no invented hours-saved figure); HR (Meher's face + one-line command types out, offer letter fields fill, signature draws, "Sent for e-sign ✓"); Proposals (Arjun's discovery note → 4 pages Cover/Scope/Timeline/Investment → "Sent · Opened 2×"); Finance (INV-1042 with real line items from FinanceHero, status Sent → Reminder → Reminder → PAID stamp in a reserved band). Real personas + tool marks, wv tokens only, final frame on SSR/reduced motion.
+2. `app/services/ai/pillar.css` — ao-* board styles: 2×2 grid (1 col < 620px), compact realistic cards, staggered reveal transitions, PAID stamp given its own bottom band so it never overlaps amounts (verified 0 overlaps at 1440px + 390px with reduced motion).
+3. `app/services/ai/PillarPage.tsx` — automation-ops uses AutomationOpsHeroArt + dynamic trust items from branch USPs (Workflow/HR/Proposals/Finance).
+4. `content/ai/pillars.ts` — added `reading` array (3 blog posts) to automation-ops.
+Done: tsc --noEmit clean, eslint 0 errors (1 expected `<img>` warning for small SVG tool marks), all 18 vitest pass, `npm run build` passes (241 static pages). Layout verified in Chrome via Playwright at 1440/900/390px: no broken images, no console errors, no text overlaps, no horizontal overflow. Uncommitted on `feat/automation-ops-pillar` per user request.
+
+Also done on the same branch: `ai-content-ads` pillar (`/services/ai/ai-content-ads`) hero art + Keep reading:
+1. New `components/wv/automation/heroes/AiContentAdsHeroArt.tsx` — "content studio" board: one typed brief (Ira) with Approved chip → two real child scenes on one clock. Content Automation: 5 posts appear across WordPress/LinkedIn/X/Instagram/Mailchimp with a real `8→13 /13` scheduler count. AI UGC Ads: 3 vertical ad cards (real hooks/views from `UgcHero`), platform chips, AI-disclosed label, `TOP` badge and a curiosity chip that flips "Which hook will win?" → "Hook 1 won → making 3 more". CSS `ais-*` in `pillar.css`.
+2. `PillarPage.tsx` — renders the new art for ai-content-ads; trust items now use branch USPs for every pillar with branches except conversational-ai (which keeps its hand-written channel copy). ai-content-ads trust now shows Content Automation + AI UGC Ads instead of voice/WhatsApp/commerce.
+3. `pillars.ts` — added 3 `reading` posts to ai-content-ads (Google AI search guide, human oversight, AI automation ROI); previously fell back to 2.
+Verified in Chrome at 1440/900/390px: all final-frame states present, 0 broken images, 0 console errors, 0 overflow, 3 blog links, no text overlaps. tsc clean, eslint 0 errors (1 expected img warning), 18/18 tests. Skipped `npm run build` to avoid clearing `.next` under the user's running dev server on port 3000; no routes or next.config changed.
+
+Also done on the same branch: `ai-search-visibility` pillar (`/services/ai/ai-search-visibility`). This pillar has NO AI child branches — it links to `/services/digital-marketing` (SEO & GEO), so source content there, not in `/services/ai/branches`.
+1. New `components/wv/automation/heroes/AiSearchVisibilityHeroArt.tsx` — "answer engine desk": buyer question “Who does GEO for small businesses?” goes to ChatGPT / Perplexity / Google AI (Perplexity has no logo in TOOL_LOGOS → letter fallback), an AI answer forms with a citation card to Website Vikreta, and the 5 real change areas from the pillar FAQ (answer-first content, schema markup, entity signals, crawler access, internal links) check in. Honest caveat shown: no guaranteed citations, we check where you appear. Footer mirrors the three SEO & GEO focus areas. CSS `aus-*` in `pillar.css`. `START = 700` (not 4000) so the whole story actually animates on first play.
+2. `PillarPage.tsx` — renders new art for ai-search-visibility; added `SEARCH_VISIBILITY_TRUST` using the real SEO & GEO focus areas (SEO & GEO foundations, Content & growth systems, Paid & local campaigns). Trust selection is now explicit per pillar: conversational-ai → hand-written channels, ai-search-visibility → SEO & GEO focus areas, all others → branch USPs.
+3. `pillars.ts` — added 3 `reading` posts to ai-search-visibility (Google AI search guide, AI strategy outcomes, AI automation ROI); previously fell back to 2.
+Verified in Chrome at 1440/900/390px and with live motion sampled across the loop: full sequence plays, final frame complete, no overlaps/overflow/broken images/console errors. tsc clean, eslint 0 errors (1 expected img warning), 18/18 tests. Still no build (user's dev server on 3000 left running). Nothing committed.
 
 Previous: Digital Marketing page (`/services/digital-marketing`) — built out from `ComingSoonPage` to a full page, same conversion spine as Apps & CRM: Hero → Pain → Solution → HowWeWork → Proof → FAQ → Contact. New `sections/` folder + `DigitalMarketingClient.tsx`. New `#marketing-audit` popup config added to `AuditModalProvider.tsx`. Proof section is a single AP Cleanco project card + its testimonial (only real project tagged local SEO). FAQ is a new page-local array (`dm-1`–`dm-4`), not a filtered `ALL_FAQS` subset. `tsc --noEmit` and `eslint` clean. See learning.md's 2026-08-24 `[Page] Digital Marketing` entry (and its 2026-08-28 update) for exact details.
 
-Apps & CRM page (`/services/web-mobile-app-development`) — section order now Hero → Pain → **Impact (new)** → Solution → HowWeWork → Proof → Testimonials → FAQ → Contact. Pain went through several iterations same day: flip-card grid → 2-up flip grid with user-supplied images → now a left compact-list + right auto-flipping showcase (3.8s timer, `rotateY` transition, pause-on-hover) — see learning.md's `[Section] Pain rebuilt again` entry. Pain/Solution rebuilt on previously-unused `components/ui/` scaffolds (`flip-card`, `expanding-cards`); testimonials AND Proof cards both reverted to the exact same components web-development uses (`WorkTestimonialsSection`, `ExternalProjectLink`+`SlopeProjectGrid`) per explicit ask — not every section needs different UI, only where asked. Client-logo marquee moved out of Proof to a new `LogosSection.tsx` directly under Hero, logos enlarged (`h-14/16/20`, ~5-6 visible at once). Solutions' card-picker autoplays (pause-on-hover). Fixed `aspect-video`-driven heights clipping on 1440×717 laptops — now viewport-height-aware clamps. New `ImpactSection.tsx` names what the Pain-section problems cost in growth terms (chained consequence cards, no invented stats) — kept negative-framed on purpose, unlike ai-automations' `PillarsSection` (a benefits grid) which sits in the analogous page position there. Pain flip-cards now front real user-supplied illustrations (`public/services/web-mobile-app-development/pain/*.webp`, converted from `D:\downloads` ChatGPT PNGs via `scripts/convert-to-webp.mjs`) matched to existing copy by content. `HowWeWork.tsx` deliberately left untouched. Icon/type sizes bumped on Pain and Solution cards (were reported hard to read). See learning.md's seven dated 2026-09-26 entries. Not yet reviewed live by the user — ship then iterate.
-
-Previous: UI/UX page (`/services/uiux-design`) — Clean borderless pass & balanced proof slope:
-1. Removed outer borders, dashed dividers, and hard shadows from the 3 pain cards ("Landing never earns the scroll", "Checkout asks too much", "Handoff that dev can't trust") and the "Why clients leave" badge in `JourneyFrictionGrid.tsx`.
-2. Removed all dark borders, hard drop shadows, and heavy borders from the design system micro components in `SolutionMicroCanvas.tsx` (Typography slices, property tags, Aa/H1/P display boxes, Spacing cards, "Before/After" token boxes, and Auto-layout preview cards).
-3. Tools marquee scrolling below Hero CTA buttons with exact client marquee specs. Reduced the proof cards staggered slope step difference to a balanced offset (`lg:mt-6 xl:mt-8`, `lg:mt-12 xl:mt-16`) with borderless cards. All verified clean with `tsc --noEmit`.
-
-Previous: Web Development page (`/services/web-development`) — PainSection pins full frame (`top-28 xl:top-32`, no opaque bg). Proof uses work-style screenshot grid. What we build has `#get-quote` popup CTAs per panel. Section `border-t` dividers removed on web-dev. DotGrid global fixed at `z-0` + viewport resize. Hero: `min-h-svh` + vertical center only at `xl+` (fixes iPad Pro dead space); headline uses block lines not `<br>` for GSAP line reveal.
-
-Previous: Digital Marketing page
-
-2026-08-28 follow-up pass: `GrowthDiagram.tsx` retired — the three Solution panels and the Pain-section comparison now use real ChatGPT-generated illustrations (cropped triptych for the three system cards at `public/services/digital-marketing/systems/*.png`; a matched before/after pair for `PainMetricsReveal.tsx` at `public/services/digital-marketing/{vanity-metrics-chaos,real-metrics-clarity}.png`) instead of coded diagrams/text — this page now follows Apps & CRM's real-image precedent too. `PainMetricsReveal` is an interactive drag/hover-scrub before/after slider that auto-plays once on scroll-into-view. **Not yet reviewed by the user in a real deploy — ship then iterate on feedback.**
-
-Previous: Apps & CRM page — final slug is **`/services/web-mobile-app-development`** (renamed twice this session: `web-and-mobile-apps` → `apps-crm` → `web-mobile-app-development`; both earlier slugs are now `permanentRedirect` stubs to the final one, and every internal link — Navbar, footer, ServicesBentoGrid, config/services.ts, sitemap.ts, llms.txt — points at the final slug). `SystemDiagram.tsx` was fully retired and deleted: Pain and Solution sections now use four real ChatGPT-generated images (`public/services/{tool-sprawl-integration-diagram,crm-dashboard-overview,customer-portal-overview,ecommerce-storefront-overview}.webp`, converted to WebP via sharp) instead of coded diagrams — a deliberate exception to this site's "no watercolor/cartoon illustration" anti-pattern, confirmed with the user via AskUserQuestion before proceeding. Hero's "Book a Free Project Call" now links straight to `NEXT_PUBLIC_CALENDLY_URL` (external) instead of opening the on-page form popup. `ScrollToTop` added (matches the pattern already on `ai-automations` and every `/blog` route). SEO metadata (title/description/keywords/OG/twitter/JSON-LD) replaced per a client-supplied keyword brief. The `components/ui/how-it-works.tsx` HowWeWork component and the sticky-index `SolutionSection` pattern (borrowed from `ai-automations/FixesSection.tsx`) are unchanged by this pass. **Not yet committed as of this note** — about to be.
-
-Previous, already committed as `da2a551` + a later merge commit on `feat/Apps`: built from a coming-soon placeholder to a full page. Several proposed directions were tried and explicitly rejected along the way (reusing `AutomationWorkflowCanvas`'s drag UI, a bordered intro panel + heading rewrite, a zigzag connector) — see learning.md's dated 2026-08-22 `[Rejected]`/`[Reverted]` entries before re-proposing any of those.
-
-**AI Automations restructure + sitewide Audit popup** (pulled in from `releases/2026-08`, tested on the source branch — Playwright-verified validation/EmailJS/focus-trap/mobile fit, `tsc` + `next build` clean). `/services/ai-automations` is now a 10-section page (Hero→Pain→Pillars→Fixes→StatsCounters→ClientLogosSection→HowWeWork→Why→FaqSection→Contact) with real proof only, no invented metrics. Every `#book-audit` CTA sitewide now opens a Radix Dialog popup (`components/ui/AuditModal.tsx`) instead of scrolling to a form — the contact form itself was extracted to `components/ui/AuditForm.tsx` so both the modal and `ContactSection.tsx` share one implementation. See learning.md's dated 2026-08-22 entries (`[Page] AI Automations restructured`, `[Rejected] fake product-UI chrome`, `[Section] How We Work: the numerals ARE the rail`, `[Component]` AuditModal).
-
-Both threads' code merged with zero functional overlap (different pages, no shared files touched). Only `session.md` and `learning.md` themselves had merge conflicts — both are append-only logs edited near the same spot by each branch; resolved by keeping both sides' entries.
-
-Previous: Homepage mobile PSI/a11y fix pass — DONE, user explicitly said stop here. (1) Hero's subhead/label/CTA were hidden behind a global `[data-hero-anim]{opacity:0}` rule, only shown after JS hydration + `document.fonts.ready` + a chained GSAP timeline — PSI flagged the subhead `<p>` as LCP element, 3.58s render delay. Replaced with pure-CSS `.hero-fade-in`, timed to the ORIGINAL GSAP timeline's exact durations/delays (label 0s, subhead 1.05s, CTA 1.25s — not flattened) so the perf fix doesn't change the visual pacing. Then verified via real `next build`+Lighthouse that PSI's LCP candidate just moved to the `<h1>` next (same architecture problem) — fixed that too: real headline text (`.word-inner`) now static/always-painted, an opaque `.word-mask` overlay (new) does the GSAP reveal instead, so the "rise up" look survives but nothing above the fold is JS/font-gated anymore. See learning.md [Perf] entries dated 2026-08-07 for exact mechanism/timing values — don't flatten the delays or re-hide the real text again. (2) `var(--color-accent)` as literal text color on `--color-bg` measures ~1.35:1 contrast (WCAG fail, confirmed real) on `HeroSection.tsx` "think" and `ServicesBentoGrid.tsx` "We build systems." — a highlight-box fix (passes WCAG) was tried and **explicitly rejected by user as a UI compromise**; reverted to original plain yellow text, contrast failure knowingly accepted. Don't re-propose the highlight-box without being asked. **Two of the original four PSI-report issues never matched live code** (image `sizes` — already correct on the real homepage component; GTM/TBT — already `lazyOnload`, deliberately not `@next/third-parties`), neither touched.
-**Confirmed-real, explicitly out-of-scope finding, NOT fixed**: local prod-build Lighthouse still shows LCP ~6s / poor even after both hero fixes, because ~1MB JS / ~6s main-thread work across the _whole_ homepage's client components (GSAP, motion/react, DotGrid canvas loop, GTM, hydration) is the actual remaining ceiling — not the hero. User chose "stop here, ship what's fixed" over scoping a bundle-weight reduction pass. If asked to keep improving homepage LCP, this is where the next task starts — see learning.md [Perf] "known ceiling" entry, needs its own Storyteller/Builder/Critic pass, not a quick patch.
-
-Previous: `/blog` featured hero image made strict `aspect-video` (16:9) at every breakpoint — DONE. Was `lg:aspect-auto` (stretched to match text column height); now `lg:items-center` instead of `lg:items-stretch`, image sits at its own fixed 16:9 height. Skeleton mirrors it. See learning.md [Hero] entry dated 2026-08-04.
-
-Previous: Full `/blog/*` audit + fixes — DONE for the contained items. Found via a full routing/UI/perf pass: (1) post detail page had no `<h1>` (title was `<h2>`) — fixed. (2) `BlogCard.tsx` titles were `<h2>` sitewide (should be `<h3>`) — fixed, plus its inline `style={{fontSize}}` moved to a Tailwind arbitrary-value class. (3) `/blog` index fetched every post in the blog unconditionally — capped at 24 via a new `limit` param on `fetchFilteredBlogPosts`/`FILTERED_POSTS_QUERY`. See learning.md 2026-08-04 entries for each.
-**Open, explicitly scoped out:** `/blog/categories|tags|authors/[slug]` still fetch their full matching post list unbounded (only labels caps at 100) — `InfiniteBlogGrid` needs converting to fetch-on-scroll via a server action. Not started.
-
-Before that: `/blog/search` type-to-search restored — `BlogSearchFilters.tsx` debounces the text input (400ms, `router.replace`) instead of requiring Enter/submit; explicit submit still bypasses the debounce. Reused the existing `navigate()`/GROQ-match/CDN-cache pipeline built 2026-08-03.
-
-Before that: Blog taxonomy routing fix — DONE. All 4 taxonomy routes are now plural (`/blog/categories`, `/blog/tags`, `/blog/labels`, `/blog/authors`), breadcrumbs match, index pages exist, and the 4 `[slug]` post-listing pages use a uniform lazy-loaded card grid (no featured hero). See learning.md [Nav]/[Page] entries dated 2026-08-03.
+New design language `wv` shipped on the homepage and global header/footer (commit `3d6f391`, branch `feat/navbar-update-2026-11`). Agent instructions rewritten around it on 2026-10-30. Next: migrate inner pages to `wv`.
 
 ## Locked Decisions
 
-<!-- Things decided and not up for debate again -->
+- Design language: `wv` only (`app/wv.css`, `components/wv/*`). Spec: `.ai/standards/design-system.md`.
+- Palette: canvas `#f6f4ee`, ink `#121212`, yellow `#fac800` (fill only on light), gold `#8a6d00` (yellow text), dark footer `#161616`.
+- Type: Anton (display, uppercase) + Inter Tight (text). No other faces.
+- Motion: `motion/react` + Lenis, primitives in `components/wv/ui.tsx`, ease `[0.16, 1, 0.3, 1]`. No new GSAP.
+- Header/footer: `components/wv/SiteChrome.tsx`, mounted in `app/layout.tsx`.
+- Homepage: `WvPage` → `components/wv/Home.tsx`, copy in `components/wv/data.ts`.
+- Target emotion: relieved. Proof is real only, never invented.
 
-- Palette: **Light theme** — Warm off-white bg (`#FAFAF7`) + near-black text (`#121212`) + `#FFD600` accent. Surface white is `#FFFFFF` (elevated only). Border: `#E8E8E8`. (overrides original dark-bg spec)
-- Framework: Next.js (App Router)
-- Animation: GSAP (ScrollTrigger registered in lib/gsap/index.ts)
-- Font: Epilogue only — all type (display, body, UI, labels)
-- Target emotion: Relieved
-- Button: arrow-dots interaction with variants (primary/ghost/accent, sizes sm/md/lg)
+## Legacy (still live, do not extend)
 
-## In Progress
+Inner pages (`/services/*`, `/work`, `/about`, `/blog`, `/contact`, …) use the old system: `components/sections/*`, `components/ui/*`, GSAP, `Reveal.tsx`, Utile font, `--color-*` tokens, global `CTASection`. `components/home/*` + `.home-*` CSS are an abandoned homepage draft, unused.
 
-<!-- Decisions being worked through -->
+## Open
 
-_None_
-
-## Open Questions
-
-<!-- Things that need answers before proceeding -->
-
-- Font: Epilogue (locked — single typeface, all weights)
-- CMS choice for blog (Contentful / Sanity / MDX)?
-
-## Pages Completed
-
-<!-- Route + status -->
-
-_None yet_
-
-## Components Locked
-
-<!-- Reusable components finalized and not to be changed -->
-
-- `components/ui/Navbar.tsx` — fixed nav, real logo, hover dropdowns, mobile drawer
-- `components/ui/Button.tsx` — arrow-dots button, variants: primary/ghost/accent, sizes: sm/md/lg
-- `components/ui/DotGrid.tsx` — canvas dot grid, mouse repel interaction
-- `components/sections/HeroSection.tsx` — full-vh, dot grid bg, geometry, GSAP word reveal
-
-## Known Constraints
-
-- No color gradients
-- Accent `#FFD600` max 10% of total visual surface across entire site. Rest is black/white/grey only.
-- Every page must have schema markup
-- All images need alt text + next/image optimization
-- No layout shift (CLS must be < 0.1)
+- Inner-page migration order.
+- Real photography to replace Unsplash `IMG` placeholders.
 
 ## Last Updated
 2026-09-19 (latest) — Cart recovery's static phone replaced with `AbandonedCartDemo`: a looping storefront-to-WhatsApp mock (browse → add to cart → leave → the three recovery messages arrive), driven by the section's own `MESSAGES` array so copy and bubbles can't drift. `WhatsAppPhoneShell` split into `PhoneFrame` / `PhoneStatusBar` / `WhatsAppScreen` with fixed chrome heights so two different screens can share one bezel without it resizing; shared bubble keyframes moved into the shell (they were injected by `PhoneDemo` alone, which `HeroJourneyPhone` had been quietly depending on). See learning.md's `[Component]` entry.
@@ -103,9 +59,4 @@ Previous: 2026-09-09 — WhatsApp Journey + Onboarding: shared S-snake (3+3+2 / 
 
 Previous: 2026-09-09 — WhatsApp Packages cards: subgrid alignment, reserved eyebrow slot, full-width CTAs.
 
-2026-10-09 — /work Selected websites updated with real screenshots. Connected `image` and `imageAlt` props in `WorkWebsitesSection.tsx` through to `ExternalProjectLink`, and updated `WEB_PROJECTS` in `lib/work-data.ts` to reference the 6 real web-development screenshots (`/services/web-development/proof/*.webp`: Tocal, Sustainable Bitcoin Protocol, AP Cleanco, Archmodal, Earth by Blancora, Simpli Home). The previously open item ("real screenshots needed") is now resolved for /work.
-
-2026-08-01 — /work pass. Kept the page's existing look (a restyle in the About page's language was built and rejected outright — see learning.md [Rejected]). Shipped: home + /work now share ONE `FeaturedWorkSection` fed by `lib/work-data.ts` (page-local `WorkCaseStudiesSection` deleted); `ClientLogosSection` (8 invented client names) dropped from /work and `StatsCounters` given `bgClassName=""` — no section backgrounds on this page; testimonial carousel made touch-usable (measured card width replacing the fixed 380px that overflowed small phones, drag-to-swipe, `useReducedMotion` guard, shared `REVEAL_EASE`); `FaqSection` easing unified to `REVEAL_EASE`; `DotGrid`'s rAF loop now idles when nothing is fading. Selected websites is 6 cards (Psilent Ganges netlify test removed, sustainablebtc.org + apcleanco.com added).
-
-## Previously
-2026-07-31 — About page density/rhythm pass: copy cut ~45%, surface rhythm added (CoreValues + StatsCounters on white `--color-surface` slabs; a dark inverted slab was tried and rejected — don't re-propose), Insights duplicate desktop/mobile DOM collapsed, gallery grid span math fixed for mobile. Then a minimal pass on user review ("tons of AI slop"): every per-item hairline removed, 01–06 indices removed, photo radius/hover-morph removed, all motion now scroll-only. Story arc + section order unchanged. See learning.md [Minimal] entries, [Section] surface rhythm, [Copy] density budget, [Responsive] no hidden-toggled copies.
+2026-10-30
