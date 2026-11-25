@@ -51,8 +51,10 @@ const SERVICE_PAGES = [
   // hero CTA prefills that form instead of opening the legacy audit popup.
   { path: '/services/ai', cta: /Get my plan/, formId: 'lead', formKind: 'wv', ctaKind: 'form', faq: 'Questions people ask', faqKind: 'native', faqCount: 8, carousel: null },
   { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, formId: 'start-project', formKind: 'audit', ctaKind: 'modal', faq: 'Apps & CRM FAQs', faqKind: 'region', faqCount: 3, carousel: 'Client testimonials' },
-  { path: '/services/web-development', cta: /Book a call/, formId: 'get-quote', formKind: 'audit', ctaKind: 'modal', faq: 'Web Development FAQs', faqKind: 'region', faqCount: 5, carousel: 'Client testimonials' },
-  { path: '/services/uiux-design', cta: /Book a call/, formId: 'get-quote', formKind: 'audit', ctaKind: 'modal', faq: 'UI/UX design FAQs', faqKind: 'region', faqCount: 5, carousel: 'UI/UX client testimonials' },
+  // The wv web pillar: hero CTA links to /contact, the closing is the global map CTA (no inline form), LeafPage FAQ (first answer open).
+  { path: '/services/web-development', cta: /Get a free website audit/, formId: null, formKind: 'audit', ctaKind: 'link', faq: 'Questions people ask', faqKind: 'leaf', faqCount: 5, carousel: null },
+  { path: '/services/uiux-design', cta: /Get a free UX audit/, formId: null, formKind: 'audit', ctaKind: 'link', faq: 'Questions people ask', faqKind: 'leaf', faqCount: 5, carousel: null },
+  // SEO & GEO uses the rebuilt wv pillar: the closing Get my plan form is inline.
   { path: '/services/digital-marketing', cta: /Get my plan/, formId: 'lead', formKind: 'wv', ctaKind: 'form', faq: 'Questions people ask', faqKind: 'native', faqCount: 6, carousel: null },
 ] as const;
 
@@ -74,6 +76,10 @@ for (const svc of SERVICE_PAGES) {
       await basePage.navigate(svc.path);
       const main = page.locator('main');
       const cta = main.getByRole('link', { name: svc.cta }).or(main.getByRole('button', { name: svc.cta })).first();
+      if (svc.ctaKind === 'link') {
+        await expect(cta).toHaveAttribute('href', '/contact');
+        return;
+      }
       if (svc.ctaKind === 'form') {
         await cta.click();
         await expect(page).toHaveURL(/#lead$/);
@@ -90,6 +96,7 @@ for (const svc of SERVICE_PAGES) {
     });
 
     test('the inline lead form submits with the fake test identity (mocked email)', { tag: ['@forms', '@critical'] }, async ({ page, basePage }) => {
+      test.skip(!svc.formId, 'no inline form on this page');
       await basePage.navigate(svc.path);
       await basePage.scrollThroughPage();
       const form = page.locator(`#${svc.formId}`);
@@ -110,6 +117,16 @@ for (const svc of SERVICE_PAGES) {
         await expect(first).not.toHaveAttribute('open', '');
         await first.locator('summary').click();
         await expect(first).toHaveAttribute('open', '');
+        return;
+      }
+      if (svc.faqKind === 'leaf') {
+        const questions = page.locator('#faq button[aria-expanded]');
+        await expect(questions).toHaveCount(svc.faqCount);
+        await expect(questions.first()).toHaveAttribute('aria-expanded', 'true');
+        const second = questions.nth(1);
+        await second.scrollIntoViewIfNeeded();
+        await second.click();
+        await expect(second).toHaveAttribute('aria-expanded', 'true');
         return;
       }
       const questions = page.getByRole('region', { name: svc.faq }).locator('button[aria-expanded]');

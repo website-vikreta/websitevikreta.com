@@ -31,7 +31,6 @@ export function Footer() {
             <p className="wv-eyebrow">Studio</p>
             <ul>
               <li><Link href="/work">Work</Link></li>
-              <li><Link href="/#process">Process</Link></li>
               <li><Link href="/about">Studio</Link></li>
               <li><Link href="/blog">Blog</Link></li>
               <li><Link href="/careers">Careers</Link></li>
