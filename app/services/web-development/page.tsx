@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
-import WebDevClient from './WebDevClient'
+import '@/app/wv.css'
+import { WebPillar } from '@/components/wv/web/WebPillar'
+import { wvFonts } from '@/components/wv/fonts'
+import { ScrollProgress, Smooth } from '@/components/wv/ui'
+import { PILLAR } from '@/content/web/pillar'
 import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/services/web-development`
@@ -22,8 +26,13 @@ const jsonLd = {
       '@id': `${PAGE_URL}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-        { '@type': 'ListItem', position: 2, name: 'Web Development', item: PAGE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Web Design & Development', item: PAGE_URL },
       ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${PAGE_URL}#faq`,
+      mainEntity: PILLAR.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
   ],
 }
@@ -87,12 +96,11 @@ export const metadata: Metadata = {
 
 export default function WebDevelopmentPage() {
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <WebDevClient />
-    </>
+    <div className={`wv ${wvFonts}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <ScrollProgress />
+      <Smooth />
+      <WebPillar />
+    </div>
   )
 }

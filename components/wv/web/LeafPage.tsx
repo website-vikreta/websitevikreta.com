@@ -14,7 +14,7 @@ const SHOT = WEB_PROJECTS.find((p) => p.slug === 'ap-cleanco-site')!
 
 type C = LeafContent
 
-function Section({ title, aside }: { title: string[]; aside?: React.ReactNode }) {
+export function Section({ title, aside }: { title: string[]; aside?: React.ReactNode }) {
   return (
     <div className="wv-sec-head">
       <KineticTitle lines={title} accent={title.length - 1} className="wv-h2" />
@@ -429,14 +429,14 @@ function Connects({ c }: { c: C }) {
   )
 }
 
-function Process({ c }: { c: C }) {
+export function Process({ steps, title = ['Four steps,', 'no surprises'] }: { steps: C['steps']; title?: string[] }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] })
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
   return (
     <section className="wv-sec cw-steps-sec" id="process">
       <div className="wv-wrap">
-        <Section title={['Four steps,', 'no surprises']} aside={<p>{c.steps.aside}</p>} />
+        <Section title={title} aside={<p>{steps.aside}</p>} />
         <div ref={ref}>
           <div className="cw-dim" aria-hidden>
             <span>01</span>
@@ -446,7 +446,7 @@ function Process({ c }: { c: C }) {
             <span>04</span>
           </div>
           <ol className="cw-steps">
-            {c.steps.items.map((s, i) => (
+            {steps.items.map((s, i) => (
               <Step key={s.n} s={s} i={i} p={scrollYProgress} />
             ))}
           </ol>
@@ -456,11 +456,11 @@ function Process({ c }: { c: C }) {
   )
 }
 
-function Band({ c }: { c: C }) {
+export function Band({ band }: { band: C['band'] }) {
   return (
     <div className="wv-band" role="group" aria-label="Stack and promise">
-      <VelocityMarquee items={c.band[0]} baseVelocity={-4} className="is-band" />
-      <VelocityMarquee items={c.band[1]} baseVelocity={3} className="is-band is-outline" />
+      <VelocityMarquee items={band[0]} baseVelocity={-4} className="is-band" />
+      <VelocityMarquee items={band[1]} baseVelocity={3} className="is-band is-outline" />
     </div>
   )
 }
@@ -549,16 +549,17 @@ function Proof({ c }: { c: C }) {
   )
 }
 
-function Stats() {
+/** `text` shows a fixed value instead of counting up (e.g. a range). */
+export function Stats({ items = STATS.slice(0, 3) }: { items?: { n: number; suffix: string; label: string; text?: string }[] }) {
   return (
     <section className="wv-stats cw-stats" aria-label="Results">
       <div className="wv-wrap wv-stats-in">
         <KineticTitle lines={['The numbers', 'so far']} className="wv-h2 is-dark" />
         <div className="wv-stats-grid">
-          {STATS.slice(0, 3).map((s, i) => (
+          {items.map((s, i) => (
             <Reveal key={s.label} delay={0.06 * i} className="wv-stat">
               <strong>
-                <CountUp to={s.n} suffix={s.suffix} />
+                {s.text ?? <CountUp to={s.n} suffix={s.suffix} />}
               </strong>
               <span>{s.label}</span>
             </Reveal>
@@ -577,7 +578,7 @@ const WEB_QUOTES = [
   { tab: 'Cozmo Realty', ...who('Sang Hyun Han'), logo: undefined as string | undefined },
 ]
 
-function Quote() {
+export function Quote() {
   const reduce = useReducedMotion()
   const [a, setA] = useState(0)
   useEffect(() => {
@@ -662,14 +663,14 @@ function Fit({ c }: { c: C }) {
   )
 }
 
-function Faq({ c }: { c: C }) {
+export function Faq({ faqs, title = ['Questions', 'we get asked'] }: { faqs: C['faqs']; title?: string[] }) {
   const [open, setOpen] = useState(0)
   return (
     <section className="wv-sec" id="faq">
       <div className="wv-wrap">
-        <Section title={['Questions', 'we get asked']} />
+        <Section title={title} />
         <div>
-          {c.faqs.map((f, i) => (
+          {faqs.map((f, i) => (
             <div key={f.q} className={`cw-faq-item${open === i ? ' is-open' : ''}`}>
               <h3>
                 <button className="cw-faq-q" aria-expanded={open === i} aria-controls={`cw-faq-${i}`} onClick={() => setOpen(open === i ? -1 : i)}>
@@ -734,17 +735,17 @@ export function LeafPage({ c }: { c: C }) {
   return (
     <main className="cw-page">
       <Hero c={c} />
-      <Band c={c} />
+      <Band band={c.band} />
       <Friction c={c} />
       <Build c={c} />
       <Connects c={c} />
       <Compare c={c} />
-      <Process c={c} />
+      <Process steps={c.steps} />
       <Proof c={c} />
       <Stats />
       <Quote />
       <Fit c={c} />
-      <Faq c={c} />
+      <Faq faqs={c.faqs} />
       <Related c={c} />
     </main>
   )
