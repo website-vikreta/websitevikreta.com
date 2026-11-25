@@ -50,6 +50,11 @@ export const PILLARS: Pillar[] = [
     answer:
       'Operations automation connects your apps so routine work moves without hand-offs. A new lead reaches your CRM, an offer letter is drafted, a proposal is assembled, an invoice goes out and a late one gets a reminder. A person approves what matters. We design, build and maintain it.',
     branches: ['workflow-automation', 'hr-automation', 'proposal-automation', 'finance-automation'],
+    reading: [
+      '/blog/ai-and-automation/ai-automation-connecting-tools',
+      '/blog/ai-and-automation/make-vs-n8n-vs-custom-code',
+      '/blog/business-growth/ai-automation-roi',
+    ],
     faqs: [
       { q: 'Which tasks should I automate first?', a: 'Start with work you repeat every week that follows clear rules, like invoicing, follow-ups or data entry. Pick one, prove it, then add the next.' },
       { q: 'Do I need to change my tools?', a: 'No. We connect the CRM, email, accounting and chat tools you already use.' },
@@ -69,6 +74,11 @@ export const PILLARS: Pillar[] = [
     answer:
       'AI content production uses AI for the slow parts of content: research, first drafts, resizing for each channel, scheduling and video ad variants. A person sets the idea, checks the facts and approves the voice. You publish and test more with less time per piece. AI presenters are always disclosed.',
     branches: ['content-automation', 'ai-ugc-ads'],
+    reading: [
+      '/blog/educational/google-ai-search-optimization-guide',
+      '/blog/ai-and-automation/establishing-human-oversight-automation',
+      '/blog/business-growth/ai-automation-roi',
+    ],
     faqs: [
       { q: 'Will it sound like my brand?', a: 'We train it on your tone and examples, and a person approves the voice before anything goes live.' },
       { q: 'Are AI presenters disclosed?', a: 'Yes. Every AI presenter is labeled AI. Nobody is posed as a real customer.' },
@@ -94,6 +104,11 @@ export const PILLARS: Pillar[] = [
         href: '/services/digital-marketing',
         blurb: 'Technical SEO, local SEO, on-page content, ChatGPT and Perplexity visibility, Google AI Overviews, and schema and entity SEO.',
       },
+    ],
+    reading: [
+      '/blog/educational/google-ai-search-optimization-guide',
+      '/blog/ai-and-automation/ai-strategy-real-world-outcomes',
+      '/blog/business-growth/ai-automation-roi',
     ],
     faqs: [
       { q: 'What is the difference between SEO, AEO and GEO?', a: 'SEO earns rankings in search results. AEO and GEO earn citations inside AI answers. They share a base: clear content, good structure and a fast, crawlable site.' },
