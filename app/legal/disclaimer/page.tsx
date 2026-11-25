@@ -78,7 +78,7 @@ export default function DisclaimerPage() {
   return (
     <LegalPageLayout
       title="Disclaimer"
-      lastUpdated="August 19, 2020"
+      lastUpdated="November 10, 2026"
       sections={sections}
     />
   )

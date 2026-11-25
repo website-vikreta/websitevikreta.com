@@ -1,6 +1,5 @@
 import { test, expect } from '../../fixtures/test';
 import { PRODUCTION_VIEWPORTS } from '../../helpers/responsive-viewports';
-import { TEST_LEAD } from '../../fixtures/test-data';
 import { expectAllLinksWork, expectCleanFullScroll, expectSectionOrder } from '../../helpers/page-checks';
 
 /**
@@ -9,37 +8,28 @@ import { expectAllLinksWork, expectCleanFullScroll, expectSectionOrder } from '.
  * and broken images are caught by the full-page health check below.
  */
 
-/** Every landing section heading, in the order they must appear top to bottom. */
+/** Every landing section heading, in the order they must appear top to bottom (text match is case-insensitive). */
 const SECTION_HEADINGS = [
-  "We don't just execute. We think first.",
-  'The Numbers So Far',
-  "We don't build pages.",
-  "Who we've built for",
-  'Proof over promises.',
-  'The AI stack we actually use.',
-  'Work that moved numbers.',
-  'The thinking behind the work.',
+  'What we build',
+  'Small team. Real results.',
+  'Featured projects',
+  'How we work',
+  'Got something worth building?',
 ];
 
 const STATS = [
-  { label: 'Years working with founders and teams across the globe: 5+', value: '5' },
-  { label: 'Projects shipped: websites, apps, automation, design: 68+', value: '68' },
-  { label: 'Saved for clients since we went AI-first: 6360+hrs', value: '6360' },
-  { label: 'Tools we can use: no limitation, only solutions: unlimited', value: null },
+  ['6+', 'Years working with founders across the globe'],
+  ['68+', 'Projects shipped: sites, apps, automations'],
+  ['6,360+', 'Hours saved for clients since going AI-first'],
+  ['100%', 'Job Success on Upwork, Top Rated'],
 ];
 
 const SERVICE_HREFS = [
-  '/services/ai-automations',
+  '/services/ai',
   '/services/web-development',
+  '/services/apps-crm',
   '/services/uiux-design',
-  '/services/web-mobile-app-development',
   '/services/digital-marketing',
-];
-
-const TESTIMONIALS = [
-  { metric: '11 hrs', quote: 'Our team finally does the work we hired them for.', role: 'Darcy McGilvery, Simpli Home' },
-  { metric: '3 weeks', quote: 'Fastest turnaround we had.', role: 'Co-founder, AP Cleanco' },
-  { metric: '3+ yrs', quote: 'They shaped our entire product from the ground up', role: 'Co-founder, Sustainable Bitcoin Protocol' },
 ];
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];
@@ -60,30 +50,16 @@ test.describe('Landing Page: Structure & Health', { tag: '@critical' }, () => {
   });
 });
 
-test.describe('Landing Page: Hero & Lead Journey (mocked email)', () => {
-  test('Talk to Us → contact form → submit sends the fake test identity, never a real lead', { tag: ['@forms', '@critical'] }, async ({
-    page,
-    homePage,
-    contactPage,
-  }) => {
+test.describe('Landing Page: Hero & Lead Journey', () => {
+  test('"Book a free Consultation" goes to the contact form, not a popup', { tag: ['@forms', '@critical'] }, async ({ page, homePage }) => {
     await homePage.goto();
     await homePage.waitForHeroReveal();
     await homePage.primaryCta.click();
     await expect(page).toHaveURL(/\/contact$/);
-
-    const { name, jobOrWebsite, email, phone } = TEST_LEAD;
-    await contactPage.fillForm({ name, jobOrWebsite, email, phone });
-
-    const sent = page.waitForRequest(/api\.emailjs\.com/);
-    await contactPage.submit();
-    await contactPage.verifySuccessState();
-
-    const request = await sent;
-    expect(await (await request.response())?.text(), 'EmailJS was not mocked').toBe('OK');
-    expect(request.postDataJSON().template_params).toMatchObject({ name, email, mobile: phone, service: jobOrWebsite });
+    await expect(page.locator('form.wv-ct-form')).toBeVisible();
   });
 
-  test('secondary CTA navigates to /work', async ({ page, homePage }) => {
+  test('"See the work" navigates to /work', async ({ page, homePage }) => {
     await homePage.goto();
     await homePage.waitForHeroReveal();
     await homePage.secondaryCta.click();
@@ -106,38 +82,34 @@ test.describe('Landing Page: Sections', () => {
     await homePage.goto();
   });
 
-  test('stats show the right values', async ({ homePage }) => {
+  test('results tiles show the right values', async ({ homePage }) => {
     await homePage.stats.scrollIntoViewIfNeeded();
-    for (const { label, value } of STATS) {
-      const stat = homePage.stats.getByRole('region', { name: label, exact: true });
+    for (const [value, label] of STATS) {
+      const stat = homePage.stats.locator('.wv-stat').filter({ hasText: label });
       await expect(stat, `Missing stat "${label}"`).toBeVisible();
-      if (value) await expect(stat).toContainText(value);
+      await expect(stat).toContainText(value);
     }
   });
 
-  test('services: all five cards link to the right service pages', async ({ homePage }) => {
-    await expect(homePage.serviceCards).toHaveCount(5);
+  test('services: five rows link to the right service pages', async ({ homePage }) => {
+    await expect(homePage.serviceRows).toHaveCount(5);
     for (const href of SERVICE_HREFS) {
-      // A card has a click-through overlay plus its "Explore More" button; the button is the real link.
-      await expect(
-        homePage.serviceCards.locator(`a[href="${href}"]`).filter({ hasText: 'Explore More' }),
-        `No card links to ${href}`,
-      ).toHaveCount(1);
+      await expect(homePage.serviceRows.and(homePage.page.locator(`a[href="${href}"]`)), `No row links to ${href}`).toHaveCount(1);
     }
   });
 
-  test('services: "Explore More" actually navigates', async ({ page, homePage }) => {
-    const link = homePage.serviceCards.locator('a[href="/services/web-development"]').filter({ hasText: 'Explore More' });
+  test('services: a row actually navigates', async ({ page, homePage }) => {
+    const link = homePage.serviceRows.and(page.locator('a[href="/services/web-development"]'));
     await link.scrollIntoViewIfNeeded();
-    // The bento card grows on hover and carries a full-size click-through overlay, so a mouse click can land
-    // mid-reflow or on the overlay. Activating the real link from the keyboard is what tabbing onto a card does.
-    await link.press('Enter');
+    await link.click();
     await expect(page).toHaveURL(/\/services\/web-development$/);
     await expect(page.locator('h1').first()).toBeVisible();
   });
 
-  test('featured work: clicking a case study opens it', async ({ page, homePage }) => {
-    const link = homePage.featuredWork.locator('a[href^="/work/"]').first();
+  test('case studies: clicking one opens it', async ({ page, homePage }) => {
+    const links = homePage.featuredWork.locator('a[href^="/work/"]');
+    expect(await links.count(), 'Expected a featured + 2 case study links').toBeGreaterThanOrEqual(3);
+    const link = links.first();
     await link.scrollIntoViewIfNeeded();
     const href = await link.getAttribute('href');
     await link.click();
@@ -145,25 +117,28 @@ test.describe('Landing Page: Sections', () => {
     await expect(page.locator('h1').first()).toBeVisible();
   });
 
-  test('testimonials: each button shows its own metric, quote and author', async ({ homePage }) => {
-    await homePage.testimonials.scrollIntoViewIfNeeded();
-    // Visit in reverse so every click is a real change (index 0 is already active).
-    for (const t of [...TESTIMONIALS].reverse()) {
-      await homePage.testimonials.getByRole('button', { name: `View ${t.role} testimonial` }).click();
-      await expect(homePage.testimonials).toContainText(t.metric);
-      await expect(homePage.testimonials).toContainText(t.quote);
-      await expect(homePage.testimonials).toContainText(`— ${t.role}`);
+  test('process: four numbered steps render', async ({ homePage }) => {
+    await homePage.processSteps.first().scrollIntoViewIfNeeded();
+    await expect(homePage.processSteps).toHaveCount(5); // 4 text steps + 1 image step
+    for (const title of ['Watch', 'Find', 'Build', 'Hand over']) {
+      await expect(homePage.processSteps.filter({ hasText: title }).first()).toBeVisible();
     }
   });
 
-  test('blog preview: clicking a post title opens that post', async ({ page, homePage }) => {
-    const link = homePage.blogPreviewCards.first().getByRole('heading', { level: 3 }).getByRole('link');
-    await link.scrollIntoViewIfNeeded();
-    const href = await link.getAttribute('href');
-    expect(href).toMatch(/^\/blog\/[^/]+\/[^/]+$/);
-    await link.click();
-    await expect(page).toHaveURL(new RegExp(`${href}$`));
-    await expect(page.locator('h1').first()).toBeVisible();
+  test('testimonials: each tab swaps in its quote and author', async ({ homePage }) => {
+    const tabs = homePage.testimonials.getByRole('tab');
+    await expect(tabs).toHaveCount(6);
+    await expect(homePage.testimonials.locator('blockquote')).toHaveCount(1);
+    for (const name of ['Sang Hyun Han', 'Darcy McGilvery', 'Brad van Voorhees', 'John Kim', 'Rudra Ghodke', 'Abhinav Singh']) {
+      await homePage.testimonials.getByRole('tab', { name }).click();
+      await expect(homePage.testimonials.locator('blockquote')).toContainText(name);
+    }
+  });
+
+  test('closing CTA: consultation, email and phone are present', async ({ homePage }) => {
+    await expect(homePage.ctaSection.getByRole('link', { name: /Book a free Consultation/i })).toHaveAttribute('href', '/contact');
+    await expect(homePage.ctaSection.locator('a[href^="mailto:"]')).toBeAttached();
+    await expect(homePage.ctaSection.locator('a[href^="tel:"]')).toBeAttached();
   });
 });
 

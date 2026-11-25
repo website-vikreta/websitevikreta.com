@@ -27,14 +27,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const opening = await writeClient.fetch<{ isActive: boolean; type?: string } | null>(
-      `*[_type == "opening" && _id == $openingId][0]{ isActive, type }`,
+    const opening = await writeClient.fetch<{ isActive: boolean; designation?: string; type?: string } | null>(
+      `*[_type == "opening" && _id == $openingId][0]{ isActive, designation, type }`,
       { openingId }
     )
     if (!opening || !opening.isActive) {
       return NextResponse.json({ error: 'This role is not accepting applications.' }, { status: 403 })
     }
 
+    const designation = opening.designation ?? ''
     // ponytail: openings without a type are all internships today
     const jobType = (opening.type && JOB_TYPE_LABEL[opening.type]) || opening.type || 'Internship'
 
@@ -59,6 +60,7 @@ export async function POST(req: NextRequest) {
     await writeClient.create({
       _type: 'submission',
       candidateName: name,
+      designation,
       jobType,
       email,
       phone: phone ?? '',
@@ -92,6 +94,7 @@ export async function POST(req: NextRequest) {
         candidate_phone: phone ?? 'Not provided',
         notes:           notes ?? 'Not provided',
         job_title:       openingTitle,
+        designation,
         job_type:        jobType,
         job_url:         jobUrl,
         resume_url:      resumePublicUrl,

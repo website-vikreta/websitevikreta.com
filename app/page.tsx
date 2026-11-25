@@ -1,14 +1,6 @@
 import type { Metadata } from 'next'
-import { HeroSection } from '@/components/sections/HeroSection'
-import { StatsCounters } from '@/components/sections/StatsCounters'
-import { ClientLogosSection } from '@/components/sections/ClientLogosSection'
-import { ServicesBentoGrid } from '@/components/sections/ServicesBentoGrid'
-import { FeaturedWorkSection } from '@/components/sections/FeaturedWorkSection'
-import { TechnologiesSection } from '@/components/sections/TechnologiesSection'
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
-import { BlogPreviewSection } from '@/components/sections/BlogPreviewSection'
-import { DotGrid } from '@/components/ui/DotGrid'
 import { SITE_URL } from '@/config/site'
+import { WvPage } from '@/components/wv/WvPage'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -54,9 +46,9 @@ const jsonLd = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'AI Automations',
+          name: 'Applied AI',
           description: 'Custom AI automation systems that eliminate repetitive work and connect business tools into intelligent workflows.',
-          url: `${SITE_URL}/services/ai-automations`,
+          url: `${SITE_URL}/services/ai`,
         },
       },
       {
@@ -137,20 +129,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <DotGrid global />
-      <HeroSection />
-      <StatsCounters bgClassName="" />
-      <ServicesBentoGrid />
-      <ClientLogosSection />
-      <FeaturedWorkSection />
-      <TechnologiesSection />
-      <TestimonialsSection />
-      <BlogPreviewSection />
-    </main>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <WvPage />
+    </>
   )
 }

@@ -1,136 +1,49 @@
-# Code Standards — Website Vikreta
+# Code Standards
 
-## Rules That Are Not Negotiable
-- TypeScript strict mode. No `any`. No `@ts-ignore` without a comment explaining why.
-- `next/image` for every image. No `<img>` tags.
-- `next/font` for every font. No CDN font links.
-- No inline styles except for dynamic values (e.g. GSAP targets).
-- CSS custom properties for all design tokens. No hardcoded hex values in component files.
-- Accessibility: every interactive element is keyboard-navigable.
-- Scroll reveals come from `components/ui/Reveal.tsx` (`RevealText`/`RevealFade`/`Counter`). No per-component hand-rolled `whileInView`/GSAP reveals — raw GSAP is for bespoke hero-class motion only.
+## Non-Negotiable
 
----
+- TypeScript strict. No `any`. No `@ts-ignore` without a reason comment.
+- Next.js here has breaking changes. Read `node_modules/next/dist/docs/` before using an API you are unsure of.
+- Shortest working diff. Reuse `components/wv/ui.tsx` and `data.ts` before writing anything.
+- Comment only the non-obvious *why*. Match surrounding density.
 
-## File Naming
+## `wv` Structure
+
 ```
-components/sections/HeroSection.tsx       PascalCase for components
-components/ui/Button.tsx                  PascalCase
-lib/gsap/useScrollReveal.ts              camelCase for hooks/utils
-app/(marketing)/about/page.tsx           App Router convention
-styles/globals.css                       kebab-case for style files
+app/wv.css              all wv styles (tokens + classes). Append new blocks at the end: /* wv: <name> */
+components/wv/ui.tsx    shared primitives (motion, icons, media)
+components/wv/data.ts   copy, links, image URLs, lists as typed constants
+components/wv/<Page>.tsx page sections as local functions, one exported page component
+components/wv/fonts.ts  Anton + Inter Tight (next/font/google)
 ```
 
-## Component Structure
-```tsx
-// 1. Imports (external → internal → styles)
-import { useRef, useEffect } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { cn } from '@/lib/utils'
+- New page: `<div className={\`wv ${wvFonts}\`}>` wrapper (see `WvPage.tsx`), sections as functions, copy in `data.ts` (or a sibling `data-<page>.ts` once it grows).
+- Styling: plain classes from `wv.css`. No Tailwind utilities, no CSS modules, no inline styles except motion values and per-item numbers (e.g. logo height, sticky offset).
+- Colors via `var(--token)` only. No hex in TSX.
+- `'use client'` only on files that use hooks/motion. Server components by default.
+- Images: `Photo`/`ParallaxPhoto` (wrap `next/image`). Raw `<img>` only for SVG/PNG logos, with the eslint-disable reason comment already used in `ui.tsx`.
+- Links: `next/link` internally, `<a target="_blank" rel="noopener noreferrer">` externally.
 
-// 2. Types
-interface HeroSectionProps {
-  headline: string
-  subhead?: string
-}
+## Accessibility
 
-// 3. Component
-export function HeroSection({ headline, subhead }: HeroSectionProps) {
-  const ref = useRef<HTMLDivElement>(null)
+- Semantic landmarks: one `<main>`, `<section>` with heading or `aria-label`.
+- One `h1` per page. Kinetic text keeps `.wv-sr` real text.
+- Focus ring inherited from `.wv :focus-visible`. Never remove it.
+- Decorative SVG/photos: `aria-hidden` / `alt=""`. Content photos: real alt.
+- Contrast: `--muted` on canvas passes AA. Yellow never carries text on light.
+- Custom widgets get roles (`tablist`/`tab`/`aria-selected`, `aria-expanded`).
 
-  useEffect(() => {
-    // GSAP: always kill on cleanup
-    const ctx = gsap.context(() => {
-      // animations here
-    }, ref)
-    return () => ctx.revert()
-  }, [])
+## Performance
 
-  return (
-    <section ref={ref}>
-      {/* content */}
-    </section>
-  )
-}
-```
+- LCP < 2.5s, CLS < 0.1, INP < 200ms.
+- Above fold: no dynamic imports, hero text server-rendered visible.
+- `sizes` on every `Photo`. `priority` only above the fold.
+- Clean up listeners, intervals, rAF, Lenis in effect returns.
 
-## GSAP Rules
-```tsx
-// Always use gsap.context() — prevents memory leaks
-// Always return ctx.revert() in cleanup
-// Register plugins once in a central file (lib/gsap/index.ts)
-// Never register plugins inside components
-```
+## Verify
 
-```ts
-// lib/gsap/index.ts
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
+`npx tsc --noEmit` and `npx eslint <touched files>` before handoff.
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, SplitText)
-}
+## Commits
 
-export { gsap, ScrollTrigger, SplitText }
-```
-
-## Accessibility Requirements
-- `<html lang="en">` always
-- Skip to main content link (visually hidden, focusable)
-- All images: meaningful `alt` text or `alt=""` for decorative
-- Color contrast: text on `#000000` must pass AA (white passes, `#444` fails for small text)
-- `prefers-reduced-motion`: wrap all non-essential animation
-- Focus indicators: never remove outline without replacing it
-- Semantic HTML: `<nav>`, `<main>`, `<article>`, `<section>` — not everything is a `<div>`
-
-## Performance Patterns
-```tsx
-// Lazy load heavy components
-const ThreeScene = dynamic(() => import('@/components/ThreeScene'), {
-  ssr: false,
-  loading: () => <div className="scene-placeholder" />
-})
-
-// Suspense for blog/dynamic content
-<Suspense fallback={<BlogSkeleton />}>
-  <BlogList />
-</Suspense>
-
-// Font loading — Epilogue only
-import { Epilogue } from 'next/font/google'
-const epilogue = Epilogue({ variable: '--font-epilogue', subsets: ['latin'] })
-
-// In layout.tsx
-<html className={epilogue.variable}>
-// Use font-sans Tailwind class or var(--font-epilogue) in CSS
-```
-
-## State Management
-- Local UI state: `useState`
-- Server state / fetching: React Server Components + `fetch` with revalidation
-- No Redux. No Zustand unless proven necessary.
-- Form state: React Hook Form
-
-## Error Handling
-```tsx
-// Every page should have an error boundary
-// app/[route]/error.tsx — Next.js built-in
-
-// API calls always try/catch with user-visible fallback
-try {
-  const data = await fetchData()
-} catch (error) {
-  console.error('[ComponentName]:', error)
-  return <ErrorState message="Content unavailable" />
-}
-```
-
-## Git Commit Convention
-```
-feat: add hero section animation
-fix: correct CLS on blog image load
-perf: lazy load Three.js scene
-seo: add FAQ schema to services page
-style: update button hover to accent color
-```
+Conventional: `feat(scope): …`, `fix`, `perf`, `seo`, `style`, `docs(ai)`. Only when the user asks.

@@ -2,7 +2,7 @@
 
 /**
  * Sticky chapter index + full-width panels — the "Where we focus" pattern
- * from app/services/ai-automations/sections/FixesSection.tsx, also used by
+ * from app/services/ai/sections/FixesSection.tsx, also used by
  * Apps & CRM's SolutionSection. Each panel's visual is an illustrated crop
  * (same watercolor/hand-drawn language as manual-work-vs-automated.webp),
  * one per system, cropped from a single generated triptych so the three

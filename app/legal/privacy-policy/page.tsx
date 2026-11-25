@@ -177,7 +177,7 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalPageLayout
       title="Privacy Policy"
-      lastUpdated="August 19, 2020"
+      lastUpdated="November 10, 2026"
       sections={sections}
     />
   )

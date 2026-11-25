@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import { Button } from '@/components/ui/Button'
-import { CALENDLY_URL } from '@/config/site'
+import { CALENDLY_URL, yearsInPhrase } from '@/config/site'
 import {
   revealLines,
   revealFadeUp,
@@ -12,7 +12,7 @@ import {
 
 // Real figures, sourced from components/sections/StatsCounters.tsx so they
 // can't drift — never invented (see .ai/learning.md [Hero] proof band).
-const PROOF = ['Pune, India', '68 projects shipped', 'Five years in']
+const PROOF = ['Pune, India', '68 projects shipped', yearsInPhrase()]
 
 export default function Hero() {
   const scope = useRef<HTMLElement>(null)

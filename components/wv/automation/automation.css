@@ -1,0 +1,93 @@
+/* wv: AI automations (.wv-ax-*) — wv tokens only. Breakpoints 720 / 960 / 1024. */
+
+/* hero copy (shared by every hero) */
+.wv-ax-hc{position:relative;z-index:2}
+.wv-ax-h1{margin-top:0;font-size:clamp(46px,7.4vw,108px);line-height:.92}
+.wv-ax-sub{max-width:520px;margin-top:18px;font-size:clamp(17px,1.7vw,20px);line-height:1.5;color:var(--muted)}
+.wv-ax-hc .wv-cta-row{margin-top:22px}
+.wv-ax-by{display:inline-flex;align-items:center;gap:10px;margin-top:20px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.wv-ax-av{position:relative;display:inline-block;flex:none;border-radius:50%;overflow:hidden;background:var(--surface-2);border:2px solid var(--y)}
+.wv-ax-av img{object-fit:cover;object-position:top center}
+
+/* sections: see branch.css (wv-sec rhythm) */
+.wv-ax-h2.is-light{color:#fff}
+
+/* crumbs (above CTA) */
+.wv-ax-crumbbar{border-top:1px solid var(--line);padding:12px 0}
+.wv-ax-crumbs{display:flex;flex-wrap:wrap;gap:6px;list-style:none;font-size:13px;color:var(--muted)}
+.wv-ax-crumbs li{display:inline-flex;gap:6px}
+.wv-ax-crumbs a:hover{color:var(--ink)}
+
+/* persona cutout */
+.wv-ax-cut{--w:200px;position:relative;width:var(--w);max-width:100%;margin:0}
+.wv-ax-cut-img{position:relative;aspect-ratio:3/4;border-radius:999px 999px 22px 22px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line)}
+.wv-ax-cut-img img{object-fit:cover;object-position:top center}
+.wv-ax-cut-pill{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.wv-ax-cut.is-sm .wv-ax-cut-pill{font-size:13px;padding:4px 10px}
+.wv-ax-cut.is-sm .wv-ax-cut-img{border-radius:999px 999px 14px 14px}
+
+/* demo slot */
+
+/* lead form */
+.wv-ax-form{display:grid;gap:14px;text-align:left;max-width:560px;margin:0 auto}
+.wv-ax-field{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.wv-ax-field input{height:52px;border-radius:14px;border:1px solid var(--line);background:var(--surface);padding:0 16px;font:inherit;font-size:16px;font-weight:500;color:var(--text);transition:border-color .2s}
+.wv-ax-field input:hover{border-color:color-mix(in srgb, var(--ink) 22%, transparent)}
+.wv-ax-field input:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-color:var(--ink)}
+.wv-ax-field input[aria-invalid="true"]{border-color:var(--ink);border-width:2px}
+.wv-ax-field em{font-style:normal;color:var(--text);font-weight:600}
+/* phone: country picker + number */
+.wv-ax-phone-row{position:relative;display:flex;gap:8px;align-items:stretch}
+.wv-ax-phone-row>input[type=tel]{flex:1;min-width:0}
+.wv-ax-cc{display:inline-flex;align-items:center;gap:6px;flex:none;height:52px;padding:0 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font:inherit;font-size:16px;font-weight:500;color:var(--text);cursor:pointer;transition:border-color .2s}
+.wv-ax-cc:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-color:var(--ink)}
+.wv-ax-cc[aria-expanded=true]{border-color:var(--ink)}
+.wv-ax-cc svg{color:var(--muted)}
+.wv-ax-cc-pop{position:absolute;top:calc(100% + 8px);left:0;z-index:30;width:320px;max-width:calc(100vw - 32px);max-height:320px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 6px rgb(0 0 0/.06),0 12px 32px rgb(0 0 0/.12);overflow:hidden;animation:wv-ax-cc-in .12s ease-out}
+@keyframes wv-ax-cc-in{from{opacity:0;transform:translateY(-4px)}}
+.wv-ax-cc-pop .wv-ax-cc-search{height:44px;flex:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0 16px}
+.wv-ax-cc-pop .wv-ax-cc-search:focus-visible{outline:0;border-color:var(--line)}
+.wv-ax-cc-list{list-style:none;margin:0;padding:6px;overflow-y:auto;overscroll-behavior:contain}
+.wv-ax-cc-list li{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:15px;font-weight:500;color:var(--text);cursor:pointer}
+.wv-ax-cc-list li[data-active=true]{background:var(--surface-2)}
+.wv-ax-cc-list li[aria-selected=true]{font-weight:700}
+.wv-ax-cc-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wv-ax-cc-dial{color:var(--muted);font-variant-numeric:tabular-nums}
+.wv-ax-cc-list li.wv-ax-cc-empty{color:var(--muted);cursor:default}
+@media (hover:hover){.wv-ax-cc:hover{border-color:color-mix(in srgb, var(--ink) 22%, transparent)}}
+@media (max-width:380px){.wv-ax-cc{padding:0 8px;gap:4px;font-size:15px}.wv-ax-cc svg{display:none}}
+@media (prefers-reduced-motion:reduce){.wv-ax-cc-pop{animation:none}}
+.wv-ax-form .wv-cta-row{margin-top:6px}
+.wv-ax-form .wv-btn:disabled,.wv-ax-form .wv-btn[aria-disabled=true]{opacity:.6;pointer-events:none}
+.wv-ax-form-err{font-size:14px;font-weight:600}
+.wv-ax-form.is-done{padding:28px;background:var(--surface);border:1px solid var(--line);border-radius:22px}
+.wv-ax-form-ok{font-family:var(--display);text-transform:uppercase;font-size:44px;line-height:1;margin-bottom:8px}
+
+/* sticky mobile cta */
+.wv-ax-sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:8px;padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom));background:var(--canvas);border-top:1px solid var(--line)}
+.wv-ax-sticky .wv-btn{flex:1;justify-content:center}
+.wv-ax-sticky .wv-btn-ghost{flex:none}
+@media (min-width:720px){.wv-ax-sticky{display:none}}
+
+/* placeholder marker (non-production only) */
+.wv-ax-ph{display:inline-block;margin-top:8px;font-style:normal;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--ink);color:var(--y);border-radius:999px;padding:2px 8px;width:max-content}
+
+/* product / index cards: related products */
+
+/* mobile hero compaction: keep the demo inside the first viewport */
+@media (max-width:640px){
+  .wv-ax-h1{font-size:clamp(38px,11vw,46px)}
+  .wv-ax-sub{margin-top:10px;font-size:16px}
+  .wv-ax-hc .wv-cta-row{margin-top:14px;gap:8px;flex-wrap:nowrap}
+  .wv-ax-hc .wv-cta-row .wv-btn{padding:12px 14px;font-size:14px;white-space:nowrap}
+  .wv-ax-by{display:none}
+}
+
+/* inline links in copy */
+.wv-ax-inl{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;text-decoration-color:var(--y);font-weight:600}
+.wv-ax-inl:hover{background:var(--y)}
+
+/* row logo */
+.wv-ax-row-logo{width:40px;height:40px;object-fit:contain}
+
+/* CAPTCHA widget styles live in app/globals.css so every form gets them. */

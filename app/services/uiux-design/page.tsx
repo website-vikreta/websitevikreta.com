@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
-import UiUxClient from './UiUxClient'
+import '@/app/wv.css'
+import { WebPillar } from '@/components/wv/web/WebPillar'
+import { wvFonts } from '@/components/wv/fonts'
+import { ScrollProgress, Smooth } from '@/components/wv/ui'
+import { UIUX_PILLAR } from '@/content/uiux/pillar'
 import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 import { UI_UX_PAGE_META } from './data'
 
@@ -25,6 +29,11 @@ const jsonLd = {
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
         { '@type': 'ListItem', position: 2, name: 'UI/UX Design', item: PAGE_URL },
       ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${PAGE_URL}#faq`,
+      mainEntity: UIUX_PILLAR.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
   ],
 }
@@ -88,12 +97,11 @@ export const metadata: Metadata = {
 
 export default function UiUxPage() {
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <UiUxClient />
-    </>
+    <div className={`wv ${wvFonts}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <ScrollProgress />
+      <Smooth />
+      <WebPillar p={UIUX_PILLAR} />
+    </div>
   )
 }

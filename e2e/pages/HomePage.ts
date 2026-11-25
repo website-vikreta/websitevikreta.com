@@ -2,43 +2,38 @@ import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 /**
- * HomePage: Page Object Model for the landing page `/`.
- * Section order: Hero → Stats → Services → Client logos → Work → Tech stack → Testimonials → Blog.
+ * HomePage: Page Object Model for `/` (components/wv/Home.tsx).
+ * Section order: Hero → Band → Manifesto → Services → Results → Work → Process → Quotes → CTA.
  */
 export class HomePage extends BasePage {
   readonly hero: Locator;
   readonly primaryCta: Locator;
   readonly secondaryCta: Locator;
   readonly stats: Locator;
-  readonly serviceCards: Locator;
+  readonly serviceRows: Locator;
   readonly featuredWork: Locator;
+  readonly processSteps: Locator;
   readonly testimonials: Locator;
-  readonly blogPreviewCards: Locator;
+  readonly ctaSection: Locator;
 
   constructor(page: Page) {
     super(page);
-    const main = page.locator('main');
-    this.hero = page.locator('section#main-content');
-    this.primaryCta = this.hero.getByRole('link', { name: /Talk to Us/ });
-    this.secondaryCta = this.hero.getByRole('link', { name: 'See our work' });
-    this.stats = page.getByRole('region', { name: 'Impact Statistics' });
-    // The grid renders a hover-grow bento on lg+ and a sticky stack below it, each with all five cards;
-    // only the layout for the current viewport is visible, so count that one.
-    this.serviceCards = main
-      .locator('article')
-      .filter({ has: page.locator('h3') })
-      .filter({ hasText: 'Explore More' })
-      .filter({ visible: true });
-    this.featuredWork = page.getByRole('region', { name: 'Featured Work' });
-    this.testimonials = page.locator('section', { has: page.getByRole('heading', { name: 'Work that moved numbers.' }) });
-    this.blogPreviewCards = page.locator('section', { hasText: 'behind the work.' }).locator('article');
+    this.hero = page.locator('section#top');
+    this.primaryCta = this.hero.getByRole('link', { name: /Book a free Consultation/i }).first();
+    this.secondaryCta = this.hero.getByRole('link', { name: /See the work/i }).first();
+    this.stats = page.locator('section[aria-label="Results"]');
+    this.serviceRows = page.locator('#services a.wv-svc-row');
+    this.featuredWork = page.locator('#work');
+    this.processSteps = page.locator('#process .wv-step');
+    this.testimonials = page.locator('section[aria-label="What clients say"]');
+    this.ctaSection = page.locator('#contact');
   }
 
   async goto(): Promise<void> {
     await this.navigate('/');
   }
 
-  /** Waits for the hero word-reveal to finish so CTAs are clickable and stable. */
+  /** Hero CTAs are plain server-rendered markup; wait until the primary one is visible. */
   async waitForHeroReveal(): Promise<void> {
     await this.primaryCta.waitFor({ state: 'visible' });
   }

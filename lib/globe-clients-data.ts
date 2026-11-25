@@ -58,7 +58,7 @@ export const GLOBE_CLIENTS: GlobeClient[] = [
     service: 'Web Development & Local SEO',
     deliverable: 'Next.js commercial marketing platform',
     summary: 'Commercial service platform with sub-second loads and local search visibility.',
-    metric: { value: '3 weeks', label: 'Concept to launch' },
+    metric: { value: '2 weeks', label: 'Concept to launch' },
     quote: 'Fastest turnaround we had. Quality was better than agencies charging 5x.',
     clientRole: 'Co-founder',
     url: '/work/ap-cleanco',

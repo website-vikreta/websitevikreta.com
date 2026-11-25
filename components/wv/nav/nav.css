@@ -1,0 +1,46 @@
+/* Header nav (DESIGN-V3 s5). Reuses legacy .wv-header/.wv-bar/.wv-mega-* tokens from app/wv.css. */
+.wvn-header{--header-h:72px}
+.wvn-nav{display:none;align-items:center;gap:2px}
+.wvn-item{display:flex;align-items:center}
+.wvn-item.is-rel{position:relative}
+.wvn-nav .wv-nav-link,.wvn-nav .wv-nav-ai{cursor:pointer;white-space:nowrap}
+.wvn-nav .wv-nav-ai{margin-left:8px}
+.wvn-nav .wv-nav-ai .wv-chev{transition:transform .25s}
+.wvn-nav .wv-nav-ai.is-open .wv-chev,.wvn-nav .wv-nav-link.is-open .wv-chev{transform:rotate(180deg)}
+.wvn-nav .wv-nav-ai:focus-visible,.wvn-nav .wv-nav-link:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+.wvn-panel{position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 40px 70px -30px #12121247;max-height:calc(100svh - var(--header-h,72px) - 16px);overflow:auto;overscroll-behavior:contain}
+.wvn-panel.is-menu{left:auto;right:auto;top:calc(100% + 6px);min-width:190px;border:1px solid var(--line);border-radius:16px;max-height:none;padding:8px}
+.wvn-menu{display:flex;flex-direction:column}
+.wvn-menu a{display:block;padding:10px 14px;border-radius:10px;font-size:15px;font-weight:600}
+.wvn-menu a:hover,.wvn-menu a:focus-visible{background:var(--surface-2)}
+
+.wvn-svc{padding-top:24px;padding-bottom:28px}
+.wvn-svc .wv-mega-groups.is-many{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px}
+.wvn-svc .wv-mega-head{margin-bottom:14px;padding-bottom:14px}
+.wvn-svc .wv-mega-head h3{font-size:34px}
+.wvn-svc .wv-mega-group li a{padding:4px 0 4px 18px;font-size:14px}
+.wvn-d-gt{font-weight:700;display:block;margin:8px 0 2px}
+.wvn-d-svc{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
+.wvn-d-ai{margin-top:24px}
+
+/* Mobile drawer extras */
+.wvn-d-svc ul,.wvn-d-plain{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:4px}
+.wvn-d-svc ul a,.wvn-d-plain a{color:var(--muted);padding:5px 0;display:inline-block}
+.wvn-d-plain{flex-direction:column}
+.wv-acc>a.wv-acc-btn{display:flex}
+
+@media (min-width:1100px){
+  .wvn-nav{display:flex}
+  .wv-header .wv-burger{display:none}
+  .wv-shell .wv-drawer{display:none}
+}
+@media (max-width:1099px){
+  .wv-header .wv-burger,.wv-shell .wv-drawer{display:block}
+  .wv-header .wv-bar-cta .wv-btn{display:none}
+}
+@media (min-width:1100px) and (max-width:1279px){
+  .wv-bar{gap:12px}
+  .wvn-nav .wv-nav-link{padding:0 10px}
+}
+.wvn-svc .wv-mega-head h3{margin-top:0}.wvn-svc .wv-mega-list{padding-top:4px}

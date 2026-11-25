@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
-import { ContactPageContent } from '@/components/ContactPageContent'
-import { SITE_URL } from '@/config/site'
+import Link from 'next/link'
+import '@/app/wv.css'
+import { wvFonts } from '@/components/wv/fonts'
+import { ContactForm, ContactChannels } from '@/components/contact/ContactForm'
+import { SITE_URL, ORGANIZATION_REF } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Contact Us | Website Vikreta',
-  description: 'Get in touch with Website Vikreta. A Pune-based AI-first web agency. Whether you need a new website, AI automation, or want to discuss a project, we would love to hear from you.',
+  description: 'Talk to Website Vikreta, a Pune-based AI-first web agency working with clients worldwide. Tell us about your website, app or AI automation project and we reply within 24 hours.',
   keywords: [
     'contact web agency Pune',
     'hire web designer Pune',
@@ -16,7 +19,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Contact Us | Website Vikreta',
-    description: 'Reach out to Website Vikreta. We build modern websites and AI automation systems for businesses across India. Let us talk about your project.',
+    description: 'Talk to a Pune-based AI-first agency building websites and AI automation for clients worldwide. We reply within 24 hours.',
     url: `${SITE_URL}/contact`,
     siteName: 'Website Vikreta',
     type: 'website',
@@ -34,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Contact Us | Website Vikreta',
-    description: 'Reach out to Website Vikreta. We build modern websites and AI automation systems for businesses across India.',
+    description: 'Talk to a Pune-based AI-first agency building websites and AI automation for clients worldwide.',
     images: ['/og-image.png'],
   },
   alternates: {
@@ -52,6 +55,53 @@ export const metadata: Metadata = {
   },
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': `${SITE_URL}/contact#webpage`,
+  url: `${SITE_URL}/contact`,
+  name: 'Contact Website Vikreta',
+  mainEntity: {
+    ...ORGANIZATION_REF,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      email: 'contact@websitevikreta.com',
+      telephone: '+919970445198',
+      areaServed: 'Worldwide',
+      availableLanguage: ['English', 'Hindi', 'Marathi'],
+    },
+  },
+}
+
 export default function ContactPage() {
-  return <ContactPageContent />
+  return (
+    <div className={`wv wv-shell ${wvFonts}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <section className="wv-page wv-ct-hero">
+        <div className="wv-grid-bg" aria-hidden />
+        <div className="wv-wrap">
+          <nav className="wv-crumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden>/</span>
+            <span>Contact</span>
+          </nav>
+          <h1 className="wv-h1 wv-page-h1">Let&apos;s get started</h1>
+          <p className="wv-page-lead">
+            Tell us what you are building. A Pune-based team replies within 24 hours, wherever you are.
+          </p>
+        </div>
+      </section>
+
+      <div className="wv-wrap wv-ct">
+        <div className="wv-ct-card">
+          <ContactForm />
+        </div>
+        <aside className="wv-ct-side" aria-label="Direct channels">
+          <h2>Prefer to talk directly?</h2>
+          <ContactChannels />
+        </aside>
+      </div>
+    </div>
+  )
 }
