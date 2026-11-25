@@ -42,6 +42,19 @@ Entry point for every AI session. Canonical, tool-agnostic instructions live in 
 - `.ai/learning.md`: conventions log — read before building, add one entry per new reusable rule/invented component, follow or explicitly update on conflict.
 - Copy: human + anti-slop pass mandatory (`.ai/context/ai-slop-stop-skill.md`, `.ai/commands/macro/humanize.md`) before any copy ships. Real proof only, human copy only.
 
+## Protected branches (all agents and tools)
+
+`main`, `stage` and `releases/**` only change through a pull request. **Every operation on these three branches goes through a PR: direct push and direct commit are off.** This applies to every AI agent (Claude Code, Codex, Cursor, Copilot, Gemini, and so on) and to scripts.
+
+- Never commit or push to them directly: no `git commit` while one of them is checked out, no `git push` to them, no local merge then push, no fast-forward push, no force push. This includes downmerges and hotfixes. If one of them is checked out, create a branch first (`git checkout -b <type>/<slug>` keeps uncommitted changes).
+- Before any push, check the destination ref. If it is one of those branches, stop and open a PR instead.
+- Work on a feature or fix branch, push it, then open a PR. Normal PRs target the active `releases/YYYY-MM`; target `main` only when the user explicitly says so.
+- Downmerge, after a PR lands in `main`: open a PR `main` into `stage` first, then a PR `main` into `releases/YYYY-MM`.
+- Do not merge these PRs yourself unless the user asks for it in that same turn.
+- A conflict or an out-of-date branch is fixed on the PR's own branch, never on the protected branch.
+- GitHub has no branch protection or rulesets on these branches, so this rule is the only guard. An admin can enforce it in Settings, Branches, "Require a pull request before merging".
+- Tool-specific notes: `.claude/rules/protected-branches.md` (Claude Code).
+
 ## Where the deep standards live (`.ai/`)
 
 `agents/` (Storyteller → Builder → Critic pipeline), `context/` (brand, business, users, vision, session), `standards/` (design-system, code-standards, motion-system, seo-geo, image-asset-standards), `commands/` (macro/micro recipes), `briefs/` (per-page asset briefs). `.ai/README.md` has the full tree.
