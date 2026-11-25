@@ -1,19 +1,16 @@
-# Protected branches: pull requests only
+# Protected branches: Claude Code notes
 
-Nothing goes into `main`, `stage` or `releases/**` without a pull request.
+The rule itself is in `AGENTS.md`, section "Protected branches (all agents and tools)": every operation on `main`, `stage` and `releases/**` goes through a PR, and direct push and direct commit are off. It applies to Claude Code in full. Read it first; this file only adds what is specific to Claude Code.
 
-- No direct `git push` to these branches. No local merge followed by a push, no fast-forward push, no force push.
-- This also covers downmerges and hotfixes.
-- Before any `git push`, check the destination. If it is `main`, `stage` or `releases/*`, stop and open a PR instead.
+## Claude Code specifics
 
-## How changes reach them
+- **Use `/push`** (recipe `.ai/commands/micro/push.md`). It creates a new branch off `releases/YYYY-MM` and opens a PR, so it never commits on a protected branch.
+- **Never commit on them.** Run `git branch --show-current` before every commit. If it is `main`, `stage` or `releases/*`, create a branch first (`git checkout -b <type>/<slug>` carries uncommitted changes with it), then commit there.
+- **A refspec push is still a direct push.** `git push origin <sha>:refs/heads/stage` or `HEAD:releases/YYYY-MM` counts, even when it is a fast-forward.
+- **Do not run `gh pr merge`** or the merge API for these PRs unless the user asks in that same turn.
+- **Downmerge:** `gh pr create --base stage --head main`, then `gh pr create --base releases/YYYY-MM --head main`. Give the user the PR links; they merge.
+- **Permission prompts and auto mode:** never approve or add an allow rule for a push or merge that would update one of these branches. If an action would update one, stop and tell the user.
 
-- Work on a feature or fix branch, push that branch, then open a PR with `gh pr create`.
-- A normal PR targets the active `releases/YYYY-MM` branch. Target `main` only when the user explicitly says so.
-- **Downmerge** after a PR is merged into `main`: open one PR `main` into `stage`, then a second PR `main` into `releases/YYYY-MM`. Do the `stage` one first. Share the PR links with the user.
-- Do not merge these PRs yourself (`gh pr merge`) unless the user asks for it in that same turn. The user or the team merges.
-- If a conflict or an out-of-date branch blocks a PR, fix it on the PR's own branch, never on the protected branch.
+## Possible hardening (not enabled)
 
-## Note
-
-GitHub does not enforce this: these branches have no protection rules or rulesets, so a direct push is technically allowed. This rule is the guard. An admin can enable "Require a pull request before merging" in Settings, Branches to enforce it for everyone.
+Claude Code can block the common cases for everyone on the team with `permissions.deny` rules in a shared `.claude/settings.json` (for example `Bash(gh pr merge:*)` and pushes to `main`, `stage`, `releases/*`). Pattern rules cannot catch every spelling of a push, so GitHub branch protection is still the real enforcement. Propose this to the user before adding it; it changes how every Claude session on this repo behaves.
