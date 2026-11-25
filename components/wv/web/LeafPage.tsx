@@ -178,6 +178,174 @@ function Wireframe() {
   )
 }
 
+/** A page wireframe with three numbered pins and a ranked findings list. Blocks only, no client data. */
+function Audit() {
+  const rows = [
+    { n: 1, w: '62%', sev: 'High' },
+    { n: 2, w: '48%', sev: 'Medium' },
+    { n: 3, w: '74%', sev: 'Low' },
+  ]
+  return (
+    <div className="cw-aud" aria-hidden>
+      <div className="cw-aud-page">
+        <i className="cw-aud-nav" />
+        <b className="cw-aud-h" />
+        <i className="cw-aud-p" />
+        <i className="cw-aud-p is-short" />
+        <span className="cw-aud-btn" />
+        <div className="cw-aud-two"><i /><i /></div>
+        <u className="cw-pin is-1">1</u>
+        <u className="cw-pin is-2">2</u>
+        <u className="cw-pin is-3">3</u>
+      </div>
+      <ul className="cw-aud-list">
+        {rows.map((r) => (
+          <li key={r.n}>
+            <u>{r.n}</u>
+            <i style={{ width: r.w }} />
+            <em className={`is-${r.sev.toLowerCase()}`}>{r.sev}</em>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** A recorded test session: video frame, play bar and three participants marked done or stuck. Blocks only. */
+function Sessions() {
+  const rows = [
+    { w: '58%', st: 'Done' },
+    { w: '72%', st: 'Stuck' },
+    { w: '46%', st: 'Done' },
+  ]
+  return (
+    <div className="cw-ses" aria-hidden>
+      <div className="cw-ses-frame">
+        <i className="cw-ses-bar" />
+        <b className="cw-ses-h" />
+        <i className="cw-ses-p" />
+        <span className="cw-ses-btn" />
+        <u className="cw-ses-play">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+        </u>
+        <em className="cw-ses-cur" />
+      </div>
+      <div className="cw-ses-track"><b /></div>
+      <ul className="cw-ses-list">
+        {rows.map((r, i) => (
+          <li key={i}>
+            <u />
+            <i style={{ width: r.w }} />
+            <em className={r.st === 'Stuck' ? 'is-stuck' : 'is-done'}>{r.st}</em>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** A three-level sitemap: one home, three sections, six pages. Blocks only. */
+function Sitemap() {
+  return (
+    <div className="cw-map" aria-hidden>
+      <b className="cw-map-home">Home</b>
+      <div className="cw-map-mid">
+        {[0, 1, 2].map((n) => (
+          <div key={n} className="cw-map-col">
+            <i className="cw-map-sec" />
+            <div className="cw-map-leaves">
+              <i /><i />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** A design-system board: colours, a type sample, a spacing scale and a few components. Blocks only. */
+function Tokens() {
+  return (
+    <div className="cw-tok" aria-hidden>
+      <div className="cw-tok-row"><i /><i /><i /><i /><i /></div>
+      <div className="cw-tok-type"><strong>Aa</strong><span><i /><i className="is-short" /></span></div>
+      <div className="cw-tok-space"><i /><i /><i /><i /></div>
+      <div className="cw-tok-comp"><span className="is-y" /><span /><span className="is-line" /></div>
+    </div>
+  )
+}
+
+/** Component variants beside a code block, with a "matches the design" badge. Blocks only. */
+function Library() {
+  return (
+    <div className="cw-lib" aria-hidden>
+      <div className="cw-lib-variants"><span className="is-y">Primary</span><span>Secondary</span><span className="is-line">Ghost</span></div>
+      <div className="cw-lib-code"><i /><i className="is-in" /><i className="is-in" /><i /><i className="is-in is-short" /></div>
+      <b className="cw-lib-ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg> Matches the design</b>
+    </div>
+  )
+}
+
+/** A chat with a labelled AI reply and a hand-over button. Blocks only, with the labels the page is about. */
+function Agent() {
+  return (
+    <div className="cw-agt" aria-hidden>
+      <div className="cw-agt-me"><i /><i className="is-short" /></div>
+      <div className="cw-agt-ai">
+        <em>AI</em>
+        <i /><i /><i className="is-short" />
+      </div>
+      <div className="cw-agt-act"><span className="is-y">Talk to a person</span><span>Undo</span></div>
+    </div>
+  )
+}
+
+/** A dashboard: three stat tiles, a bar chart and table rows. Blocks only, no numbers. */
+function Dashboard() {
+  return (
+    <div className="cw-board" aria-hidden>
+      <div className="cw-board-tiles"><span><i /><b /></span><span><i /><b /></span><span className="is-y"><i /><b /></span></div>
+      <div className="cw-board-chart">{[40, 62, 48, 80, 58, 92, 70].map((h, n) => <i key={n} style={{ height: `${h}%` }} />)}</div>
+      <div className="cw-board-rows"><i /><i /><i /></div>
+    </div>
+  )
+}
+
+/** Two phone frames, one in front of the other. Blocks only. */
+function Mobile() {
+  return (
+    <div className="cw-mob" aria-hidden>
+      {[0, 1].map((n) => (
+        <div key={n} className={`cw-mob-ph${n ? ' is-front' : ''}`}>
+          <b className="cw-mob-notch" />
+          <i className="cw-mob-bar" />
+          <b className="cw-mob-h" />
+          <i className="cw-mob-p" />
+          <i className="cw-mob-img" />
+          <span className="cw-mob-btn" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** Three linked screens with a tap target and a cursor. Blocks only. */
+function Proto() {
+  return (
+    <div className="cw-pro" aria-hidden>
+      {[0, 1, 2].map((n) => (
+        <div key={n} className="cw-pro-step">
+          <div className={`cw-pro-scr${n === 1 ? ' is-on' : ''}`}>
+            <i /><b /><span className={n === 0 ? 'is-y' : ''} />
+            {n === 0 && <u className="cw-pro-tap" />}
+          </div>
+          {n < 2 && <em className="cw-pro-arrow"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" /></svg></em>}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function Hero({ c }: { c: C }) {
   const { hero } = c
   return (
@@ -191,7 +359,7 @@ function Hero({ c }: { c: C }) {
       <div className="wv-wrap cw-hero-in">
         <div className="cw-hero-copy">
           <nav className="wv-crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href="/services/web-development">Web Design &amp; Development</Link>/<span aria-current="page">{c.crumb}</span>
+            <Link href="/">Home</Link>/<Link href="/services">Services</Link>/<Link href={c.parent?.href ?? '/services/web-development'}>{c.parent?.label ?? <>Web Design &amp; Development</>}</Link>/<span aria-current="page">{c.crumb}</span>
           </nav>
           <h1 className={`wv-h1${c.h1.some((l) => l.length > 13) ? ' is-long' : ''}`}>
             <KineticTitle as="p" lines={c.h1} accent={1} delay={0.1} />
@@ -201,7 +369,7 @@ function Hero({ c }: { c: C }) {
             <div className="wv-cta-row">
               <Magnetic>
                 <Link href="/contact" className="wv-btn wv-btn-y">
-                  Get a free website audit <Arrow size={15} />
+                  {c.cta ?? 'Get a free website audit'} <Arrow size={15} />
                 </Link>
               </Magnetic>
               <Link href="#proof" className="wv-btn wv-btn-ghost">
@@ -221,7 +389,7 @@ function Hero({ c }: { c: C }) {
             </div>
           </Reveal>
         </div>
-        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${['vitals', 'checklist', 'store', 'headless'].includes(hero.art) ? ' is-card' : ''}`}>
+        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${['vitals', 'checklist', 'store', 'headless', 'audit', 'sessions', 'sitemap', 'tokens', 'library', 'agent', 'dashboard', 'mobile', 'proto'].includes(hero.art) ? ' is-card' : ''}`}>
           {hero.art === 'ba' ? (
             <BeforeAfter />
           ) : (
@@ -242,6 +410,15 @@ function Hero({ c }: { c: C }) {
               {hero.art === 'checklist' && <Checklist />}
               {hero.art === 'store' && <Store />}
               {hero.art === 'headless' && <Headless />}
+              {hero.art === 'audit' && <Audit />}
+              {hero.art === 'sessions' && <Sessions />}
+              {hero.art === 'sitemap' && <Sitemap />}
+              {hero.art === 'tokens' && <Tokens />}
+              {hero.art === 'library' && <Library />}
+              {hero.art === 'agent' && <Agent />}
+              {hero.art === 'dashboard' && <Dashboard />}
+              {hero.art === 'mobile' && <Mobile />}
+              {hero.art === 'proto' && <Proto />}
             </div>
           )}
           <span className="cw-hero-tag">
@@ -529,7 +706,7 @@ function Proof({ c }: { c: C }) {
   return (
     <section className="wv-sec" id="proof">
       <div className="wv-wrap">
-        <Section title={['Sites we', 'have shipped']} aside={<p>{proof.aside}</p>} />
+        <Section title={c.proofTitle ?? ['Sites we', 'have shipped']} aside={<p>{proof.aside}</p>} />
         <div className="wv-stack">
           {cases.map((p, i) => (
             <ProofCard key={p.slug} p={p} i={i} total={total} metric={proof.metric[p.slug]} />
@@ -578,21 +755,22 @@ const WEB_QUOTES = [
   { tab: 'Cozmo Realty', ...who('Sang Hyun Han'), logo: undefined as string | undefined },
 ]
 
-export function Quote() {
+export function Quote({ quotes }: { quotes?: C['quotes'] }) {
   const reduce = useReducedMotion()
+  const list = quotes ? quotes.map((x) => ({ tab: x.tab, ...who(x.name), logo: undefined as string | undefined })) : WEB_QUOTES
   const [a, setA] = useState(0)
   useEffect(() => {
     if (reduce) return
-    const t = setInterval(() => setA((v) => (v + 1) % WEB_QUOTES.length), 7000)
+    const t = setInterval(() => setA((v) => (v + 1) % list.length), 7000)
     return () => clearInterval(t)
-  }, [reduce, a])
-  const q = WEB_QUOTES[a]
+  }, [reduce, a, list.length])
+  const q = list[a]
   return (
     <section className="wv-sec cw-quote-sec" aria-label="What clients say">
       <div className="cw-ghost-circle" aria-hidden />
       <div className="wv-wrap cw-quote-in">
         <div className="cw-quote-tabs" role="tablist" aria-label="Choose a client">
-          {WEB_QUOTES.map((t, i) => (
+          {list.map((t, i) => (
             <button key={t.tab} role="tab" aria-selected={i === a} onClick={() => setA(i)} className={i === a ? 'is-on' : ''}>
               {t.tab}
             </button>
@@ -742,8 +920,8 @@ export function LeafPage({ c }: { c: C }) {
       <Compare c={c} />
       <Process steps={c.steps} />
       <Proof c={c} />
-      <Stats />
-      <Quote />
+      <Stats items={c.stats?.map((ix) => STATS[ix])} />
+      <Quote quotes={c.quotes} />
       <Fit c={c} />
       <Faq faqs={c.faqs} />
       <Related c={c} />

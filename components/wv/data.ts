@@ -73,6 +73,18 @@ export type Service = {
 
 // Label → real route, for any sub-page that exists. Everything else renders as '#'.
 const PAGES: Record<string, string> = {
+  'UX audit': '/services/uiux-design/research-strategy/ux-audit',
+  'User interviews & testing': '/services/uiux-design/research-strategy/user-interviews-testing',
+  'Information architecture': '/services/uiux-design/research-strategy/information-architecture',
+  'Research & Strategy': '/services/uiux-design/research-strategy',
+  'Design Systems': '/services/uiux-design/design-systems',
+  'Product Design': '/services/uiux-design/product-design',
+  'SaaS & dashboard UI': '/services/uiux-design/product-design/saas-dashboard-ui',
+  'Mobile app design': '/services/uiux-design/product-design/mobile-app-design',
+  'Interactive prototypes': '/services/uiux-design/product-design/interactive-prototypes',
+  'Figma design systems': '/services/uiux-design/design-systems/figma-design-systems',
+  'Component libraries': '/services/uiux-design/design-systems/component-libraries',
+  'Design for AI agents': '/services/uiux-design/design-systems/design-for-ai-agents',
   'Business Websites': '/services/web-development/business-websites',
   'CMS & Performance': '/services/web-development/cms-performance',
   'E-commerce': '/services/web-development/ecommerce',
