@@ -53,7 +53,7 @@ const SERVICE_PAGES = [
   { path: '/services/web-mobile-app-development', cta: /Book a Free Project Call/, formId: 'start-project', formKind: 'audit', ctaKind: 'modal', faq: 'Apps & CRM FAQs', faqKind: 'region', faqCount: 3, carousel: 'Client testimonials' },
   { path: '/services/web-development', cta: /Book a call/, formId: 'get-quote', formKind: 'audit', ctaKind: 'modal', faq: 'Web Development FAQs', faqKind: 'region', faqCount: 5, carousel: 'Client testimonials' },
   { path: '/services/uiux-design', cta: /Book a call/, formId: 'get-quote', formKind: 'audit', ctaKind: 'modal', faq: 'UI/UX design FAQs', faqKind: 'region', faqCount: 5, carousel: 'UI/UX client testimonials' },
-  { path: '/services/digital-marketing', cta: /Book a Free Marketing Audit/, formId: 'marketing-audit', formKind: 'audit', ctaKind: 'modal', faq: 'Digital Marketing FAQs', faqKind: 'region', faqCount: 4, carousel: null },
+  { path: '/services/digital-marketing', cta: /Get my plan/, formId: 'lead', formKind: 'wv', ctaKind: 'form', faq: 'Questions people ask', faqKind: 'native', faqCount: 6, carousel: null },
 ] as const;
 
 const OVERFLOW_WIDTHS = [320, 768, 1440];

@@ -158,6 +158,7 @@ export async function submitInlineWvLeadForm(page: Page, root: Locator): Promise
   expect(await (await request.response())?.text(), 'EmailJS was not mocked').toBe('OK');
   const params = request.postDataJSON().template_params;
   expect(params).toMatchObject({ name: TEST_LEAD.name, email: TEST_LEAD.email, reply_to: TEST_LEAD.email });
-  expect(params.service).toMatch(/^Applied AI: /);
+  // Applied AI pages keep the old prefix; the SEO & GEO pillar sends its own.
+  expect(params.service).toMatch(/^(Applied AI|SEO & GEO): /);
   expect(params.message).toContain(TEST_LEAD.subject);
 }
