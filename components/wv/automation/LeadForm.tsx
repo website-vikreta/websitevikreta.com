@@ -7,6 +7,7 @@ import { trackFormSubmit } from '@/lib/analytics'
 import { WaButton } from './WaButton'
 import { CountryPhone } from './CountryPhone'
 import { getCountries } from './countries'
+import Turnstile, { type TurnstileHandle } from '../Turnstile'
 
 const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
 const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
@@ -44,13 +45,19 @@ export function PrefillLink({ interest, className, children }: { interest: strin
   )
 }
 
-export function LeadForm({ interest, source, id = 'lead' }: { interest: string; source: string; id?: string }) {
+/** `topic` changes the wording only. AI pages keep the default; SEO/GEO pages pass 'grow'. */
+export function LeadForm({ interest, source, id = 'lead', topic = 'automate' }: { interest: string; source: string; id?: string; topic?: 'automate' | 'grow' }) {
+  const grow = topic === 'grow'
+  const wantLabel = grow ? 'What do you need help with?' : 'What should we automate?'
+  const wantVerb = grow ? 'wants help with' : 'wants to automate'
+  const waLead = grow ? 'Hi, I want help with' : 'Hi, I want to automate'
   const [want, setWant] = useState(interest)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
   const [failed, setFailed] = useState(false)
   const okRef = useRef<HTMLDivElement>(null)
+  const turnstileRef = useRef<TurnstileHandle | null>(null)
 
   useEffect(() => {
     if (done) okRef.current?.focus()
@@ -65,6 +72,41 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
     window.addEventListener(PREFILL, on)
     return () => window.removeEventListener(PREFILL, on)
   }, [])
+
+  async function sendLead(data: {
+    name: string
+    email: string
+    phone: string
+    phoneLabel: string
+    what: string
+  }) {
+    setBusy(true)
+    setFailed(false)
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          name: data.name,
+          reply_to: data.email,
+          email: data.email,
+          service: `${grow ? 'SEO & GEO' : 'Applied AI'}: ${interest}`,
+          mobile: data.phone || 'Not provided',
+          budget: 'Not specified',
+          message: `${data.name} ${wantVerb}: ${data.what}\nPhone: ${data.phone ? `${data.phone} (${data.phoneLabel})` : 'Not provided'}\nService/product: ${interest}\nSource: ${source}`,
+          to_name: 'Website Vikreta',
+        },
+        PUBLIC_KEY,
+      )
+      setDone(true)
+      trackFormSubmit(`ai_automations_${source}`)
+    } catch (err) {
+      console.error('[EmailJS] send failed', err)
+      setFailed(true)
+    } finally {
+      setBusy(false)
+    }
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -88,32 +130,12 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
       form.querySelector<HTMLInputElement>(`[name="${first}"]`)?.focus()
       return
     }
-    setBusy(true)
-    setFailed(false)
-    try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          name,
-          reply_to: email,
-          email,
-          service: `Applied AI: ${interest}`,
-          mobile: phone || 'Not provided',
-          budget: 'Not specified',
-          message: `${name} wants to automate: ${what}\nPhone: ${phone ? `${phone} (${cc?.name})` : 'Not provided'}\nService/product: ${interest}\nSource: ${source}`,
-          to_name: 'Website Vikreta',
-        },
-        PUBLIC_KEY,
-      )
-      setDone(true)
-      trackFormSubmit(`ai_automations_${source}`)
-    } catch (err) {
-      console.error('[EmailJS] send failed', err)
-      setFailed(true)
-    } finally {
-      setBusy(false)
-    }
+
+    // Fields are valid — bot check must pass before any email is sent.
+    const verified = await turnstileRef.current?.verify()
+    if (verified === false) return
+
+    await sendLead({ name, email, phone, phoneLabel: cc?.name ?? '', what })
   }
 
   if (!CONFIGURED)
@@ -121,7 +143,7 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
       <div className="wv-ax-form is-done" id={id}>
         <p>Message us on WhatsApp or email contact@websitevikreta.com</p>
         <div className="wv-cta-row">
-          <WaButton text={`Hi, I want to automate: ${interest}`} variant="y" />
+          <WaButton text={`${waLead}: ${interest}`} variant="y" />
         </div>
       </div>
     )
@@ -151,7 +173,8 @@ export function LeadForm({ interest, source, id = 'lead' }: { interest: string; 
       {field('name', 'Your name', { type: 'text', autoComplete: 'name', required: true })}
       {field('email', 'Work email', { type: 'email', autoComplete: 'email', required: true })}
       <CountryPhone id={id} label="Phone or WhatsApp (optional)" error={errors.phone} />
-      {field('want', 'What should we automate?', { type: 'text', value: want, maxLength: MAX, onChange: (e) => setWant(e.target.value), required: true })}
+      {field('want', wantLabel, { type: 'text', value: want, maxLength: MAX, onChange: (e) => setWant(e.target.value), required: true })}
+      <Turnstile ref={turnstileRef} />
       <div className="wv-cta-row">
         <Magnetic>
           <button type="submit" className="wv-btn wv-btn-y" aria-disabled={busy}>

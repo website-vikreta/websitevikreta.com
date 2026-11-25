@@ -1374,3 +1374,28 @@ _None logged yet._
 - **The general lesson**: before reaching for a connected/sequential layout (timeline, arrow-chain, numbered steps), check whether the content actually has inherent order — this is the same "unordered sets stay un-numbered" rule already logged for FixesSection/Pain's flip cards, just missed on the first two passes at this exact section. A plain grid is the correct default for parallel facts; a connector/sequence layout has to be earned by the content, not applied because it looks more designed.
 - Where: `app/services/web-mobile-app-development/sections/ImpactSection.tsx`.
 - Date: 2026-09-26
+
+### [Content] — non-AI pillars use a parallel content namespace, not `content/ai`
+- Rule: `/services/digital-marketing` is a real wv pillar with the same three-tier shape as the AI pillars (pillar → service → sub-service), but its content lives in `content/marketing/` with `BASE = '/services/digital-marketing'`, not in `content/ai/branches/`. Reusing the AI branch model would force AI personas and demo machinery onto an SEO/GEO page. Routes: `[service]` and `[service]/[sub]`, both `dynamicParams = true` with `notFound()` for unknown slugs.
+- Rule: canonical truth for this section — WV does **not** run paid ad campaigns or manage ad spend. Scope is SEO foundations, AEO/GEO and content systems; ad creatives cross-link to `/services/ai/ai-content-ads`. Only proof used is the published AP Cleanco case study. No invented metrics in nav proof or copy.
+- Where: `content/marketing/{types,services,index}.ts`, `lib/marketing-seo.ts`, `app/services/digital-marketing/**`, `components/wv/data.ts`, `app/sitemap.ts`, `app/services/ai/PillarPage.tsx`.
+- Date: 2026-11-24
+
+### [Component] — marketing flow scenes and hero boards
+- Rule: `mk-*` styles in `app/services/digital-marketing/marketing.css` only; no legacy tokens. `FlowScenes.tsx` exports one animated scene per service (crawl → fix → result, buyer prompt → engines → citation, research → draft → publish). The same scene renders in the hero board **and** inside its pillar card via `CardFlow`, so the card and its hero tell one story. `useClock` supplies the shared ms clock; SSR/reduced motion get the final frame; offscreen scenes pause. Every board has an adjacent `.wv-sr` text alternative.
+- Rule: `MarketingCta` has its own marketing copy (the shared `CtaBlock` talks about AI personas). Its section id is `marketing-lead` — `LeadForm` already owns `id="lead"`, so reusing `lead` on the wrapper breaks the e2e `#lead` locator with duplicate IDs.
+- Where: `components/wv/marketing/{FlowScenes,HeroArt,Cta}.tsx`.
+- Date: 2026-11-24
+
+### [Polish] — CTA theme, hero flow, homepage process on the marketing pillar
+- Rule: a non-AI pillar's closing CTA must reuse the shared light `.axc-cta` shell (white `--surface`, dark ink), never a bespoke dark `--ink` section. The form wording was also wrong for SEO/GEO: `LeadForm` now accepts `topic='grow'` → "What do you need help with?" and an `SEO & GEO:` EmailJS service prefix; the default stays `Applied AI:` and "What should we automate?" for every AI page.
+- Rule: hero art must read as a flow at a glance, not three empty panels. `VisibilityBoard` shows one buyer question, three horizontal lanes (SEO → FOUND, AEO/GEO → CITED, Content → COMPOUND) and keeps each node at 62% opacity in its resting state so the board is never blank between animation beats.
+- Rule: to give a section the homepage `Process()` effect, copy the mechanics into local `mk-proc*` classes — pinned 300vh section, sticky 100vh inner, horizontal `x` from `useScroll`, progress rail, 380px step cards + a 520px visual card. `desktop` starts false so the pinned class is decided after mount; SSR/first render stay identical. Reduced motion and <960px get a vertical stack.
+- Where: `components/wv/marketing/{Cta,VisibilityBoard,ProcessTrack}.tsx`, `components/wv/automation/LeadForm.tsx`, `app/services/digital-marketing/{page.tsx,marketing.css}`, `e2e/helpers/page-checks.ts`.
+- Date: 2026-11-24
+
+### [Component] — Gated Cloudflare Turnstile on all lead forms
+- Rule: Every lead form under `/services/**` (inline `LeadForm` on the AI and SEO/GEO pages, and `AuditForm` in inline contact sections and the `#book-audit` popup) uses Cloudflare Turnstile immediately before the submit button. The widget is rendered with `appearance: 'always'` but `execution: 'execute'`, and stays behind a "Tick above to verify" placeholder until the visitor ticks the checkbox. That tick is the only gate that can start verification: it reveals and executes the widget, posts the token to `/api/captcha/verify`, and EmailJS fires only on `success: true`. `TurnstileHandle.verify()` returns true only after that click-to-verified flow, so Cloudflare's auto-solve on trusted visitors can never submit the form by itself. Never clip/collapse the container — `.wv-turnstile` must give the iframe room to render. Failure message: "CAPTCHA verification failed — please retype CAPTCHA and try again."
+- Where: `components/wv/Turnstile.tsx` (widget + `verify()`), `app/api/captcha/verify/route.ts` (server siteverify), `components/wv/automation/LeadForm.tsx`, `components/ui/AuditForm.tsx`, `app/globals.css` (`.wv-turnstile*` styles).
+- Env: `NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY` (browser) + `CLOUDFLARE_TURNSTILE_SECRET_KEY` (server-only). Widget dashboard mode must be Managed; `execution: 'execute'` and the placeholder gate are set in code.
+- Date: 2026-11-25

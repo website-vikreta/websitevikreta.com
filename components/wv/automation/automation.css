@@ -89,3 +89,5 @@
 
 /* row logo */
 .wv-ax-row-logo{width:40px;height:40px;object-fit:contain}
+
+/* CAPTCHA widget styles live in app/globals.css so every form gets them. */
