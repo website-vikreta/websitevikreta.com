@@ -25,7 +25,7 @@ export type LeafContent = {
   compare?: { aside: string; cols: { t: string; on?: boolean }[]; rows: { k: string; v: string[] }[] }
   /** Optional "what it connects to" grid (e-commerce pages). */
   connects?: { aside: string; items: { t: string; d: string }[] }
-  build: { aside: string; rows: { t: string; href: string; d: string; pop: string[] }[] }
+  build: { aside: string; /** Section title, two lines. Defaults to 'What you / get'. */ title?: [string, string]; rows: { t: string; href: string; d: string; pop: string[] }[] }
   steps: { aside: string; items: { n: string; t: string; d: string }[] }
   proof: {
     aside: string

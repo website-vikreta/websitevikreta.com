@@ -310,7 +310,7 @@ function Build({ c }: { c: C }) {
   return (
     <section className="wv-sec cw-build" id="build">
       <div className="wv-wrap">
-        <Section title={['What you', 'get']} aside={<p>{build.aside}</p>} />
+        <Section title={build.title ?? ['What you', 'get']} aside={<p>{build.aside}</p>} />
         <div
           ref={list}
           className="wv-svc-list cw-build-list"
