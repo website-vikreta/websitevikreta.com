@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 export const runtime = 'nodejs'
 
@@ -8,7 +9,6 @@ const SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? process.env.NEXT_PUBLIC_EMA
 const TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
 const PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? ''
 const PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY ?? ''
-const TURNSTILE_SECRET = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY ?? ''
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 // Only these template params are forwarded; anything else a caller sends is dropped.
@@ -42,25 +42,8 @@ export async function POST(req: NextRequest) {
   }
 
   // 1. Bot check. Fails closed in production; dev/CI without a secret skips it.
-  if (TURNSTILE_SECRET) {
-    if (!token) return bad(400, 'Captcha required')
-    try {
-      const form = new FormData()
-      form.append('secret', TURNSTILE_SECRET)
-      form.append('response', token)
-      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-      if (ip) form.append('remoteip', ip)
-      const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form, cache: 'no-store' })
-      const json = (await res.json()) as { success?: boolean }
-      if (!json.success) return bad(400, 'Captcha failed')
-    } catch (err) {
-      console.error('[contact] turnstile error:', err)
-      return bad(502, 'Captcha check unavailable')
-    }
-  } else if (process.env.NODE_ENV === 'production') {
-    console.error('[contact] CLOUDFLARE_TURNSTILE_SECRET_KEY missing in production')
-    return bad(503, 'Form is unavailable')
-  }
+  const captcha = await verifyTurnstile(req, token)
+  if (!captcha.ok) return bad(captcha.status, captcha.error)
 
   // 2. Validate and whitelist the fields.
   const params: Record<string, string> = {}
