@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { waitForCaptcha } from '../helpers/captcha';
 
 export interface ContactFormData {
   name: string;
@@ -54,6 +55,7 @@ export class ContactPage extends BasePage {
   }
 
   async submit(): Promise<void> {
+    await waitForCaptcha(this.page);
     await this.submitButton.scrollIntoViewIfNeeded();
     await this.submitButton.click();
   }

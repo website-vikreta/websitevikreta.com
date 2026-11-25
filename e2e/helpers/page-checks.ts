@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import type { BasePage } from '../pages/BasePage';
 import { TEST_LEAD } from '../fixtures/test-data';
+import { waitForCaptcha } from './captcha';
 
 /** Page-agnostic "main things" checks shared by the per-page specs. */
 
@@ -118,20 +119,21 @@ export async function expectCarouselButtonsMove(section: Locator): Promise<void>
 
 /**
  * Fills an inline AuditForm ("Book a Free Call") inside `root` with the fake test identity,
- * submits it, and checks the success message plus the (mocked) EmailJS payload.
+ * submits it, and checks the success message plus the (mocked) /api/contact payload.
  */
 export async function submitInlineAuditForm(page: Page, root: Locator): Promise<void> {
   const fields = { firstName: TEST_LEAD.firstName, lastName: TEST_LEAD.lastName, email: TEST_LEAD.email, phone: TEST_LEAD.phone, subject: TEST_LEAD.subject };
   for (const [name, value] of Object.entries(fields)) await root.locator(`input[name="${name}"]`).fill(value);
   await root.locator('textarea[name="message"]').fill(TEST_LEAD.message);
 
-  const sent = page.waitForRequest(/api\.emailjs\.com/);
+  await waitForCaptcha(root);
+  const sent = page.waitForRequest(/\/api\/contact/);
   await root.locator('button[type="submit"]').click();
   await expect(root.getByText("Thanks, we'll get back to you within 24 hours.")).toBeVisible();
 
   const request = await sent;
-  expect(await (await request.response())?.text(), 'EmailJS was not mocked').toBe('OK');
-  expect(request.postDataJSON().template_params).toMatchObject({
+  expect((await (await request.response())?.json())?.mocked, 'lead submit was not mocked').toBe(true);
+  expect(request.postDataJSON().params).toMatchObject({
     name: TEST_LEAD.name,
     email: TEST_LEAD.email,
     mobile: TEST_LEAD.phone,
@@ -142,7 +144,7 @@ export async function submitInlineAuditForm(page: Page, root: Locator): Promise<
 
 /**
  * Fills the wv AI lead form (components/wv/automation/LeadForm.tsx) inside `root`,
- * submits it, and checks the "Got it." success state plus the mocked EmailJS payload.
+ * submits it, and checks the "Got it." success state plus the mocked /api/contact payload.
  * Phone is optional on this form, so it is left blank to stay country-agnostic.
  */
 export async function submitInlineWvLeadForm(page: Page, root: Locator): Promise<void> {
@@ -150,13 +152,14 @@ export async function submitInlineWvLeadForm(page: Page, root: Locator): Promise
   await root.locator('input[name="email"]').fill(TEST_LEAD.email);
   await root.locator('input[name="want"]').fill(TEST_LEAD.subject);
 
-  const sent = page.waitForRequest(/api\.emailjs\.com/);
+  await waitForCaptcha(root);
+  const sent = page.waitForRequest(/\/api\/contact/);
   await root.locator('button[type="submit"]').click();
   await expect(root.getByText('Got it.')).toBeVisible();
 
   const request = await sent;
-  expect(await (await request.response())?.text(), 'EmailJS was not mocked').toBe('OK');
-  const params = request.postDataJSON().template_params;
+  expect((await (await request.response())?.json())?.mocked, 'lead submit was not mocked').toBe(true);
+  const params = request.postDataJSON().params;
   expect(params).toMatchObject({ name: TEST_LEAD.name, email: TEST_LEAD.email, reply_to: TEST_LEAD.email });
   // Applied AI pages keep the old prefix; the SEO & GEO pillar sends its own.
   expect(params.service).toMatch(/^(Applied AI|SEO & GEO): /);
