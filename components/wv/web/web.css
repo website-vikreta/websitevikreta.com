@@ -114,6 +114,58 @@
 .cw-wire-proof span{display:flex;gap:3px}
 .cw-wire-proof .wv-star{width:12px;height:12px;color:var(--y)}
 
+/* Before / after hero art (redesign & migration) */
+.cw-hero-art.is-ba::before{display:none}
+.cw-hero .wv-h1.is-long{font-size:clamp(44px,6.2vw,88px)}
+.cw-ba{position:relative;width:100%;height:380px}
+.cw-ba::before{content:"";position:absolute;right:-10px;top:-6px;width:56%;height:46%;border-radius:28px;background:var(--y);transform:rotate(5deg)}
+.cw-ba-card{position:absolute;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:20px}
+.cw-ba-card.is-old{left:0;top:56px;z-index:1;width:58%;transform:rotate(-3deg);opacity:.72}
+.cw-ba-card.is-new{right:0;top:30px;z-index:2;width:72%;box-shadow:0 30px 60px -24px #12121259}
+.cw-browser-bar span.is-mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;margin:0 auto 0 8px;padding:3px 12px}
+.cw-browser-bar em{margin-left:auto;padding:2px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-style:normal;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+.cw-browser-bar em.is-y{margin-left:0;background:var(--y);border-color:var(--y);color:var(--ink)}
+.cw-ba-body{padding:16px;display:grid;gap:11px}
+.cw-ba i,.cw-ba b{display:block;border-radius:6px;background:#1212121f}
+.cw-ba-nav{display:flex;gap:4px}
+.cw-ba-nav i{height:8px;flex:1}
+.cw-ba-block{height:48px;background:#1212121a!important}
+.cw-ba-three{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.cw-ba-three i{height:52px}
+.cw-ba-strip{height:22px;background:#12121233!important}
+.cw-ba-top{display:flex;align-items:center;justify-content:space-between}
+.cw-ba-top>b{width:56px;height:10px;background:var(--ink)!important;border-radius:4px}
+.cw-ba-top span{display:flex;gap:6px}
+.cw-ba-top span i{width:24px;height:6px;border-radius:999px}
+.cw-ba-h{height:24px;width:92%;background:var(--ink)!important;border-radius:5px}
+.cw-ba-h.is-short{width:64%}
+.cw-ba-sub{height:9px;width:58%;border-radius:999px}
+.cw-ba-cta{display:flex;align-items:center;gap:8px}
+.cw-ba-cta span{height:30px;display:inline-flex;align-items:center;gap:5px;padding:0 14px;border-radius:999px;background:var(--y);font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.cw-ba-cta i{width:58px;height:30px;border-radius:999px;background:none;border:1px solid var(--line)}
+.cw-ba-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cw-ba-two>i{height:62px;padding:10px;border-radius:14px;background:var(--surface-2)}
+.cw-ba-two>i b{width:38px;height:7px;background:var(--ink)!important;border-radius:4px}
+.cw-ba-301{position:absolute;right:6%;bottom:6px;z-index:3;display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:var(--ink);color:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:600}
+.cw-hero-art.is-ba .cw-hero-tag{left:4%;top:0;bottom:auto;z-index:4}
+.cw-hero-art.is-ba .cw-hero-tag.is-b{left:auto;right:-4px;top:41%;bottom:auto}
+@media (min-width:720px){.cw-ba{height:440px}.cw-hero-art.is-ba .cw-hero-tag{left:2%}.cw-hero-art.is-ba .cw-hero-tag.is-b{right:-18px}.cw-ba-card.is-old{top:70px}.cw-ba-card.is-new{top:40px}}
+
+/* Vitals and checklist hero art */
+.cw-vit,.cw-chk{padding:22px;display:grid;gap:18px;background:var(--surface)}
+.cw-vit-row{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center}
+.cw-vit-row b{display:block;font-family:var(--display);text-transform:uppercase;font-weight:400;font-size:24px;line-height:1}
+.cw-vit-row span{display:block;margin-top:4px;color:var(--muted);font-size:13px}
+.cw-vit-row em{font-style:normal;padding:2px 9px;border-radius:999px;background:var(--surface-2);font-size:11px;font-weight:700;letter-spacing:.08em}
+.cw-vit-row i{grid-column:1/-1;display:block;height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.cw-vit-row u{display:block;height:100%;border-radius:999px;background:var(--y)}
+.cw-chk-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--canvas);font-weight:600;font-size:15px}
+.cw-chk-row span{flex:none;width:28px;height:28px;border-radius:50%;background:var(--y);display:grid;place-items:center}
+.cw-chk-row svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* Tags sit below text-heavy hero cards instead of over them */
+.cw-hero-art.is-card .cw-hero-tag{bottom:-14px;left:16px}
+
 /* Rotating word + tags */
 .cw-rot{display:flex;align-items:baseline;gap:.4em;font-family:var(--display);text-transform:uppercase;font-size:26px;line-height:1;margin:0}
 .cw-rot .wv-rot{color:var(--ink);background:none;padding:0}

@@ -86,14 +86,14 @@ export const FAQS = [
 
 const RELATED = [
   { t: 'Landing pages', d: 'One page, one job. Built to turn a campaign into enquiries.', href: '/services/web-development/business-websites/landing-pages' },
-  { t: 'Website redesign & migration', d: 'Replace the old site without losing the rankings it earned.' },
-  { t: 'Website maintenance', d: 'Updates, backups and fixes, so it keeps working.' },
+  { t: 'Website redesign & migration', d: 'Replace the old site without losing the rankings it earned.', href: '/services/web-development/business-websites/website-redesign-migration' },
+  { t: 'Website maintenance', d: 'Updates, backups and fixes, so it keeps working.', href: '/services/web-development/cms-performance/website-maintenance' },
 ]
 
 export const COMPANY: LeafContent = {
   crumb: 'Company & service websites',
   h1: ['A website that', 'works for you'],
-  hero: { ...HERO, tag: 'Live in 2 weeks', art: 'shot', url: 'apcleanco.com' },
+  hero: { ...HERO, tag: 'Live in 2 weeks', rot: 'Built to', art: 'shot', url: 'apcleanco.com' },
   band: [BAND_A, BAND_B],
   friction: {
     ...FRICTION,
