@@ -58,19 +58,19 @@ test.describe('Contact Page: Form Validations, Submission & Links', { tag: '@for
     await expect(contactPage.phoneError).toBeVisible();
   });
 
-  test('Happy Path: Submitting valid form sends mock EmailJS and displays success message', { tag: '@critical' }, async ({
+  test('Happy Path: Submitting valid form posts to /api/contact (mocked) and displays success message', { tag: '@critical' }, async ({
     page,
     contactPage,
   }) => {
     const { name, jobOrWebsite, email, phone } = TEST_LEAD;
     await contactPage.fillForm({ name, jobOrWebsite, email, phone });
 
-    const sent = page.waitForRequest(/api\.emailjs\.com/);
+    const sent = page.waitForRequest(/\/api\/contact/);
     await contactPage.submit();
     await contactPage.verifySuccessState();
 
-    // The (mocked) EmailJS call carries the fake identity, never a real-looking person.
-    const params = (await sent).postDataJSON().template_params;
+    // The (mocked) /api/contact call carries the fake identity, never a real-looking person.
+    const params = (await sent).postDataJSON().params;
     expect(params).toMatchObject({ name, email, mobile: phone, service: jobOrWebsite });
 
     // Click "Submit another request" to reset the form

@@ -17,7 +17,6 @@
     "test:visual-qa": "npx tsx e2e/capture-visual-qa.ts"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
     "@next/third-parties": "^16.2.9",
     "@portabletext/react": "^6.2.0",
     "@radix-ui/react-accordion": "^1.2.14",

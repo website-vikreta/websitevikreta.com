@@ -8,7 +8,7 @@ const OVERFLOW_WIDTHS = [320, 390, 768, 1440];
 
 /**
  * WhatsApp & Chat Automation branch page (content/ai/branches/whatsapp-automation.ts).
- * The page uses the wv inline lead form and native <details> FAQ; EmailJS is mocked in fixtures/test.ts.
+ * The page uses the wv inline lead form and native <details> FAQ; the lead POST (/api/contact) is mocked in fixtures/test.ts.
  */
 
 const HEADINGS = [
@@ -116,7 +116,7 @@ test.describe('WhatsApp Automation: Inline lead form', () => {
   test('submitting empty fields shows errors and sends nothing', async ({ page }) => {
     let sent = 0;
     page.on('request', (r) => {
-      if (r.url().includes('api.emailjs.com')) sent++;
+      if (r.url().includes('/api/contact')) sent++;
     });
     // "want" is prefilled by the page; clear it so its required-field error is exercised too.
     await page.locator('#lead input[name="want"]').fill('');

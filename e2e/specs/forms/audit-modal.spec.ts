@@ -34,19 +34,19 @@ test.describe('Audit Modal Dialog, Field Validations & Lead Capture Flow', { tag
     await expect(phoneError).toBeVisible();
   });
 
-  test('Happy Path: Submitting valid form sends mock EmailJS and displays success banner', { tag: '@critical' }, async ({
+  test('Happy Path: Submitting valid form posts to /api/contact (mocked) and displays success banner', { tag: '@critical' }, async ({
     page,
     auditModal,
   }) => {
     await auditModal.openViaTrigger();
     await auditModal.fillForm(TEST_LEAD);
 
-    const sent = page.waitForRequest(/api\.emailjs\.com/);
+    const sent = page.waitForRequest(/\/api\/contact/);
     await auditModal.submit();
     await auditModal.verifySuccessState();
 
-    // The (mocked) EmailJS call carries the fake identity, never a real-looking person.
-    const params = (await sent).postDataJSON().template_params;
+    // The (mocked) /api/contact call carries the fake identity, never a real-looking person.
+    const params = (await sent).postDataJSON().params;
     expect(params).toMatchObject({
       name: TEST_LEAD.name,
       email: TEST_LEAD.email,

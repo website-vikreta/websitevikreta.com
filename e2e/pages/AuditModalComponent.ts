@@ -1,3 +1,4 @@
+import { waitForCaptcha } from '../helpers/captcha';
 import { Page, Locator, expect } from '@playwright/test';
 
 export interface AuditFormData {
@@ -61,6 +62,7 @@ export class AuditModalComponent {
   }
 
   async submit(): Promise<void> {
+    await waitForCaptcha(this.modalContent);
     await this.submitButton.click();
   }
 

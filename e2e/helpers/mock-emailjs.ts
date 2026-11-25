@@ -1,10 +1,6 @@
 import { Page } from '@playwright/test';
 
 /**
- * Intercepts EmailJS HTTP API requests and returns a mock 200 OK response.
- * Prevents test runs from sending real emails while fully validating the UI
- * submission flow, loading state, and success message banner.
- */
 /**
  * The careers "Apply" form posts to our own /api/careers/apply, which (server-side, out of reach of the
  * EmailJS mock above) uploads the resume to Sanity, creates a real submission record AND emails HR.
@@ -35,12 +31,10 @@ export async function blockServerActions(page: Page): Promise<void> {
 }
 
 export async function setupEmailJSMock(page: Page): Promise<void> {
-  await page.route('https://api.emailjs.com/**', async (route) => {
-    console.log(`[Playwright Mock]: Intercepted EmailJS call to ${route.request().url()}`);
-    await route.fulfill({
-      status: 200,
-      contentType: 'text/plain',
-      body: 'OK',
-    });
+  // Every lead form posts to our own /api/contact (captcha check + server-side EmailJS send).
+  // Intercept it in the browser so no test can send a real email.
+  await page.route('**/api/contact', async (route) => {
+    console.log(`[Playwright Mock]: Intercepted lead submit to ${route.request().url()}`);
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, mocked: true }) });
   });
 }

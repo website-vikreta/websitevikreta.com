@@ -62,5 +62,10 @@ export default defineConfig({
     url: BASE_URL,
     reuseExistingServer: true,
     timeout: 120_000,
+    // Cloudflare's documented always-pass test keys: the widget succeeds in headless Chrome.
+    env: {
+      NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: '1x00000000000000000000AA',
+      CLOUDFLARE_TURNSTILE_SECRET_KEY: '1x0000000000000000000000000000000AA',
+    },
   },
 });

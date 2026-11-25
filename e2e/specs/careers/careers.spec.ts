@@ -1,3 +1,4 @@
+import { waitForCaptcha } from '../../helpers/captcha';
 import type { Page } from '@playwright/test';
 import { test, expect } from '../../fixtures/test';
 import { TEST_LEAD } from '../../fixtures/test-data';
@@ -118,6 +119,7 @@ test.describe('Careers: Role Detail & Apply Form', () => {
         buffer: Buffer.from('%PDF-1.4\n% [PLAYWRIGHT TEST] dummy resume, please ignore\n'),
       });
 
+      await waitForCaptcha(page);
       const sent = page.waitForRequest('**/api/careers/apply');
       await page.getByRole('button', { name: /Submit Application/ }).click();
       await expect(page.getByText(/Thanks for applying/)).toBeVisible();
