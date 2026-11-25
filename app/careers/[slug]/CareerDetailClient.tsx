@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import type { PortableTextBlock } from '@portabletext/react'
 import { ArrowLeft, ArrowClockwise } from 'react-bootstrap-icons'
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import PortableTextContent from '@/components/ui/PortableTextContent'
 import { SocialShare } from '@/components/ui/SocialShare'
 import { trackJobApplicationSubmit } from '@/lib/analytics'
+import Turnstile, { type TurnstileHandle } from '@/components/wv/Turnstile'
 
 const SUBHEAD = 'text-h4 font-bold tracking-tight text-(--color-text) mb-6'
 
@@ -49,6 +50,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
   const [submitError, setSubmitError] = useState('')
   const [submitting, setSubmitting]   = useState(false)
   const [fileInputKey, setFileInputKey] = useState(0)
+  const turnstileRef = useRef<TurnstileHandle | null>(null)
 
   async function handleSubmit() {
     const newErrors: FormErrors = {}
@@ -63,6 +65,10 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       return
     }
 
+    // Bot check must pass before the resume is uploaded.
+    const verified = await turnstileRef.current?.verify()
+    if (verified === false) return
+
     setSubmitting(true)
     setSubmitError('')
 
@@ -76,6 +82,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
       fd.append('openingTitle', opening.title)
       fd.append('openingSlug', opening.slug)
       fd.append('resume', resumeFile!)
+      fd.append('token', turnstileRef.current?.getToken() ?? '')
 
       const res = await fetch('/api/careers/apply', { method: 'POST', body: fd })
       const data = await res.json()
@@ -90,6 +97,7 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
     } catch {
       setSubmitError('Something went wrong. Please try again.')
     } finally {
+      turnstileRef.current?.reset()
       setSubmitting(false)
     }
   }
@@ -328,6 +336,8 @@ export default function CareerDetailClient({ opening }: { opening: Opening }) {
                 />
                 {errors.resume && <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#FF4444', fontFamily: 'monospace' }}>{errors.resume}</p>}
               </div>
+
+              <Turnstile ref={turnstileRef} />
 
               {submitError && (
                 <p style={{ fontSize: '0.8125rem', color: '#FF4444', fontFamily: 'monospace' }} role="alert">

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeClient } from '@/sanity/lib/write-client'
 import { SITE_URL } from '@/config/site'
+import { assertNotRateLimited } from '@/lib/rate-limit'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 const EMAILJS_SERVICE_ID   = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_SERVICE_ID    ?? ''
 const EMAILJS_TEMPLATE_ID  = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_TEMPLATE_ID   ?? ''
@@ -13,6 +15,15 @@ const JOB_TYPE_LABEL: Record<string, string> = { 'Full-time': 'Full Time', 'Part
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
+
+    // Bot checks run before anything is uploaded, stored or emailed.
+    try {
+      await assertNotRateLimited('careers', 5, 60_000)
+    } catch {
+      return NextResponse.json({ error: 'Too many requests. Please try again in a minute.' }, { status: 429 })
+    }
+    const captcha = await verifyTurnstile(req, String(formData.get('token') ?? ''))
+    if (!captcha.ok) return NextResponse.json({ error: captcha.error }, { status: captcha.status })
 
     const name         = formData.get('name')         as string
     const email        = formData.get('email')        as string
