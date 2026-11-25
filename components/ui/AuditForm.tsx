@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useId, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
-import emailjs from '@emailjs/browser'
+import { sendLead } from '@/lib/send-lead'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { revealFadeUp } from '@/lib/gsap/reveals'
@@ -12,9 +12,6 @@ import Turnstile, { type TurnstileHandle } from '@/components/wv/Turnstile'
 const CSS_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
 const T_MICRO = '0.2s'
 
-const EMAILJS_SERVICE_ID  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  ?? ''
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
-const EMAILJS_PUBLIC_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY  ?? ''
 
 interface AuditFormData {
   firstName: string
@@ -118,29 +115,25 @@ export function AuditForm({
     setSubmitting(true)
     setSendError(false)
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+      await sendLead(
         {
           name:         `${form.firstName} ${form.lastName}`,
-          reply_to:     form.email,
           email:        form.email,
           mobile:       form.phone,
           service_type: form.subject,
-          budget:       'Not specified',
           message:      form.message,
-          to_name:      'Website Vikreta',
         },
-        EMAILJS_PUBLIC_KEY,
+        turnstileRef.current?.getToken() ?? null,
       )
       setSubmitted(true)
       trackFormSubmit(formName)
       onSuccess?.()
     } catch (err) {
       const e = err as { status?: number; text?: string }
-      console.error('[EmailJS] send failed:', e?.status, e?.text, err)
+      console.error('[lead] send failed:', e?.status, e?.text, err)
       setSendError(true)
     } finally {
+      turnstileRef.current?.reset()
       setSubmitting(false)
     }
   }

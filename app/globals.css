@@ -796,48 +796,6 @@ body[data-scroll-locked] {
   margin: 0 0 1rem;
   overflow: visible;
 }
-.wv-turnstile-frame {
-  position: relative;
-  min-height: 65px;
-}
-.wv-turnstile-widget {
-  transition: opacity 160ms ease;
-}
-.wv-turnstile-placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--line-d, #0b0b0c24);
-  border-radius: 6px;
-  font: 500 12px/1.4 var(--sans, system-ui, sans-serif);
-  color: var(--muted, #5d5b55);
-  pointer-events: none;
-}
-.wv-turnstile-check {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.5rem;
-  font: 500 13px/1.4 var(--sans, system-ui, sans-serif);
-  color: var(--ink, #121212);
-  cursor: pointer;
-}
-.wv-turnstile-check input {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: var(--ink, #121212);
-  cursor: pointer;
-}
-.wv-turnstile-status {
-  margin-left: auto;
-  font: 600 11px/1.4 var(--sans, system-ui, sans-serif);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted, #5d5b55);
-}
 .wv-turnstile-error {
   margin: 0.5rem 0 0;
   font: 600 12px/1.4 var(--sans, system-ui, sans-serif);

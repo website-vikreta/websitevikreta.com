@@ -2,14 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Linkedin, Whatsapp, Instagram, Envelope, Telephone, ArrowUpRight, ArrowClockwise } from 'react-bootstrap-icons'
-import emailjs from '@emailjs/browser'
+import { sendLead } from '@/lib/send-lead'
 import { getCountries, getCountryCallingCode, parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js/min'
 import { trackFormSubmit, trackLinkClick } from '@/lib/analytics'
 import Turnstile, { type TurnstileHandle } from '@/components/wv/Turnstile'
 
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? ''
 
 const CHANNELS = [
   { href: 'https://wa.me/919970445198', label: 'Chat with us', icon: Whatsapp, ariaLabel: 'Chat with Website Vikreta on WhatsApp' },
@@ -169,28 +166,24 @@ export function ContactForm() {
     setSubmit(true)
     setSendError(false)
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+      await sendLead(
         {
           name: form.name.trim().replace(/\s+/g, ' '),
-          reply_to: form.email.trim(),
           email: form.email.trim(),
           service: form.jobOrWebsite.trim(),
           mobile: e164,
-          budget: 'Not specified',
           message: form.message.trim() || `${form.name.trim()} has a ${form.jobOrWebsite.trim()} that needs help.`,
-          to_name: 'Website Vikreta',
         },
-        EMAILJS_PUBLIC_KEY,
+        turnstileRef.current?.getToken() ?? null,
       )
       setSubmitted(true)
       trackFormSubmit('contact_us')
     } catch (err) {
       const e = err as { status?: number; text?: string }
-      console.error('[EmailJS] send failed:', e?.status, e?.text, err)
+      console.error('[lead] send failed:', e?.status, e?.text, err)
       setSendError(true)
     } finally {
+      turnstileRef.current?.reset()
       setSubmit(false)
     }
   }

@@ -1,24 +1,18 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import emailjs from '@emailjs/browser'
+import { sendLead as sendLeadRequest } from '@/lib/send-lead'
 import { Arrow, Magnetic } from '../ui'
 import { trackFormSubmit } from '@/lib/analytics'
-import { WaButton } from './WaButton'
 import { CountryPhone } from './CountryPhone'
 import { getCountries } from './countries'
 import Turnstile, { type TurnstileHandle } from '../Turnstile'
-
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
-const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? ''
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_RE = /^\+?[1-9]\d{6,14}$/
 
 const PREFILL = 'wv:lead-prefill'
 const MAX = 120
-const CONFIGURED = !!(SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY)
 
 /** Prefill the lead form in-page, scroll to it and focus the field. */
 export function prefillLead(interest: string, id = 'lead') {
@@ -50,7 +44,6 @@ export function LeadForm({ interest, source, id = 'lead', topic = 'automate' }: 
   const grow = topic === 'grow'
   const wantLabel = grow ? 'What do you need help with?' : 'What should we automate?'
   const wantVerb = grow ? 'wants help with' : 'wants to automate'
-  const waLead = grow ? 'Hi, I want help with' : 'Hi, I want to automate'
   const [want, setWant] = useState(interest)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [busy, setBusy] = useState(false)
@@ -83,27 +76,23 @@ export function LeadForm({ interest, source, id = 'lead', topic = 'automate' }: 
     setBusy(true)
     setFailed(false)
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
+      await sendLeadRequest(
         {
           name: data.name,
-          reply_to: data.email,
           email: data.email,
           service: `${grow ? 'SEO & GEO' : 'Applied AI'}: ${interest}`,
           mobile: data.phone || 'Not provided',
-          budget: 'Not specified',
           message: `${data.name} ${wantVerb}: ${data.what}\nPhone: ${data.phone ? `${data.phone} (${data.phoneLabel})` : 'Not provided'}\nService/product: ${interest}\nSource: ${source}`,
-          to_name: 'Website Vikreta',
         },
-        PUBLIC_KEY,
+        turnstileRef.current?.getToken() ?? null,
       )
       setDone(true)
       trackFormSubmit(`ai_automations_${source}`)
     } catch (err) {
-      console.error('[EmailJS] send failed', err)
+      console.error('[lead] send failed', err)
       setFailed(true)
     } finally {
+      turnstileRef.current?.reset()
       setBusy(false)
     }
   }
@@ -137,16 +126,6 @@ export function LeadForm({ interest, source, id = 'lead', topic = 'automate' }: 
 
     await sendLead({ name, email, phone, phoneLabel: cc?.name ?? '', what })
   }
-
-  if (!CONFIGURED)
-    return (
-      <div className="wv-ax-form is-done" id={id}>
-        <p>Message us on WhatsApp or email contact@websitevikreta.com</p>
-        <div className="wv-cta-row">
-          <WaButton text={`${waLead}: ${interest}`} variant="y" />
-        </div>
-      </div>
-    )
 
   if (done)
     return (
