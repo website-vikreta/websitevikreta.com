@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import localFont from 'next/font/local'
 import { HideOnHome, HideOnStudio } from '@/components/ui/ConditionalShell'
-import { SiteFooter, SiteHeader } from '@/components/wv/SiteChrome'
+import { SiteBackToTop, SiteFooter, SiteHeader } from '@/components/wv/SiteChrome'
 import { ScrollManager } from '@/components/ui/ScrollManager'
 import { RouteProgressBar } from '@/components/ui/RouteProgressBar'
 import { AuditModalProvider } from '@/components/ui/AuditModalProvider'
@@ -125,6 +125,7 @@ export default function RootLayout({
         <MapCta />
         </HideOnHome>
         <SiteFooter />
+        <SiteBackToTop />
       </HideOnStudio>
       </body>
     </html>

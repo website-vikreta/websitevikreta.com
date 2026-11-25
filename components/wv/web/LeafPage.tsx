@@ -86,6 +86,52 @@ function Vitals() {
   )
 }
 
+/** A storefront: logo, cart, product tiles and an add-to-cart button. Blocks only. */
+function Store() {
+  return (
+    <div className="cw-store" aria-hidden>
+      <div className="cw-store-top">
+        <b />
+        <span><i /><i /><u>2</u></span>
+      </div>
+      <div className="cw-store-grid">
+        {[0, 1, 2, 3].map((n) => (
+          <div key={n} className="cw-store-tile">
+            <i />
+            <b />
+            <em />
+          </div>
+        ))}
+      </div>
+      <div className="cw-store-cta">
+        Add to cart <Arrow size={12} />
+      </div>
+    </div>
+  )
+}
+
+/** Storefront, API and commerce engine as three joined nodes. */
+function Headless() {
+  const nodes = [
+    { t: 'Storefront', d: 'Custom front end' },
+    { t: 'API', d: 'Products, cart, checkout' },
+    { t: 'Commerce engine', d: 'Orders and stock' },
+  ]
+  return (
+    <div className="cw-hl" aria-hidden>
+      {nodes.map((n, i) => (
+        <div key={n.t} className="cw-hl-step">
+          <div className={`cw-hl-node${i === 0 ? ' is-y' : ''}`}>
+            <b>{n.t}</b>
+            <span>{n.d}</span>
+          </div>
+          {i < nodes.length - 1 && <i className="cw-hl-link" />}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 /** What a maintenance month covers, as a checked list. */
 function Checklist() {
   const rows = ['Updates applied', 'Backups checked', 'Links and forms tested', 'Small fixes done']
@@ -175,7 +221,7 @@ function Hero({ c }: { c: C }) {
             </div>
           </Reveal>
         </div>
-        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${hero.art === 'vitals' || hero.art === 'checklist' ? ' is-card' : ''}`}>
+        <Reveal delay={0.3} className={`cw-hero-art${hero.art === 'ba' ? ' is-ba' : ''}${['vitals', 'checklist', 'store', 'headless'].includes(hero.art) ? ' is-card' : ''}`}>
           {hero.art === 'ba' ? (
             <BeforeAfter />
           ) : (
@@ -194,6 +240,8 @@ function Hero({ c }: { c: C }) {
               {hero.art === 'wire' && <Wireframe />}
               {hero.art === 'vitals' && <Vitals />}
               {hero.art === 'checklist' && <Checklist />}
+              {hero.art === 'store' && <Store />}
+              {hero.art === 'headless' && <Headless />}
             </div>
           )}
           <span className="cw-hero-tag">
@@ -323,6 +371,64 @@ function Step({ s, i, p }: { s: C['steps']['items'][number]; i: number; p: Motio
 }
 
 /** The four steps wake up one by one and a yellow rail fills as you scroll through them. */
+function Compare({ c }: { c: C }) {
+  const cmp = c.compare
+  if (!cmp) return null
+  return (
+    <section className="wv-sec cw-compare" id="compare">
+      <div className="wv-wrap">
+        <Section title={['Which one', 'fits you?']} aside={<p>{cmp.aside}</p>} />
+        <Reveal>
+          <div className="cw-cmp" role="table">
+            <div className="cw-cmp-head" role="row">
+              <span role="columnheader" />
+              {cmp.cols.map((col) => (
+                <b key={col.t} role="columnheader" className={col.on ? 'is-on' : ''}>
+                  {col.t}
+                  {col.on && <small>This page</small>}
+                </b>
+              ))}
+            </div>
+            {cmp.rows.map((r) => (
+              <div key={r.k} className="cw-cmp-row" role="row">
+                <span className="cw-cmp-k" role="rowheader">{r.k}</span>
+                {r.v.map((v, i) => (
+                  <span key={cmp.cols[i].t} role="cell" data-col={cmp.cols[i].t} className={cmp.cols[i].on ? 'is-on' : ''}>
+                    {v}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+function Connects({ c }: { c: C }) {
+  const cn = c.connects
+  if (!cn) return null
+  return (
+    <section className="wv-sec cw-connects">
+      <div className="wv-wrap">
+        <Section title={['What it', 'connects to']} aside={<p>{cn.aside}</p>} />
+        <ul className="cw-conn">
+          {cn.items.map((it, i) => (
+            <li key={it.t}>
+              <Reveal delay={0.04 * i}>
+                <span className="cw-conn-n">0{i + 1}</span>
+                <h3>{it.t}</h3>
+                <p>{it.d}</p>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
 function Process({ c }: { c: C }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] })
@@ -631,6 +737,8 @@ export function LeafPage({ c }: { c: C }) {
       <Band c={c} />
       <Friction c={c} />
       <Build c={c} />
+      <Connects c={c} />
+      <Compare c={c} />
       <Process c={c} />
       <Proof c={c} />
       <Stats />

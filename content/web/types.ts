@@ -10,7 +10,7 @@ export type LeafContent = {
     /** Lead-in for the rotating word, e.g. "Built to" or "We" */
     rot: string
     /** 'shot' = real AP Cleanco screenshot, 'wire' = generic landing-page wireframe, 'ba' = old vs new cards, 'vitals' = three speed measures, 'checklist' = upkeep checklist */
-    art: 'shot' | 'wire' | 'ba' | 'vitals' | 'checklist'
+    art: 'shot' | 'wire' | 'ba' | 'vitals' | 'checklist' | 'store' | 'headless'
     url: string
   }
   band: [string[], string[]]
@@ -21,6 +21,10 @@ export type LeafContent = {
     photo: string
     alt: string
   }
+  /** Optional "which one fits" table (e-commerce pages). `on` marks the column this page is about. */
+  compare?: { aside: string; cols: { t: string; on?: boolean }[]; rows: { k: string; v: string[] }[] }
+  /** Optional "what it connects to" grid (e-commerce pages). */
+  connects?: { aside: string; items: { t: string; d: string }[] }
   build: { aside: string; rows: { t: string; href: string; d: string; pop: string[] }[] }
   steps: { aside: string; items: { n: string; t: string; d: string }[] }
   proof: {
