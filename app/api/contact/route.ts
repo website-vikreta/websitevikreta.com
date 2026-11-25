@@ -4,7 +4,7 @@ import { verifyTurnstile } from '@/lib/turnstile'
 export const runtime = 'nodejs'
 
 // Server-only. The NEXT_PUBLIC_ fallbacks let the existing Vercel values keep working
-// (the careers route already reads the private key from NEXT_PUBLIC_EMAILJS_PRIVATE_KEY).
+// (the careers route used to read the private key from NEXT_PUBLIC_EMAILJS_PRIVATE_KEY).
 const SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? ''
 const TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''
 const PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? ''

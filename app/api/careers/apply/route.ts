@@ -4,10 +4,11 @@ import { SITE_URL } from '@/config/site'
 import { assertNotRateLimited } from '@/lib/rate-limit'
 import { verifyTurnstile } from '@/lib/turnstile'
 
-const EMAILJS_SERVICE_ID   = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_SERVICE_ID    ?? ''
-const EMAILJS_TEMPLATE_ID  = process.env.NEXT_PUBLIC_EMAILJS_CAREERS_TEMPLATE_ID   ?? ''
-const EMAILJS_PUBLIC_KEY   = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY            ?? ''
-const EMAILJS_PRIVATE_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY           ?? ''
+// Server-only names. The NEXT_PUBLIC_ fallbacks keep the existing Netlify values working until they are renamed.
+const EMAILJS_SERVICE_ID   = process.env.EMAILJS_CAREERS_SERVICE_ID  ?? process.env.NEXT_PUBLIC_EMAILJS_CAREERS_SERVICE_ID  ?? ''
+const EMAILJS_TEMPLATE_ID  = process.env.EMAILJS_CAREERS_TEMPLATE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_CAREERS_TEMPLATE_ID ?? ''
+const EMAILJS_PUBLIC_KEY   = process.env.EMAILJS_PUBLIC_KEY          ?? process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY          ?? ''
+const EMAILJS_PRIVATE_KEY  = process.env.EMAILJS_PRIVATE_KEY         ?? process.env.NEXT_PUBLIC_EMAILJS_PRIVATE_KEY         ?? ''
 
 // Sanity stores "Full-time" / "Part-time"; the HR Application Tracker sheet's dropdown uses "Full Time" / "Part Time".
 const JOB_TYPE_LABEL: Record<string, string> = { 'Full-time': 'Full Time', 'Part-time': 'Part Time', Internship: 'Internship' }
